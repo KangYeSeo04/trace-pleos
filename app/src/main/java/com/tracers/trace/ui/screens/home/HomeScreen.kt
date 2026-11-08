@@ -79,18 +79,18 @@ fun HomeScreen(
             modifier = Modifier.weight(1f)
         )
 
-        // 타일 그리드 2×2
-        Crossfade(
-            targetState = uiState.isDriving,
-            animationSpec = tween(durationMillis = 1000),
-            label = "TileGrid"
-        ) { isDriving ->
+        // 타일 그리드 2×2 (고정 높이: 190 + 10 + 190 = 390dp)
+        Box(
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(390.dp)
+        ) {
             TileGrid(
                 efficiency = uiState.efficiency,
                 maintenance = uiState.maintenance,
                 coin = uiState.coin,
                 region = uiState.region,
-                isDriving = isDriving,
+                isDriving = uiState.isDriving,
                 onEfficiencyClick = onNavigateToEfficiency,
                 onMaintenanceClick = onNavigateToMaintenance,
                 onCoinClick = onNavigateToCoin,
@@ -267,7 +267,7 @@ private fun HeroStage(
 }
 
 /**
- * 타일 그리드 2×2
+ * 타일 그리드 2×2 (고정 높이 390dp)
  */
 @Composable
 private fun TileGrid(
@@ -282,6 +282,8 @@ private fun TileGrid(
     onRegionClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
+    val density = LocalDensity.current
+
     // 주행 모드일 때는 상세 이동 대신 음성 안내 (TODO: A-04)
     // TODO(A-04): TTS 호출
     val effClick: () -> Unit = if (isDriving) { {} } else onEfficiencyClick
@@ -290,11 +292,18 @@ private fun TileGrid(
     val regionClick: () -> Unit = if (isDriving) { {} } else onRegionClick
 
     Column(
-        modifier = modifier.fillMaxWidth(),
+        modifier = modifier
+            .fillMaxSize()
+            .onGloballyPositioned { coords ->
+                val heightDp = with(density) { coords.size.height.toDp() }
+                Log.d("HomeLayout", "TileGrid height: $heightDp (mode: ${if (isDriving) "driving" else "parked"})")
+            },
         verticalArrangement = Arrangement.spacedBy(10.dp)
     ) {
         Row(
-            modifier = Modifier.fillMaxWidth(),
+            modifier = Modifier
+                .fillMaxWidth()
+                .weight(1f),
             horizontalArrangement = Arrangement.spacedBy(10.dp)
         ) {
             Tile(
@@ -311,7 +320,9 @@ private fun TileGrid(
             )
         }
         Row(
-            modifier = Modifier.fillMaxWidth(),
+            modifier = Modifier
+                .fillMaxWidth()
+                .weight(1f),
             horizontalArrangement = Arrangement.spacedBy(10.dp)
         ) {
             Tile(

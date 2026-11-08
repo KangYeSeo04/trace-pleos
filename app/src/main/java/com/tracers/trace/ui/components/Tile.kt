@@ -9,12 +9,15 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.animation.Crossfade
+import androidx.compose.animation.core.tween
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -86,9 +89,6 @@ fun Tile(
         else -> if (isDriving) 52.sp else 44.sp
     }
 
-    // 타일 높이는 정차·주행 모두 190dp 고정 (디자인 150과 다름, S02: "S01과 같은 배치")
-    val minHeight = 190.dp
-
     // 주행 모드 클릭 시 파란 테두리 (A-04 음성 안내 시각 피드백)
     val borderModifier = if (isDriving) {
         Modifier.border(width = 2.dp, color = colors.accent, shape = RoundedCornerShape(20.dp))
@@ -104,25 +104,31 @@ fun Tile(
         is TileState.Region -> "Region"
     }
 
-    Column(
-        modifier = modifier
-            .fillMaxWidth()
-            .height(minHeight)
-            .clip(RoundedCornerShape(20.dp))
-            .background(colors.tile)
-            .then(borderModifier)
-            .clickable(onClick = onClick)
-            .padding(18.dp)
-            .onGloballyPositioned { coords ->
-                val heightDp = with(density) { coords.size.height.toDp() }
-                android.util.Log.d("HomeLayout", "Tile $tileLabel height: $heightDp")
-            }
-    ) {
-        // 헤더
-        TileHeader(
-            icon = icon,
-            label = label,
-            isDriving = isDriving
+    // 1초 크로스페이드는 타일 내용에만 적용
+    Crossfade(
+        targetState = isDriving,
+        animationSpec = tween(durationMillis = 1000),
+        label = "TileContent_$tileLabel",
+        modifier = modifier.fillMaxSize()
+    ) { driving: Boolean ->
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .clip(RoundedCornerShape(20.dp))
+                .background(colors.tile)
+                .then(borderModifier)
+                .clickable(onClick = onClick)
+                .padding(18.dp)
+                .onGloballyPositioned { coords ->
+                    val heightDp = with(density) { coords.size.height.toDp() }
+                    android.util.Log.d("HomeLayout", "Tile $tileLabel height: $heightDp (mode: ${if (driving) "driving" else "parked"})")
+                }
+        ) {
+            // 헤더
+            TileHeader(
+                icon = icon,
+                label = label,
+                isDriving = driving
         )
 
         Spacer(modifier = Modifier.weight(1f))
@@ -211,7 +217,7 @@ fun Tile(
             percent = state.barPercent,
             barColor = barColor,
             markPercent = state.barMarkPercent,
-            modifier = Modifier.alpha(if (isDriving) 0f else 1f)
+            modifier = Modifier.alpha(if (driving) 0f else 1f)
         )
 
         // 보조 텍스트 (주행 모드에서는 보이지 않지만 자리는 유지)
@@ -220,8 +226,9 @@ fun Tile(
             text = state.subText,
             fontSize = 13.sp,
             color = colors.t2,
-            modifier = Modifier.alpha(if (isDriving) 0f else 1f)
+            modifier = Modifier.alpha(if (driving) 0f else 1f)
         )
+        }
     }
 }
 
