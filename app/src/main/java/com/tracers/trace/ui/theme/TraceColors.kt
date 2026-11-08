@@ -24,8 +24,12 @@ data class TraceColors(
     val track: Color = Color(0xFF33373E),
     /** 강조 파랑 (유일한 강조색) */
     val accent: Color = Color(0xFF4C9AFF),
+    /** 강조 파랑 반투명 (칩 배경) */
+    val accentSoft: Color = Color(0x294C9AFF), // rgba(76,154,255,0.16)
     /** 좋음 */
     val good: Color = Color(0xFF38C08A),
+    /** 좋음 반투명 (칩 배경) */
+    val goodSoft: Color = Color(0x2438C08A), // rgba(56,192,138,0.14)
     /** 주의 */
     val caution: Color = Color(0xFFF0A33C),
     /** 경고 */
