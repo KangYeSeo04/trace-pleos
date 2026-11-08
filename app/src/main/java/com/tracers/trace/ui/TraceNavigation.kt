@@ -23,6 +23,7 @@ import com.tracers.trace.ui.screens.home.HomeScreen
 import com.tracers.trace.ui.screens.home.HomeUiState
 import com.tracers.trace.ui.screens.home.StatusLevel
 import com.tracers.trace.ui.screens.home.TileState
+import com.tracers.trace.ui.screens.spaceflight.SpaceFlightScreen
 import com.tracers.trace.ui.theme.TraceTheme
 
 /**
@@ -82,7 +83,7 @@ fun TraceNavHost(
             PlaceholderScreen(onBack = { navController.popBackStack() })
         }
         composable(TraceDestinations.SPACE) {
-            PlaceholderScreen(onBack = { navController.popBackStack() })
+            SpaceFlightScreen(onNavigateBack = { navController.popBackStack() })
         }
     }
 }

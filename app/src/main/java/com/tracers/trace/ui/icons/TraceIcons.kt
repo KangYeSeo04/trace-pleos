@@ -345,4 +345,28 @@ object TraceIcons {
             }
         }.build()
     }
+
+    /** 왼쪽 셰브런 (뒤로) */
+    val ChevronLeft: ImageVector by lazy {
+        ImageVector.Builder(
+            name = "ChevronLeft",
+            defaultWidth = 24.dp,
+            defaultHeight = 24.dp,
+            viewportWidth = 24f,
+            viewportHeight = 24f
+        ).apply {
+            path(
+                fill = null,
+                stroke = SolidColor(Color.Black),
+                strokeLineWidth = 2.2f,
+                strokeLineCap = StrokeCap.Round,
+                strokeLineJoin = StrokeJoin.Round
+            ) {
+                // M15 5l-7 7 7 7 (HTML 디자인 값)
+                moveTo(15f, 5f)
+                lineToRelative(-7f, 7f)
+                lineToRelative(7f, 7f)
+            }
+        }.build()
+    }
 }
