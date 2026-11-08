@@ -20,6 +20,10 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
+import androidx.compose.ui.layout.onGloballyPositioned
+import androidx.compose.ui.platform.LocalDensity
+import android.util.Log
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -66,27 +70,27 @@ fun HomeScreen(
         // 앱 바
         HomeAppBar(isDriving = uiState.isDriving)
 
-        // 비행 무대 (남는 세로 공간을 차지)
+        // 비행 무대 (디자인 정차 비율: 250 / 390 = 25 / 39)
         HeroStage(
             caption = uiState.caption,
             captionSub = uiState.captionSub,
             captionIconPath = uiState.captionIconPath,
             onClick = onNavigateToSpace,
-            modifier = Modifier.weight(1f)
+            modifier = Modifier.weight(25f)
         )
 
-        // 타일 그리드 2×2
-        Crossfade(
-            targetState = uiState.isDriving,
-            animationSpec = tween(durationMillis = 1000),
-            label = "TileGrid"
-        ) { isDriving ->
+        // 타일 그리드 2×2 (디자인 정차 비율: 390 / 250 = 39 / 25)
+        Box(
+            modifier = Modifier
+                .fillMaxWidth()
+                .weight(39f)
+        ) {
             TileGrid(
                 efficiency = uiState.efficiency,
                 maintenance = uiState.maintenance,
                 coin = uiState.coin,
                 region = uiState.region,
-                isDriving = isDriving,
+                isDriving = uiState.isDriving,
                 onEfficiencyClick = onNavigateToEfficiency,
                 onMaintenanceClick = onNavigateToMaintenance,
                 onCoinClick = onNavigateToCoin,
@@ -109,7 +113,7 @@ private fun HomeAppBar(
     // 상태 칩 색상
     val chipBg = if (isDriving) colors.accentSoft else colors.goodSoft
     val chipColor = if (isDriving) colors.accent else colors.good
-    val chipText = if (isDriving) "주행 중 · 탭하면 음성" else "정차 중"
+    val chipText = if (isDriving) "주행 중" else "정차 중"
 
     Row(
         modifier = modifier
@@ -190,11 +194,17 @@ private fun HeroStage(
     onClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
+    val density = LocalDensity.current
+
     Box(
         modifier = modifier
             .fillMaxWidth()
             .clip(RoundedCornerShape(20.dp))
             .clickable(role = Role.Button, onClick = onClick)
+            .onGloballyPositioned { coords ->
+                val heightDp = with(density) { coords.size.height.toDp() }
+                Log.d("HomeLayout", "HeroStage height: $heightDp")
+            }
     ) {
         // 밤하늘 이미지
         Image(
@@ -257,7 +267,7 @@ private fun HeroStage(
 }
 
 /**
- * 타일 그리드 2×2
+ * 타일 그리드 2×2 (고정 높이 390dp)
  */
 @Composable
 private fun TileGrid(
@@ -272,41 +282,59 @@ private fun TileGrid(
     onRegionClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
+    val density = LocalDensity.current
+
+    // 주행 모드일 때는 상세 이동 대신 음성 안내 (TODO: A-04)
+    // TODO(A-04): TTS 호출
+    val effClick: () -> Unit = if (isDriving) { {} } else onEfficiencyClick
+    val maintClick: () -> Unit = if (isDriving) { {} } else onMaintenanceClick
+    val coinClick: () -> Unit = if (isDriving) { {} } else onCoinClick
+    val regionClick: () -> Unit = if (isDriving) { {} } else onRegionClick
+
     Column(
-        modifier = modifier.fillMaxWidth(),
+        modifier = modifier
+            .fillMaxSize()
+            .onGloballyPositioned { coords ->
+                val heightDp = with(density) { coords.size.height.toDp() }
+                Log.d("HomeLayout", "TileGrid height: $heightDp (mode: ${if (isDriving) "driving" else "parked"})")
+            },
         verticalArrangement = Arrangement.spacedBy(10.dp)
     ) {
         Row(
-            modifier = Modifier.fillMaxWidth(),
+            modifier = Modifier
+                .fillMaxWidth()
+                .weight(1f),
             horizontalArrangement = Arrangement.spacedBy(10.dp)
         ) {
             Tile(
                 state = efficiency,
                 isDriving = isDriving,
-                onClick = onEfficiencyClick,
+                onClick = effClick,
                 modifier = Modifier.weight(1f)
             )
             Tile(
                 state = maintenance,
                 isDriving = isDriving,
-                onClick = onMaintenanceClick,
+                onClick = maintClick,
                 modifier = Modifier.weight(1f)
             )
         }
         Row(
-            modifier = Modifier.fillMaxWidth(),
+            modifier = Modifier
+                .fillMaxWidth()
+                .weight(1f),
             horizontalArrangement = Arrangement.spacedBy(10.dp)
         ) {
             Tile(
                 state = coin,
                 isDriving = isDriving,
-                onClick = onCoinClick,
+                onClick = coinClick,
                 modifier = Modifier.weight(1f)
             )
             Tile(
                 state = region,
                 isDriving = isDriving,
-                onClick = onRegionClick,
+                onClick = regionClick,
                 modifier = Modifier.weight(1f)
             )
         }

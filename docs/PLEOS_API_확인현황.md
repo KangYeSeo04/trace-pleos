@@ -66,6 +66,18 @@
 - **좌석 탑승 값이 반대**: 콘솔 Occupied=true가 SDK에서는 false로 옴. 실차에서 확인 필요
 - **TTS·STT**: `initialize`는 성공하나 `registerApp`에 Client ID/Secret 필요 (local.properties에 설정)
 
+### 주행 중 화면 표시 (probe-results/RESULTS.md)
+
+주행 상태 (gear=Drive, speed=30): UxRestrictions DO=true, UxR=0x50 (NO_KEYBOARD | NO_VIDEO)
+
+| 방법 | 결과 | 비고 |
+|------|------|------|
+| **distractionOptimized 메타데이터** | ✅ 가능 | AndroidManifest의 Activity에 `<meta-data android:name="distractionOptimized" android:value="true" />` 추가. 주행 중에도 앱 전체 화면 표시 가능 (2026.11.08 실측) |
+| **NAVIGATION HUN** | ✅ 가능 | 채널 IMPORTANCE_HIGH + setCategory(NAVIGATION). 상단 흰 카드(720x160px), 갱신 시 깜빡임 없음, **타임아웃 없이 무한 유지**. 0.25초 애니메이션 가능. 주행 중에도 동일 표시 |
+| **오버레이 창 (TYPE_APPLICATION_OVERLAY)** | ⚠️ 부분 가능 | 상단바 아래·화면 모서리에 상시 캐릭터 가능. 주행 중(D 30km/h)에도 30초 이상 유지 확인. **단, 상단바 위로는 불가**. 권한이 adb로만 허용 가능(설정 화면 없음) |
+| 일반 알림·FGS 알림·토스트 | ❌ 불가 | 상단바·종·알림 센터 어디에도 안 보임 |
+| 상단바 아이콘 슬롯 등록 | ❌ 불가 | STATUS_BAR 권한 거부 + 숨겨진 API 차단 |
+
 ## 확인 필요 (실차에서)
 
 - 백그라운드에서 상시 기록(30초 링버퍼)이 허용되는지

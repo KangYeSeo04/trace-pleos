@@ -15,6 +15,7 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -39,10 +40,12 @@ import com.tracers.trace.ui.theme.TraceTheme
  * - res/raw/space_flight.mp4를 화면 전체에 반복·음소거 재생
  * - 왼쪽 위 뒤로 버튼 + 화면 탭으로 홈 복귀
  * - 모션 줄이기 설정 시 첫 프레임 정지 화면
+ * - 주행 제한 중에는 영상 재생 안 됨 (즉시 정지)
  */
 @Composable
 fun SpaceFlightScreen(
     onNavigateBack: () -> Unit,
+    isDrivingRestricted: Boolean = false,
     modifier: Modifier = Modifier
 ) {
     val context = LocalContext.current
@@ -59,6 +62,13 @@ fun SpaceFlightScreen(
             playWhenReady = !isReduceMotion
             repeatMode = Player.REPEAT_MODE_ONE
             volume = 0f
+        }
+    }
+
+    // 주행 제한 중에는 영상 즉시 정지
+    LaunchedEffect(isDrivingRestricted) {
+        if (isDrivingRestricted) {
+            exoPlayer.pause()
         }
     }
 

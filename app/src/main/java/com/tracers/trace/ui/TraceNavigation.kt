@@ -9,20 +9,26 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.Icon
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
+import com.tracers.trace.data.uxrestrictions.CarUxRestrictionsMonitor
+import com.tracers.trace.data.vehicle.PleosVehicleSignals
+import com.tracers.trace.domain.DriveState
 import com.tracers.trace.ui.icons.TraceIcons
 import com.tracers.trace.ui.screens.home.HomeScreen
-import com.tracers.trace.ui.screens.home.HomeUiState
-import com.tracers.trace.ui.screens.home.StatusLevel
-import com.tracers.trace.ui.screens.home.TileState
+import com.tracers.trace.ui.screens.home.HomeViewModel
 import com.tracers.trace.ui.screens.spaceflight.SpaceFlightScreen
 import com.tracers.trace.ui.theme.TraceTheme
 
@@ -53,16 +59,42 @@ fun TraceNavHost(
     navController: NavHostController = rememberNavController(),
     startDestination: String = TraceDestinations.HOME
 ) {
-    // 샘플 상태 (2단계에서 ViewModel로 교체)
-    val homeUiState = remember { createSampleHomeUiState() }
+    val context = LocalContext.current
+
+    // HomeViewModel 생성 (Activity 생명주기 동안 유지)
+    val homeViewModel = remember {
+        val vehicleSignals = PleosVehicleSignals(context)
+        HomeViewModel(vehicleSignals)
+    }
+
+    // CarUxRestrictionsMonitor 생성 (Activity 생명주기 동안 유지)
+    val uxRestrictionsMonitor = remember {
+        CarUxRestrictionsMonitor(context).apply { start() }
+    }
+
+    // A-02: 주행 시작 시 자동 복귀
+    val navBackStackEntry by navController.currentBackStackEntryAsState()
+    val currentRoute = navBackStackEntry?.destination?.route
+    val driveState by homeViewModel.driveState.collectAsState()
+    val requiresDistractionOptimization by uxRestrictionsMonitor.requiresDistractionOptimization.collectAsState()
+
+    LaunchedEffect(driveState, requiresDistractionOptimization, currentRoute) {
+        // 주행 시작 (우리 판단 또는 시스템 판단) && 홈이 아닌 화면 → 홈으로 복귀
+        val isDrivingRestricted = driveState == DriveState.DRIVING || requiresDistractionOptimization
+        if (isDrivingRestricted && currentRoute != TraceDestinations.HOME) {
+            navController.popBackStack(TraceDestinations.HOME, inclusive = false)
+        }
+    }
 
     NavHost(
         navController = navController,
         startDestination = startDestination
     ) {
         composable(TraceDestinations.HOME) {
+            val homeUiState = homeViewModel.uiState.collectAsState()
+
             HomeScreen(
-                uiState = homeUiState,
+                uiState = homeUiState.value,
                 onNavigateToEfficiency = { navController.navigate(TraceDestinations.EFFICIENCY) },
                 onNavigateToMaintenance = { navController.navigate(TraceDestinations.MAINTENANCE) },
                 onNavigateToCoin = { navController.navigate(TraceDestinations.COIN) },
@@ -83,7 +115,10 @@ fun TraceNavHost(
             PlaceholderScreen(onBack = { navController.popBackStack() })
         }
         composable(TraceDestinations.SPACE) {
-            SpaceFlightScreen(onNavigateBack = { navController.popBackStack() })
+            SpaceFlightScreen(
+                onNavigateBack = { navController.popBackStack() },
+                isDrivingRestricted = requiresDistractionOptimization
+            )
         }
     }
 }
@@ -122,50 +157,3 @@ private fun PlaceholderScreen(
         }
     }
 }
-
-/**
- * 샘플 홈 상태 (2단계에서 ViewModel로 교체).
- */
-private fun createSampleHomeUiState() = HomeUiState(
-    isDriving = false,
-    caption = "충전은 목요일까지 여유 있어요",
-    captionSub = "배터리 64% · 하루 평균 34 km 기준",
-    captionIconPath = "M13 3L5 14h6l-1 7 8-11h-6z",
-    efficiency = TileState.Efficiency(
-        value = "6.4",
-        unit = "km/kWh",
-        status = "평균보다 1.1 좋아요",
-        statusLevel = StatusLevel.Good,
-        barPercent = 78f,
-        subText = "주행 78% · 공조 17% · 회생 0.9 kWh"
-    ),
-    maintenance = TileState.Maintenance(
-        value = "12",
-        unit = "일",
-        status = "와이퍼 블레이드 교체",
-        statusLevel = StatusLevel.Warn,
-        barPercent = 97f,
-        subText = "다음 · 에어컨 필터 1,200 km"
-    ),
-    coin = TileState.Coin(
-        value = "1,284",
-        unit = "",
-        status = "이번 주행 +37",
-        statusLevel = StatusLevel.Gold,
-        barPercent = 63f,
-        barMarkPercent = 50f,
-        subText = "안전점수 85.3 · 적립 기준 80"
-    ),
-    region = TileState.Region(
-        city = "서울",
-        district = "중랑구",
-        locationX = 72.9f,
-        locationY = 28.6f,
-        value = "서울",
-        unit = "중랑구",
-        status = "161곳 중 12곳 방문",
-        statusLevel = StatusLevel.Normal,
-        barPercent = 7f,
-        subText = "달린 거리 9,840 km"
-    )
-)
