@@ -29,6 +29,8 @@ import com.tracers.trace.data.uxrestrictions.CarUxRestrictionsMonitor
 import com.tracers.trace.data.vehicle.PleosVehicleSignals
 import com.tracers.trace.domain.DriveState
 import com.tracers.trace.ui.icons.TraceIcons
+import com.tracers.trace.ui.screens.efficiency.EfficiencyScreen
+import com.tracers.trace.ui.screens.efficiency.EfficiencyUiState
 import com.tracers.trace.ui.screens.home.HomeScreen
 import com.tracers.trace.ui.screens.home.HomeViewModel
 import com.tracers.trace.ui.screens.spaceflight.SpaceFlightScreen
@@ -115,7 +117,11 @@ fun TraceNavHost(
             )
         }
         composable(TraceDestinations.EFFICIENCY) {
-            PlaceholderScreen(onBack = { navController.popBackStack() })
+            // TODO(feat): ViewModel 연결
+            EfficiencyScreen(
+                uiState = EfficiencyUiState(),
+                onNavigateBack = { navController.popBackStack() }
+            )
         }
         composable(TraceDestinations.MAINTENANCE) {
             PlaceholderScreen(onBack = { navController.popBackStack() })

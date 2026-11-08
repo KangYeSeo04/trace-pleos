@@ -20,7 +20,9 @@ data class TraceColors(
     val t2: Color = Color(0xFFA3A9B2),
     /** 흐린 글자, 라벨 */
     val t3: Color = Color(0xFF7C828B),
-    /** 막대 바탕, 구분선 */
+    /** 구분선 */
+    val line: Color = Color(0xFF2C3036),
+    /** 막대 바탕 */
     val track: Color = Color(0xFF33373E),
     /** 강조 파랑 (유일한 강조색) */
     val accent: Color = Color(0xFF4C9AFF),

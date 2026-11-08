@@ -58,13 +58,11 @@ class HomeViewModel(
         val caption: String
         val captionSub: String
 
-        // 주행 모드 캡션 (B-03 연결 전까지는 기본 문구)
         // TODO(B-03): 기체 상태 6종에 따라 캡션 변경
         if (isDriving) {
             caption = "비행 중"
             captionSub = "데이터를 모으는 중이에요"
         } else {
-            // 정차 모드 캡션 (점검·충전 상태는 B-03, C-02 연결 후)
             // TODO(B-03, C-02): 점검 임박, 충전 타이밍 등 우선순위에 따라 캡션 표시
             caption = "정차 중"
             captionSub = ""
@@ -74,7 +72,6 @@ class HomeViewModel(
             isDriving = isDriving,
             caption = caption,
             captionSub = captionSub,
-            // 타일 데이터는 아직 연결 전 → 빈 상태 유지
             efficiency = TileState.Efficiency(
                 value = "–",
                 unit = "km/kWh",
