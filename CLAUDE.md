@@ -122,7 +122,8 @@ TRACE는 플레오스 커넥트(AAOS 기반 차량 OS)용 Android 앱이다. 흩
 각 단계는 브랜치 하나 이상, 끝나면 main에 합친다. 단계 안의 작업은 위에서부터 한다.
 
 ### 0단계 · 기반 (`chore/setup`)
-1. 프로젝트 생성(패키지 `ai.trace.app` — 다르면 사용자에게 확인), Gradle 설정, `.gitignore`
+1. 기존 프로젝트(패키지 `com.tracers.trace`)를 정리한다. 새 프로젝트를 만들지 않는다. Gradle 설정·`.gitignore` 점검.
+   - `app/src/main/java/com/tracers/trace/probe/`, `pip-probe/`, `topbar-probe/`, `probe-results/`, `tools/`는 기획 단계에서 SDK를 직접 호출해 본 실험 코드와 결과다. 지우지 말고, 살릴 SDK 호출 코드는 `data/vehicle/`로 옮기는 안을 먼저 제안한다.
 2. 폴더 구조(`ui/`, `domain/`, `data/`), 단일 Activity + Navigation Compose
 3. `TraceColors`, `TraceType`(Pretendard, `design/fonts/`에서 복사), `TraceDimens`(scale), `TraceTheme`
 4. `design/assets/`의 이미지·영상을 `res/drawable-nodpi/`, `res/raw/`로 정리(파일명은 소문자_스네이크)
