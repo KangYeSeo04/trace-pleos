@@ -5,7 +5,8 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.tooling.preview.Preview
+import com.tracers.trace.ui.theme.TraceTheme
 
 /**
  * S01(정차), S02(주행) 홈 화면.
@@ -20,10 +21,18 @@ fun HomeScreen(
     onNavigateToSpace: () -> Unit = {},
     modifier: Modifier = Modifier
 ) {
-    // 0단계: 다크 패널 색(#17191D)으로 빈 화면
+    // 0단계: 다크 패널 색으로 빈 화면
     Box(
         modifier = modifier
             .fillMaxSize()
-            .background(Color(0xFF17191D))
+            .background(TraceTheme.colors.panel)
     )
+}
+
+@Preview(widthDp = 600, heightDp = 800)
+@Composable
+private fun HomeScreenPreview() {
+    TraceTheme {
+        HomeScreen()
+    }
 }
