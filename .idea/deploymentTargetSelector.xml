@@ -13,6 +13,28 @@
         </DropdownSelection>
         <DialogSelection />
       </SelectionState>
+      <SelectionState runConfigName="topbar-probe">
+        <option name="selectionMode" value="DROPDOWN" />
+        <DropdownSelection timestamp="2026-10-29T11:02:32.377100Z">
+          <Target type="DEFAULT_BOOT">
+            <handle>
+              <DeviceId pluginId="LocalEmulator" identifier="path=/Users/gang-yeseo/.android/avd/Pleos_Connect_v2.1.0.avd" />
+            </handle>
+          </Target>
+        </DropdownSelection>
+        <DialogSelection />
+      </SelectionState>
+      <SelectionState runConfigName="pip-probe">
+        <option name="selectionMode" value="DROPDOWN" />
+        <DropdownSelection timestamp="2026-10-29T11:02:32.377100Z">
+          <Target type="DEFAULT_BOOT">
+            <handle>
+              <DeviceId pluginId="LocalEmulator" identifier="path=/Users/gang-yeseo/.android/avd/Pleos_Connect_v2.1.0.avd" />
+            </handle>
+          </Target>
+        </DropdownSelection>
+        <DialogSelection />
+      </SelectionState>
     </selectionStates>
   </component>
 </project>

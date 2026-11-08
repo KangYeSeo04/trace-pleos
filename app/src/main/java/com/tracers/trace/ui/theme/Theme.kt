@@ -1,58 +1,66 @@
 package com.tracers.trace.ui.theme
 
-import android.app.Activity
-import android.os.Build
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.darkColorScheme
-import androidx.compose.material3.dynamicDarkColorScheme
-import androidx.compose.material3.dynamicLightColorScheme
-import androidx.compose.material3.lightColorScheme
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.platform.LocalContext
+import androidx.compose.runtime.CompositionLocalProvider
+import androidx.compose.runtime.ReadOnlyComposable
 
-private val DarkColorScheme = darkColorScheme(
-    primary = Purple80,
-    secondary = PurpleGrey80,
-    tertiary = Pink80
-)
-
-private val LightColorScheme = lightColorScheme(
-    primary = Purple40,
-    secondary = PurpleGrey40,
-    tertiary = Pink40
-
-    /* Other default colors to override
-    background = Color(0xFFFFFBFE),
-    surface = Color(0xFFFFFBFE),
-    onPrimary = Color.White,
-    onSecondary = Color.White,
-    onTertiary = Color.White,
-    onBackground = Color(0xFF1C1B1F),
-    onSurface = Color(0xFF1C1B1F),
-    */
-)
-
+/**
+ * TRACE 테마.
+ *
+ * 이번 단계는 다크 모드만 구현. 라이트 모드는 나중에 토큰만 추가.
+ * Material3는 쓰되 기본 테마 색은 쓰지 않는다 (TraceColors 사용).
+ */
 @Composable
 fun TraceTheme(
     darkTheme: Boolean = isSystemInDarkTheme(),
-    // Dynamic color is available on Android 12+
-    dynamicColor: Boolean = true,
     content: @Composable () -> Unit
 ) {
-    val colorScheme = when {
-        dynamicColor && Build.VERSION.SDK_INT >= Build.VERSION_CODES.S -> {
-            val context = LocalContext.current
-            if (darkTheme) dynamicDarkColorScheme(context) else dynamicLightColorScheme(context)
-        }
+    val colors = TraceColors()
+    val type = TraceType()
+    val dimens = TraceDimens()
 
-        darkTheme -> DarkColorScheme
-        else -> LightColorScheme
-    }
-
-    MaterialTheme(
-        colorScheme = colorScheme,
-        typography = Typography,
-        content = content
+    // Material3 색상은 최소한만 설정 (배경, 표면)
+    val materialColors = darkColorScheme(
+        background = colors.panel,
+        surface = colors.tile,
+        onBackground = colors.t1,
+        onSurface = colors.t1,
+        primary = colors.accent,
+        onPrimary = colors.t1,
     )
+
+    CompositionLocalProvider(
+        LocalTraceColors provides colors,
+        LocalTraceType provides type,
+        LocalTraceDimens provides dimens,
+    ) {
+        MaterialTheme(
+            colorScheme = materialColors,
+            content = content
+        )
+    }
+}
+
+/**
+ * 현재 테마 색상에 접근.
+ * 사용: TraceTheme.colors.panel
+ */
+object TraceTheme {
+    val colors: TraceColors
+        @Composable
+        @ReadOnlyComposable
+        get() = LocalTraceColors.current
+
+    val type: TraceType
+        @Composable
+        @ReadOnlyComposable
+        get() = LocalTraceType.current
+
+    val dimens: TraceDimens
+        @Composable
+        @ReadOnlyComposable
+        get() = LocalTraceDimens.current
 }

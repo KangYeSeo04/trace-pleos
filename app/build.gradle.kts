@@ -52,12 +52,13 @@ android {
 
 dependencies {
     // Pleos SDK
-    implementation("ai.pleos.playground:Vehicle:2.3.2")      // 브레이크·조향·방향지시등
+    implementation("ai.pleos.playground:Vehicle:2.3.2")      // 브레이크·조향·방향지시등·기어·배터리·주행거리
     implementation("ai.pleos.playground:NaviHelper:3.0.5")   // 현재 위치
-    implementation("ai.pleos.playground:SpeechToText:3.3.1")   // PROBE용: 음성 인식 연결 확인
-    implementation("ai.pleos.playground:TextToSpeech:3.3.1")   // PROBE용: 음성 출력 연결 확인
-    implementation("ai.pleos.playground:FusedLocation:1.1.3")  // PROBE용: isSupported 확인
+    implementation("ai.pleos.playground:SpeechToText:3.3.1") // TTS·STT (registerApp에 키 필요)
+    implementation("ai.pleos.playground:TextToSpeech:3.3.1")
+    implementation("ai.pleos.playground:FusedLocation:1.1.3")
 
+    // Compose
     implementation(platform(libs.androidx.compose.bom))
     implementation(libs.androidx.activity.compose)
     implementation(libs.androidx.compose.material3)
@@ -66,6 +67,9 @@ dependencies {
     implementation(libs.androidx.compose.ui.tooling.preview)
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)
+
+    // Navigation Compose
+    implementation("androidx.navigation:navigation-compose:2.7.7")
     testImplementation(libs.junit)
     androidTestImplementation(platform(libs.androidx.compose.bom))
     androidTestImplementation(libs.androidx.compose.ui.test.junit4)

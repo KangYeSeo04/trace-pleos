@@ -2,54 +2,26 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
 
-
     <!-- 차량 앱 전용 -->
     <uses-feature
         android:name="android.hardware.type.automotive"
         android:required="true" />
 
-    <!-- Pleos Vehicle SDK -->
-    <uses-permission android:name="pleos.car.permission.CAR_DRIVE" />   <!-- 브레이크, 조향각 -->
-    <uses-permission android:name="pleos.car.permission.CAR_LIGHTS" />  <!-- 방향지시등 -->
-    <uses-permission android:name="pleos.car.permission.CAR_SPEED" />
+    <!-- ===== 핵심 권한 ===== -->
 
     <!-- AAOS 표준 (CarPropertyManager) -->
     <uses-permission android:name="android.car.permission.CAR_SPEED" />       <!-- 차량 속도 -->
     <uses-permission android:name="android.car.permission.CAR_POWERTRAIN" />  <!-- 기어 -->
 
-    <!-- ===== PROBE용, 출시 전 정리 (사자 카트 데이터 확인) ===== -->
-    <!-- AAOS: FUEL_LEVEL·FUEL_LEVEL_LOW / INFO_FUEL_CAPACITY·INFO_FUEL_TYPE -->
-    <uses-permission android:name="android.car.permission.CAR_ENERGY" />            <!-- PROBE용, 출시 전 정리 -->
-    <uses-permission android:name="android.car.permission.CAR_INFO" />              <!-- PROBE용, 출시 전 정리 -->
-    <!-- AAOS EV: EV_CHARGE_PORT_OPEN·CONNECTED / ENV_OUTSIDE_TEMPERATURE -->
-    <uses-permission android:name="android.car.permission.CAR_ENERGY_PORTS" />      <!-- PROBE용, 출시 전 정리 -->
-    <uses-permission android:name="android.car.permission.CAR_EXTERIOR_ENVIRONMENT" /><!-- PROBE용, 출시 전 정리 -->
-    <uses-permission android:name="android.car.permission.CONTROL_CAR_SEATS" /><!-- PROBE용, 출시 전 정리: 기획3 SEAT_OCCUPANCY·SEAT_BELT_BUCKLED 읽기 -->
-    <!-- AAOS: 아래 4개는 공개 SDK의 Car 상수에 없는 시스템 권한. 거부되는지 확인용 -->
-    <uses-permission android:name="android.car.permission.CAR_MILEAGE" />           <!-- PROBE용, 출시 전 정리: PERF_ODOMETER -->
-    <uses-permission android:name="android.car.permission.CONTROL_CAR_CLIMATE" />   <!-- PROBE용, 출시 전 정리: HVAC_AC_ON -->
-    <uses-permission android:name="android.car.permission.CAR_ENGINE_DETAILED" />   <!-- PROBE용, 출시 전 정리: ENGINE_OIL_LEVEL -->
-    <uses-permission android:name="android.car.permission.READ_WINDSHIELD_WIPERS" /><!-- PROBE용, 출시 전 정리: WINDSHIELD_WIPERS_STATE -->
+    <!-- Pleos Vehicle SDK -->
+    <uses-permission android:name="pleos.car.permission.CAR_DRIVE" />   <!-- 브레이크, 조향각, 주행거리 -->
+    <uses-permission android:name="pleos.car.permission.CAR_LIGHTS" />  <!-- 방향지시등 -->
+    <uses-permission android:name="pleos.car.permission.CAR_ENERGY" />  <!-- EV 배터리 -->
 
-    <!-- Pleos Vehicle SDK: checkXXXCapabilities를 모든 도메인에서 부르기 위한 읽기 권한 (CONTROL_·PRIVATE_은 넣지 않음) -->
-    <uses-permission android:name="pleos.car.permission.CAR_ENERGY" />    <!-- PROBE용, 출시 전 정리: Fuel, EvBattery -->
-    <uses-permission android:name="pleos.car.permission.CAR_CLIMATE" />   <!-- PROBE용, 출시 전 정리: HVAC -->
-    <uses-permission android:name="pleos.car.permission.CAR_SAFETY" />    <!-- PROBE용, 출시 전 정리: Safety, Tire -->
-    <uses-permission android:name="pleos.car.permission.CAR_WINDOWS" />   <!-- PROBE용, 출시 전 정리: Wiper, Window -->
-    <uses-permission android:name="pleos.car.permission.CAR_INFO" />      <!-- PROBE용, 출시 전 정리: CarInfo, Display -->
-    <uses-permission android:name="pleos.car.permission.CAR_DOORS" />     <!-- PROBE용, 출시 전 정리: Door -->
-    <uses-permission android:name="pleos.car.permission.CAR_SEATS" />     <!-- PROBE용, 출시 전 정리: Seat -->
-    <uses-permission android:name="pleos.car.permission.CAR_MIRRORS" />   <!-- PROBE용, 출시 전 정리: SideMirror -->
-    <uses-permission android:name="pleos.car.permission.CAR_TOLL" />      <!-- PROBE용, 출시 전 정리: Toll -->
-
-    <!-- NaviHelper.getCurrentLocationInfo / STT / TTS -->
-    <uses-permission android:name="pleos.car.permission.NAVI_ROUTE" />    <!-- PROBE용, 출시 전 정리 -->
-    <uses-permission android:name="pleos.car.permission.NAVI_ROUTE_SEARCH" /><!-- PROBE용, 출시 전 정리: 기획1 requestRoute·cancelRoute -->
-    <uses-permission android:name="pleos.car.permission.STT_SERVICE" />   <!-- PROBE용, 출시 전 정리 -->
-    <uses-permission android:name="pleos.car.permission.TTS_SERVICE" />   <!-- PROBE용, 출시 전 정리 -->
-
-    <!-- 오버레이 칩 -->
-    <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />  <!-- PROBE용, 출시 전 정리 -->
+    <!-- NaviHelper / TTS / STT -->
+    <uses-permission android:name="pleos.car.permission.NAVI_ROUTE" />
+    <uses-permission android:name="pleos.car.permission.TTS_SERVICE" />
+    <uses-permission android:name="pleos.car.permission.STT_SERVICE" />
 
     <application
         android:allowBackup="true"
@@ -66,19 +38,6 @@
             android:label="@string/app_name"
             android:theme="@style/Theme.Trace"
             android:windowSoftInputMode="adjustResize">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
-
-        <!-- PROBE용, 출시 전 정리: 차량 데이터 확인 화면 -->
-        <activity
-            android:name=".probe.ProbeActivity"
-            android:exported="true"
-            android:label="PROBE"
-            android:theme="@style/Theme.Trace">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
