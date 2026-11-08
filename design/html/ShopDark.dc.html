@@ -1,0 +1,278 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<title>Shop dark</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;family=Noto+Sans+KR:wght@400;500;700&amp;display=swap" rel="stylesheet">
+<style>
+body{margin:0}
+@font-face{font-family:'Pretendard';font-weight:400;font-style:normal;font-display:swap;src:url(/_blob/eb1cd6dd53e7859115d181846ef0a6f0) format('woff')}
+@font-face{font-family:'Pretendard';font-weight:500;font-style:normal;font-display:swap;src:url(/_blob/81a962f3f305f7b47cbc3be414dd4995) format('woff')}
+@font-face{font-family:'Pretendard';font-weight:600;font-style:normal;font-display:swap;src:url(/_blob/d5a8c2c2f7f65bb530b02ff07170cebb) format('woff')}
+@font-face{font-family:'Pretendard';font-weight:700;font-style:normal;font-display:swap;src:url(/_blob/93ddc586600bb8dd02b33e3e09b5984f) format('woff')}
+
+body{margin:0}
+@font-face{font-family:'Pretendard';font-weight:400;font-style:normal;font-display:swap;src:url(/_blob/eb1cd6dd53e7859115d181846ef0a6f0) format('woff')}
+@font-face{font-family:'Pretendard';font-weight:500;font-style:normal;font-display:swap;src:url(/_blob/81a962f3f305f7b47cbc3be414dd4995) format('woff')}
+@font-face{font-family:'Pretendard';font-weight:600;font-style:normal;font-display:swap;src:url(/_blob/d5a8c2c2f7f65bb530b02ff07170cebb) format('woff')}
+@font-face{font-family:'Pretendard';font-weight:700;font-style:normal;font-display:swap;src:url(/_blob/93ddc586600bb8dd02b33e3e09b5984f) format('woff')}
+a{color:#1677E6}a:hover{color:#0F5FC0}
+</style>
+</helmet>
+<div style="width: 600px">
+  <div style="width: 600px; box-sizing: border-box; border-radius: 24px; background: {{__c0_1.T.panel}}; color: {{__c0_1.T.t1}}; font-family: 'Pretendard','Inter','Noto Sans KR',sans-serif; letter-spacing: -0.01em; -webkit-font-smoothing: antialiased; padding: 16px 20px 28px">
+  <div style="position: sticky; top: 0; z-index: 30; height: 52px; display: flex; align-items: center; gap: 12px; margin: -16px -20px 0; padding: 16px 20px 10px; border-radius: 24px 24px 0 0; background: {{__c0_1.T.panel}}; border-bottom: 1px solid {{__c0_1.T.line}}">
+    <a href="CoinDark.dc.html" aria-label="뒤로" style="width: 44px; height: 44px; border-radius: 22px; background: {{__c0_1.T.tile}}; color: {{__c0_1.T.t1}}; display: flex; align-items: center; justify-content: center"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" style="stroke-width: 2; stroke-linecap: round; stroke-linejoin: round" aria-hidden="true"><path d="M15 5l-7 7 7 7"></path></svg></a>
+    <h1 style="position: absolute; left: 72px; right: 72px; top: 16px; height: 52px; display: flex; align-items: center; justify-content: center; text-align: center; pointer-events: none; margin: 0; font-size: 20px; font-weight: 700">상점</h1>
+    <a href="{{__c0_1.themeHref}}" role="switch" aria-checked="{{__c0_1.isDark}}" aria-label="다크 모드" style="margin-left: auto; position: relative; flex: none; width: 72px; height: 40px; border-radius: 20px; background: {{__c0_1.T.tile}}; color: {{__c0_1.T.t3}}; display: block">
+      <span style="position: absolute; left: 12px; top: 12px; display: flex"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" style="stroke-width: 2; stroke-linecap: round" aria-hidden="true"><circle cx="12" cy="12" r="4"></circle><path d="M12 2.5v2M12 19.5v2M2.5 12h2M19.5 12h2M5.3 5.3l1.4 1.4M17.3 17.3l1.4 1.4M5.3 18.7l1.4-1.4M17.3 6.7l1.4-1.4"></path></svg></span>
+      <span style="position: absolute; right: 12px; top: 12px; display: flex"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" style="stroke-width: 2; stroke-linecap: round; stroke-linejoin: round" aria-hidden="true"><path d="M20 14.5A8 8 0 0 1 9.5 4a8 8 0 1 0 10.5 10.5z"></path></svg></span>
+      <span style="position: absolute; top: 4px; left: {{__c0_1.knobX}}px; width: 32px; height: 32px; border-radius: 16px; background: {{__c0_1.knobBg}}; color: {{__c0_1.knobFg}}; box-shadow: 0 2px 6px rgba(0,0,0,0.25); display: flex; align-items: center; justify-content: center">
+        <sc-if value="{{__c0_1.isDark}}" hint-placeholder-val="{{ false }}"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" style="stroke-width: 2; stroke-linecap: round; stroke-linejoin: round" aria-hidden="true"><path d="M20 14.5A8 8 0 0 1 9.5 4a8 8 0 1 0 10.5 10.5z"></path></svg></sc-if>
+        <sc-if value="{{__c0_1.isLight}}" hint-placeholder-val="{{ true }}"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" style="stroke-width: 2; stroke-linecap: round" aria-hidden="true"><circle cx="12" cy="12" r="4"></circle><path d="M12 2.5v2M12 19.5v2M2.5 12h2M19.5 12h2M5.3 5.3l1.4 1.4M17.3 17.3l1.4 1.4M5.3 18.7l1.4-1.4M17.3 6.7l1.4-1.4"></path></svg></sc-if>
+      </span>
+    </a>
+    <button type="button" aria-label="별 코인 충전" onClick="{{__c0_1.openTopup}}" style="border: 0; cursor: pointer; color: inherit; height: 44px; padding: 0 14px; border-radius: 18px; background: {{__c0_1.T.tile}}; display: flex; align-items: center; gap: 6px; font-family: 'Inter',sans-serif; font-size: 15px; font-weight: 600"><svg width="13" height="13" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3l2.4 6.6L21 12l-6.6 2.4L12 21l-2.4-6.6L3 12l6.6-2.4z" style="fill: {{__c0_1.T.gold}}"></path></svg>1,284</button>
+  </div>
+
+  <div style="position: relative; margin-top: 12px; height: 250px; border-radius: 20px; overflow: hidden; background: {{__c0_1.heroBg}}">
+    <img src="{{__c0_1.heroImg}}" alt="" style="position: absolute; left: 0; top: 0; width: 100%; height: 100%; object-fit: cover; display: block">
+    <span style="position: absolute; left: 20px; bottom: 18px; color: #FFFFFF; font-size: 18px; font-weight: 700">{{__c0_1.usedName}} 비행운 · 사용 중</span>
+    <a href="{{__c0_1.universeHref}}" aria-label="내 우주 열기 · 행성 배치하기" style="position: absolute; left: 0; top: 0; right: 0; bottom: 0; z-index: 1; display: block"></a>
+    <span aria-hidden="true" style="position: absolute; right: 16px; top: 16px; height: 32px; padding: 0 12px 0 14px; border-radius: 16px; background: rgba(255,255,255,0.16); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); color: #FFFFFF; font-size: 13px; font-weight: 600; display: flex; align-items: center; gap: 4px; pointer-events: none; z-index: 2">내 우주<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" style="stroke-width: 2.2; stroke-linecap: round; stroke-linejoin: round"><path d="M9 6l6 6-6 6"></path></svg></span>
+  </div>
+
+  <div role="tablist" aria-label="상점 메뉴" style="display: flex; padding: 4px; border-radius: 14px; background: {{__c0_1.T.tile}}; gap: 4px; margin-top: 16px">
+    <sc-for list="{{__c0_1.mainTabs}}" as="t" hint-placeholder-count="2">
+      <button type="button" role="tab" aria-selected="{{t.sel}}" onClick="{{t.pick}}" style="flex: 1; height: 44px; border: 0; border-radius: 11px; background: {{t.bg}}; box-shadow: {{t.sh}}; color: {{t.col}}; font-family: inherit; font-size: 15px; font-weight: {{t.fw}}; cursor: pointer; white-space: nowrap; padding: 0 4px">{{t.label}}</button>
+    </sc-for>
+  </div>
+<sc-if value="{{__c0_1.mainVault}}" hint-placeholder-val="{{ false }}">
+  <div role="tablist" aria-label="보관함 분류" style="display: flex; gap: 24px; margin-top: 14px; padding: 0 4px; border-bottom: 1px solid {{__c0_1.T.line}}">
+    <sc-for list="{{__c0_1.subTabs}}" as="t" hint-placeholder-count="4">
+      <button type="button" role="tab" aria-selected="{{t.sel}}" onClick="{{t.pick}}" style="position: relative; flex: none; height: 46px; padding: 0; border: 0; background: transparent; color: {{t.col}}; font-family: inherit; font-size: 15px; font-weight: {{t.fw}}; cursor: pointer; white-space: nowrap; display: flex; align-items: center; gap: 5px">{{t.label}}<span style="font-family: 'Inter',sans-serif; font-size: 12px; font-weight: 500; color: {{t.ncol}}">{{t.n}}</span><span style="position: absolute; left: 0; right: 0; bottom: -1px; height: 2px; border-radius: 1px; background: {{t.bar}}"></span></button>
+    </sc-for>
+  </div>
+<sc-if value="{{__c0_1.subRegion}}" hint-placeholder-val="{{ true }}">
+  <div style="margin-top: 14px; display: flex; flex-direction: column; gap: 12px">
+    <div style="display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px">
+      <sc-for list="{{__c0_1.vault}}" as="c" hint-placeholder-count="5">
+        <div style="display: flex; flex-direction: column; gap: 8px">
+        <div style="position: relative; display: flex; flex-direction: column; align-items: center; gap: 4px; padding: 14px 8px; border-radius: 18px; background: {{__c0_1.T.tile}}; text-align: center; min-width: 0">
+          <sc-if value="{{c.isNew}}" hint-placeholder-val="{{ false }}"><span style="position: absolute; top: 10px; right: 10px; height: 20px; padding: 0 8px; border-radius: 10px; background: {{__c0_1.T.accent}}; color: #FFFFFF; font-size: 11px; font-weight: 700; display: flex; align-items: center">NEW</span></sc-if>
+          <svg width="84" height="84" viewBox="0 0 80 80" role="img" aria-label="{{c.aria}}">
+            <ellipse cx="40" cy="44" rx="36" ry="9" fill="none" stroke="{{c.c2}}" stroke-width="3" stroke-opacity="{{c.ringOp}}" transform="rotate(-12 40 44)"></ellipse>
+            <circle cx="40" cy="40" r="26" fill="{{c.c1}}"></circle>
+            <circle cx="32" cy="31" r="10" fill="{{c.c2}}" fill-opacity="0.35"></circle>
+            <path d="{{c.glyph}}" fill="{{c.c3}}" fill-rule="evenodd"></path>
+            <path d="M40 48a36 9 0 0 0 33-5" fill="none" stroke="{{c.c2}}" stroke-width="3" stroke-opacity="{{c.ringOp}}" transform="rotate(-12 40 44)"></path>
+            <g opacity="{{c.lockOp}}"><circle cx="61" cy="61" r="11" fill="{{__c0_1.T.panel}}"></circle><rect x="56" y="60" width="10" height="7" rx="1.5" fill="{{__c0_1.T.t3}}"></rect><path d="M58 60v-2.5a3 3 0 0 1 6 0V60" fill="none" stroke="{{__c0_1.T.t3}}" stroke-width="1.8"></path></g>
+          </svg>
+          <span style="font-size: 14px; font-weight: 700; color: {{c.nameCol}}; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 100%">{{c.name}}</span>
+          <span style="font-size: 12px; color: {{__c0_1.T.t2}}">{{c.region}}</span>
+          <sc-if value="{{c.visiting}}" hint-placeholder-val="{{ false }}"><span style="width: 70%; height: 3px; margin-top: 4px; border-radius: 2px; background: {{__c0_1.T.line}}; display: flex"><span style="width: {{c.pct}}%; border-radius: 2px; background: {{__c0_1.T.accent}}"></span></span></sc-if>
+          <span style="font-size: 11px; color: {{c.subCol}}; margin-top: 2px">{{c.sub}}</span>
+        </div>
+        <button type="button" aria-pressed="{{c.eqSel}}" onClick="{{c.equip}}" style="height: 40px; border-radius: 20px; border: 1px solid {{c.eqBd}}; background: {{c.eqBg}}; color: {{c.eqCol}}; font-family: inherit; font-size: 13px; font-weight: 600; cursor: pointer">{{c.eqLabel}}</button>
+        </div>
+      </sc-for>
+    </div>
+    <div style="padding: 2px 4px; font-size: 12px; line-height: 1.6; color: {{__c0_1.T.t3}}">한 지역에 3시간 이상 머물면 그 지역의 행성 · 캐릭터 · 펫이 이곳에 들어와요. 함께 날기를 고르면 홈 하늘에서 같이 날아요.</div>
+  </div>
+</sc-if>
+<sc-if value="{{__c0_1.subBought}}" hint-placeholder-val="{{ false }}">
+  <div style="margin-top: 14px; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px">
+    <sc-for list="{{__c0_1.bought}}" as="it" hint-placeholder-count="2">
+      <div style="display: flex; flex-direction: column; gap: 8px">
+        <div style="display: flex; flex-direction: column; align-items: stretch; padding: 6px 6px 14px; border-radius: 18px; background: {{__c0_1.T.tile}}">
+          <svg width="100%" height="78" viewBox="0 0 150 78" preserveAspectRatio="none" style="display: block; border-radius: 13px; background: #0A0C10" aria-hidden="true">
+            <path d="M-4 70 C 46 66, 86 36, 132 18" fill="none" style="stroke: {{it.col}}; stroke-width: {{it.glow}}; stroke-linecap: round; opacity: 0.16"></path>
+            <path d="M-4 70 C 46 66, 86 36, 132 18" fill="none" style="stroke: {{it.col}}; stroke-width: {{it.sw}}; stroke-linecap: round; stroke-dasharray: {{it.dash}}"></path>
+            <circle cx="135" cy="17" r="2.2" style="fill: #F2F4F6"></circle>
+          </svg>
+          <span style="padding: 12px 8px 0; font-size: 15px; font-weight: 600">{{it.name}}</span>
+          <span style="padding: 3px 8px 0; font-size: 13px; color: {{__c0_1.T.t2}}">{{it.kind}}</span>
+        </div>
+        <button type="button" aria-pressed="{{it.usedSel}}" onClick="{{it.use}}" style="height: 40px; border-radius: 20px; border: 1px solid {{it.uBd}}; background: {{it.uBg}}; color: {{it.uCol}}; font-family: inherit; font-size: 13px; font-weight: 600; cursor: pointer">{{it.uLabel}}</button>
+      </div>
+    </sc-for>
+  </div>
+  <div style="margin-top: 12px; padding: 2px 4px; font-size: 12px; color: {{__c0_1.T.t3}}">코인으로 산 기체 색 · 데칼 · 비행운 · 엔진 불빛이 여기에 모여요.</div>
+</sc-if>
+</sc-if>
+<sc-if value="{{__c0_1.mainShop}}" hint-placeholder-val="{{ true }}">
+  <div role="tablist" aria-label="상점 분류" style="display: flex; padding: 4px; border-radius: 14px; background: {{__c0_1.T.tile}}; gap: 4px; margin-top: 12px">
+    <sc-for list="{{__c0_1.cats}}" as="t" hint-placeholder-count="5">
+      <button type="button" role="tab" aria-selected="{{t.sel}}" onClick="{{t.pick}}" style="flex: 1; height: 44px; border: 0; border-radius: 11px; background: {{t.bg}}; box-shadow: {{t.sh}}; color: {{t.col}}; font-family: inherit; font-size: 14px; font-weight: {{t.fw}}; cursor: pointer; white-space: nowrap; padding: 0 4px">{{t.label}}</button>
+    </sc-for>
+  </div>
+
+<sc-if value="{{__c0_1.catTrail}}" hint-placeholder-val="{{ true }}">
+  <div style="display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px; margin-top: 12px">
+    <sc-for list="{{__c0_1.items}}" as="it" hint-placeholder-count="6">
+      <button type="button" style="display: flex; flex-direction: column; align-items: stretch; padding: 6px 6px 14px; border-radius: 18px; border: 0; background: {{__c0_1.T.tile}}; box-shadow: {{it.ring}}; color: {{__c0_1.T.t1}}; font-family: inherit; text-align: left">
+        <svg width="100%" height="78" viewBox="0 0 150 78" preserveAspectRatio="none" style="display: block; border-radius: 13px; background: #0A0C10" aria-hidden="true">
+          <path d="M-4 70 C 46 66, 86 36, 132 18" fill="none" style="stroke: {{it.col}}; stroke-width: {{it.glow}}; stroke-linecap: round; opacity: 0.16"></path>
+          <path d="M-4 70 C 46 66, 86 36, 132 18" fill="none" style="stroke: {{it.col}}; stroke-width: {{it.sw}}; stroke-linecap: round; stroke-dasharray: {{it.dash}}"></path>
+          <circle cx="135" cy="17" r="2.2" style="fill: #F2F4F6"></circle>
+        </svg>
+        <span style="padding: 12px 8px 0; font-size: 15px; font-weight: 600">{{it.name}}</span>
+        <span style="padding: 3px 8px 0; font-size: 13px; font-weight: 500; color: {{it.stateCol}}">{{it.state}}</span>
+      </button>
+    </sc-for>
+  </div>
+
+  <button type="button" style="width: 100%; margin-top: 14px; height: 56px; border: 0; border-radius: 14px; background: {{__c0_1.T.accent}}; color: #FFFFFF; font-family: inherit; font-size: 16px; font-weight: 600">500코인으로 구매</button>
+</sc-if>
+<sc-if value="{{__c0_1.catOther}}" hint-placeholder-val="{{ false }}">
+  <div style="margin-top: 12px; padding: 40px 20px; border-radius: 18px; border: 1.5px dashed {{__c0_1.T.track}}; text-align: center; display: flex; flex-direction: column; gap: 6px; align-items: center"><span style="font-size: 15px; font-weight: 700; color: {{__c0_1.T.t2}}">{{__c0_1.catName}}</span><span style="font-size: 13px; color: {{__c0_1.T.t3}}">추후 제작 예정</span></div>
+</sc-if>
+</sc-if>
+</sc-if>
+
+
+  <sc-if value="{{__c0_1.topupOpen}}" hint-placeholder-val="{{ false }}">
+    <div style="position: fixed; left: 0; top: 0; right: 0; bottom: 0; z-index: 100; background: rgba(0,0,0,0.55); display: flex; align-items: center; justify-content: center; padding: 24px">
+      <div role="dialog" aria-label="별 코인 충전" style="width: 100%; max-width: 500px; background: {{__c0_1.T.panel}}; color: {{__c0_1.T.t1}}; border-radius: 24px; padding: 20px; box-shadow: 0 24px 60px rgba(0,0,0,0.4)">
+        <div style="display: flex; align-items: center; justify-content: space-between"><span style="display: flex; flex-direction: column; gap: 2px"><span style="font-size: 19px; font-weight: 700">별 코인 충전</span><span style="font-size: 13px; color: {{__c0_1.T.t2}}">지금 보유 1,284코인</span></span>
+          <button type="button" aria-label="닫기" onClick="{{__c0_1.closeTopup}}" style="width: 44px; height: 44px; border-radius: 22px; border: 0; background: {{__c0_1.T.tile}}; color: {{__c0_1.T.t1}}; display: flex; align-items: center; justify-content: center; padding: 0; cursor: pointer"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" style="stroke-width: 2.2; stroke-linecap: round" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"></path></svg></button>
+        </div>
+        <div style="margin-top: 16px; display: flex; flex-direction: column; gap: 10px">
+          <sc-for list="{{__c0_1.packs}}" as="k" hint-placeholder-count="4">
+            <div style="position: relative; display: flex; align-items: center; gap: 14px; padding: 14px 14px 14px 16px; border-radius: 16px; background: {{__c0_1.T.tile}}; border: 1.5px solid {{k.bd}}">
+              <svg width="34" height="34" viewBox="0 0 24 24" aria-hidden="true" style="flex: none"><circle cx="12" cy="12" r="11" fill="{{__c0_1.T.gold}}" fill-opacity="0.18"></circle><path d="M12 5.5l1.9 4.3 4.6.4-3.5 3 1.1 4.5L12 15.3l-4.1 2.4 1.1-4.5-3.5-3 4.6-.4z" fill="{{__c0_1.T.gold}}"></path></svg>
+              <span style="flex: 1; display: flex; flex-direction: column; gap: 2px"><span style="font-family: 'Inter',sans-serif; font-size: 18px; font-weight: 700">{{k.amt}} <span style="font-family: 'Pretendard',sans-serif; font-size: 13px; font-weight: 500; color: {{__c0_1.T.t2}}">코인</span></span><span style="font-size: 13px; color: {{k.bonusCol}}">{{k.bonus}}</span></span>
+              <sc-if value="{{k.hot}}" hint-placeholder-val="{{ false }}"><span style="position: absolute; top: -9px; left: 14px; height: 20px; padding: 0 8px; border-radius: 10px; background: {{__c0_1.T.accent}}; color: #FFFFFF; font-size: 11px; font-weight: 700; display: flex; align-items: center">인기</span></sc-if>
+              <button type="button" style="flex: none; height: 44px; min-width: 96px; padding: 0 14px; border-radius: 22px; border: 0; background: {{__c0_1.T.accent}}; color: #FFFFFF; font-family: 'Inter','Pretendard',sans-serif; font-size: 15px; font-weight: 700; cursor: pointer">{{k.price}}</button>
+            </div>
+          </sc-for>
+        </div>
+        <div style="margin-top: 14px; font-size: 12px; line-height: 1.6; color: {{__c0_1.T.t3}}">가격은 예시예요. 결제는 차량에 등록된 결제 수단으로 진행되고, 산 코인은 기체 꾸미기에만 쓸 수 있어요.</div>
+      </div>
+    </div>
+  </sc-if>
+</div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":600,"height":1000}}'>
+const Core__c0_1 = (function () {
+class DCLogic { constructor(p) { this.props = p || {}; this.state = {}; } setState(o) { Object.assign(this.state, typeof o === 'function' ? o(this.state, this.props) : o); if (this.__host) this.__host.forceUpdate(); } forceUpdate() { if (this.__host) this.__host.forceUpdate(); } }
+
+const TOK = {
+  light: { panel: '#FFFFFF', tile: '#F3F4F6', line: '#E5E7EB', track: '#DFE2E6', t1: '#111418', t2: '#5C636D', t3: '#8A9099', accent: '#1677E6', good: '#12935F', gold: '#D19A1E' },
+  dark: { panel: '#17191D', tile: '#202328', line: '#2C3036', track: '#363A41', t1: '#F2F3F5', t2: '#A3A9B2', t3: '#7C828B', accent: '#4C9AFF', good: '#38C08A', gold: '#E9B949' }
+};
+const PROV = [['서울', 1], ['경기', 32], ['강원', 18], ['충북', 11], ['충남', 17], ['전북', 14], ['전남', 23], ['경북', 23], ['경남', 20], ['제주', 2]]; // 서울 따로, 인천→경기, 대전·세종→충남, 광주→전남, 대구→경북, 부산·울산→경남
+const GLYPH = {
+  tower: 'M38 20h4v6h2l-1 4h-1v18h3v4h-10v-4h3v-18h-1l-1-4h2z',
+  fortress: 'M25 53V36h4v-4h4v4h14v-4h4v4h4v17zM36 53v-8a4 4 0 0 1 8 0v8z',
+  star: 'M34 27h12v3h-12zM33 54q1-14 4-24h6q3 10 4 24zM37 40h6v3h-6z',
+  seal: 'M28 46q0-14 12-14t12 14q0 8-12 8t-12-8zM34 41a2 2 0 1 0 4 0a2 2 0 1 0-4 0zM42 41a2 2 0 1 0 4 0a2 2 0 1 0-4 0zM38 46h4l-2 2z',
+  hanok: 'M22 40q18-14 36 0q-6-2-8-1h-20q-2-1-8 1zM30 40h20v13h-20zM37 45h6v8h-6z',
+  bridge: 'M18 46h44v3h-44zM27 49V32h3v17zM50 49V32h3v17zM30 33q10 10 20 0v2q-10 10-20 0z',
+  lighthouse: 'M35 23h10v3h-10zM37 26h6l2.5 26h-11zM31 52h18v3h-18z',
+  stone: 'M33 31a7 6 0 0 1 14 0v2h-14zM32 33h16v20h-16zM35 39a1.6 1.6 0 1 0 3.2 0a1.6 1.6 0 1 0-3.2 0zM41.8 39a1.6 1.6 0 1 0 3.2 0a1.6 1.6 0 1 0-3.2 0zM37 45h6v2h-6z'
+};
+// stay in minutes; 180 = 3 hours unlock
+const DEX = [
+  { id: 'seoul', prov: '서울', region: '서울', name: '남산 행성', kind: '행성', c1: '#7FA8F5', c2: '#D6E2FF', c3: '#24304D', glyph: 'tower', ring: true, stay: 600000, stayTxt: '1년 3개월', km: '9,840 km' },
+  { id: 'suwon', prov: '경기', region: '수원시', name: '화성 행성', kind: '행성', c1: '#E8A86A', c2: '#FFE2C4', c3: '#5A3218', glyph: 'fortress', ring: true, stay: 360, stayTxt: '6시간', km: '312 km' },
+  { id: 'gangneung', prov: '강원', region: '강릉시', name: '경포 바다 펫', kind: '펫', c1: '#6ED3C8', c2: '#D2F5F0', c3: '#14504A', glyph: 'seal', ring: false, stay: 190, stayTxt: '3시간 10분', km: '214 km', isNew: true },
+  { id: 'gyeongju', prov: '경북', region: '경주시', name: '첨성대 행성', kind: '행성', c1: '#B99BF0', c2: '#E7DCFF', c3: '#3A2766', glyph: 'star', ring: true, stay: 3240, stayTxt: '2일 6시간', km: '128 km' },
+  { id: 'jeonju', prov: '전북', region: '전주시', name: '한옥 캐릭터', kind: '캐릭터', c1: '#F28BA9', c2: '#FFD9E4', c3: '#5C1F33', glyph: 'hanok', ring: false, stay: 540, stayTxt: '9시간', km: '158 km' },
+  { id: 'busan', prov: '경남', region: '부산', name: '광안 행성', kind: '행성', c1: '#5FB0F0', c2: '#D3EBFF', c3: '#16395A', glyph: 'bridge', ring: true, stay: 0, stayTxt: '', km: '' },
+  { id: 'tongyeong', prov: '경남', region: '통영시', name: '등대 펫', kind: '펫', c1: '#F4A07E', c2: '#FFE0D2', c3: '#5E2A16', glyph: 'lighthouse', ring: false, stay: 80, stayTxt: '1시간 20분', km: '96 km' },
+  { id: 'jeju', prov: '제주', region: '제주시', name: '돌하르방 캐릭터', kind: '캐릭터', c1: '#A2D47E', c2: '#E2F5D2', c3: '#2E4A1C', glyph: 'stone', ring: false, stay: 0, stayTxt: '', km: '' }
+];
+function dexCard(d, T, dark) {
+  const on = d.stay >= 180;
+  const grey1 = dark ? '#3A3E45' : '#D3D7DD', grey2 = dark ? '#4A4F57' : '#E6E9ED', grey3 = dark ? '#2A2D33' : '#B9BEC6';
+  const pct = Math.min(100, Math.round(d.stay / 180 * 100));
+  return {
+    id: d.id, name: on ? d.name : (d.stay > 0 ? d.name : '???'), region: d.region, prov: d.prov, kind: d.kind,
+    c1: on ? d.c1 : grey1, c2: on ? d.c2 : grey2, c3: on ? d.c3 : grey3, glyph: GLYPH[d.glyph], ring: d.ring,
+    on, locked: !on, isNew: !!d.isNew && on, visiting: !on && d.stay > 0, unvisited: d.stay === 0,
+    aria: d.region + ' ' + (on ? d.name : '잠긴 아이템'), ringOp: d.ring ? 1 : 0, lockOp: on ? 0 : 1,
+    pct, sub: on ? d.kind + ' · ' + d.stayTxt + ' 머묾' : (d.stay > 0 ? d.stayTxt + ' / 3시간' : '3시간 머물면 열려요'),
+    subCol: on ? T.t2 : T.t3, nameCol: on ? T.t1 : T.t3
+  };
+}
+
+class Component extends DCLogic {
+  renderVals() {
+    const theme = this.props.theme === 'dark' ? 'dark' : 'light';
+    const T = TOK[theme];
+    const heroBg = theme === 'dark' ? '#050608' : '#4A7FBF';
+    const raw = [
+      ['기본', '#E8EEF4', 2, 'none', 'equipped'], ['별가루', '#EBC67F', 2.4, '0.1 7', 'owned'], ['점선', '#E8EEF4', 2, '7 6', 300],
+      ['오로라', '#96E1CD', 2.6, 'none', 'selected'], ['유성', '#F3D79E', 3.4, 'none', 800], ['은하수', '#C7B8F0', 2, '0.1 4', 1500]
+    ];
+    const items = raw.map(([name, col, sw, dash, st]) => {
+      const sel = st === 'selected';
+      return {
+        name, col, sw, glow: sw * 4, dash,
+        state: st === 'equipped' ? '사용 중' : (st === 'owned' ? '보유' : (sel ? '500코인' : st.toLocaleString('en-US') + '코인')),
+        stateCol: st === 'equipped' ? T.good : (sel ? T.accent : (st === 1500 ? T.t3 : T.t2)),
+        ring: sel ? '0 0 0 2px ' + T.accent : 'none'
+      };
+    });
+    const st = this.state || {};
+    const segT = (k, label, cur, key) => { const on = k === cur; return { label, sel: on ? 'true' : 'false', bg: on ? T.panel : 'transparent', sh: on ? '0 1px 2px rgba(0,0,0,0.08)' : 'none', col: on ? T.t1 : T.t2, fw: on ? 700 : 500, pick: () => this.setState({ [key]: k }) }; };
+    const main = st.main || 'shop';
+    const mainTabs = [segT('vault', '보관함', main, 'main'), segT('shop', '상점', main, 'main')];
+    const cat = st.cat || '비행운';
+    const cats = ['기체 색', '데칼', '비행운', '엔진 불빛'].map(l => segT(l, l, cat, 'cat'));
+    const sub = st.sub || 'region';
+    const used = st.used || '기본';
+    const bought = raw.filter(r => r[4] === 'equipped' || r[4] === 'owned').map(([name, col, sw, dash]) => { const on = name === used;
+      return { name: name + ' 비행운', kind: '비행운', col, sw, glow: sw * 4, dash, usedSel: on ? 'true' : 'false', uLabel: on ? '사용 중' : '사용하기', uBg: on ? T.accent : 'transparent', uCol: on ? '#FFFFFF' : T.t1, uBd: on ? T.accent : T.track, use: () => this.setState({ used: name }) }; });
+    const eq = st.eq || 'gangneung';
+    const vault = DEX.filter(d => d.stay >= 180).map(d => { const c = dexCard(d, T, theme === 'dark'); const on = d.id === eq;
+      return Object.assign(c, { eqSel: on ? 'true' : 'false', eqLabel: on ? '함께 나는 중' : '함께 날기', eqBg: on ? T.accent : 'transparent', eqCol: on ? '#FFFFFF' : T.t1, eqBd: on ? T.accent : T.track, equip: () => this.setState({ eq: d.id }) }); });
+    const subTabs = [['region', '지역에서 얻은 것', vault.length], ['bought', '구매 완료', bought.length]].map(([k, label, n]) => { const on = k === sub; return { label, n, sel: on ? 'true' : 'false', col: on ? T.t1 : T.t3, ncol: on ? T.accent : T.t3, fw: on ? 700 : 500, bar: on ? T.t1 : 'transparent', pick: () => this.setState({ sub: k }) }; });
+    const HERO = { light: { 기본: '/_blob/5971375b679d6b84bc8a24da59fc5d18', 별가루: '/_blob/14b8d27521d99fef844d5cfe2636457e' }, dark: { 기본: '/_blob/7690a00a158ea2b8995cd1067fb42321', 별가루: '/_blob/b9e431f53bf9928928cb93e6481f7486' } };
+    const packs = [['500', '', '₩1,100', false], ['1,200', '+100 보너스', '₩2,500', false], ['3,000', '+400 보너스', '₩5,900', true], ['6,500', '+1,000 보너스', '₩11,000', false]].map(([amt, bonus, price, hot]) => ({ amt, bonus: bonus || '기본 묶음', bonusCol: bonus ? T.good : T.t3, price, hot, bd: hot ? T.accent : 'transparent' }));
+    const dk = theme === 'dark';
+    return { T, theme, heroBg, isDark: dk, isLight: !dk, themeHref: dk ? 'ShopLight.dc.html' : 'ShopDark.dc.html', universeHref: dk ? 'UniverseDark.dc.html' : 'UniverseLight.dc.html', knobX: dk ? 36 : 4, knobBg: dk ? '#3A3F48' : '#FFFFFF', knobFg: dk ? '#E8ECF2' : '#F2A93B', items, heroImg: HERO[theme][used] || HERO[theme]['기본'], usedName: used, packs, topupOpen: !!st.topup, openTopup: () => this.setState({ topup: true }), closeTopup: () => this.setState({ topup: false }), mainTabs, mainVault: main === 'vault', mainShop: main === 'shop', cats, catTrail: cat === '비행운', catOther: cat !== '비행운', catName: cat,
+      subTabs, subRegion: sub === 'region', subBought: sub === 'bought', vault, vaultN: vault.length, bought };
+  }
+}
+
+return Component;
+})();
+
+class Component extends DCLogic {
+  __res(v, s) {
+    const m = /^\{\{\s*([A-Za-z_$][\w$.]*)\s*\}\}$/.exec(s);
+    const look = (p) => p.split('.').reduce((o, k) => (o == null ? o : o[k]), v);
+    if (m) return look(m[1]);
+    return s.replace(/\{\{\s*([A-Za-z_$][\w$.]*)\s*\}\}/g, (_, p) => { const x = look(p); return x == null ? '' : String(x); });
+  }
+  __kid(key, Core, raw, v) {
+    this.__kids = this.__kids || {};
+    let k = this.__kids[key];
+    if (!k) { k = this.__kids[key] = new Core({}); k.__host = this; }
+    const p = {}; for (const a in raw) p[a] = this.__res(v, raw[a]);
+    k.props = p;
+    return k.renderVals();
+  }
+  componentWillUnmount() {
+    
+    const ks = this.__kids || {}; for (const a in ks) { if (ks[a].componentWillUnmount) ks[a].componentWillUnmount(); }
+  }
+  renderVals() {
+    const v = this.__rv0();
+    v.__c0_1 = this.__kid('__c0_1', Core__c0_1, {"theme": "dark"}, v);
+    return v;
+  }
+
+  __rv0() { return {}; }
+}
+</script>
+</body>
+</html>
