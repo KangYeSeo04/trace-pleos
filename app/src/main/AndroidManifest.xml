@@ -43,7 +43,8 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
 
-            <!-- DO(Distraction Optimized) 메타데이터 테스트 -->
+            <!-- DO(Distraction Optimized) 메타데이터.
+                 주행 중 화면 표시는 A-02 자동 복귀와 UX 제한 규칙으로 앱이 직접 보장 -->
             <meta-data
                 android:name="distractionOptimized"
                 android:value="true" />

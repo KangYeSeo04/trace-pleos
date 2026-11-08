@@ -23,6 +23,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
+import com.tracers.trace.data.uxrestrictions.CarUxRestrictionsMonitor
 import com.tracers.trace.data.vehicle.PleosVehicleSignals
 import com.tracers.trace.domain.DriveState
 import com.tracers.trace.ui.icons.TraceIcons
@@ -66,14 +67,21 @@ fun TraceNavHost(
         HomeViewModel(vehicleSignals)
     }
 
+    // CarUxRestrictionsMonitor 생성 (Activity 생명주기 동안 유지)
+    val uxRestrictionsMonitor = remember {
+        CarUxRestrictionsMonitor(context).apply { start() }
+    }
+
     // A-02: 주행 시작 시 자동 복귀
     val navBackStackEntry by navController.currentBackStackEntryAsState()
     val currentRoute = navBackStackEntry?.destination?.route
     val driveState by homeViewModel.driveState.collectAsState()
+    val requiresDistractionOptimization by uxRestrictionsMonitor.requiresDistractionOptimization.collectAsState()
 
-    LaunchedEffect(driveState, currentRoute) {
-        // 주행 시작 && 홈이 아닌 화면 → 홈으로 복귀
-        if (driveState == DriveState.DRIVING && currentRoute != TraceDestinations.HOME) {
+    LaunchedEffect(driveState, requiresDistractionOptimization, currentRoute) {
+        // 주행 시작 (우리 판단 또는 시스템 판단) && 홈이 아닌 화면 → 홈으로 복귀
+        val isDrivingRestricted = driveState == DriveState.DRIVING || requiresDistractionOptimization
+        if (isDrivingRestricted && currentRoute != TraceDestinations.HOME) {
             navController.popBackStack(TraceDestinations.HOME, inclusive = false)
         }
     }
@@ -107,7 +115,10 @@ fun TraceNavHost(
             PlaceholderScreen(onBack = { navController.popBackStack() })
         }
         composable(TraceDestinations.SPACE) {
-            SpaceFlightScreen(onNavigateBack = { navController.popBackStack() })
+            SpaceFlightScreen(
+                onNavigateBack = { navController.popBackStack() },
+                isDrivingRestricted = requiresDistractionOptimization
+            )
         }
     }
 }

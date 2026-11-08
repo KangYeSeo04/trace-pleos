@@ -2,6 +2,7 @@ package com.tracers.trace.ui.components
 
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -84,12 +85,20 @@ fun Tile(
 
     val minHeight = if (isDriving) 150.dp else 216.dp
 
+    // 주행 모드 클릭 시 파란 테두리 (A-04 음성 안내 시각 피드백)
+    val borderModifier = if (isDriving) {
+        Modifier.border(width = 2.dp, color = colors.accent, shape = RoundedCornerShape(20.dp))
+    } else {
+        Modifier
+    }
+
     Column(
         modifier = modifier
             .fillMaxWidth()
             .height(minHeight)
             .clip(RoundedCornerShape(20.dp))
             .background(colors.tile)
+            .then(borderModifier)
             .clickable(onClick = onClick)
             .padding(18.dp)
     ) {

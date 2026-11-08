@@ -109,7 +109,7 @@ private fun HomeAppBar(
     // 상태 칩 색상
     val chipBg = if (isDriving) colors.accentSoft else colors.goodSoft
     val chipColor = if (isDriving) colors.accent else colors.good
-    val chipText = if (isDriving) "주행 중 · 탭하면 음성" else "정차 중"
+    val chipText = if (isDriving) "주행 중" else "정차 중"
 
     Row(
         modifier = modifier
