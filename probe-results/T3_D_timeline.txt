@@ -1,0 +1,29 @@
+02:11:50.690  8232  8232 I probe   : run cmd=T3 arg=60000
+02:11:50.694  8232  8232 I probe   : nav notify seq=0 frame=0 period=5000
+02:11:50.904  4716  4737 D NOTIFICATION_INJECTOR: [NOTIFICATION_INJECTOR_DEBUG][OverlayController::emit] hunEventFlow: SHOW
+02:11:55.700  8232  8232 I probe   : nav notify seq=1 frame=0 period=5000
+02:11:55.903  4716  4716 D NOTIFICATION_INJECTOR: [NOTIFICATION_INJECTOR_DEBUG][HeadUpNotificationHandler::onNotificationPosted] notification already shown: 103, ch
+02:12:00.710  8232  8232 I probe   : nav notify seq=2 frame=0 period=5000
+02:12:00.914  4716  4716 D NOTIFICATION_INJECTOR: [NOTIFICATION_INJECTOR_DEBUG][HeadUpNotificationHandler::onNotificationPosted] notification already shown: 103, ch
+02:12:05.716  8232  8232 I probe   : nav notify seq=3 frame=0 period=5000
+02:12:05.919  4716  4716 D NOTIFICATION_INJECTOR: [NOTIFICATION_INJECTOR_DEBUG][HeadUpNotificationHandler::onNotificationPosted] notification already shown: 103, ch
+02:12:10.723  8232  8232 I probe   : nav notify seq=4 frame=0 period=5000
+02:12:10.925  4716  4716 D NOTIFICATION_INJECTOR: [NOTIFICATION_INJECTOR_DEBUG][HeadUpNotificationHandler::onNotificationPosted] notification already shown: 103, ch
+02:12:15.729  8232  8232 I probe   : nav notify seq=5 frame=0 period=5000
+02:12:15.931  4716  4716 D NOTIFICATION_INJECTOR: [NOTIFICATION_INJECTOR_DEBUG][HeadUpNotificationHandler::onNotificationPosted] notification already shown: 103, ch
+02:12:20.732  8232  8232 I probe   : nav notify seq=6 frame=0 period=5000
+02:12:20.935  4716  4716 D NOTIFICATION_INJECTOR: [NOTIFICATION_INJECTOR_DEBUG][HeadUpNotificationHandler::onNotificationPosted] notification already shown: 103, ch
+02:12:25.738  8232  8232 I probe   : nav notify seq=7 frame=0 period=5000
+02:12:25.940  4716  4716 D NOTIFICATION_INJECTOR: [NOTIFICATION_INJECTOR_DEBUG][HeadUpNotificationHandler::onNotificationPosted] notification already shown: 103, ch
+02:12:26.953  1155  2146 D NetworkMonitor/100: isDataStall: result=2, tcp packets received=0, latest tcp fail rate=100, consecutive dns timeout count=0
+02:12:30.746  8232  8232 I probe   : nav notify seq=8 frame=0 period=5000
+02:12:30.950  4716  4716 D NOTIFICATION_INJECTOR: [NOTIFICATION_INJECTOR_DEBUG][HeadUpNotificationHandler::onNotificationPosted] notification already shown: 103, ch
+02:12:35.752  8232  8232 I probe   : nav notify seq=9 frame=0 period=5000
+02:12:35.954  4716  4716 D NOTIFICATION_INJECTOR: [NOTIFICATION_INJECTOR_DEBUG][HeadUpNotificationHandler::onNotificationPosted] notification already shown: 103, ch
+02:12:40.757  8232  8232 I probe   : nav notify seq=10 frame=0 period=5000
+02:12:40.959  4716  4716 D NOTIFICATION_INJECTOR: [NOTIFICATION_INJECTOR_DEBUG][HeadUpNotificationHandler::onNotificationPosted] notification already shown: 103, ch
+02:12:45.760  8232  8232 I probe   : nav notify seq=11 frame=0 period=5000
+02:12:45.962  4716  4716 D NOTIFICATION_INJECTOR: [NOTIFICATION_INJECTOR_DEBUG][HeadUpNotificationHandler::onNotificationPosted] notification already shown: 103, ch
+02:12:50.763  8232  8232 I probe   : nav loop done after 12 updates (갱신 중단)
+02:12:54.973  4716  4716 I NOTIFICATION_INJECTOR: [HeadUpNotificationHandler::dismiss] dismiss head up notification
+02:12:54.979  4716  4737 D NOTIFICATION_INJECTOR: [NOTIFICATION_INJECTOR_DEBUG][OverlayController::emit] hunEventFlow: HIDE

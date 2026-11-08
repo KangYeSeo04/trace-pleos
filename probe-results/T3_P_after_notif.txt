@@ -1,0 +1,305 @@
+    NotificationRecord(0x0506c7cd: pkg=com.probe.topbar user=UserHandle{10} id=103 tag=null importance=4 key=10|com.probe.topbar|103|null|1010175: Notification(channel=probe_high shortcut=null contentView=null vibrate=null sound=null defaults=0x0 flags=0x0 color=0x00000000 category=navigation vis=PRIVATE))
+      uid=1010175 userId=10
+      opPkg=com.probe.topbar
+      icon=Icon(typ=RESOURCE pkg=com.probe.topbar id=0x0108009b)
+      flags=0x0
+      originalFlags=0x0
+      pri=0
+      key=10|com.probe.topbar|103|null|1010175
+      seen=false
+      groupKey=10|com.probe.topbar|103|null|1010175
+      notification=
+            fullscreenIntent=null
+            contentIntent=null
+            deleteIntent=null
+            number=0
+            groupAlertBehavior=0
+            when=1793351388811
+            tickerText=null
+            vis=0
+            contentView=null
+            bigContentView=null
+            headsUpContentView=null
+            color=0x00000000
+            timeout=unknown
+            extras={
+                android.title=String (교차로 300m)
+                android.reduced.images=Boolean (true)
+                android.text=String (2차로 유지 #11)
+                android.appInfo=ApplicationInfo (ApplicationInfo{a51b882 com.probe.topbar})
+                android.largeIcon=Icon (Icon(typ=BITMAP size=76x76))
+            }
+      publicNotification=
+            None
+      stats=SingleNotificationStats{posttimeElapsedMs=200470, posttimeToFirstClickMs=-1, posttimeToDismissMs=-1, airtimeCount=0, airtimeMs=0, currentAirtimeStartElapsedMs=-1, airtimeExpandedMs=0, posttimeToFirstVisibleExpansionMs=-1, currentAirtimeExpandedStartElapsedMs=-1, requestedImportance=3, naturalImportance=4, isNoisy=true}
+      mContactAffinity=0.0
+      mRecentlyIntrusive=false
+      mPackagePriority=0
+      mPackageVisibility=-1000
+      mSystemImportance=UNSPECIFIED
+      mAsstImportance=UNSPECIFIED
+      mImportance=HIGH
+      mImportanceExplanation=app
+      mProposedImportance=UNSPECIFIED
+      mIsAppImportanceLocked=false
+      mSensitiveContent=false
+      mIntercept=false
+      mHidden==false
+      mGlobalSortKey=crtcl=0x0002:intrsv=1:grnk=0x0000:gsmry=1:nsk:rnk=0x0000
+      mRankingTimeMs=1793351388811
+      mCreationTimeMs=1793351333744
+      mVisibleSinceMs=0
+      mUpdateTimeMs=1793351388814
+      mInterruptionTimeMs=1793351388814
+      mSuppressedVisualEffects= 0
+      mSound= content://settings/system/notification_sound
+      mVibration= null
+      mAttributes= AudioAttributes: usage=USAGE_NOTIFICATION content=CONTENT_TYPE_SONIFICATION flags=0x800 tags= bundle=null
+      mLight= null
+      mShowBadge=true
+--
+    NotificationRecord(0x0b467301: pkg=com.probe.topbar user=UserHandle{10} id=2147483647 tag=ranker_group importance=2 key=10|com.probe.topbar|2147483647|ranker_group|1010175|ranker_group: Notification(channel=probe_low shortcut=null contentView=null vibrate=null sound=null defaults=0x0 flags=0x722 color=0x00000000 groupKey=ranker_group vis=PRIVATE))
+      uid=1010175 userId=10
+      opPkg=com.probe.topbar
+      icon=Icon(typ=RESOURCE pkg=com.probe.topbar id=0x0108009b)
+      flags=0x722
+      originalFlags=0x722
+      pri=0
+      key=10|com.probe.topbar|2147483647|ranker_group|1010175|ranker_group
+      seen=false
+      groupKey=10|com.probe.topbar|g:ranker_group
+      notification=
+            fullscreenIntent=null
+            contentIntent=PendingIntent{7cf75a6: PendingIntentRecord{cf926bc com.probe.topbar startActivity}}
+            deleteIntent=null
+            number=0
+            groupAlertBehavior=2
+            when=1793351343946
+            tickerText=null
+            vis=0
+            contentView=null
+            bigContentView=null
+            headsUpContentView=null
+            color=0x00000000
+            timeout=unknown
+            extras={
+                android.reduced.images=Boolean (true)
+                android.appInfo=ApplicationInfo (ApplicationInfo{d91dbe7 com.probe.topbar})
+            }
+      publicNotification=
+            None
+      stats=SingleNotificationStats{posttimeElapsedMs=210672, posttimeToFirstClickMs=-1, posttimeToDismissMs=-1, airtimeCount=0, airtimeMs=0, currentAirtimeStartElapsedMs=-1, airtimeExpandedMs=0, posttimeToFirstVisibleExpansionMs=-1, currentAirtimeExpandedStartElapsedMs=-1, requestedImportance=3, naturalImportance=2, isNoisy=true}
+      mContactAffinity=0.0
+      mRecentlyIntrusive=false
+      mPackagePriority=0
+      mPackageVisibility=-1000
+      mSystemImportance=UNSPECIFIED
+      mAsstImportance=UNSPECIFIED
+      mImportance=LOW
+      mImportanceExplanation=app
+      mProposedImportance=UNSPECIFIED
+      mIsAppImportanceLocked=false
+      mSensitiveContent=false
+      mIntercept=false
+      mHidden==false
+      mGlobalSortKey=crtcl=0x0002:intrsv=1:grnk=0x0005:gsmry=0:nsk:rnk=0x0005
+      mRankingTimeMs=1793351343946
+      mCreationTimeMs=1793351343946
+      mVisibleSinceMs=0
+      mUpdateTimeMs=1793351343946
+      mInterruptionTimeMs=1793351343946
+      mSuppressedVisualEffects= 0
+      mSound= content://settings/system/notification_sound
+      mVibration= null
+      mAttributes= AudioAttributes: usage=USAGE_NOTIFICATION content=CONTENT_TYPE_SONIFICATION flags=0x800 tags= bundle=null
+      mLight= null
+      mShowBadge=true
+      mColorized=false
+--
+    NotificationRecord(0x03c53394: pkg=com.probe.topbar user=UserHandle{10} id=1 tag=null importance=2 key=10|com.probe.topbar|1|null|1010175: Notification(channel=probe_low shortcut=null contentView=null vibrate=null sound=null defaults=0x0 flags=0x62 color=0x00000000 vis=PRIVATE))
+      uid=1010175 userId=10
+      opPkg=com.probe.topbar
+      icon=Icon(typ=RESOURCE pkg=com.probe.topbar id=0x0108009b)
+      flags=0x62
+      originalFlags=0x42
+      pri=0
+      key=10|com.probe.topbar|1|null|1010175
+      seen=false
+      groupKey=10|com.probe.topbar|g:ranker_group
+      notification=
+            fullscreenIntent=null
+            contentIntent=null
+            deleteIntent=null
+            number=0
+            groupAlertBehavior=0
+            when=1793351333741
+            tickerText=null
+            vis=0
+            contentView=null
+            bigContentView=null
+            headsUpContentView=null
+            color=0x00000000
+            timeout=unknown
+            extras={
+                android.title=String (T6 포그라운드 서비스)
+                android.reduced.images=Boolean (true)
+                android.text=String (channel=probe_low ongoing)
+                android.appInfo=ApplicationInfo (ApplicationInfo{d91dbe7 com.probe.topbar})
+            }
+      publicNotification=
+            None
+      stats=SingleNotificationStats{posttimeElapsedMs=210469, posttimeToFirstClickMs=-1, posttimeToDismissMs=-1, airtimeCount=0, airtimeMs=0, currentAirtimeStartElapsedMs=-1, airtimeExpandedMs=0, posttimeToFirstVisibleExpansionMs=-1, currentAirtimeExpandedStartElapsedMs=-1, requestedImportance=3, naturalImportance=2, isNoisy=true}
+      mContactAffinity=0.0
+      mRecentlyIntrusive=false
+      mPackagePriority=0
+      mPackageVisibility=-1000
+      mSystemImportance=UNSPECIFIED
+      mAsstImportance=UNSPECIFIED
+      mImportance=LOW
+      mImportanceExplanation=app
+      mProposedImportance=UNSPECIFIED
+      mIsAppImportanceLocked=false
+      mSensitiveContent=false
+      mIntercept=false
+      mHidden==false
+      mGlobalSortKey=crtcl=0x0002:intrsv=1:grnk=0x0005:gsmry=1:nsk:rnk=0x0006
+      mRankingTimeMs=1793351333741
+      mCreationTimeMs=1793351343742
+      mVisibleSinceMs=0
+      mUpdateTimeMs=1793351343742
+      mInterruptionTimeMs=1793351343944
+      mSuppressedVisualEffects= 0
+      mSound= content://settings/system/notification_sound
+      mVibration= null
+      mAttributes= AudioAttributes: usage=USAGE_NOTIFICATION content=CONTENT_TYPE_SONIFICATION flags=0x800 tags= bundle=null
+      mLight= null
+      mShowBadge=true
+      mColorized=false
+--
+      AppSettings: com.probe.topbar (1010175) importance=DEFAULT userSet=false
+        NotificationChannel{mId='probe_low', mName=Probe LOW, mDescription=, mImportance=2, mBypassDnd=false, mLockscreenVisibility=-1000, mSound=content://settings/system/notification_sound, mLights=false, mLightColor=0, mVibration=null, mUserLockedFields=0, mUserVisibleTaskShown=true, mVibrationEnabled=false, mShowBadge=true, mDeleted=false, mDeletedTimeMs=-1, mGroup='null', mAudioAttributes=AudioAttributes: usage=USAGE_NOTIFICATION content=CONTENT_TYPE_SONIFICATION flags=0x800 tags= bundle=null, mBlockableSystem=false, mAllowBubbles=-1, mImportanceLockedDefaultApp=false, mOriginalImp=2, mParent=null, mConversationId=null, mDemoted=false, mImportantConvo=false}
+        NotificationChannel{mId='probe_msg', mName=Probe MESSAGE, mDescription=, mImportance=4, mBypassDnd=false, mLockscreenVisibility=-1000, mSound=content://settings/system/notification_sound, mLights=false, mLightColor=0, mVibration=null, mUserLockedFields=0, mUserVisibleTaskShown=false, mVibrationEnabled=false, mShowBadge=true, mDeleted=false, mDeletedTimeMs=-1, mGroup='null', mAudioAttributes=AudioAttributes: usage=USAGE_NOTIFICATION content=CONTENT_TYPE_SONIFICATION flags=0x800 tags= bundle=null, mBlockableSystem=false, mAllowBubbles=-1, mImportanceLockedDefaultApp=false, mOriginalImp=4, mParent=null, mConversationId=null, mDemoted=false, mImportantConvo=false}
+        NotificationChannel{mId='probe_high', mName=Probe HIGH, mDescription=, mImportance=4, mBypassDnd=false, mLockscreenVisibility=-1000, mSound=content://settings/system/notification_sound, mLights=false, mLightColor=0, mVibration=null, mUserLockedFields=0, mUserVisibleTaskShown=false, mVibrationEnabled=false, mShowBadge=true, mDeleted=false, mDeletedTimeMs=-1, mGroup='null', mAudioAttributes=AudioAttributes: usage=USAGE_NOTIFICATION content=CONTENT_TYPE_SONIFICATION flags=0x800 tags= bundle=null, mBlockableSystem=false, mAllowBubbles=-1, mImportanceLockedDefaultApp=false, mOriginalImp=4, mParent=null, mConversationId=null, mDemoted=false, mImportantConvo=false}
+        NotificationChannel{mId='probe_fgs_default', mName=Probe FGS DEFAULT, mDescription=, mImportance=3, mBypassDnd=false, mLockscreenVisibility=-1000, mSound=content://settings/system/notification_sound, mLights=false, mLightColor=0, mVibration=null, mUserLockedFields=0, mUserVisibleTaskShown=false, mVibrationEnabled=false, mShowBadge=true, mDeleted=false, mDeletedTimeMs=-1, mGroup='null', mAudioAttributes=AudioAttributes: usage=USAGE_NOTIFICATION content=CONTENT_TYPE_SONIFICATION flags=0x800 tags= bundle=null, mBlockableSystem=false, mAllowBubbles=-1, mImportanceLockedDefaultApp=false, mOriginalImp=3, mParent=null, mConversationId=null, mDemoted=false, mImportantConvo=false}
+        NotificationChannel{mId='probe_default', mName=Probe DEFAULT, mDescription=, mImportance=3, mBypassDnd=false, mLockscreenVisibility=-1000, mSound=content://settings/system/notification_sound, mLights=false, mLightColor=0, mVibration=null, mUserLockedFields=0, mUserVisibleTaskShown=false, mVibrationEnabled=false, mShowBadge=true, mDeleted=false, mDeletedTimeMs=-1, mGroup='null', mAudioAttributes=AudioAttributes: usage=USAGE_NOTIFICATION content=CONTENT_TYPE_SONIFICATION flags=0x800 tags= bundle=null, mBlockableSystem=false, mAllowBubbles=-1, mImportanceLockedDefaultApp=false, mOriginalImp=3, mParent=null, mConversationId=null, mDemoted=false, mImportantConvo=false}
+      AppSettings: com.tracers.trace (1010174)
+      AppSettings: com.android.systemui.emulation.pixel_4a (1010053)
+      AppSettings: com.android.hotspot2.osulogin (1010151)
+      AppSettings: com.android.car.carlauncher (1010076) importance=DEFAULT userSet=false fixedImportance=true
+      AppSettings: ai.umos.mediaapp (1010101) importance=DEFAULT userSet=false fixedImportance=true
+        NotificationChannel{mId='widget_update_channel', mName=Widget Updater Channel, mDescription=, mImportance=2, mBypassDnd=false, mLockscreenVisibility=-1000, mSound=content://settings/system/notification_sound, mLights=false, mLightColor=0, mVibration=null, mUserLockedFields=0, mUserVisibleTaskShown=true, mVibrationEnabled=false, mShowBadge=false, mDeleted=false, mDeletedTimeMs=-1, mGroup='null', mAudioAttributes=AudioAttributes: usage=USAGE_NOTIFICATION content=CONTENT_TYPE_SONIFICATION flags=0x800 tags= bundle=null, mBlockableSystem=false, mAllowBubbles=-1, mImportanceLockedDefaultApp=true, mOriginalImp=2, mParent=null, mConversationId=null, mDemoted=false, mImportantConvo=false}
+        NotificationChannel{mId='media_connector_channel', mName=Media Connector, mDescription=, mImportance=2, mBypassDnd=false, mLockscreenVisibility=-1000, mSound=content://settings/system/notification_sound, mLights=false, mLightColor=0, mVibration=null, mUserLockedFields=0, mUserVisibleTaskShown=true, mVibrationEnabled=false, mShowBadge=true, mDeleted=false, mDeletedTimeMs=-1, mGroup='null', mAudioAttributes=AudioAttributes: usage=USAGE_NOTIFICATION content=CONTENT_TYPE_SONIFICATION flags=0x800 tags= bundle=null, mBlockableSystem=false, mAllowBubbles=-1, mImportanceLockedDefaultApp=true, mOriginalImp=2, mParent=null, mConversationId=null, mDemoted=false, mImportantConvo=false}
+      AppSettings: com.android.sdksandbox (10154)
+      AppSettings: ai.pleos.service.profile (10134)
+      AppSettings: com.android.settings.intelligence (1010102)
+      AppSettings: com.android.devicelockcontroller (10162) importance=DEFAULT userSet=false fixedImportance=true
+      AppSettings: ai.pleos.playground.service.cap (10131)
+        NotificationChannel{mId='CarAccessoryProtocol', mName=CarAccessoryProtocol, mDescription=, mImportance=3, mBypassDnd=false, mLockscreenVisibility=-1000, mSound=content://settings/system/notification_sound, mLights=false, mLightColor=0, mVibration=null, mUserLockedFields=0, mUserVisibleTaskShown=true, mVibrationEnabled=false, mShowBadge=true, mDeleted=false, mDeletedTimeMs=-1, mGroup='null', mAudioAttributes=AudioAttributes: usage=USAGE_NOTIFICATION content=CONTENT_TYPE_SONIFICATION flags=0x800 tags= bundle=null, mBlockableSystem=false, mAllowBubbles=-1, mImportanceLockedDefaultApp=false, mOriginalImp=3, mParent=null, mConversationId=null, mDemoted=false, mImportantConvo=false}
+        NotificationChannelGroup{mId='IVI-OS-CAP', mName=CarAccessoryProtocol, mDescription=, mBlocked=false, mChannels=[], mUserLockedFields=0}
+      AppSettings: com.android.se (1001068)
+      AppSettings: com.android.server.telecom (1000) importance=DEFAULT userSet=false fixedImportance=true
+        NotificationChannel{mId='TelecomMissedCalls', mName=부재중 전화, mDescription=, mImportance=3, mBypassDnd=false, mLockscreenVisibility=-1000, mSound=, mLights=true, mLightColor=0, mVibration=null, mUserLockedFields=0, mUserVisibleTaskShown=false, mVibrationEnabled=true, mShowBadge=true, mDeleted=false, mDeletedTimeMs=-1, mGroup='null', mAudioAttributes=AudioAttributes: usage=USAGE_NOTIFICATION content=CONTENT_TYPE_UNKNOWN flags=0x800 tags= bundle=null, mBlockableSystem=false, mAllowBubbles=-1, mImportanceLockedDefaultApp=true, mOriginalImp=3, mParent=null, mConversationId=null, mDemoted=false, mImportantConvo=false}
+        NotificationChannel{mId='TelecomDisconnectedCalls', mName=연결 해제된 통화, mDescription=, mImportance=3, mBypassDnd=false, mLockscreenVisibility=-1000, mSound=, mLights=true, mLightColor=0, mVibration=null, mUserLockedFields=0, mUserVisibleTaskShown=false, mVibrationEnabled=true, mShowBadge=true, mDeleted=false, mDeletedTimeMs=-1, mGroup='null', mAudioAttributes=AudioAttributes: usage=USAGE_NOTIFICATION content=CONTENT_TYPE_UNKNOWN flags=0x800 tags= bundle=null, mBlockableSystem=false, mAllowBubbles=-1, mImportanceLockedDefaultApp=true, mOriginalImp=3, mParent=null, mConversationId=null, mDemoted=false, mImportantConvo=false}
+        NotificationChannel{mId='TelecomCallStreaming', mName=통화 스트리밍, mDescription=, mImportance=3, mBypassDnd=false, mLockscreenVisibility=-1000, mSound=content://settings/system/notification_sound, mLights=false, mLightColor=0, mVibration=null, mUserLockedFields=0, mUserVisibleTaskShown=false, mVibrationEnabled=false, mShowBadge=false, mDeleted=false, mDeletedTimeMs=-1, mGroup='null', mAudioAttributes=AudioAttributes: usage=USAGE_NOTIFICATION content=CONTENT_TYPE_SONIFICATION flags=0x800 tags= bundle=null, mBlockableSystem=false, mAllowBubbles=-1, mImportanceLockedDefaultApp=true, mOriginalImp=3, mParent=null, mConversationId=null, mDemoted=false, mImportantConvo=false}
+        NotificationChannel{mId='TelecomInCallServiceCrash', mName=통화 스트리밍, mDescription=, mImportance=3, mBypassDnd=false, mLockscreenVisibility=-1000, mSound=content://settings/system/notification_sound, mLights=false, mLightColor=0, mVibration=null, mUserLockedFields=0, mUserVisibleTaskShown=false, mVibrationEnabled=false, mShowBadge=false, mDeleted=false, mDeletedTimeMs=-1, mGroup='null', mAudioAttributes=AudioAttributes: usage=USAGE_NOTIFICATION content=CONTENT_TYPE_SONIFICATION flags=0x800 tags= bundle=null, mBlockableSystem=false, mAllowBubbles=-1, mImportanceLockedDefaultApp=true, mOriginalImp=3, mParent=null, mConversationId=null, mDemoted=false, mImportantConvo=false}
+        NotificationChannel{mId='TelecomCallBlocking', mName=통화 차단, mDescription=, mImportance=2, mBypassDnd=false, mLockscreenVisibility=-1000, mSound=content://settings/system/notification_sound, mLights=false, mLightColor=0, mVibration=null, mUserLockedFields=0, mUserVisibleTaskShown=false, mVibrationEnabled=false, mShowBadge=false, mDeleted=false, mDeletedTimeMs=-1, mGroup='null', mAudioAttributes=AudioAttributes: usage=USAGE_NOTIFICATION content=CONTENT_TYPE_SONIFICATION flags=0x800 tags= bundle=null, mBlockableSystem=false, mAllowBubbles=-1, mImportanceLockedDefaultApp=true, mOriginalImp=2, mParent=null, mConversationId=null, mDemoted=false, mImportantConvo=false}
+        NotificationChannel{mId='TelecomIncomingCalls', mName=수신 전화, mDescription=, mImportance=5, mBypassDnd=false, mLockscreenVisibility=-1000, mSound=, mLights=true, mLightColor=0, mVibration=null, mUserLockedFields=0, mUserVisibleTaskShown=false, mVibrationEnabled=false, mShowBadge=false, mDeleted=false, mDeletedTimeMs=-1, mGroup='null', mAudioAttributes=AudioAttributes: usage=USAGE_NOTIFICATION content=CONTENT_TYPE_UNKNOWN flags=0x800 tags= bundle=null, mBlockableSystem=false, mAllowBubbles=-1, mImportanceLockedDefaultApp=true, mOriginalImp=5, mParent=null, mConversationId=null, mDemoted=false, mImportantConvo=false}
+        NotificationChannel{mId='TelecomBackgroundAudioProcessing', mName=백그라운드 통화, mDescription=, mImportance=2, mBypassDnd=false, mLockscreenVisibility=-1000, mSound=content://settings/system/notification_sound, mLights=false, mLightColor=0, mVibration=null, mUserLockedFields=0, mUserVisibleTaskShown=false, mVibrationEnabled=false, mShowBadge=false, mDeleted=false, mDeletedTimeMs=-1, mGroup='null', mAudioAttributes=AudioAttributes: usage=USAGE_NOTIFICATION content=CONTENT_TYPE_SONIFICATION flags=0x800 tags= bundle=null, mBlockableSystem=false, mAllowBubbles=-1, mImportanceLockedDefaultApp=true, mOriginalImp=2, mParent=null, mConversationId=null, mDemoted=false, mImportantConvo=false}
+      AppSettings: ai.pleos.system.update.broadcast (1000) fixedImportance=true
+      AppSettings: com.android.intentresolver (1010063)
+--
+      AppSettings: com.probe.topbar (10175) importance=DEFAULT userSet=false
+Restored without uid:
+
+  Notification listeners:
+    Allowed notification listeners:
+      ai.umos.ambientai/ai.umos.ambientai.service.GleoNotificationListenerService (user: 10 isPrimary: true)
+    Has user set:
+      userId=10 value={ai.umos.ambientai/ai.umos.ambientai.service.GleoNotificationListenerService}
+    All notification listeners (1) enabled for current profiles:
+      ComponentInfo{ai.umos.ambientai/ai.umos.ambientai.service.GleoNotificationListenerService}
+    Live notification listeners (14):
+      ComponentInfo{android/com.android.server.am.AppFGSTracker$NotificationListener} (user -1): android.service.notification.NotificationListenerService$NotificationListenerWrapper@d099ef2 SYSTEM
+      ComponentInfo{com.android.systemui/com.android.systemui.car.statusicon.ui.notification.notificationcenter.data.NotificationCenterRepositoryImpl} (user -1): android.service.notification.INotificationListener$Stub$Proxy@cb29943 SYSTEM
+      ComponentInfo{com.android.server.telecom.voip/com.android.server.telecom.voip.VoipCallMonitor} (user 10): android.service.notification.NotificationListenerService$NotificationListenerWrapper@f8fdbc0 SYSTEM
+      ComponentInfo{com.android.systemui/com.android.systemui.car.statusicon.ui.notification.notificationcenter.data.NotificationCenterRepositoryImpl} (user -1): android.service.notification.INotificationListener$Stub$Proxy@93d818f SYSTEM
+      ComponentInfo{com.android.systemui/com.android.car.notification.CarNotificationListener} (user 10): android.service.notification.INotificationListener$Stub$Proxy@21aa7ab SYSTEM
+      ComponentInfo{ai.umos.ambientai/ai.umos.ambientai.service.GleoNotificationListenerService} (user 10): android.service.notification.INotificationListener$Stub$Proxy@3856a43
+      ComponentInfo{android/com.android.server.people.data.DataManager} (user 0): android.service.notification.NotificationListenerService$NotificationListenerWrapper@e3a6123 SYSTEM
+      ComponentInfo{android/com.android.server.people.data.DataManager} (user 10): android.service.notification.NotificationListenerService$NotificationListenerWrapper@c863620 SYSTEM
+      ComponentInfo{android.ext.services/android.ext.services.notification.Assistant} (user 10): android.service.notification.INotificationListener$Stub$Proxy@92153b8 GUEST
+      ComponentInfo{android.ext.services/android.ext.services.notification.Assistant} (user 0): android.service.notification.INotificationListener$Stub$Proxy@5578120 GUEST
+      ComponentInfo{ai.umos.homescreen/ai.umos.homescreen.data.notification.NotificationRepositoryImpl} (user 10): android.service.notification.INotificationListener$Stub$Proxy@4e8944c SYSTEM
+      ComponentInfo{ai.umos.drivingview/ai.umos.drivingview.data.notification.NotificationRepositoryImpl} (user 10): android.service.notification.INotificationListener$Stub$Proxy@578d19b SYSTEM
+      ComponentInfo{ai.pleos.service.ui/ai.pleos.service.ui.data.notification.NotificationRepositoryImpl} (user 10): android.service.notification.INotificationListener$Stub$Proxy@a98b5ee SYSTEM
+      ComponentInfo{ai.umos.notification/ai.umos.notification.injector.hun.HeadUpNotificationHandler} (user 10): android.service.notification.INotificationListener$Stub$Proxy@8f6722c SYSTEM
+    Snoozed notification listeners (0):
+    mListenerHints: 0
+    mListenersDisablingEffects: ()
+
+  Notification assistant services:
+    Allowed notification assistants:
+--
+    10|com.probe.topbar|g:ranker_group -> 10|com.probe.topbar|2147483647|ranker_group|1010175|ranker_group
+
+  Usage Stats:
+    AggregatedStats{
+      key='ai.pleos.gleoai.model.provider',
+      numEnqueuedByApp=1,
+      numPostedByApp=0,
+      numUpdatedByApp=0,
+      numRemovedByApp=0,
+      numPeopleCacheHit=0,
+      numWithStaredPeople=0,
+      numWithValidPeople=0,
+      numPeopleCacheMiss=0,
+      numBlocked=1,
+      numSuspendedByAdmin=0,
+      numWithActions=0,
+      numPrivate=0,
+      numSecret=0,
+      numInterrupt=0,
+      numWithBigText=0,
+      numWithBigPicture=0
+      numForegroundService=0
+      numUserInitiatedJob=0
+      numOngoing=0
+      numAutoCancel=0
+      numWithLargeIcon=0
+      numWithInbox=0
+      numWithMediaSession=0
+      numWithTitle=0
+      numWithText=0
+      numWithSubText=0
+--
+      key='com.probe.topbar',
+      numEnqueuedByApp=13,
+      numPostedByApp=3,
+      numUpdatedByApp=11,
+      numRemovedByApp=0,
+      numPeopleCacheHit=16,
+      numWithStaredPeople=0,
+      numWithValidPeople=0,
+      numPeopleCacheMiss=0,
+      numBlocked=0,
+      numSuspendedByAdmin=0,
+      numWithActions=0,
+      numPrivate=14,
+      numSecret=0,
+      numInterrupt=0,
+      numWithBigText=0,
+      numWithBigPicture=0
+      numForegroundService=1
+      numUserInitiatedJob=0
+      numOngoing=2
+      numAutoCancel=0
+      numWithLargeIcon=12
+      numWithInbox=0
+      numWithMediaSession=0
+      numWithTitle=13
+      numWithText=13
+      numWithSubText=0
+      numWithInfoText=0
+      numRateViolations=0
+      numAlertViolations=0
+      numQuotaViolations=0

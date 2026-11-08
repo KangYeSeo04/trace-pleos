@@ -1,0 +1,2 @@
+      android.permission.STATUS_BAR
+      android.permission.STATUS_BAR: granted=false

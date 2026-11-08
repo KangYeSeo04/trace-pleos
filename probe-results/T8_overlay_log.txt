@@ -1,0 +1,48 @@
+03:11:22.885 13391 13391 I probe   : overlay service action=START
+03:11:22.886 13391 13391 I probe   : overlay canDrawOverlays=true preset=A
+03:11:22.905 13391 13391 I probe   : overlay preset=A locationOnScreen x=0 y=90 w=64 h=64 statusBarInsetTop=0px status_bar_height(dimen)=90px
+03:11:25.179 13391 13391 I probe   : overlay service action=POS_A
+03:11:25.180 13391 13391 I probe   : overlay canDrawOverlays=true preset=A
+03:11:25.480 13391 13391 I probe   : overlay preset=A locationOnScreen x=853 y=90 w=64 h=64 statusBarInsetTop=0px status_bar_height(dimen)=90px
+03:11:27.481 13391 13391 I probe   : overlay service action=POS_B
+03:11:27.482 13391 13391 I probe   : overlay canDrawOverlays=true preset=B
+03:11:27.783 13391 13391 I probe   : overlay preset=B locationOnScreen x=2471 y=90 w=64 h=64 statusBarInsetTop=0px status_bar_height(dimen)=90px
+03:11:29.780 13391 13391 I probe   : overlay service action=POS_C
+03:11:29.781 13391 13391 I probe   : overlay canDrawOverlays=true preset=C
+03:11:30.081 13391 13391 I probe   : overlay preset=C locationOnScreen x=853 y=1236 w=64 h=64 statusBarInsetTop=0px status_bar_height(dimen)=90px
+03:11:32.031 13391 13391 I probe   : overlay service action=POS_D
+03:11:32.031 13391 13391 I probe   : overlay canDrawOverlays=true preset=D
+03:11:32.333 13391 13391 I probe   : overlay preset=D locationOnScreen x=2471 y=1236 w=64 h=64 statusBarInsetTop=0px status_bar_height(dimen)=90px
+03:11:34.291 13391 13391 I probe   : overlay service action=POS_E
+03:11:34.292 13391 13391 I probe   : overlay canDrawOverlays=true preset=E
+03:11:34.592 13391 13391 I probe   : overlay preset=E locationOnScreen x=0 y=0 w=64 h=64 statusBarInsetTop=64px status_bar_height(dimen)=90px
+03:11:36.555 13391 13391 I probe   : overlay service action=POS_F
+03:11:36.556 13391 13391 I probe   : overlay canDrawOverlays=true preset=F
+03:11:36.857 13391 13391 I probe   : overlay preset=F locationOnScreen x=2471 y=90 w=64 h=64 statusBarInsetTop=0px status_bar_height(dimen)=90px
+03:11:38.827 13391 13391 I probe   : overlay service action=POS_B
+03:11:38.828 13391 13391 I probe   : overlay canDrawOverlays=true preset=B
+03:11:39.129 13391 13391 I probe   : overlay preset=B locationOnScreen x=2496 y=90 w=64 h=64 statusBarInsetTop=0px status_bar_height(dimen)=90px
+03:11:22.885 13391 13391 I probe   : overlay service action=START
+03:11:22.886 13391 13391 I probe   : overlay canDrawOverlays=true preset=A
+03:11:22.905 13391 13391 I probe   : overlay preset=A locationOnScreen x=0 y=90 w=64 h=64 statusBarInsetTop=0px status_bar_height(dimen)=90px
+03:11:25.179 13391 13391 I probe   : overlay service action=POS_A
+03:11:25.180 13391 13391 I probe   : overlay canDrawOverlays=true preset=A
+03:11:25.480 13391 13391 I probe   : overlay preset=A locationOnScreen x=853 y=90 w=64 h=64 statusBarInsetTop=0px status_bar_height(dimen)=90px
+03:11:27.481 13391 13391 I probe   : overlay service action=POS_B
+03:11:27.482 13391 13391 I probe   : overlay canDrawOverlays=true preset=B
+03:11:27.783 13391 13391 I probe   : overlay preset=B locationOnScreen x=2471 y=90 w=64 h=64 statusBarInsetTop=0px status_bar_height(dimen)=90px
+03:11:29.780 13391 13391 I probe   : overlay service action=POS_C
+03:11:29.781 13391 13391 I probe   : overlay canDrawOverlays=true preset=C
+03:11:30.081 13391 13391 I probe   : overlay preset=C locationOnScreen x=853 y=1236 w=64 h=64 statusBarInsetTop=0px status_bar_height(dimen)=90px
+03:11:32.031 13391 13391 I probe   : overlay service action=POS_D
+03:11:32.031 13391 13391 I probe   : overlay canDrawOverlays=true preset=D
+03:11:32.333 13391 13391 I probe   : overlay preset=D locationOnScreen x=2471 y=1236 w=64 h=64 statusBarInsetTop=0px status_bar_height(dimen)=90px
+03:11:34.291 13391 13391 I probe   : overlay service action=POS_E
+03:11:34.292 13391 13391 I probe   : overlay canDrawOverlays=true preset=E
+03:11:34.592 13391 13391 I probe   : overlay preset=E locationOnScreen x=0 y=0 w=64 h=64 statusBarInsetTop=64px status_bar_height(dimen)=90px
+03:11:36.555 13391 13391 I probe   : overlay service action=POS_F
+03:11:36.556 13391 13391 I probe   : overlay canDrawOverlays=true preset=F
+03:11:36.857 13391 13391 I probe   : overlay preset=F locationOnScreen x=2471 y=90 w=64 h=64 statusBarInsetTop=0px status_bar_height(dimen)=90px
+03:11:38.827 13391 13391 I probe   : overlay service action=POS_B
+03:11:38.828 13391 13391 I probe   : overlay canDrawOverlays=true preset=B
+03:11:39.129 13391 13391 I probe   : overlay preset=B locationOnScreen x=2496 y=90 w=64 h=64 statusBarInsetTop=0px status_bar_height(dimen)=90px

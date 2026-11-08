@@ -1,3 +1,10 @@
+import java.util.Properties
+
+// PROBE용: STT·TTS 키는 local.properties(깃 제외)에서만 읽는다. 없으면 빈 문자열 → 화면에 "키 없음"
+val localProps = Properties().apply {
+    rootProject.file("local.properties").takeIf { it.exists() }?.inputStream()?.use { load(it) }
+}
+
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.compose)
@@ -20,6 +27,9 @@ android {
         versionName = "1.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+
+        buildConfigField("String", "PLEOS_CLIENT_ID", "\"${localProps.getProperty("PLEOS_CLIENT_ID", "")}\"")
+        buildConfigField("String", "PLEOS_CLIENT_SECRET", "\"${localProps.getProperty("PLEOS_CLIENT_SECRET", "")}\"")
     }
 
     buildTypes {
@@ -36,6 +46,7 @@ android {
     }
     buildFeatures {
         compose = true
+        buildConfig = true
     }
 }
 
@@ -43,6 +54,9 @@ dependencies {
     // Pleos SDK
     implementation("ai.pleos.playground:Vehicle:2.3.2")      // 브레이크·조향·방향지시등
     implementation("ai.pleos.playground:NaviHelper:3.0.5")   // 현재 위치
+    implementation("ai.pleos.playground:SpeechToText:3.3.1")   // PROBE용: 음성 인식 연결 확인
+    implementation("ai.pleos.playground:TextToSpeech:3.3.1")   // PROBE용: 음성 출력 연결 확인
+    implementation("ai.pleos.playground:FusedLocation:1.1.3")  // PROBE용: isSupported 확인
 
     implementation(platform(libs.androidx.compose.bom))
     implementation(libs.androidx.activity.compose)

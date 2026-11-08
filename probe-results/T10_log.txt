@@ -1,0 +1,1 @@
+02:26:00.067 15974 15974 I probe   : T10 display id=0 name=기본으로 제공되는 화면 size=2560x1440 flags=0x4083 state=2 valid=true

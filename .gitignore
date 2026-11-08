@@ -13,3 +13,11 @@
 .externalNativeBuild
 .cxx
 local.properties
+
+# 하위 폴더 포함
+build/
+.gradle/
+*.jks
+*.keystore
+.idea/deploymentTargetSelector.xml
+.idea/deviceManager.xml

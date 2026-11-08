@@ -1,0 +1,8 @@
+02:31:00.267 32157 32157 I probe   : run cmd=T12 arg=0
+02:31:00.267 32157 32157 I probe   : T12 STATUS_BAR permission granted=false
+02:31:00.267 32157 32157 I probe   : T12 statusbar service object=android.app.StatusBarManager
+02:31:00.267 32157 32157 W om.probe.topbar: Accessing hidden method Landroid/app/StatusBarManager;->setIcon(Ljava/lang/String;IILjava/lang/String;)V (max-target-r, reflection, denied)
+02:31:00.267 32157 32157 E probe   : T12 StatusBarManager.setIcon failed: java.lang.NoSuchMethodException: android.app.StatusBarManager.setIcon [class java.lang.String, int, int, class java.lang.String]
+02:31:00.268 32157 32157 W om.probe.topbar: Accessing hidden method Lcom/android/internal/statusbar/IStatusBarService$Stub$Proxy;->setIcon(Ljava/lang/String;Ljava/lang/String;IILjava/lang/String;)V (max-target-o, reflection, denied)
+02:31:00.268 32157 32157 W om.probe.topbar: Accessing hidden method Lcom/android/internal/statusbar/IStatusBarService;->setIcon(Ljava/lang/String;Ljava/lang/String;IILjava/lang/String;)V (max-target-o, reflection, denied)
+02:31:00.268 32157 32157 E probe   : T12 IStatusBarService.setIcon failed: java.lang.NoSuchMethodException: com.android.internal.statusbar.IStatusBarService$Stub$Proxy.setIcon [class java.lang.String, class java.lang.String, int, int, class java.lang.String]

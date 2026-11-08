@@ -1,0 +1,302 @@
+02:13:54.297  8232  8232 I probe   : run cmd=T4 arg=500
+02:13:54.298  8232  8232 I probe   : nav notify seq=0 frame=0 period=500
+02:13:54.500  4716  4716 I NOTIFICATION_INJECTOR: [HeadUpNotificationListenerService::onNotificationPosted] needHeadUpNotification: StatusBarNotification(pkg=com.probe.topbar user=UserHandle{10}
+02:13:54.500  4716  4716 D NOTIFICATION_INJECTOR: [NOTIFICATION_INJECTOR_DEBUG][HeadUpNotificationHandler::onNotificationPosted] notification already shown: 103, channelId: probe_high, just upda
+02:13:54.501  2060  2060 D [GAA]   : [Notification] Notification posted packageName:com.probe.topbar, notification:StatusBarNotification(pkg=com.probe.topbar user=UserHandle{10} id=103 tag=null 
+02:13:54.507  4716  4716 D NOTIFICATION_INJECTOR: [NOTIFICATION_INJECTOR_DEBUG][HeadUpNotificationScreen::HeadUpNotificationScreen] Rendering HeadUpNotificationScreen for notification: 10|com.pr
+02:13:54.800  8232  8232 I probe   : nav notify seq=1 frame=1 period=500
+02:13:55.001  2060  2060 D [GAA]   : [Notification] Notification posted packageName:com.probe.topbar, notification:StatusBarNotification(pkg=com.probe.topbar user=UserHandle{10} id=103 tag=null 
+02:13:55.001  4716  4716 I NOTIFICATION_INJECTOR: [HeadUpNotificationListenerService::onNotificationPosted] needHeadUpNotification: StatusBarNotification(pkg=com.probe.topbar user=UserHandle{10}
+02:13:55.001  4716  4716 D NOTIFICATION_INJECTOR: [NOTIFICATION_INJECTOR_DEBUG][HeadUpNotificationHandler::onNotificationPosted] notification already shown: 103, channelId: probe_high, just upda
+02:13:55.008  4716  4716 D NOTIFICATION_INJECTOR: [NOTIFICATION_INJECTOR_DEBUG][HeadUpNotificationScreen::HeadUpNotificationScreen] Rendering HeadUpNotificationScreen for notification: 10|com.pr
+02:13:55.301  8232  8232 I probe   : nav notify seq=2 frame=2 period=500
+02:13:55.503  4716  4716 I NOTIFICATION_INJECTOR: [HeadUpNotificationListenerService::onNotificationPosted] needHeadUpNotification: StatusBarNotification(pkg=com.probe.topbar user=UserHandle{10}
+02:13:55.503  4716  4716 D NOTIFICATION_INJECTOR: [NOTIFICATION_INJECTOR_DEBUG][HeadUpNotificationHandler::onNotificationPosted] notification already shown: 103, channelId: probe_high, just upda
+02:13:55.503  2060  2060 D [GAA]   : [Notification] Notification posted packageName:com.probe.topbar, notification:StatusBarNotification(pkg=com.probe.topbar user=UserHandle{10} id=103 tag=null 
+02:13:55.508  4716  4716 D NOTIFICATION_INJECTOR: [NOTIFICATION_INJECTOR_DEBUG][HeadUpNotificationScreen::HeadUpNotificationScreen] Rendering HeadUpNotificationScreen for notification: 10|com.pr
+02:13:55.803  8232  8232 I probe   : nav notify seq=3 frame=3 period=500
+02:13:56.006  2060  2060 D [GAA]   : [Notification] Notification posted packageName:com.probe.topbar, notification:StatusBarNotification(pkg=com.probe.topbar user=UserHandle{10} id=103 tag=null 
+02:13:56.006  4716  4716 I NOTIFICATION_INJECTOR: [HeadUpNotificationListenerService::onNotificationPosted] needHeadUpNotification: StatusBarNotification(pkg=com.probe.topbar user=UserHandle{10}
+02:13:56.006  4716  4716 D NOTIFICATION_INJECTOR: [NOTIFICATION_INJECTOR_DEBUG][HeadUpNotificationHandler::onNotificationPosted] notification already shown: 103, channelId: probe_high, just upda
+02:13:56.024  4716  4716 D NOTIFICATION_INJECTOR: [NOTIFICATION_INJECTOR_DEBUG][HeadUpNotificationScreen::HeadUpNotificationScreen] Rendering HeadUpNotificationScreen for notification: 10|com.pr
+02:13:56.305  8232  8232 I probe   : nav notify seq=4 frame=0 period=500
+02:13:56.506  2060  2060 D [GAA]   : [Notification] Notification posted packageName:com.probe.topbar, notification:StatusBarNotification(pkg=com.probe.topbar user=UserHandle{10} id=103 tag=null 
+02:13:56.508  4716  4716 I NOTIFICATION_INJECTOR: [HeadUpNotificationListenerService::onNotificationPosted] needHeadUpNotification: StatusBarNotification(pkg=com.probe.topbar user=UserHandle{10}
+02:13:56.508  4716  4716 D NOTIFICATION_INJECTOR: [NOTIFICATION_INJECTOR_DEBUG][HeadUpNotificationHandler::onNotificationPosted] notification already shown: 103, channelId: probe_high, just upda
+02:13:56.524  4716  4716 D NOTIFICATION_INJECTOR: [NOTIFICATION_INJECTOR_DEBUG][HeadUpNotificationScreen::HeadUpNotificationScreen] Rendering HeadUpNotificationScreen for notification: 10|com.pr
+02:13:56.807  8232  8232 I probe   : nav notify seq=5 frame=1 period=500
+02:13:57.008  2060  2060 D [GAA]   : [Notification] Notification posted packageName:com.probe.topbar, notification:StatusBarNotification(pkg=com.probe.topbar user=UserHandle{10} id=103 tag=null 
+02:13:57.009  4716  4716 I NOTIFICATION_INJECTOR: [HeadUpNotificationListenerService::onNotificationPosted] needHeadUpNotification: StatusBarNotification(pkg=com.probe.topbar user=UserHandle{10}
+02:13:57.009  4716  4716 D NOTIFICATION_INJECTOR: [NOTIFICATION_INJECTOR_DEBUG][HeadUpNotificationHandler::onNotificationPosted] notification already shown: 103, channelId: probe_high, just upda
+02:13:57.023  4716  4716 D NOTIFICATION_INJECTOR: [NOTIFICATION_INJECTOR_DEBUG][HeadUpNotificationScreen::HeadUpNotificationScreen] Rendering HeadUpNotificationScreen for notification: 10|com.pr
+02:13:57.309  8232  8232 I probe   : nav notify seq=6 frame=2 period=500
+02:13:57.510  2060  2060 D [GAA]   : [Notification] Notification posted packageName:com.probe.topbar, notification:StatusBarNotification(pkg=com.probe.topbar user=UserHandle{10} id=103 tag=null 
+02:13:57.512  4716  4716 I NOTIFICATION_INJECTOR: [HeadUpNotificationListenerService::onNotificationPosted] needHeadUpNotification: StatusBarNotification(pkg=com.probe.topbar user=UserHandle{10}
+02:13:57.512  4716  4716 D NOTIFICATION_INJECTOR: [NOTIFICATION_INJECTOR_DEBUG][HeadUpNotificationHandler::onNotificationPosted] notification already shown: 103, channelId: probe_high, just upda
+02:13:57.524  4716  4716 D NOTIFICATION_INJECTOR: [NOTIFICATION_INJECTOR_DEBUG][HeadUpNotificationScreen::HeadUpNotificationScreen] Rendering HeadUpNotificationScreen for notification: 10|com.pr
+02:13:57.811  8232  8232 I probe   : nav notify seq=7 frame=3 period=500
+02:13:58.013  2060  2060 D [GAA]   : [Notification] Notification posted packageName:com.probe.topbar, notification:StatusBarNotification(pkg=com.probe.topbar user=UserHandle{10} id=103 tag=null 
+02:13:58.013  4716  4716 I NOTIFICATION_INJECTOR: [HeadUpNotificationListenerService::onNotificationPosted] needHeadUpNotification: StatusBarNotification(pkg=com.probe.topbar user=UserHandle{10}
+02:13:58.013  4716  4716 D NOTIFICATION_INJECTOR: [NOTIFICATION_INJECTOR_DEBUG][HeadUpNotificationHandler::onNotificationPosted] notification already shown: 103, channelId: probe_high, just upda
+02:13:58.023  4716  4716 D NOTIFICATION_INJECTOR: [NOTIFICATION_INJECTOR_DEBUG][HeadUpNotificationScreen::HeadUpNotificationScreen] Rendering HeadUpNotificationScreen for notification: 10|com.pr
+02:13:58.313  8232  8232 I probe   : nav notify seq=8 frame=0 period=500
+02:13:58.514  2060  2060 D [GAA]   : [Notification] Notification posted packageName:com.probe.topbar, notification:StatusBarNotification(pkg=com.probe.topbar user=UserHandle{10} id=103 tag=null 
+02:13:58.515  4716  4716 I NOTIFICATION_INJECTOR: [HeadUpNotificationListenerService::onNotificationPosted] needHeadUpNotification: StatusBarNotification(pkg=com.probe.topbar user=UserHandle{10}
+02:13:58.515  4716  4716 D NOTIFICATION_INJECTOR: [NOTIFICATION_INJECTOR_DEBUG][HeadUpNotificationHandler::onNotificationPosted] notification already shown: 103, channelId: probe_high, just upda
+02:13:58.524  4716  4716 D NOTIFICATION_INJECTOR: [NOTIFICATION_INJECTOR_DEBUG][HeadUpNotificationScreen::HeadUpNotificationScreen] Rendering HeadUpNotificationScreen for notification: 10|com.pr
+02:13:58.815  8232  8232 I probe   : nav notify seq=9 frame=1 period=500
+02:13:59.016  2060  2060 D [GAA]   : [Notification] Notification posted packageName:com.probe.topbar, notification:StatusBarNotification(pkg=com.probe.topbar user=UserHandle{10} id=103 tag=null 
+02:13:59.017  4716  4716 I NOTIFICATION_INJECTOR: [HeadUpNotificationListenerService::onNotificationPosted] needHeadUpNotification: StatusBarNotification(pkg=com.probe.topbar user=UserHandle{10}
+02:13:59.017  4716  4716 D NOTIFICATION_INJECTOR: [NOTIFICATION_INJECTOR_DEBUG][HeadUpNotificationHandler::onNotificationPosted] notification already shown: 103, channelId: probe_high, just upda
+02:13:59.023  4716  4716 D NOTIFICATION_INJECTOR: [NOTIFICATION_INJECTOR_DEBUG][HeadUpNotificationScreen::HeadUpNotificationScreen] Rendering HeadUpNotificationScreen for notification: 10|com.pr
+02:13:59.316  8232  8232 I probe   : nav notify seq=10 frame=2 period=500
+02:13:59.518  2060  2060 D [GAA]   : [Notification] Notification posted packageName:com.probe.topbar, notification:StatusBarNotification(pkg=com.probe.topbar user=UserHandle{10} id=103 tag=null 
+02:13:59.519  4716  4716 I NOTIFICATION_INJECTOR: [HeadUpNotificationListenerService::onNotificationPosted] needHeadUpNotification: StatusBarNotification(pkg=com.probe.topbar user=UserHandle{10}
+02:13:59.519  4716  4716 D NOTIFICATION_INJECTOR: [NOTIFICATION_INJECTOR_DEBUG][HeadUpNotificationHandler::onNotificationPosted] notification already shown: 103, channelId: probe_high, just upda
+02:13:59.526  4716  4716 D NOTIFICATION_INJECTOR: [NOTIFICATION_INJECTOR_DEBUG][HeadUpNotificationScreen::HeadUpNotificationScreen] Rendering HeadUpNotificationScreen for notification: 10|com.pr
+02:13:59.818  8232  8232 I probe   : nav notify seq=11 frame=3 period=500
+02:14:00.020  2060  2060 D [GAA]   : [Notification] Notification posted packageName:com.probe.topbar, notification:StatusBarNotification(pkg=com.probe.topbar user=UserHandle{10} id=103 tag=null 
+02:14:00.020  4716  4716 I NOTIFICATION_INJECTOR: [HeadUpNotificationListenerService::onNotificationPosted] needHeadUpNotification: StatusBarNotification(pkg=com.probe.topbar user=UserHandle{10}
+02:14:00.020  4716  4716 D NOTIFICATION_INJECTOR: [NOTIFICATION_INJECTOR_DEBUG][HeadUpNotificationHandler::onNotificationPosted] notification already shown: 103, channelId: probe_high, just upda
+02:14:00.025  4716  4716 D NOTIFICATION_INJECTOR: [NOTIFICATION_INJECTOR_DEBUG][HeadUpNotificationScreen::HeadUpNotificationScreen] Rendering HeadUpNotificationScreen for notification: 10|com.pr
+02:14:00.320  8232  8232 I probe   : nav notify seq=12 frame=0 period=500
+02:14:00.522  4716  4716 I NOTIFICATION_INJECTOR: [HeadUpNotificationListenerService::onNotificationPosted] needHeadUpNotification: StatusBarNotification(pkg=com.probe.topbar user=UserHandle{10}
+02:14:00.522  4716  4716 D NOTIFICATION_INJECTOR: [NOTIFICATION_INJECTOR_DEBUG][HeadUpNotificationHandler::onNotificationPosted] notification already shown: 103, channelId: probe_high, just upda
+02:14:00.522  2060  2060 D [GAA]   : [Notification] Notification posted packageName:com.probe.topbar, notification:StatusBarNotification(pkg=com.probe.topbar user=UserHandle{10} id=103 tag=null 
+02:14:00.540  4716  4716 D NOTIFICATION_INJECTOR: [NOTIFICATION_INJECTOR_DEBUG][HeadUpNotificationScreen::HeadUpNotificationScreen] Rendering HeadUpNotificationScreen for notification: 10|com.pr
+02:14:00.822  8232  8232 I probe   : nav notify seq=13 frame=1 period=500
+02:14:01.024  2060  2060 D [GAA]   : [Notification] Notification posted packageName:com.probe.topbar, notification:StatusBarNotification(pkg=com.probe.topbar user=UserHandle{10} id=103 tag=null 
+02:14:01.024  4716  4716 I NOTIFICATION_INJECTOR: [HeadUpNotificationListenerService::onNotificationPosted] needHeadUpNotification: StatusBarNotification(pkg=com.probe.topbar user=UserHandle{10}
+02:14:01.024  4716  4716 D NOTIFICATION_INJECTOR: [NOTIFICATION_INJECTOR_DEBUG][HeadUpNotificationHandler::onNotificationPosted] notification already shown: 103, channelId: probe_high, just upda
+02:14:01.040  4716  4716 D NOTIFICATION_INJECTOR: [NOTIFICATION_INJECTOR_DEBUG][HeadUpNotificationScreen::HeadUpNotificationScreen] Rendering HeadUpNotificationScreen for notification: 10|com.pr
+02:14:01.323  8232  8232 I probe   : nav notify seq=14 frame=2 period=500
+02:14:01.525  2060  2060 D [GAA]   : [Notification] Notification posted packageName:com.probe.topbar, notification:StatusBarNotification(pkg=com.probe.topbar user=UserHandle{10} id=103 tag=null 
+02:14:01.525  4716  4716 I NOTIFICATION_INJECTOR: [HeadUpNotificationListenerService::onNotificationPosted] needHeadUpNotification: StatusBarNotification(pkg=com.probe.topbar user=UserHandle{10}
+02:14:01.525  4716  4716 D NOTIFICATION_INJECTOR: [NOTIFICATION_INJECTOR_DEBUG][HeadUpNotificationHandler::onNotificationPosted] notification already shown: 103, channelId: probe_high, just upda
+02:14:01.542  4716  4716 D NOTIFICATION_INJECTOR: [NOTIFICATION_INJECTOR_DEBUG][HeadUpNotificationScreen::HeadUpNotificationScreen] Rendering HeadUpNotificationScreen for notification: 10|com.pr
+02:14:01.828  8232  8232 I probe   : nav notify seq=15 frame=3 period=500
+02:14:02.039  4716  4716 I NOTIFICATION_INJECTOR: [HeadUpNotificationListenerService::onNotificationPosted] needHeadUpNotification: StatusBarNotification(pkg=com.probe.topbar user=UserHandle{10}
+02:14:02.040  2060  2060 D [GAA]   : [Notification] Notification posted packageName:com.probe.topbar, notification:StatusBarNotification(pkg=com.probe.topbar user=UserHandle{10} id=103 tag=null 
+02:14:02.040  4716  4716 D NOTIFICATION_INJECTOR: [NOTIFICATION_INJECTOR_DEBUG][HeadUpNotificationHandler::onNotificationPosted] notification already shown: 103, channelId: probe_high, just upda
+02:14:02.061  4716  4716 D NOTIFICATION_INJECTOR: [NOTIFICATION_INJECTOR_DEBUG][HeadUpNotificationScreen::HeadUpNotificationScreen] Rendering HeadUpNotificationScreen for notification: 10|com.pr
+02:14:02.384  8232  8232 I probe   : nav notify seq=16 frame=0 period=500
+02:14:02.586  2060  2060 D [GAA]   : [Notification] Notification posted packageName:com.probe.topbar, notification:StatusBarNotification(pkg=com.probe.topbar user=UserHandle{10} id=103 tag=null 
+02:14:02.587  4716  4716 I NOTIFICATION_INJECTOR: [HeadUpNotificationListenerService::onNotificationPosted] needHeadUpNotification: StatusBarNotification(pkg=com.probe.topbar user=UserHandle{10}
+02:14:02.587  4716  4716 D NOTIFICATION_INJECTOR: [NOTIFICATION_INJECTOR_DEBUG][HeadUpNotificationHandler::onNotificationPosted] notification already shown: 103, channelId: probe_high, just upda
+02:14:02.611  4716  4716 D NOTIFICATION_INJECTOR: [NOTIFICATION_INJECTOR_DEBUG][HeadUpNotificationScreen::HeadUpNotificationScreen] Rendering HeadUpNotificationScreen for notification: 10|com.pr
+02:14:02.913  8232  8232 I probe   : nav notify seq=17 frame=1 period=500
+02:14:03.156  2060  2060 D [GAA]   : [Notification] Notification posted packageName:com.probe.topbar, notification:StatusBarNotification(pkg=com.probe.topbar user=UserHandle{10} id=103 tag=null 
+02:14:03.164  4716  4716 I NOTIFICATION_INJECTOR: [HeadUpNotificationListenerService::onNotificationPosted] needHeadUpNotification: StatusBarNotification(pkg=com.probe.topbar user=UserHandle{10}
+02:14:03.164  4716  4716 D NOTIFICATION_INJECTOR: [NOTIFICATION_INJECTOR_DEBUG][HeadUpNotificationHandler::onNotificationPosted] notification already shown: 103, channelId: probe_high, just upda
+02:14:03.214  4716  4716 D NOTIFICATION_INJECTOR: [NOTIFICATION_INJECTOR_DEBUG][HeadUpNotificationScreen::HeadUpNotificationScreen] Rendering HeadUpNotificationScreen for notification: 10|com.pr
+02:14:03.421  8232  8232 I probe   : nav notify seq=18 frame=2 period=500
+02:14:03.632  2060  2060 D [GAA]   : [Notification] Notification posted packageName:com.probe.topbar, notification:StatusBarNotification(pkg=com.probe.topbar user=UserHandle{10} id=103 tag=null 
+02:14:03.632  4716  4716 I NOTIFICATION_INJECTOR: [HeadUpNotificationListenerService::onNotificationPosted] needHeadUpNotification: StatusBarNotification(pkg=com.probe.topbar user=UserHandle{10}
+02:14:03.632  4716  4716 D NOTIFICATION_INJECTOR: [NOTIFICATION_INJECTOR_DEBUG][HeadUpNotificationHandler::onNotificationPosted] notification already shown: 103, channelId: probe_high, just upda
+02:14:03.656  4716  4716 D NOTIFICATION_INJECTOR: [NOTIFICATION_INJECTOR_DEBUG][HeadUpNotificationScreen::HeadUpNotificationScreen] Rendering HeadUpNotificationScreen for notification: 10|com.pr
+02:14:03.927  8232  8232 I probe   : nav notify seq=19 frame=3 period=500
+02:14:04.130  4716  4716 I NOTIFICATION_INJECTOR: [HeadUpNotificationListenerService::onNotificationPosted] needHeadUpNotification: StatusBarNotification(pkg=com.probe.topbar user=UserHandle{10}
+02:14:04.130  2060  2060 D [GAA]   : [Notification] Notification posted packageName:com.probe.topbar, notification:StatusBarNotification(pkg=com.probe.topbar user=UserHandle{10} id=103 tag=null 
+02:14:04.130  4716  4716 D NOTIFICATION_INJECTOR: [NOTIFICATION_INJECTOR_DEBUG][HeadUpNotificationHandler::onNotificationPosted] notification already shown: 103, channelId: probe_high, just upda
+02:14:04.145  4716  4716 D NOTIFICATION_INJECTOR: [NOTIFICATION_INJECTOR_DEBUG][HeadUpNotificationScreen::HeadUpNotificationScreen] Rendering HeadUpNotificationScreen for notification: 10|com.pr
+02:14:04.430  8232  8232 I probe   : nav notify seq=20 frame=0 period=500
+02:14:04.633  4716  4716 I NOTIFICATION_INJECTOR: [HeadUpNotificationListenerService::onNotificationPosted] needHeadUpNotification: StatusBarNotification(pkg=com.probe.topbar user=UserHandle{10}
+02:14:04.633  4716  4716 D NOTIFICATION_INJECTOR: [NOTIFICATION_INJECTOR_DEBUG][HeadUpNotificationHandler::onNotificationPosted] notification already shown: 103, channelId: probe_high, just upda
+02:14:04.633  2060  2060 D [GAA]   : [Notification] Notification posted packageName:com.probe.topbar, notification:StatusBarNotification(pkg=com.probe.topbar user=UserHandle{10} id=103 tag=null 
+02:14:04.640  4716  4716 D NOTIFICATION_INJECTOR: [NOTIFICATION_INJECTOR_DEBUG][HeadUpNotificationScreen::HeadUpNotificationScreen] Rendering HeadUpNotificationScreen for notification: 10|com.pr
+02:14:04.932  8232  8232 I probe   : nav notify seq=21 frame=1 period=500
+02:14:05.134  2060  2060 D [GAA]   : [Notification] Notification posted packageName:com.probe.topbar, notification:StatusBarNotification(pkg=com.probe.topbar user=UserHandle{10} id=103 tag=null 
+02:14:05.135  4716  4716 I NOTIFICATION_INJECTOR: [HeadUpNotificationListenerService::onNotificationPosted] needHeadUpNotification: StatusBarNotification(pkg=com.probe.topbar user=UserHandle{10}
+02:14:05.135  4716  4716 D NOTIFICATION_INJECTOR: [NOTIFICATION_INJECTOR_DEBUG][HeadUpNotificationHandler::onNotificationPosted] notification already shown: 103, channelId: probe_high, just upda
+02:14:05.140  4716  4716 D NOTIFICATION_INJECTOR: [NOTIFICATION_INJECTOR_DEBUG][HeadUpNotificationScreen::HeadUpNotificationScreen] Rendering HeadUpNotificationScreen for notification: 10|com.pr
+02:14:05.434  8232  8232 I probe   : nav notify seq=22 frame=2 period=500
+02:14:05.636  2060  2060 D [GAA]   : [Notification] Notification posted packageName:com.probe.topbar, notification:StatusBarNotification(pkg=com.probe.topbar user=UserHandle{10} id=103 tag=null 
+02:14:05.637  4716  4716 I NOTIFICATION_INJECTOR: [HeadUpNotificationListenerService::onNotificationPosted] needHeadUpNotification: StatusBarNotification(pkg=com.probe.topbar user=UserHandle{10}
+02:14:05.637  4716  4716 D NOTIFICATION_INJECTOR: [NOTIFICATION_INJECTOR_DEBUG][HeadUpNotificationHandler::onNotificationPosted] notification already shown: 103, channelId: probe_high, just upda
+02:14:05.642  4716  4716 D NOTIFICATION_INJECTOR: [NOTIFICATION_INJECTOR_DEBUG][HeadUpNotificationScreen::HeadUpNotificationScreen] Rendering HeadUpNotificationScreen for notification: 10|com.pr
+02:14:05.937  8232  8232 I probe   : nav notify seq=23 frame=3 period=500
+02:14:06.138  4716  4716 I NOTIFICATION_INJECTOR: [HeadUpNotificationListenerService::onNotificationPosted] needHeadUpNotification: StatusBarNotification(pkg=com.probe.topbar user=UserHandle{10}
+02:14:06.138  4716  4716 D NOTIFICATION_INJECTOR: [NOTIFICATION_INJECTOR_DEBUG][HeadUpNotificationHandler::onNotificationPosted] notification already shown: 103, channelId: probe_high, just upda
+02:14:06.139  2060  2060 D [GAA]   : [Notification] Notification posted packageName:com.probe.topbar, notification:StatusBarNotification(pkg=com.probe.topbar user=UserHandle{10} id=103 tag=null 
+02:14:06.157  4716  4716 D NOTIFICATION_INJECTOR: [NOTIFICATION_INJECTOR_DEBUG][HeadUpNotificationScreen::HeadUpNotificationScreen] Rendering HeadUpNotificationScreen for notification: 10|com.pr
+02:14:06.443  8232  8232 I probe   : nav notify seq=24 frame=0 period=500
+02:14:06.644  2060  2060 D [GAA]   : [Notification] Notification posted packageName:com.probe.topbar, notification:StatusBarNotification(pkg=com.probe.topbar user=UserHandle{10} id=103 tag=null 
+02:14:06.645  4716  4716 I NOTIFICATION_INJECTOR: [HeadUpNotificationListenerService::onNotificationPosted] needHeadUpNotification: StatusBarNotification(pkg=com.probe.topbar user=UserHandle{10}
+02:14:06.645  4716  4716 D NOTIFICATION_INJECTOR: [NOTIFICATION_INJECTOR_DEBUG][HeadUpNotificationHandler::onNotificationPosted] notification already shown: 103, channelId: probe_high, just upda
+02:14:06.657  4716  4716 D NOTIFICATION_INJECTOR: [NOTIFICATION_INJECTOR_DEBUG][HeadUpNotificationScreen::HeadUpNotificationScreen] Rendering HeadUpNotificationScreen for notification: 10|com.pr
+02:14:06.944  8232  8232 I probe   : nav notify seq=25 frame=1 period=500
+02:14:07.146  2060  2060 D [GAA]   : [Notification] Notification posted packageName:com.probe.topbar, notification:StatusBarNotification(pkg=com.probe.topbar user=UserHandle{10} id=103 tag=null 
+02:14:07.146  4716  4716 I NOTIFICATION_INJECTOR: [HeadUpNotificationListenerService::onNotificationPosted] needHeadUpNotification: StatusBarNotification(pkg=com.probe.topbar user=UserHandle{10}
+02:14:07.146  4716  4716 D NOTIFICATION_INJECTOR: [NOTIFICATION_INJECTOR_DEBUG][HeadUpNotificationHandler::onNotificationPosted] notification already shown: 103, channelId: probe_high, just upda
+02:14:07.157  4716  4716 D NOTIFICATION_INJECTOR: [NOTIFICATION_INJECTOR_DEBUG][HeadUpNotificationScreen::HeadUpNotificationScreen] Rendering HeadUpNotificationScreen for notification: 10|com.pr
+02:14:07.446  8232  8232 I probe   : nav notify seq=26 frame=2 period=500
+02:14:07.648  4716  4716 I NOTIFICATION_INJECTOR: [HeadUpNotificationListenerService::onNotificationPosted] needHeadUpNotification: StatusBarNotification(pkg=com.probe.topbar user=UserHandle{10}
+02:14:07.648  4716  4716 D NOTIFICATION_INJECTOR: [NOTIFICATION_INJECTOR_DEBUG][HeadUpNotificationHandler::onNotificationPosted] notification already shown: 103, channelId: probe_high, just upda
+02:14:07.648  2060  2060 D [GAA]   : [Notification] Notification posted packageName:com.probe.topbar, notification:StatusBarNotification(pkg=com.probe.topbar user=UserHandle{10} id=103 tag=null 
+02:14:07.656  4716  4716 D NOTIFICATION_INJECTOR: [NOTIFICATION_INJECTOR_DEBUG][HeadUpNotificationScreen::HeadUpNotificationScreen] Rendering HeadUpNotificationScreen for notification: 10|com.pr
+02:14:07.951  8232  8232 I probe   : nav notify seq=27 frame=3 period=500
+02:14:08.154  2060  2060 D [GAA]   : [Notification] Notification posted packageName:com.probe.topbar, notification:StatusBarNotification(pkg=com.probe.topbar user=UserHandle{10} id=103 tag=null 
+02:14:08.154  4716  4716 I NOTIFICATION_INJECTOR: [HeadUpNotificationListenerService::onNotificationPosted] needHeadUpNotification: StatusBarNotification(pkg=com.probe.topbar user=UserHandle{10}
+02:14:08.154  4716  4716 D NOTIFICATION_INJECTOR: [NOTIFICATION_INJECTOR_DEBUG][HeadUpNotificationHandler::onNotificationPosted] notification already shown: 103, channelId: probe_high, just upda
+02:14:08.174  4716  4716 D NOTIFICATION_INJECTOR: [NOTIFICATION_INJECTOR_DEBUG][HeadUpNotificationScreen::HeadUpNotificationScreen] Rendering HeadUpNotificationScreen for notification: 10|com.pr
+02:14:08.453  8232  8232 I probe   : nav notify seq=28 frame=0 period=500
+02:14:08.655  2060  2060 D [GAA]   : [Notification] Notification posted packageName:com.probe.topbar, notification:StatusBarNotification(pkg=com.probe.topbar user=UserHandle{10} id=103 tag=null 
+02:14:08.656  4716  4716 I NOTIFICATION_INJECTOR: [HeadUpNotificationListenerService::onNotificationPosted] needHeadUpNotification: StatusBarNotification(pkg=com.probe.topbar user=UserHandle{10}
+02:14:08.656  4716  4716 D NOTIFICATION_INJECTOR: [NOTIFICATION_INJECTOR_DEBUG][HeadUpNotificationHandler::onNotificationPosted] notification already shown: 103, channelId: probe_high, just upda
+02:14:08.673  4716  4716 D NOTIFICATION_INJECTOR: [NOTIFICATION_INJECTOR_DEBUG][HeadUpNotificationScreen::HeadUpNotificationScreen] Rendering HeadUpNotificationScreen for notification: 10|com.pr
+02:14:08.956  8232  8232 I probe   : nav notify seq=29 frame=1 period=500
+02:14:09.159  4716  4716 I NOTIFICATION_INJECTOR: [HeadUpNotificationListenerService::onNotificationPosted] needHeadUpNotification: StatusBarNotification(pkg=com.probe.topbar user=UserHandle{10}
+02:14:09.159  2060  2060 D [GAA]   : [Notification] Notification posted packageName:com.probe.topbar, notification:StatusBarNotification(pkg=com.probe.topbar user=UserHandle{10} id=103 tag=null 
+02:14:09.159  4716  4716 D NOTIFICATION_INJECTOR: [NOTIFICATION_INJECTOR_DEBUG][HeadUpNotificationHandler::onNotificationPosted] notification already shown: 103, channelId: probe_high, just upda
+02:14:09.173  4716  4716 D NOTIFICATION_INJECTOR: [NOTIFICATION_INJECTOR_DEBUG][HeadUpNotificationScreen::HeadUpNotificationScreen] Rendering HeadUpNotificationScreen for notification: 10|com.pr
+02:14:09.458  8232  8232 I probe   : nav notify seq=30 frame=2 period=500
+02:14:09.660  2060  2060 D [GAA]   : [Notification] Notification posted packageName:com.probe.topbar, notification:StatusBarNotification(pkg=com.probe.topbar user=UserHandle{10} id=103 tag=null 
+02:14:09.660  4716  4716 I NOTIFICATION_INJECTOR: [HeadUpNotificationListenerService::onNotificationPosted] needHeadUpNotification: StatusBarNotification(pkg=com.probe.topbar user=UserHandle{10}
+02:14:09.660  4716  4716 D NOTIFICATION_INJECTOR: [NOTIFICATION_INJECTOR_DEBUG][HeadUpNotificationHandler::onNotificationPosted] notification already shown: 103, channelId: probe_high, just upda
+02:14:09.673  4716  4716 D NOTIFICATION_INJECTOR: [NOTIFICATION_INJECTOR_DEBUG][HeadUpNotificationScreen::HeadUpNotificationScreen] Rendering HeadUpNotificationScreen for notification: 10|com.pr
+02:14:09.959  8232  8232 I probe   : nav notify seq=31 frame=3 period=500
+02:14:10.161  4716  4716 I NOTIFICATION_INJECTOR: [HeadUpNotificationListenerService::onNotificationPosted] needHeadUpNotification: StatusBarNotification(pkg=com.probe.topbar user=UserHandle{10}
+02:14:10.161  4716  4716 D NOTIFICATION_INJECTOR: [NOTIFICATION_INJECTOR_DEBUG][HeadUpNotificationHandler::onNotificationPosted] notification already shown: 103, channelId: probe_high, just upda
+02:14:10.161  2060  2060 D [GAA]   : [Notification] Notification posted packageName:com.probe.topbar, notification:StatusBarNotification(pkg=com.probe.topbar user=UserHandle{10} id=103 tag=null 
+02:14:10.174  4716  4716 D NOTIFICATION_INJECTOR: [NOTIFICATION_INJECTOR_DEBUG][HeadUpNotificationScreen::HeadUpNotificationScreen] Rendering HeadUpNotificationScreen for notification: 10|com.pr
+02:14:10.461  8232  8232 I probe   : nav notify seq=32 frame=0 period=500
+02:14:10.663  2060  2060 D [GAA]   : [Notification] Notification posted packageName:com.probe.topbar, notification:StatusBarNotification(pkg=com.probe.topbar user=UserHandle{10} id=103 tag=null 
+02:14:10.664  4716  4716 I NOTIFICATION_INJECTOR: [HeadUpNotificationListenerService::onNotificationPosted] needHeadUpNotification: StatusBarNotification(pkg=com.probe.topbar user=UserHandle{10}
+02:14:10.664  4716  4716 D NOTIFICATION_INJECTOR: [NOTIFICATION_INJECTOR_DEBUG][HeadUpNotificationHandler::onNotificationPosted] notification already shown: 103, channelId: probe_high, just upda
+02:14:10.673  4716  4716 D NOTIFICATION_INJECTOR: [NOTIFICATION_INJECTOR_DEBUG][HeadUpNotificationScreen::HeadUpNotificationScreen] Rendering HeadUpNotificationScreen for notification: 10|com.pr
+02:14:10.963  8232  8232 I probe   : nav notify seq=33 frame=1 period=500
+02:14:11.165  2060  2060 D [GAA]   : [Notification] Notification posted packageName:com.probe.topbar, notification:StatusBarNotification(pkg=com.probe.topbar user=UserHandle{10} id=103 tag=null 
+02:14:11.165  4716  4716 I NOTIFICATION_INJECTOR: [HeadUpNotificationListenerService::onNotificationPosted] needHeadUpNotification: StatusBarNotification(pkg=com.probe.topbar user=UserHandle{10}
+02:14:11.165  4716  4716 D NOTIFICATION_INJECTOR: [NOTIFICATION_INJECTOR_DEBUG][HeadUpNotificationHandler::onNotificationPosted] notification already shown: 103, channelId: probe_high, just upda
+02:14:11.173  4716  4716 D NOTIFICATION_INJECTOR: [NOTIFICATION_INJECTOR_DEBUG][HeadUpNotificationScreen::HeadUpNotificationScreen] Rendering HeadUpNotificationScreen for notification: 10|com.pr
+02:14:11.465  8232  8232 I probe   : nav notify seq=34 frame=2 period=500
+02:14:11.667  2060  2060 D [GAA]   : [Notification] Notification posted packageName:com.probe.topbar, notification:StatusBarNotification(pkg=com.probe.topbar user=UserHandle{10} id=103 tag=null 
+02:14:11.668  4716  4716 I NOTIFICATION_INJECTOR: [HeadUpNotificationListenerService::onNotificationPosted] needHeadUpNotification: StatusBarNotification(pkg=com.probe.topbar user=UserHandle{10}
+02:14:11.668  4716  4716 D NOTIFICATION_INJECTOR: [NOTIFICATION_INJECTOR_DEBUG][HeadUpNotificationHandler::onNotificationPosted] notification already shown: 103, channelId: probe_high, just upda
+02:14:11.674  4716  4716 D NOTIFICATION_INJECTOR: [NOTIFICATION_INJECTOR_DEBUG][HeadUpNotificationScreen::HeadUpNotificationScreen] Rendering HeadUpNotificationScreen for notification: 10|com.pr
+02:14:11.967  8232  8232 I probe   : nav notify seq=35 frame=3 period=500
+02:14:12.169  2060  2060 D [GAA]   : [Notification] Notification posted packageName:com.probe.topbar, notification:StatusBarNotification(pkg=com.probe.topbar user=UserHandle{10} id=103 tag=null 
+02:14:12.169  4716  4716 I NOTIFICATION_INJECTOR: [HeadUpNotificationListenerService::onNotificationPosted] needHeadUpNotification: StatusBarNotification(pkg=com.probe.topbar user=UserHandle{10}
+02:14:12.170  4716  4716 D NOTIFICATION_INJECTOR: [NOTIFICATION_INJECTOR_DEBUG][HeadUpNotificationHandler::onNotificationPosted] notification already shown: 103, channelId: probe_high, just upda
+02:14:12.174  4716  4716 D NOTIFICATION_INJECTOR: [NOTIFICATION_INJECTOR_DEBUG][HeadUpNotificationScreen::HeadUpNotificationScreen] Rendering HeadUpNotificationScreen for notification: 10|com.pr
+02:14:12.469  8232  8232 I probe   : nav notify seq=36 frame=0 period=500
+02:14:12.671  2060  2060 D [GAA]   : [Notification] Notification posted packageName:com.probe.topbar, notification:StatusBarNotification(pkg=com.probe.topbar user=UserHandle{10} id=103 tag=null 
+02:14:12.671  4716  4716 I NOTIFICATION_INJECTOR: [HeadUpNotificationListenerService::onNotificationPosted] needHeadUpNotification: StatusBarNotification(pkg=com.probe.topbar user=UserHandle{10}
+02:14:12.671  4716  4716 D NOTIFICATION_INJECTOR: [NOTIFICATION_INJECTOR_DEBUG][HeadUpNotificationHandler::onNotificationPosted] notification already shown: 103, channelId: probe_high, just upda
+02:14:12.690  4716  4716 D NOTIFICATION_INJECTOR: [NOTIFICATION_INJECTOR_DEBUG][HeadUpNotificationScreen::HeadUpNotificationScreen] Rendering HeadUpNotificationScreen for notification: 10|com.pr
+02:14:12.971  8232  8232 I probe   : nav notify seq=37 frame=1 period=500
+02:14:13.173  2060  2060 D [GAA]   : [Notification] Notification posted packageName:com.probe.topbar, notification:StatusBarNotification(pkg=com.probe.topbar user=UserHandle{10} id=103 tag=null 
+02:14:13.173  4716  4716 I NOTIFICATION_INJECTOR: [HeadUpNotificationListenerService::onNotificationPosted] needHeadUpNotification: StatusBarNotification(pkg=com.probe.topbar user=UserHandle{10}
+02:14:13.173  4716  4716 D NOTIFICATION_INJECTOR: [NOTIFICATION_INJECTOR_DEBUG][HeadUpNotificationHandler::onNotificationPosted] notification already shown: 103, channelId: probe_high, just upda
+02:14:13.190  4716  4716 D NOTIFICATION_INJECTOR: [NOTIFICATION_INJECTOR_DEBUG][HeadUpNotificationScreen::HeadUpNotificationScreen] Rendering HeadUpNotificationScreen for notification: 10|com.pr
+02:14:13.473  8232  8232 I probe   : nav notify seq=38 frame=2 period=500
+02:14:13.675  2060  2060 D [GAA]   : [Notification] Notification posted packageName:com.probe.topbar, notification:StatusBarNotification(pkg=com.probe.topbar user=UserHandle{10} id=103 tag=null 
+02:14:13.676  4716  4716 I NOTIFICATION_INJECTOR: [HeadUpNotificationListenerService::onNotificationPosted] needHeadUpNotification: StatusBarNotification(pkg=com.probe.topbar user=UserHandle{10}
+02:14:13.676  4716  4716 D NOTIFICATION_INJECTOR: [NOTIFICATION_INJECTOR_DEBUG][HeadUpNotificationHandler::onNotificationPosted] notification already shown: 103, channelId: probe_high, just upda
+02:14:13.690  4716  4716 D NOTIFICATION_INJECTOR: [NOTIFICATION_INJECTOR_DEBUG][HeadUpNotificationScreen::HeadUpNotificationScreen] Rendering HeadUpNotificationScreen for notification: 10|com.pr
+02:14:13.975  8232  8232 I probe   : nav notify seq=39 frame=3 period=500
+02:14:14.176  2060  2060 D [GAA]   : [Notification] Notification posted packageName:com.probe.topbar, notification:StatusBarNotification(pkg=com.probe.topbar user=UserHandle{10} id=103 tag=null 
+02:14:14.177  4716  4716 I NOTIFICATION_INJECTOR: [HeadUpNotificationListenerService::onNotificationPosted] needHeadUpNotification: StatusBarNotification(pkg=com.probe.topbar user=UserHandle{10}
+02:14:14.177  4716  4716 D NOTIFICATION_INJECTOR: [NOTIFICATION_INJECTOR_DEBUG][HeadUpNotificationHandler::onNotificationPosted] notification already shown: 103, channelId: probe_high, just upda
+02:14:14.190  4716  4716 D NOTIFICATION_INJECTOR: [NOTIFICATION_INJECTOR_DEBUG][HeadUpNotificationScreen::HeadUpNotificationScreen] Rendering HeadUpNotificationScreen for notification: 10|com.pr
+02:14:14.477  8232  8232 I probe   : nav notify seq=40 frame=0 period=500
+02:14:14.678  2060  2060 D [GAA]   : [Notification] Notification posted packageName:com.probe.topbar, notification:StatusBarNotification(pkg=com.probe.topbar user=UserHandle{10} id=103 tag=null 
+02:14:14.679  4716  4716 I NOTIFICATION_INJECTOR: [HeadUpNotificationListenerService::onNotificationPosted] needHeadUpNotification: StatusBarNotification(pkg=com.probe.topbar user=UserHandle{10}
+02:14:14.679  4716  4716 D NOTIFICATION_INJECTOR: [NOTIFICATION_INJECTOR_DEBUG][HeadUpNotificationHandler::onNotificationPosted] notification already shown: 103, channelId: probe_high, just upda
+02:14:14.689  4716  4716 D NOTIFICATION_INJECTOR: [NOTIFICATION_INJECTOR_DEBUG][HeadUpNotificationScreen::HeadUpNotificationScreen] Rendering HeadUpNotificationScreen for notification: 10|com.pr
+02:14:14.979  8232  8232 I probe   : nav notify seq=41 frame=1 period=500
+02:14:15.180  2060  2060 D [GAA]   : [Notification] Notification posted packageName:com.probe.topbar, notification:StatusBarNotification(pkg=com.probe.topbar user=UserHandle{10} id=103 tag=null 
+02:14:15.181  4716  4716 I NOTIFICATION_INJECTOR: [HeadUpNotificationListenerService::onNotificationPosted] needHeadUpNotification: StatusBarNotification(pkg=com.probe.topbar user=UserHandle{10}
+02:14:15.181  4716  4716 D NOTIFICATION_INJECTOR: [NOTIFICATION_INJECTOR_DEBUG][HeadUpNotificationHandler::onNotificationPosted] notification already shown: 103, channelId: probe_high, just upda
+02:14:15.190  4716  4716 D NOTIFICATION_INJECTOR: [NOTIFICATION_INJECTOR_DEBUG][HeadUpNotificationScreen::HeadUpNotificationScreen] Rendering HeadUpNotificationScreen for notification: 10|com.pr
+02:14:15.480  8232  8232 I probe   : nav notify seq=42 frame=2 period=500
+02:14:15.682  2060  2060 D [GAA]   : [Notification] Notification posted packageName:com.probe.topbar, notification:StatusBarNotification(pkg=com.probe.topbar user=UserHandle{10} id=103 tag=null 
+02:14:15.683  4716  4716 I NOTIFICATION_INJECTOR: [HeadUpNotificationListenerService::onNotificationPosted] needHeadUpNotification: StatusBarNotification(pkg=com.probe.topbar user=UserHandle{10}
+02:14:15.683  4716  4716 D NOTIFICATION_INJECTOR: [NOTIFICATION_INJECTOR_DEBUG][HeadUpNotificationHandler::onNotificationPosted] notification already shown: 103, channelId: probe_high, just upda
+02:14:15.695  4716  4716 D NOTIFICATION_INJECTOR: [NOTIFICATION_INJECTOR_DEBUG][HeadUpNotificationScreen::HeadUpNotificationScreen] Rendering HeadUpNotificationScreen for notification: 10|com.pr
+02:14:15.982  8232  8232 I probe   : nav notify seq=43 frame=3 period=500
+02:14:16.184  2060  2060 D [GAA]   : [Notification] Notification posted packageName:com.probe.topbar, notification:StatusBarNotification(pkg=com.probe.topbar user=UserHandle{10} id=103 tag=null 
+02:14:16.185  4716  4716 I NOTIFICATION_INJECTOR: [HeadUpNotificationListenerService::onNotificationPosted] needHeadUpNotification: StatusBarNotification(pkg=com.probe.topbar user=UserHandle{10}
+02:14:16.185  4716  4716 D NOTIFICATION_INJECTOR: [NOTIFICATION_INJECTOR_DEBUG][HeadUpNotificationHandler::onNotificationPosted] notification already shown: 103, channelId: probe_high, just upda
+02:14:16.191  4716  4716 D NOTIFICATION_INJECTOR: [NOTIFICATION_INJECTOR_DEBUG][HeadUpNotificationScreen::HeadUpNotificationScreen] Rendering HeadUpNotificationScreen for notification: 10|com.pr
+02:14:16.484  8232  8232 I probe   : nav notify seq=44 frame=0 period=500
+02:14:16.685  2060  2060 D [GAA]   : [Notification] Notification posted packageName:com.probe.topbar, notification:StatusBarNotification(pkg=com.probe.topbar user=UserHandle{10} id=103 tag=null 
+02:14:16.686  4716  4716 I NOTIFICATION_INJECTOR: [HeadUpNotificationListenerService::onNotificationPosted] needHeadUpNotification: StatusBarNotification(pkg=com.probe.topbar user=UserHandle{10}
+02:14:16.686  4716  4716 D NOTIFICATION_INJECTOR: [NOTIFICATION_INJECTOR_DEBUG][HeadUpNotificationHandler::onNotificationPosted] notification already shown: 103, channelId: probe_high, just upda
+02:14:16.692  4716  4716 D NOTIFICATION_INJECTOR: [NOTIFICATION_INJECTOR_DEBUG][HeadUpNotificationScreen::HeadUpNotificationScreen] Rendering HeadUpNotificationScreen for notification: 10|com.pr
+02:14:16.986  8232  8232 I probe   : nav notify seq=45 frame=1 period=500
+02:14:17.188  2060  2060 D [GAA]   : [Notification] Notification posted packageName:com.probe.topbar, notification:StatusBarNotification(pkg=com.probe.topbar user=UserHandle{10} id=103 tag=null 
+02:14:17.189  4716  4716 I NOTIFICATION_INJECTOR: [HeadUpNotificationListenerService::onNotificationPosted] needHeadUpNotification: StatusBarNotification(pkg=com.probe.topbar user=UserHandle{10}
+02:14:17.189  4716  4716 D NOTIFICATION_INJECTOR: [NOTIFICATION_INJECTOR_DEBUG][HeadUpNotificationHandler::onNotificationPosted] notification already shown: 103, channelId: probe_high, just upda
+02:14:17.208  4716  4716 D NOTIFICATION_INJECTOR: [NOTIFICATION_INJECTOR_DEBUG][HeadUpNotificationScreen::HeadUpNotificationScreen] Rendering HeadUpNotificationScreen for notification: 10|com.pr
+02:14:17.487  8232  8232 I probe   : nav notify seq=46 frame=2 period=500
+02:14:17.689  2060  2060 D [GAA]   : [Notification] Notification posted packageName:com.probe.topbar, notification:StatusBarNotification(pkg=com.probe.topbar user=UserHandle{10} id=103 tag=null 
+02:14:17.690  4716  4716 I NOTIFICATION_INJECTOR: [HeadUpNotificationListenerService::onNotificationPosted] needHeadUpNotification: StatusBarNotification(pkg=com.probe.topbar user=UserHandle{10}
+02:14:17.690  4716  4716 D NOTIFICATION_INJECTOR: [NOTIFICATION_INJECTOR_DEBUG][HeadUpNotificationHandler::onNotificationPosted] notification already shown: 103, channelId: probe_high, just upda
+02:14:17.707  4716  4716 D NOTIFICATION_INJECTOR: [NOTIFICATION_INJECTOR_DEBUG][HeadUpNotificationScreen::HeadUpNotificationScreen] Rendering HeadUpNotificationScreen for notification: 10|com.pr
+02:14:17.989  8232  8232 I probe   : nav notify seq=47 frame=3 period=500
+02:14:18.190  2060  2060 D [GAA]   : [Notification] Notification posted packageName:com.probe.topbar, notification:StatusBarNotification(pkg=com.probe.topbar user=UserHandle{10} id=103 tag=null 
+02:14:18.191  4716  4716 I NOTIFICATION_INJECTOR: [HeadUpNotificationListenerService::onNotificationPosted] needHeadUpNotification: StatusBarNotification(pkg=com.probe.topbar user=UserHandle{10}
+02:14:18.191  4716  4716 D NOTIFICATION_INJECTOR: [NOTIFICATION_INJECTOR_DEBUG][HeadUpNotificationHandler::onNotificationPosted] notification already shown: 103, channelId: probe_high, just upda
+02:14:18.206  4716  4716 D NOTIFICATION_INJECTOR: [NOTIFICATION_INJECTOR_DEBUG][HeadUpNotificationScreen::HeadUpNotificationScreen] Rendering HeadUpNotificationScreen for notification: 10|com.pr
+02:14:18.491  8232  8232 I probe   : nav notify seq=48 frame=0 period=500
+02:14:18.693  2060  2060 D [GAA]   : [Notification] Notification posted packageName:com.probe.topbar, notification:StatusBarNotification(pkg=com.probe.topbar user=UserHandle{10} id=103 tag=null 
+02:14:18.693  4716  4716 I NOTIFICATION_INJECTOR: [HeadUpNotificationListenerService::onNotificationPosted] needHeadUpNotification: StatusBarNotification(pkg=com.probe.topbar user=UserHandle{10}
+02:14:18.693  4716  4716 D NOTIFICATION_INJECTOR: [NOTIFICATION_INJECTOR_DEBUG][HeadUpNotificationHandler::onNotificationPosted] notification already shown: 103, channelId: probe_high, just upda
+02:14:18.707  4716  4716 D NOTIFICATION_INJECTOR: [NOTIFICATION_INJECTOR_DEBUG][HeadUpNotificationScreen::HeadUpNotificationScreen] Rendering HeadUpNotificationScreen for notification: 10|com.pr
+02:14:18.993  8232  8232 I probe   : nav notify seq=49 frame=1 period=500
+02:14:19.194  2060  2060 D [GAA]   : [Notification] Notification posted packageName:com.probe.topbar, notification:StatusBarNotification(pkg=com.probe.topbar user=UserHandle{10} id=103 tag=null 
+02:14:19.194  4716  4716 I NOTIFICATION_INJECTOR: [HeadUpNotificationListenerService::onNotificationPosted] needHeadUpNotification: StatusBarNotification(pkg=com.probe.topbar user=UserHandle{10}
+02:14:19.194  4716  4716 D NOTIFICATION_INJECTOR: [NOTIFICATION_INJECTOR_DEBUG][HeadUpNotificationHandler::onNotificationPosted] notification already shown: 103, channelId: probe_high, just upda
+02:14:19.208  4716  4716 D NOTIFICATION_INJECTOR: [NOTIFICATION_INJECTOR_DEBUG][HeadUpNotificationScreen::HeadUpNotificationScreen] Rendering HeadUpNotificationScreen for notification: 10|com.pr
+02:14:19.495  8232  8232 I probe   : nav notify seq=50 frame=2 period=500
+02:14:19.696  2060  2060 D [GAA]   : [Notification] Notification posted packageName:com.probe.topbar, notification:StatusBarNotification(pkg=com.probe.topbar user=UserHandle{10} id=103 tag=null 
+02:14:19.697  4716  4716 I NOTIFICATION_INJECTOR: [HeadUpNotificationListenerService::onNotificationPosted] needHeadUpNotification: StatusBarNotification(pkg=com.probe.topbar user=UserHandle{10}
+02:14:19.697  4716  4716 D NOTIFICATION_INJECTOR: [NOTIFICATION_INJECTOR_DEBUG][HeadUpNotificationHandler::onNotificationPosted] notification already shown: 103, channelId: probe_high, just upda
+02:14:19.706  4716  4716 D NOTIFICATION_INJECTOR: [NOTIFICATION_INJECTOR_DEBUG][HeadUpNotificationScreen::HeadUpNotificationScreen] Rendering HeadUpNotificationScreen for notification: 10|com.pr
+02:14:19.996  8232  8232 I probe   : nav notify seq=51 frame=3 period=500
+02:14:20.197  2060  2060 D [GAA]   : [Notification] Notification posted packageName:com.probe.topbar, notification:StatusBarNotification(pkg=com.probe.topbar user=UserHandle{10} id=103 tag=null 
+02:14:20.197  4716  4716 I NOTIFICATION_INJECTOR: [HeadUpNotificationListenerService::onNotificationPosted] needHeadUpNotification: StatusBarNotification(pkg=com.probe.topbar user=UserHandle{10}
+02:14:20.197  4716  4716 D NOTIFICATION_INJECTOR: [NOTIFICATION_INJECTOR_DEBUG][HeadUpNotificationHandler::onNotificationPosted] notification already shown: 103, channelId: probe_high, just upda
+02:14:20.207  4716  4716 D NOTIFICATION_INJECTOR: [NOTIFICATION_INJECTOR_DEBUG][HeadUpNotificationScreen::HeadUpNotificationScreen] Rendering HeadUpNotificationScreen for notification: 10|com.pr
+02:14:20.498  8232  8232 I probe   : nav notify seq=52 frame=0 period=500
+02:14:20.699  4716  4716 I NOTIFICATION_INJECTOR: [HeadUpNotificationListenerService::onNotificationPosted] needHeadUpNotification: StatusBarNotification(pkg=com.probe.topbar user=UserHandle{10}
+02:14:20.699  4716  4716 D NOTIFICATION_INJECTOR: [NOTIFICATION_INJECTOR_DEBUG][HeadUpNotificationHandler::onNotificationPosted] notification already shown: 103, channelId: probe_high, just upda
+02:14:20.699  2060  2060 D [GAA]   : [Notification] Notification posted packageName:com.probe.topbar, notification:StatusBarNotification(pkg=com.probe.topbar user=UserHandle{10} id=103 tag=null 
+02:14:20.707  4716  4716 D NOTIFICATION_INJECTOR: [NOTIFICATION_INJECTOR_DEBUG][HeadUpNotificationScreen::HeadUpNotificationScreen] Rendering HeadUpNotificationScreen for notification: 10|com.pr
+02:14:21.000  8232  8232 I probe   : nav notify seq=53 frame=1 period=500
+02:14:21.200  2060  2060 D [GAA]   : [Notification] Notification posted packageName:com.probe.topbar, notification:StatusBarNotification(pkg=com.probe.topbar user=UserHandle{10} id=103 tag=null 
+02:14:21.201  4716  4716 I NOTIFICATION_INJECTOR: [HeadUpNotificationListenerService::onNotificationPosted] needHeadUpNotification: StatusBarNotification(pkg=com.probe.topbar user=UserHandle{10}
+02:14:21.201  4716  4716 D NOTIFICATION_INJECTOR: [NOTIFICATION_INJECTOR_DEBUG][HeadUpNotificationHandler::onNotificationPosted] notification already shown: 103, channelId: probe_high, just upda
+02:14:21.208  4716  4716 D NOTIFICATION_INJECTOR: [NOTIFICATION_INJECTOR_DEBUG][HeadUpNotificationScreen::HeadUpNotificationScreen] Rendering HeadUpNotificationScreen for notification: 10|com.pr
+02:14:21.501  8232  8232 I probe   : nav notify seq=54 frame=2 period=500
+02:14:21.704  2060  2060 D [GAA]   : [Notification] Notification posted packageName:com.probe.topbar, notification:StatusBarNotification(pkg=com.probe.topbar user=UserHandle{10} id=103 tag=null 
+02:14:21.704  4716  4716 I NOTIFICATION_INJECTOR: [HeadUpNotificationListenerService::onNotificationPosted] needHeadUpNotification: StatusBarNotification(pkg=com.probe.topbar user=UserHandle{10}
+02:14:21.704  4716  4716 D NOTIFICATION_INJECTOR: [NOTIFICATION_INJECTOR_DEBUG][HeadUpNotificationHandler::onNotificationPosted] notification already shown: 103, channelId: probe_high, just upda
+02:14:21.724  4716  4716 D NOTIFICATION_INJECTOR: [NOTIFICATION_INJECTOR_DEBUG][HeadUpNotificationScreen::HeadUpNotificationScreen] Rendering HeadUpNotificationScreen for notification: 10|com.pr
+02:14:22.003  8232  8232 I probe   : nav notify seq=55 frame=3 period=500
+02:14:22.206  4716  4716 I NOTIFICATION_INJECTOR: [HeadUpNotificationListenerService::onNotificationPosted] needHeadUpNotification: StatusBarNotification(pkg=com.probe.topbar user=UserHandle{10}
+02:14:22.206  4716  4716 D NOTIFICATION_INJECTOR: [NOTIFICATION_INJECTOR_DEBUG][HeadUpNotificationHandler::onNotificationPosted] notification already shown: 103, channelId: probe_high, just upda
+02:14:22.206  2060  2060 D [GAA]   : [Notification] Notification posted packageName:com.probe.topbar, notification:StatusBarNotification(pkg=com.probe.topbar user=UserHandle{10} id=103 tag=null 
+02:14:22.223  4716  4716 D NOTIFICATION_INJECTOR: [NOTIFICATION_INJECTOR_DEBUG][HeadUpNotificationScreen::HeadUpNotificationScreen] Rendering HeadUpNotificationScreen for notification: 10|com.pr
+02:14:22.505  8232  8232 I probe   : nav notify seq=56 frame=0 period=500
+02:14:22.707  2060  2060 D [GAA]   : [Notification] Notification posted packageName:com.probe.topbar, notification:StatusBarNotification(pkg=com.probe.topbar user=UserHandle{10} id=103 tag=null 
+02:14:22.708  4716  4716 I NOTIFICATION_INJECTOR: [HeadUpNotificationListenerService::onNotificationPosted] needHeadUpNotification: StatusBarNotification(pkg=com.probe.topbar user=UserHandle{10}
+02:14:22.708  4716  4716 D NOTIFICATION_INJECTOR: [NOTIFICATION_INJECTOR_DEBUG][HeadUpNotificationHandler::onNotificationPosted] notification already shown: 103, channelId: probe_high, just upda
+02:14:22.724  4716  4716 D NOTIFICATION_INJECTOR: [NOTIFICATION_INJECTOR_DEBUG][HeadUpNotificationScreen::HeadUpNotificationScreen] Rendering HeadUpNotificationScreen for notification: 10|com.pr
+02:14:23.007  8232  8232 I probe   : nav notify seq=57 frame=1 period=500
+02:14:23.209  2060  2060 D [GAA]   : [Notification] Notification posted packageName:com.probe.topbar, notification:StatusBarNotification(pkg=com.probe.topbar user=UserHandle{10} id=103 tag=null 
+02:14:23.209  4716  4716 I NOTIFICATION_INJECTOR: [HeadUpNotificationListenerService::onNotificationPosted] needHeadUpNotification: StatusBarNotification(pkg=com.probe.topbar user=UserHandle{10}
+02:14:23.209  4716  4716 D NOTIFICATION_INJECTOR: [NOTIFICATION_INJECTOR_DEBUG][HeadUpNotificationHandler::onNotificationPosted] notification already shown: 103, channelId: probe_high, just upda
+02:14:23.223  4716  4716 D NOTIFICATION_INJECTOR: [NOTIFICATION_INJECTOR_DEBUG][HeadUpNotificationScreen::HeadUpNotificationScreen] Rendering HeadUpNotificationScreen for notification: 10|com.pr
+02:14:23.509  8232  8232 I probe   : nav notify seq=58 frame=2 period=500
+02:14:23.710  2060  2060 D [GAA]   : [Notification] Notification posted packageName:com.probe.topbar, notification:StatusBarNotification(pkg=com.probe.topbar user=UserHandle{10} id=103 tag=null 
+02:14:23.711  4716  4716 I NOTIFICATION_INJECTOR: [HeadUpNotificationListenerService::onNotificationPosted] needHeadUpNotification: StatusBarNotification(pkg=com.probe.topbar user=UserHandle{10}
+02:14:23.711  4716  4716 D NOTIFICATION_INJECTOR: [NOTIFICATION_INJECTOR_DEBUG][HeadUpNotificationHandler::onNotificationPosted] notification already shown: 103, channelId: probe_high, just upda
+02:14:23.723  4716  4716 D NOTIFICATION_INJECTOR: [NOTIFICATION_INJECTOR_DEBUG][HeadUpNotificationScreen::HeadUpNotificationScreen] Rendering HeadUpNotificationScreen for notification: 10|com.pr
+02:14:24.011  8232  8232 I probe   : nav notify seq=59 frame=3 period=500
+02:14:24.219  4716  4716 I NOTIFICATION_INJECTOR: [HeadUpNotificationListenerService::onNotificationPosted] needHeadUpNotification: StatusBarNotification(pkg=com.probe.topbar user=UserHandle{10}
+02:14:24.219  4716  4716 D NOTIFICATION_INJECTOR: [NOTIFICATION_INJECTOR_DEBUG][HeadUpNotificationHandler::onNotificationPosted] notification already shown: 103, channelId: probe_high, just upda
+02:14:24.219  2060  2060 D [GAA]   : [Notification] Notification posted packageName:com.probe.topbar, notification:StatusBarNotification(pkg=com.probe.topbar user=UserHandle{10} id=103 tag=null 
+02:14:24.229  4716  4716 D NOTIFICATION_INJECTOR: [NOTIFICATION_INJECTOR_DEBUG][HeadUpNotificationScreen::HeadUpNotificationScreen] Rendering HeadUpNotificationScreen for notification: 10|com.pr
+02:14:24.512  8232  8232 I probe   : nav loop done after 60 updates (갱신 중단)

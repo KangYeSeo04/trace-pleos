@@ -1,0 +1,6 @@
+02:17:29.989  8232  8232 I probe   : service action=T8A
+02:17:29.990  8232  8232 I probe   : startForeground ok channel=probe_low
+02:17:29.990  8232  8232 I probe   : run cmd=T8A arg=0
+02:17:29.992  8232  8232 I probe   : T8 canDrawOverlays=false variantB=false
+02:17:29.997  8232  8232 E probe   : T8 addView failed: android.view.WindowManager$BadTokenException: Unable to add window android.view.ViewRootImpl$W@d49c5d -- permission denied for window type 2038
+02:17:29.997  8232  8232 E probe   : android.view.WindowManager$BadTokenException: Unable to add window android.view.ViewRootImpl$W@d49c5d -- permission denied for window type 2038

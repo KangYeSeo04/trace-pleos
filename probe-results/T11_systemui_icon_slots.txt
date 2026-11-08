@@ -1,0 +1,43 @@
+    StatusBarIconControllerImpl:
+    ----------------------------------------------------------------------------
+    StatusBarIconController state:
+    StatusBarIconList state:
+      icon slots: 36
+         0:(no_calling) holder=null 
+         1:(call_strength) holder=null 
+         2:(alarm_clock) holder=StatusBarIconHolder(type=ICON tag=0 visible=false) 
+         3:(rotate) holder=null 
+         4:(headset) holder=null 
+         5:(data_saver) holder=StatusBarIconHolder(type=ICON tag=0 visible=false) 
+         6:(ime) holder=null 
+         7:(sync_failing) holder=null 
+         8:(sync_active) holder=null 
+         9:(nfc) holder=null 
+        10:(tty) holder=null 
+        11:(speakerphone) holder=null 
+        12:(cdma_eri) holder=null 
+        13:(data_connection) holder=null 
+        14:(phone_evdo_signal) holder=null 
+        15:(phone_signal) holder=null 
+        16:(secure) holder=null 
+        17:(managed_profile) holder=null 
+        18:(connected_display) holder=StatusBarIconHolder(type=ICON tag=0 visible=false) 
+        19:(vpn) holder=null 
+        20:(bluetooth) holder=StatusBarIconHolder(type=ICON tag=0 visible=false) 
+        21:(camera) holder=StatusBarIconHolder(type=ICON tag=0 visible=false) 
+        22:(microphone) holder=StatusBarIconHolder(type=ICON tag=0 visible=false) 
+        23:(location) holder=StatusBarIconHolder(type=ICON tag=0 visible=false) 
+        24:(mute) holder=StatusBarIconHolder(type=ICON tag=0 visible=false) 
+        25:(volume) holder=StatusBarIconHolder(type=ICON tag=0 visible=false) 
+        26:(zen) holder=StatusBarIconHolder(type=ICON tag=0 visible=false) 
+        27:(screen_record) holder=StatusBarIconHolder(type=ICON tag=0 visible=false) 
+        28:(cast) holder=StatusBarIconHolder(type=ICON tag=0 visible=false) 
+        29:(ethernet) holder=null 
+        30:(wifi) holder=null 
+        31:(hotspot) holder=StatusBarIconHolder(type=ICON tag=0 visible=false) 
+        32:(mobile) holder=null | 1 subSlots: StatusBarIconHolder(type=MOBILE_NEW tag=1 visible=true)
+        33:(airplane) holder=null 
+        34:(battery) holder=null 
+        35:(sensors_off) holder=StatusBarIconHolder(type=ICON tag=0 visible=false) 
+
+    CRITICAL dump took 0ms -- StatusBarIconControllerImpl

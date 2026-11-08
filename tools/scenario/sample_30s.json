@@ -1,0 +1,17 @@
+{
+  "name": "30초 샘플: 출발 → 60km/h → 공조 → 감속 → 정차 (거리·소비 20배속)",
+  "auto": { "km_per_kwh": 6.0, "hvac_kw": 1.5, "speedup": 20, "tick_s": 1.0 },
+  "steps": [
+    { "t": 0,  "note": "출발 전", "gear": "Park", "speed_kph": 0, "brake": 0, "battery_kwh": 50.0, "soc": 65, "odometer_km": 12345, "range_m": 300000, "hvac": { "power": false } },
+    { "t": 2,  "note": "D", "gear": "Drive" },
+    { "t": 3,  "note": "가속", "speed_kph": 30, "accelerator": 30 },
+    { "t": 6,  "speed_kph": 60, "accelerator": 20 },
+    { "t": 10, "note": "공조 켬 26도", "hvac": { "power": true, "ac": true, "driver_temp": 26, "fan_speed": 5 } },
+    { "t": 15, "note": "좌회전 신호", "turn_signal": "BlinkLeft" },
+    { "t": 17, "turn_signal": "Off" },
+    { "t": 20, "note": "감속", "speed_kph": 20, "accelerator": 0, "brake": 40 },
+    { "t": 25, "note": "정차", "speed_kph": 0, "brake": 100 },
+    { "t": 27, "note": "P + 공조 끔", "gear": "Park", "brake": 0, "hvac": { "power": false } },
+    { "t": 30, "note": "끝" }
+  ]
+}

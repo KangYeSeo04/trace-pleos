@@ -1,0 +1,2 @@
+02:25:51.788 15974 15974 I probe   : T9 statusBars=Insets{left=0, top=0, right=0, bottom=0} systemBars=Insets{left=0, top=0, right=0, bottom=0} cutout=Insets{left=0, top=0, right=0, bottom=0}
+02:25:51.853 15974 15974 I probe   : T9 root screenY=186 h=1114 window=1210

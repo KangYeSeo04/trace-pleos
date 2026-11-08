@@ -1,0 +1,6 @@
+   6 com.android.systemui.car.statusicon.StatusIconPanelController
+   1 com.android.systemui.car.statusicon.ui.LocationStatusIconController
+   1 com.android.systemui.car.statusicon.ui.PhoneCallStatusIconController
+   1 com.android.systemui.car.statusicon.ui.gleo.VehicleSettingsRepositoryImpl
+  17 com.android.systemui.car.statusicon.ui.icons.CarStatusItem
+   1 com.android.systemui.car.statusicon.ui.privacy.PrivacyChipController

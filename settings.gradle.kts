@@ -25,3 +25,5 @@ dependencyResolutionManagement {
 
 rootProject.name = "trace"
 include(":app")
+include(":topbar-probe")
+include(":pip-probe")

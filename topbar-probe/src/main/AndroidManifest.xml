@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <uses-feature
+        android:name="android.hardware.type.automotive"
+        android:required="true" />
+
+    <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE_SPECIAL_USE" />
+    <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
+    <!-- T12: 시스템 서명 권한. 서드파티에는 부여되지 않는 것을 확인하기 위해 선언만 함 -->
+    <uses-permission android:name="android.permission.STATUS_BAR" />
+
+    <application
+        android:label="TopbarProbe"
+        android:icon="@android:drawable/ic_dialog_info"
+        android:theme="@android:style/Theme.DeviceDefault">
+
+        <activity
+            android:name=".MainActivity"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+
+        <activity
+            android:name=".EdgeActivity"
+            android:exported="true" />
+
+        <activity
+            android:name=".DisplayTestActivity"
+            android:exported="true" />
+
+        <!-- adb에서 테스트를 실행하기 위한 진입점: am broadcast -n com.probe.topbar/.CmdReceiver -a T3 -->
+        <receiver
+            android:name=".CmdReceiver"
+            android:exported="true" />
+
+        <service
+            android:name=".ProbeService"
+            android:exported="true"
+            android:foregroundServiceType="specialUse">
+            <property
+                android:name="android.app.PROPERTY_SPECIAL_USE_FGS_SUBTYPE"
+                android:value="topbar display probe" />
+        </service>
+
+        <service
+            android:name=".OverlayService"
+            android:exported="true"
+            android:foregroundServiceType="specialUse">
+            <property
+                android:name="android.app.PROPERTY_SPECIAL_USE_FGS_SUBTYPE"
+                android:value="overlay character probe" />
+        </service>
+    </application>
+</manifest>

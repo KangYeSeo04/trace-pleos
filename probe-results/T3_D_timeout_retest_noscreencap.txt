@@ -1,0 +1,6 @@
+02:22:05.234  8232  8232 I probe   : run cmd=T3 arg=6000
+02:22:05.241  8232  8232 I probe   : nav notify seq=0 frame=0 period=5000
+02:22:05.464  4716  4737 D NOTIFICATION_INJECTOR: [NOTIFICATION_INJECTOR_DEBUG][OverlayController::emit] hunEventFlow: SHOW
+02:22:10.248  8232  8232 I probe   : nav notify seq=1 frame=0 period=5000
+02:22:10.450  4716  4716 D NOTIFICATION_INJECTOR: [NOTIFICATION_INJECTOR_DEBUG][HeadUpNotificationHandler::onNotificationPosted] notification already shown: 103, channelId: probe_high, just upda
+02:22:15.253  8232  8232 I probe   : nav loop done after 2 updates (갱신 중단)

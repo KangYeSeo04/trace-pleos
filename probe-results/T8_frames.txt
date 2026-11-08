@@ -1,0 +1,28 @@
+01_start | window  frame=[0,90][64,154] | top=u10 com.probe.topbar/.MainActivity | overlayServiceRecords=3
+02_pos_A | window  frame=[0,90][64,154] | top=u10 com.probe.topbar/.MainActivity | overlayServiceRecords=3
+02_pos_B | window  frame=[2496,90][2560,154] | top=u10 com.probe.topbar/.MainActivity | overlayServiceRecords=3
+02_pos_C | window  frame=[0,1236][64,1300] | top=u10 com.probe.topbar/.MainActivity | overlayServiceRecords=3
+02_pos_D | window  frame=[2496,1236][2560,1300] | top=u10 com.probe.topbar/.MainActivity | overlayServiceRecords=3
+02_pos_E | window  frame=[0,0][64,64] | top=u10 com.probe.topbar/.MainActivity | overlayServiceRecords=3
+02_pos_F | window  frame=[2496,0][2560,64] | top=u10 com.probe.topbar/.MainActivity | overlayServiceRecords=3
+03_home | window  frame=[2496,90][2560,154] | top=u10 com.probe.topbar/.MainActivity | overlayServiceRecords=3
+04_navi | window  frame=[2496,90][2560,154] | top=u10 ai.umos.maps.android.navigation.app/.MainActivity | overlayServiceRecords=3
+05_settings | window  frame=[2496,90][2560,154] | top=u10 com.android.car.settings/.common.CarSettingActivities$HomepageActivity | overlayServiceRecords=3
+06_drive_D30 | window  frame=[2496,90][2560,154] | top=u10 com.android.car.settings/.common.CarSettingActivities$HomepageActivity | overlayServiceRecords=3
+Display id: 0 UXR: DO: true UxR: 80 time: 3974259534936
+probe task id=1000038
+07_app_closed | window  frame=[2496,90][2560,154] | top=u10 com.android.car.settings/.common.CarSettingActivities$HomepageActivity | overlayServiceRecords=3
+MainActivity records after close: 0
+08_app_closed_plus10s | window  frame=[2496,90][2560,154] | top=u10 com.android.car.settings/.common.CarSettingActivities$HomepageActivity | overlayServiceRecords=3
+--- 재측정 (Settings가 오버레이를 숨기므로 내비 화면 기준) ---
+05_settings 상태:     mPolicyVisibility=false mLegacyPolicyVisibilityAfterAnim=false mAppOpVisibility=true parentHidden=false mPermanentlyHidden=false mHiddenWhileSuspended=false mForceHideNonSystemOverlayWindow=true
+05_settings 상태:     isVisible=false
+05b_navi_after_settings | window frame=[2496,90][2560,154] | isVisible=true | top=u10 ai.umos.maps.android.navigation.app/.MainActivity
+06b_drive_D30_navi | window frame=[2496,90][2560,154] | isVisible=true | top=u10 ai.umos.maps.android.navigation.app/.MainActivity
+probe task id=1000040
+07b_app_closed_navi | window frame=[2496,90][2560,154] | isVisible=true | top=u10 ai.umos.maps.android.navigation.app/.MainActivity
+MainActivity records after close: 0
+  * ServiceRecord{75be53e u10 com.probe.topbar/.OverlayService}
+    isForeground=true foregroundId=2 types=40000000 foregroundNoti=Notification(channel=probe_low shortcut=null contentView=null vibrate=null sound=null defaults=0x0 flags=0x62 color=0x00000000 vis=PRIVATE)
+08b_app_closed_drive_D30 | window frame=[2496,90][2560,154] | isVisible=true | top=u10 ai.umos.maps.android.navigation.app/.MainActivity
+09b_app_closed_drive_plus30s | window frame=[2496,90][2560,154] | isVisible=true | top=u10 ai.umos.maps.android.navigation.app/.MainActivity

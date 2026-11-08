@@ -1,0 +1,208 @@
+02:13:22.627  8232  8232 I probe   : run cmd=T4 arg=1000
+02:13:22.631  8232  8232 I probe   : nav notify seq=0 frame=0 period=1000
+02:13:22.834  2060  2060 D [GAA]   : [Notification] Notification posted packageName:com.probe.topbar, notification:StatusBarNotification(pkg=com.probe.topbar user=UserHandle{10} id=103 tag=null 
+02:13:22.835  4716  4716 I NOTIFICATION_INJECTOR: [HeadUpNotificationListenerService::onNotificationPosted] needHeadUpNotification: StatusBarNotification(pkg=com.probe.topbar user=UserHandle{10}
+02:13:22.863  4716  4716 D NOTIFICATION_INJECTOR: [NOTIFICATION_INJECTOR_DEBUG][HeadUpNotificationScreen::HeadUpNotificationScreen] Rendering HeadUpNotificationScreen for notification: 10|com.pr
+02:13:22.927 32059 32059 W FanDirectionRepo: 	at ai.umos.applibrary.DaggerAppLibraryApplication_HiltComponents_SingletonC$ViewModelCImpl.mapOfStringAndVehicleControlStrategy(DaggerAppLibraryAppl
+02:13:22.927 32059 32059 W FanDirectionRepo: 	at ai.umos.applibrary.DaggerAppLibraryApplication_HiltComponents_SingletonC$ViewModelCImpl.mapOfStringAndVehicleControlStrategy(DaggerAppLibraryAppl
+02:13:23.113   462   650 I APM::AudioPolicyEngine: getDevicesForStrategyInt no device found for strategy 1
+02:13:23.115   462   650 I APM::AudioPolicyEngine: getDevicesForStrategyInt no device found for strategy 2
+02:13:23.115   462   650 I APM::AudioPolicyEngine: getDevicesForStrategyInt no device found for strategy 5
+02:13:23.116   462   650 I APM::AudioPolicyEngine: getDevicesForStrategyInt no device found for strategy 7
+02:13:23.116   462   650 I APM::AudioPolicyEngine: getDevicesForStrategyInt no device found for strategy 3
+02:13:23.116   462   650 I APM::AudioPolicyEngine: getDevicesForStrategyInt no device found for strategy 0
+02:13:23.116   462   650 I APM::AudioPolicyEngine: getDevicesForStrategyInt no device found for strategy 4
+02:13:23.116   462   650 I APM::AudioPolicyEngine: getDevicesForStrategyInt no device found for strategy 9
+02:13:23.116   462   650 I APM::AudioPolicyEngine: getDevicesForStrategyInt no device found for strategy 6
+02:13:23.116   462   650 I APM::AudioPolicyEngine: getDevicesForStrategyInt no device found for strategy 8
+02:13:23.117   462   650 I APM::AudioPolicyEngine: getDevicesForStrategyInt no device found for strategy 8
+02:13:23.117   462   650 I APM::AudioPolicyEngine: getDevicesForStrategyInt no device found for strategy 0
+02:13:23.633  8232  8232 I probe   : nav notify seq=1 frame=1 period=1000
+02:13:23.835  4716  4716 I NOTIFICATION_INJECTOR: [HeadUpNotificationListenerService::onNotificationPosted] needHeadUpNotification: StatusBarNotification(pkg=com.probe.topbar user=UserHandle{10}
+02:13:23.835  4716  4716 D NOTIFICATION_INJECTOR: [NOTIFICATION_INJECTOR_DEBUG][HeadUpNotificationHandler::onNotificationPosted] notification already shown: 103, channelId: probe_high, just upda
+02:13:23.835  2060  2060 D [GAA]   : [Notification] Notification posted packageName:com.probe.topbar, notification:StatusBarNotification(pkg=com.probe.topbar user=UserHandle{10} id=103 tag=null 
+02:13:23.845  4716  4716 D NOTIFICATION_INJECTOR: [NOTIFICATION_INJECTOR_DEBUG][HeadUpNotificationScreen::HeadUpNotificationScreen] Rendering HeadUpNotificationScreen for notification: 10|com.pr
+02:13:24.636  8232  8232 I probe   : nav notify seq=2 frame=2 period=1000
+02:13:24.837  2060  2060 D [GAA]   : [Notification] Notification posted packageName:com.probe.topbar, notification:StatusBarNotification(pkg=com.probe.topbar user=UserHandle{10} id=103 tag=null 
+02:13:24.838  4716  4716 I NOTIFICATION_INJECTOR: [HeadUpNotificationListenerService::onNotificationPosted] needHeadUpNotification: StatusBarNotification(pkg=com.probe.topbar user=UserHandle{10}
+02:13:24.838  4716  4716 D NOTIFICATION_INJECTOR: [NOTIFICATION_INJECTOR_DEBUG][HeadUpNotificationHandler::onNotificationPosted] notification already shown: 103, channelId: probe_high, just upda
+02:13:24.860  4716  4716 D NOTIFICATION_INJECTOR: [NOTIFICATION_INJECTOR_DEBUG][HeadUpNotificationScreen::HeadUpNotificationScreen] Rendering HeadUpNotificationScreen for notification: 10|com.pr
+02:13:25.639  8232  8232 I probe   : nav notify seq=3 frame=3 period=1000
+02:13:25.841  2060  2060 D [GAA]   : [Notification] Notification posted packageName:com.probe.topbar, notification:StatusBarNotification(pkg=com.probe.topbar user=UserHandle{10} id=103 tag=null 
+02:13:25.842  4716  4716 I NOTIFICATION_INJECTOR: [HeadUpNotificationListenerService::onNotificationPosted] needHeadUpNotification: StatusBarNotification(pkg=com.probe.topbar user=UserHandle{10}
+02:13:25.842  4716  4716 D NOTIFICATION_INJECTOR: [NOTIFICATION_INJECTOR_DEBUG][HeadUpNotificationHandler::onNotificationPosted] notification already shown: 103, channelId: probe_high, just upda
+02:13:25.857  4716  4716 D NOTIFICATION_INJECTOR: [NOTIFICATION_INJECTOR_DEBUG][HeadUpNotificationScreen::HeadUpNotificationScreen] Rendering HeadUpNotificationScreen for notification: 10|com.pr
+02:13:26.642  8232  8232 I probe   : nav notify seq=4 frame=0 period=1000
+02:13:26.844  2060  2060 D [GAA]   : [Notification] Notification posted packageName:com.probe.topbar, notification:StatusBarNotification(pkg=com.probe.topbar user=UserHandle{10} id=103 tag=null 
+02:13:26.844  4716  4716 I NOTIFICATION_INJECTOR: [HeadUpNotificationListenerService::onNotificationPosted] needHeadUpNotification: StatusBarNotification(pkg=com.probe.topbar user=UserHandle{10}
+02:13:26.844  4716  4716 D NOTIFICATION_INJECTOR: [NOTIFICATION_INJECTOR_DEBUG][HeadUpNotificationHandler::onNotificationPosted] notification already shown: 103, channelId: probe_high, just upda
+02:13:26.856  4716  4716 D NOTIFICATION_INJECTOR: [NOTIFICATION_INJECTOR_DEBUG][HeadUpNotificationScreen::HeadUpNotificationScreen] Rendering HeadUpNotificationScreen for notification: 10|com.pr
+02:13:27.180  1155  2146 D NetworkMonitor/100: isDataStall: result=2, tcp packets received=0, latest tcp fail rate=100, consecutive dns timeout count=0
+02:13:27.280  1155   997 D NetworkMonitor/100: PROBE_HTTP http://connectivitycheck.gstatic.com/generate_204 time=87ms ret=204 request={Connection=[close], User-Agent=[Mozilla/5.0 (X11; Linux x86
+02:13:27.326  1155   976 D NetworkMonitor/100: PROBE_HTTPS https://www.google.com/generate_204 time=132ms ret=204 request={Connection=[close], User-Agent=[Mozilla/5.0 (X11; Linux x86_64) AppleWe
+02:13:27.644  8232  8232 I probe   : nav notify seq=5 frame=1 period=1000
+02:13:27.846  2060  2060 D [GAA]   : [Notification] Notification posted packageName:com.probe.topbar, notification:StatusBarNotification(pkg=com.probe.topbar user=UserHandle{10} id=103 tag=null 
+02:13:27.846  4716  4716 I NOTIFICATION_INJECTOR: [HeadUpNotificationListenerService::onNotificationPosted] needHeadUpNotification: StatusBarNotification(pkg=com.probe.topbar user=UserHandle{10}
+02:13:27.857  4716  4716 D NOTIFICATION_INJECTOR: [NOTIFICATION_INJECTOR_DEBUG][HeadUpNotificationScreen::HeadUpNotificationScreen] Rendering HeadUpNotificationScreen for notification: 10|com.pr
+02:13:27.904   462   462 I APM::AudioPolicyEngine: getDevicesForStrategyInt no device found for strategy 0
+02:13:27.938   746   800 I DisplayDeviceRepository: Display device changed: DisplayDeviceInfo{"기본으로 제공되는 화면": uniqueId="local:4619827259835644672", 2560 x 1440, modeId 1, ren
+02:13:28.384   746  3952 E DisplayManagerService: Couldn't find a mode for the requestedRefreshRate: 60.0 on Display: 0
+02:13:28.389   746   800 I DisplayDeviceRepository: Display device changed: DisplayDeviceInfo{"기본으로 제공되는 화면": uniqueId="local:4619827259835644672", 2560 x 1440, modeId 1, ren
+02:13:28.455   746   800 I DisplayDeviceRepository: Display device changed: DisplayDeviceInfo{"기본으로 제공되는 화면": uniqueId="local:4619827259835644672", 2560 x 1440, modeId 1, ren
+02:13:28.497   462   650 I APM::AudioPolicyEngine: getDevicesForStrategyInt no device found for strategy 1
+02:13:28.497   462   650 I APM::AudioPolicyEngine: getDevicesForStrategyInt no device found for strategy 2
+02:13:28.497   462   650 I APM::AudioPolicyEngine: getDevicesForStrategyInt no device found for strategy 5
+02:13:28.498   462   650 I APM::AudioPolicyEngine: getDevicesForStrategyInt no device found for strategy 7
+02:13:28.498   462   650 I APM::AudioPolicyEngine: getDevicesForStrategyInt no device found for strategy 3
+02:13:28.498   462   650 I APM::AudioPolicyEngine: getDevicesForStrategyInt no device found for strategy 0
+02:13:28.498   462   650 I APM::AudioPolicyEngine: getDevicesForStrategyInt no device found for strategy 4
+02:13:28.498   462   650 I APM::AudioPolicyEngine: getDevicesForStrategyInt no device found for strategy 9
+02:13:28.498   462   650 I APM::AudioPolicyEngine: getDevicesForStrategyInt no device found for strategy 6
+02:13:28.498   462   650 I APM::AudioPolicyEngine: getDevicesForStrategyInt no device found for strategy 8
+02:13:28.498   462   650 I APM::AudioPolicyEngine: getDevicesForStrategyInt no device found for strategy 8
+02:13:28.499   462   650 I APM::AudioPolicyEngine: getDevicesForStrategyInt no device found for strategy 0
+02:13:28.639   746   800 I DisplayDeviceRepository: Display device changed: DisplayDeviceInfo{"기본으로 제공되는 화면": uniqueId="local:4619827259835644672", 2560 x 1440, modeId 1, ren
+02:13:28.651  8232  8232 I probe   : nav notify seq=6 frame=2 period=1000
+02:13:28.853  2060  2060 D [GAA]   : [Notification] Notification posted packageName:com.probe.topbar, notification:StatusBarNotification(pkg=com.probe.topbar user=UserHandle{10} id=103 tag=null 
+02:13:28.853  4716  4716 I NOTIFICATION_INJECTOR: [HeadUpNotificationListenerService::onNotificationPosted] needHeadUpNotification: StatusBarNotification(pkg=com.probe.topbar user=UserHandle{10}
+02:13:28.853  4716  4716 D NOTIFICATION_INJECTOR: [NOTIFICATION_INJECTOR_DEBUG][HeadUpNotificationHandler::onNotificationPosted] notification already shown: 103, channelId: probe_high, just upda
+02:13:28.863  4716  4716 D NOTIFICATION_INJECTOR: [NOTIFICATION_INJECTOR_DEBUG][HeadUpNotificationScreen::HeadUpNotificationScreen] Rendering HeadUpNotificationScreen for notification: 10|com.pr
+02:13:29.654  8232  8232 I probe   : nav notify seq=7 frame=3 period=1000
+02:13:29.856  2060  2060 D [GAA]   : [Notification] Notification posted packageName:com.probe.topbar, notification:StatusBarNotification(pkg=com.probe.topbar user=UserHandle{10} id=103 tag=null 
+02:13:29.857  4716  4716 I NOTIFICATION_INJECTOR: [HeadUpNotificationListenerService::onNotificationPosted] needHeadUpNotification: StatusBarNotification(pkg=com.probe.topbar user=UserHandle{10}
+02:13:29.857  4716  4716 D NOTIFICATION_INJECTOR: [NOTIFICATION_INJECTOR_DEBUG][HeadUpNotificationHandler::onNotificationPosted] notification already shown: 103, channelId: probe_high, just upda
+02:13:29.874  4716  4716 D NOTIFICATION_INJECTOR: [NOTIFICATION_INJECTOR_DEBUG][HeadUpNotificationScreen::HeadUpNotificationScreen] Rendering HeadUpNotificationScreen for notification: 10|com.pr
+02:13:30.656  8232  8232 I probe   : nav notify seq=8 frame=0 period=1000
+02:13:30.857  2060  2060 D [GAA]   : [Notification] Notification posted packageName:com.probe.topbar, notification:StatusBarNotification(pkg=com.probe.topbar user=UserHandle{10} id=103 tag=null 
+02:13:30.857  4716  4716 I NOTIFICATION_INJECTOR: [HeadUpNotificationListenerService::onNotificationPosted] needHeadUpNotification: StatusBarNotification(pkg=com.probe.topbar user=UserHandle{10}
+02:13:30.857  4716  4716 D NOTIFICATION_INJECTOR: [NOTIFICATION_INJECTOR_DEBUG][HeadUpNotificationHandler::onNotificationPosted] notification already shown: 103, channelId: probe_high, just upda
+02:13:30.873  4716  4716 D NOTIFICATION_INJECTOR: [NOTIFICATION_INJECTOR_DEBUG][HeadUpNotificationScreen::HeadUpNotificationScreen] Rendering HeadUpNotificationScreen for notification: 10|com.pr
+02:13:31.658  8232  8232 I probe   : nav notify seq=9 frame=1 period=1000
+02:13:31.859  2060  2060 D [GAA]   : [Notification] Notification posted packageName:com.probe.topbar, notification:StatusBarNotification(pkg=com.probe.topbar user=UserHandle{10} id=103 tag=null 
+02:13:31.860  4716  4716 I NOTIFICATION_INJECTOR: [HeadUpNotificationListenerService::onNotificationPosted] needHeadUpNotification: StatusBarNotification(pkg=com.probe.topbar user=UserHandle{10}
+02:13:31.873  4716  4716 D NOTIFICATION_INJECTOR: [NOTIFICATION_INJECTOR_DEBUG][HeadUpNotificationScreen::HeadUpNotificationScreen] Rendering HeadUpNotificationScreen for notification: 10|com.pr
+02:13:32.661  8232  8232 I probe   : nav notify seq=10 frame=2 period=1000
+02:13:32.863  4716  4716 I NOTIFICATION_INJECTOR: [HeadUpNotificationListenerService::onNotificationPosted] needHeadUpNotification: StatusBarNotification(pkg=com.probe.topbar user=UserHandle{10}
+02:13:32.863  4716  4716 D NOTIFICATION_INJECTOR: [NOTIFICATION_INJECTOR_DEBUG][HeadUpNotificationHandler::onNotificationPosted] notification already shown: 103, channelId: probe_high, just upda
+02:13:32.863  2060  2060 D [GAA]   : [Notification] Notification posted packageName:com.probe.topbar, notification:StatusBarNotification(pkg=com.probe.topbar user=UserHandle{10} id=103 tag=null 
+02:13:32.873  4716  4716 D NOTIFICATION_INJECTOR: [NOTIFICATION_INJECTOR_DEBUG][HeadUpNotificationScreen::HeadUpNotificationScreen] Rendering HeadUpNotificationScreen for notification: 10|com.pr
+02:13:33.223   462   462 I APM::AudioPolicyEngine: getDevicesForStrategyInt no device found for strategy 0
+02:13:33.664  8232  8232 I probe   : nav notify seq=11 frame=3 period=1000
+02:13:33.833   462   650 I APM::AudioPolicyEngine: getDevicesForStrategyInt no device found for strategy 1
+02:13:33.834   462   650 I APM::AudioPolicyEngine: getDevicesForStrategyInt no device found for strategy 2
+02:13:33.834   462   650 I APM::AudioPolicyEngine: getDevicesForStrategyInt no device found for strategy 5
+02:13:33.834   462   650 I APM::AudioPolicyEngine: getDevicesForStrategyInt no device found for strategy 7
+02:13:33.834   462   650 I APM::AudioPolicyEngine: getDevicesForStrategyInt no device found for strategy 3
+02:13:33.834   462   650 I APM::AudioPolicyEngine: getDevicesForStrategyInt no device found for strategy 0
+02:13:33.834   462   650 I APM::AudioPolicyEngine: getDevicesForStrategyInt no device found for strategy 4
+02:13:33.834   462   650 I APM::AudioPolicyEngine: getDevicesForStrategyInt no device found for strategy 9
+02:13:33.835   462   650 I APM::AudioPolicyEngine: getDevicesForStrategyInt no device found for strategy 6
+02:13:33.835   462   650 I APM::AudioPolicyEngine: getDevicesForStrategyInt no device found for strategy 8
+02:13:33.835   462   650 I APM::AudioPolicyEngine: getDevicesForStrategyInt no device found for strategy 8
+02:13:33.835   462   650 I APM::AudioPolicyEngine: getDevicesForStrategyInt no device found for strategy 0
+02:13:33.867  2060  2060 D [GAA]   : [Notification] Notification posted packageName:com.probe.topbar, notification:StatusBarNotification(pkg=com.probe.topbar user=UserHandle{10} id=103 tag=null 
+02:13:33.867  4716  4716 I NOTIFICATION_INJECTOR: [HeadUpNotificationListenerService::onNotificationPosted] needHeadUpNotification: StatusBarNotification(pkg=com.probe.topbar user=UserHandle{10}
+02:13:33.867  4716  4716 D NOTIFICATION_INJECTOR: [NOTIFICATION_INJECTOR_DEBUG][HeadUpNotificationHandler::onNotificationPosted] notification already shown: 103, channelId: probe_high, just upda
+02:13:33.874  4716  4716 D NOTIFICATION_INJECTOR: [NOTIFICATION_INJECTOR_DEBUG][HeadUpNotificationScreen::HeadUpNotificationScreen] Rendering HeadUpNotificationScreen for notification: 10|com.pr
+02:13:34.667  8232  8232 I probe   : nav notify seq=12 frame=0 period=1000
+02:13:34.869  2060  2060 D [GAA]   : [Notification] Notification posted packageName:com.probe.topbar, notification:StatusBarNotification(pkg=com.probe.topbar user=UserHandle{10} id=103 tag=null 
+02:13:34.870  4716  4716 I NOTIFICATION_INJECTOR: [HeadUpNotificationListenerService::onNotificationPosted] needHeadUpNotification: StatusBarNotification(pkg=com.probe.topbar user=UserHandle{10}
+02:13:34.870  4716  4716 D NOTIFICATION_INJECTOR: [NOTIFICATION_INJECTOR_DEBUG][HeadUpNotificationHandler::onNotificationPosted] notification already shown: 103, channelId: probe_high, just upda
+02:13:34.892  4716  4716 D NOTIFICATION_INJECTOR: [NOTIFICATION_INJECTOR_DEBUG][HeadUpNotificationScreen::HeadUpNotificationScreen] Rendering HeadUpNotificationScreen for notification: 10|com.pr
+02:13:35.670  8232  8232 I probe   : nav notify seq=13 frame=1 period=1000
+02:13:35.873  2060  2060 D [GAA]   : [Notification] Notification posted packageName:com.probe.topbar, notification:StatusBarNotification(pkg=com.probe.topbar user=UserHandle{10} id=103 tag=null 
+02:13:35.873  4716  4716 I NOTIFICATION_INJECTOR: [HeadUpNotificationListenerService::onNotificationPosted] needHeadUpNotification: StatusBarNotification(pkg=com.probe.topbar user=UserHandle{10}
+02:13:35.873  4716  4716 D NOTIFICATION_INJECTOR: [NOTIFICATION_INJECTOR_DEBUG][HeadUpNotificationHandler::onNotificationPosted] notification already shown: 103, channelId: probe_high, just upda
+02:13:35.893  4716  4716 D NOTIFICATION_INJECTOR: [NOTIFICATION_INJECTOR_DEBUG][HeadUpNotificationScreen::HeadUpNotificationScreen] Rendering HeadUpNotificationScreen for notification: 10|com.pr
+02:13:36.673  8232  8232 I probe   : nav notify seq=14 frame=2 period=1000
+02:13:36.875  2060  2060 D [GAA]   : [Notification] Notification posted packageName:com.probe.topbar, notification:StatusBarNotification(pkg=com.probe.topbar user=UserHandle{10} id=103 tag=null 
+02:13:36.876  4716  4716 I NOTIFICATION_INJECTOR: [HeadUpNotificationListenerService::onNotificationPosted] needHeadUpNotification: StatusBarNotification(pkg=com.probe.topbar user=UserHandle{10}
+02:13:36.876  4716  4716 D NOTIFICATION_INJECTOR: [NOTIFICATION_INJECTOR_DEBUG][HeadUpNotificationHandler::onNotificationPosted] notification already shown: 103, channelId: probe_high, just upda
+02:13:36.890  4716  4716 D NOTIFICATION_INJECTOR: [NOTIFICATION_INJECTOR_DEBUG][HeadUpNotificationScreen::HeadUpNotificationScreen] Rendering HeadUpNotificationScreen for notification: 10|com.pr
+02:13:37.621   462   462 I APM::AudioPolicyEngine: getDevicesForStrategyInt no device found for strategy 0
+02:13:37.708  8232  8232 I probe   : nav notify seq=15 frame=3 period=1000
+02:13:37.758   746  1696 E DisplayManagerService: Couldn't find a mode for the requestedRefreshRate: 60.0 on Display: 0
+02:13:37.912  4716  4716 I NOTIFICATION_INJECTOR: [HeadUpNotificationListenerService::onNotificationPosted] needHeadUpNotification: StatusBarNotification(pkg=com.probe.topbar user=UserHandle{10}
+02:13:37.912  2060  2060 D [GAA]   : [Notification] Notification posted packageName:com.probe.topbar, notification:StatusBarNotification(pkg=com.probe.topbar user=UserHandle{10} id=103 tag=null 
+02:13:37.926  4716  4716 D NOTIFICATION_INJECTOR: [NOTIFICATION_INJECTOR_DEBUG][HeadUpNotificationScreen::HeadUpNotificationScreen] Rendering HeadUpNotificationScreen for notification: 10|com.pr
+02:13:37.988   746   800 I DisplayDeviceRepository: Display device changed: DisplayDeviceInfo{"기본으로 제공되는 화면": uniqueId="local:4619827259835644672", 2560 x 1440, modeId 1, ren
+02:13:38.213   462   650 I APM::AudioPolicyEngine: getDevicesForStrategyInt no device found for strategy 1
+02:13:38.213   462   650 I APM::AudioPolicyEngine: getDevicesForStrategyInt no device found for strategy 2
+02:13:38.213   462   650 I APM::AudioPolicyEngine: getDevicesForStrategyInt no device found for strategy 5
+02:13:38.213   462   650 I APM::AudioPolicyEngine: getDevicesForStrategyInt no device found for strategy 7
+02:13:38.214   462   650 I APM::AudioPolicyEngine: getDevicesForStrategyInt no device found for strategy 3
+02:13:38.214   462   650 I APM::AudioPolicyEngine: getDevicesForStrategyInt no device found for strategy 0
+02:13:38.214   462   650 I APM::AudioPolicyEngine: getDevicesForStrategyInt no device found for strategy 4
+02:13:38.214   462   650 I APM::AudioPolicyEngine: getDevicesForStrategyInt no device found for strategy 9
+02:13:38.214   462   650 I APM::AudioPolicyEngine: getDevicesForStrategyInt no device found for strategy 6
+02:13:38.214   462   650 I APM::AudioPolicyEngine: getDevicesForStrategyInt no device found for strategy 8
+02:13:38.214   462   650 I APM::AudioPolicyEngine: getDevicesForStrategyInt no device found for strategy 8
+02:13:38.214   462   650 I APM::AudioPolicyEngine: getDevicesForStrategyInt no device found for strategy 0
+02:13:38.711  8232  8232 I probe   : nav notify seq=16 frame=0 period=1000
+02:13:38.914  2060  2060 D [GAA]   : [Notification] Notification posted packageName:com.probe.topbar, notification:StatusBarNotification(pkg=com.probe.topbar user=UserHandle{10} id=103 tag=null 
+02:13:38.914  4716  4716 I NOTIFICATION_INJECTOR: [HeadUpNotificationListenerService::onNotificationPosted] needHeadUpNotification: StatusBarNotification(pkg=com.probe.topbar user=UserHandle{10}
+02:13:38.914  4716  4716 D NOTIFICATION_INJECTOR: [NOTIFICATION_INJECTOR_DEBUG][HeadUpNotificationHandler::onNotificationPosted] notification already shown: 103, channelId: probe_high, just upda
+02:13:38.923  4716  4716 D NOTIFICATION_INJECTOR: [NOTIFICATION_INJECTOR_DEBUG][HeadUpNotificationScreen::HeadUpNotificationScreen] Rendering HeadUpNotificationScreen for notification: 10|com.pr
+02:13:39.727  8232  8232 I probe   : nav notify seq=17 frame=1 period=1000
+02:13:39.930  2060  2060 D [GAA]   : [Notification] Notification posted packageName:com.probe.topbar, notification:StatusBarNotification(pkg=com.probe.topbar user=UserHandle{10} id=103 tag=null 
+02:13:39.930  4716  4716 I NOTIFICATION_INJECTOR: [HeadUpNotificationListenerService::onNotificationPosted] needHeadUpNotification: StatusBarNotification(pkg=com.probe.topbar user=UserHandle{10}
+02:13:39.930  4716  4716 D NOTIFICATION_INJECTOR: [NOTIFICATION_INJECTOR_DEBUG][HeadUpNotificationHandler::onNotificationPosted] notification already shown: 103, channelId: probe_high, just upda
+02:13:39.941  4716  4716 D NOTIFICATION_INJECTOR: [NOTIFICATION_INJECTOR_DEBUG][HeadUpNotificationScreen::HeadUpNotificationScreen] Rendering HeadUpNotificationScreen for notification: 10|com.pr
+02:13:40.731  8232  8232 I probe   : nav notify seq=18 frame=2 period=1000
+02:13:40.933  4716  4716 I NOTIFICATION_INJECTOR: [HeadUpNotificationListenerService::onNotificationPosted] needHeadUpNotification: StatusBarNotification(pkg=com.probe.topbar user=UserHandle{10}
+02:13:40.934  2060  2060 D [GAA]   : [Notification] Notification posted packageName:com.probe.topbar, notification:StatusBarNotification(pkg=com.probe.topbar user=UserHandle{10} id=103 tag=null 
+02:13:40.941  4716  4716 D NOTIFICATION_INJECTOR: [NOTIFICATION_INJECTOR_DEBUG][HeadUpNotificationScreen::HeadUpNotificationScreen] Rendering HeadUpNotificationScreen for notification: 10|com.pr
+02:13:41.288   746   800 I DisplayDeviceRepository: Display device changed: DisplayDeviceInfo{"기본으로 제공되는 화면": uniqueId="local:4619827259835644672", 2560 x 1440, modeId 1, ren
+02:13:41.733  8232  8232 I probe   : nav notify seq=19 frame=3 period=1000
+02:13:41.935  2060  2060 D [GAA]   : [Notification] Notification posted packageName:com.probe.topbar, notification:StatusBarNotification(pkg=com.probe.topbar user=UserHandle{10} id=103 tag=null 
+02:13:41.935  4716  4716 I NOTIFICATION_INJECTOR: [HeadUpNotificationListenerService::onNotificationPosted] needHeadUpNotification: StatusBarNotification(pkg=com.probe.topbar user=UserHandle{10}
+02:13:41.944  4716  4716 D NOTIFICATION_INJECTOR: [NOTIFICATION_INJECTOR_DEBUG][HeadUpNotificationScreen::HeadUpNotificationScreen] Rendering HeadUpNotificationScreen for notification: 10|com.pr
+02:13:42.736  8232  8232 I probe   : nav notify seq=20 frame=0 period=1000
+02:13:42.937  4716  4716 I NOTIFICATION_INJECTOR: [HeadUpNotificationListenerService::onNotificationPosted] needHeadUpNotification: StatusBarNotification(pkg=com.probe.topbar user=UserHandle{10}
+02:13:42.941  2060  2060 D [GAA]   : [Notification] Notification posted packageName:com.probe.topbar, notification:StatusBarNotification(pkg=com.probe.topbar user=UserHandle{10} id=103 tag=null 
+02:13:42.957  4716  4716 D NOTIFICATION_INJECTOR: [NOTIFICATION_INJECTOR_DEBUG][HeadUpNotificationScreen::HeadUpNotificationScreen] Rendering HeadUpNotificationScreen for notification: 10|com.pr
+02:13:43.739  8232  8232 I probe   : nav notify seq=21 frame=1 period=1000
+02:13:43.940  4716  4716 I NOTIFICATION_INJECTOR: [HeadUpNotificationListenerService::onNotificationPosted] needHeadUpNotification: StatusBarNotification(pkg=com.probe.topbar user=UserHandle{10}
+02:13:43.941  2060  2060 D [GAA]   : [Notification] Notification posted packageName:com.probe.topbar, notification:StatusBarNotification(pkg=com.probe.topbar user=UserHandle{10} id=103 tag=null 
+02:13:43.957  4716  4716 D NOTIFICATION_INJECTOR: [NOTIFICATION_INJECTOR_DEBUG][HeadUpNotificationScreen::HeadUpNotificationScreen] Rendering HeadUpNotificationScreen for notification: 10|com.pr
+02:13:44.742  8232  8232 I probe   : nav notify seq=22 frame=2 period=1000
+02:13:44.944  2060  2060 D [GAA]   : [Notification] Notification posted packageName:com.probe.topbar, notification:StatusBarNotification(pkg=com.probe.topbar user=UserHandle{10} id=103 tag=null 
+02:13:44.944  4716  4716 I NOTIFICATION_INJECTOR: [HeadUpNotificationListenerService::onNotificationPosted] needHeadUpNotification: StatusBarNotification(pkg=com.probe.topbar user=UserHandle{10}
+02:13:44.944  4716  4716 D NOTIFICATION_INJECTOR: [NOTIFICATION_INJECTOR_DEBUG][HeadUpNotificationHandler::onNotificationPosted] notification already shown: 103, channelId: probe_high, just upda
+02:13:44.956  4716  4716 D NOTIFICATION_INJECTOR: [NOTIFICATION_INJECTOR_DEBUG][HeadUpNotificationScreen::HeadUpNotificationScreen] Rendering HeadUpNotificationScreen for notification: 10|com.pr
+02:13:45.744  8232  8232 I probe   : nav notify seq=23 frame=3 period=1000
+02:13:45.946  4716  4716 I NOTIFICATION_INJECTOR: [HeadUpNotificationListenerService::onNotificationPosted] needHeadUpNotification: StatusBarNotification(pkg=com.probe.topbar user=UserHandle{10}
+02:13:45.946  4716  4716 D NOTIFICATION_INJECTOR: [NOTIFICATION_INJECTOR_DEBUG][HeadUpNotificationHandler::onNotificationPosted] notification already shown: 103, channelId: probe_high, just upda
+02:13:45.946  2060  2060 D [GAA]   : [Notification] Notification posted packageName:com.probe.topbar, notification:StatusBarNotification(pkg=com.probe.topbar user=UserHandle{10} id=103 tag=null 
+02:13:45.957  4716  4716 D NOTIFICATION_INJECTOR: [NOTIFICATION_INJECTOR_DEBUG][HeadUpNotificationScreen::HeadUpNotificationScreen] Rendering HeadUpNotificationScreen for notification: 10|com.pr
+02:13:46.746  8232  8232 I probe   : nav notify seq=24 frame=0 period=1000
+02:13:46.948  4716  4716 I NOTIFICATION_INJECTOR: [HeadUpNotificationListenerService::onNotificationPosted] needHeadUpNotification: StatusBarNotification(pkg=com.probe.topbar user=UserHandle{10}
+02:13:46.948  2060  2060 D [GAA]   : [Notification] Notification posted packageName:com.probe.topbar, notification:StatusBarNotification(pkg=com.probe.topbar user=UserHandle{10} id=103 tag=null 
+02:13:46.948  4716  4716 D NOTIFICATION_INJECTOR: [NOTIFICATION_INJECTOR_DEBUG][HeadUpNotificationHandler::onNotificationPosted] notification already shown: 103, channelId: probe_high, just upda
+02:13:46.956  4716  4716 D NOTIFICATION_INJECTOR: [NOTIFICATION_INJECTOR_DEBUG][HeadUpNotificationScreen::HeadUpNotificationScreen] Rendering HeadUpNotificationScreen for notification: 10|com.pr
+02:13:47.748  8232  8232 I probe   : nav notify seq=25 frame=1 period=1000
+02:13:47.949  2060  2060 D [GAA]   : [Notification] Notification posted packageName:com.probe.topbar, notification:StatusBarNotification(pkg=com.probe.topbar user=UserHandle{10} id=103 tag=null 
+02:13:47.949  4716  4716 I NOTIFICATION_INJECTOR: [HeadUpNotificationListenerService::onNotificationPosted] needHeadUpNotification: StatusBarNotification(pkg=com.probe.topbar user=UserHandle{10}
+02:13:47.949  4716  4716 D NOTIFICATION_INJECTOR: [NOTIFICATION_INJECTOR_DEBUG][HeadUpNotificationHandler::onNotificationPosted] notification already shown: 103, channelId: probe_high, just upda
+02:13:47.956  4716  4716 D NOTIFICATION_INJECTOR: [NOTIFICATION_INJECTOR_DEBUG][HeadUpNotificationScreen::HeadUpNotificationScreen] Rendering HeadUpNotificationScreen for notification: 10|com.pr
+02:13:48.749  8232  8232 I probe   : nav notify seq=26 frame=2 period=1000
+02:13:48.951  2060  2060 D [GAA]   : [Notification] Notification posted packageName:com.probe.topbar, notification:StatusBarNotification(pkg=com.probe.topbar user=UserHandle{10} id=103 tag=null 
+02:13:48.952  4716  4716 I NOTIFICATION_INJECTOR: [HeadUpNotificationListenerService::onNotificationPosted] needHeadUpNotification: StatusBarNotification(pkg=com.probe.topbar user=UserHandle{10}
+02:13:48.952  4716  4716 D NOTIFICATION_INJECTOR: [NOTIFICATION_INJECTOR_DEBUG][HeadUpNotificationHandler::onNotificationPosted] notification already shown: 103, channelId: probe_high, just upda
+02:13:48.957  4716  4716 D NOTIFICATION_INJECTOR: [NOTIFICATION_INJECTOR_DEBUG][HeadUpNotificationScreen::HeadUpNotificationScreen] Rendering HeadUpNotificationScreen for notification: 10|com.pr
+02:13:49.752  8232  8232 I probe   : nav notify seq=27 frame=3 period=1000
+02:13:49.953  4716  4716 I NOTIFICATION_INJECTOR: [HeadUpNotificationListenerService::onNotificationPosted] needHeadUpNotification: StatusBarNotification(pkg=com.probe.topbar user=UserHandle{10}
+02:13:49.953  4716  4716 D NOTIFICATION_INJECTOR: [NOTIFICATION_INJECTOR_DEBUG][HeadUpNotificationHandler::onNotificationPosted] notification already shown: 103, channelId: probe_high, just upda
+02:13:49.954  2060  2060 D [GAA]   : [Notification] Notification posted packageName:com.probe.topbar, notification:StatusBarNotification(pkg=com.probe.topbar user=UserHandle{10} id=103 tag=null 
+02:13:49.963  4716  4716 D NOTIFICATION_INJECTOR: [NOTIFICATION_INJECTOR_DEBUG][HeadUpNotificationScreen::HeadUpNotificationScreen] Rendering HeadUpNotificationScreen for notification: 10|com.pr
+02:13:50.754  8232  8232 I probe   : nav notify seq=28 frame=0 period=1000
+02:13:50.956  4716  4716 I NOTIFICATION_INJECTOR: [HeadUpNotificationListenerService::onNotificationPosted] needHeadUpNotification: StatusBarNotification(pkg=com.probe.topbar user=UserHandle{10}
+02:13:50.956  4716  4716 D NOTIFICATION_INJECTOR: [NOTIFICATION_INJECTOR_DEBUG][HeadUpNotificationHandler::onNotificationPosted] notification already shown: 103, channelId: probe_high, just upda
+02:13:50.956  2060  2060 D [GAA]   : [Notification] Notification posted packageName:com.probe.topbar, notification:StatusBarNotification(pkg=com.probe.topbar user=UserHandle{10} id=103 tag=null 
+02:13:50.974  4716  4716 D NOTIFICATION_INJECTOR: [NOTIFICATION_INJECTOR_DEBUG][HeadUpNotificationScreen::HeadUpNotificationScreen] Rendering HeadUpNotificationScreen for notification: 10|com.pr
+02:13:51.756  8232  8232 I probe   : nav notify seq=29 frame=1 period=1000
+02:13:51.957  2060  2060 D [GAA]   : [Notification] Notification posted packageName:com.probe.topbar, notification:StatusBarNotification(pkg=com.probe.topbar user=UserHandle{10} id=103 tag=null 
+02:13:51.959  4716  4716 I NOTIFICATION_INJECTOR: [HeadUpNotificationListenerService::onNotificationPosted] needHeadUpNotification: StatusBarNotification(pkg=com.probe.topbar user=UserHandle{10}
+02:13:51.959  4716  4716 D NOTIFICATION_INJECTOR: [NOTIFICATION_INJECTOR_DEBUG][HeadUpNotificationHandler::onNotificationPosted] notification already shown: 103, channelId: probe_high, just upda
+02:13:51.974  4716  4716 D NOTIFICATION_INJECTOR: [NOTIFICATION_INJECTOR_DEBUG][HeadUpNotificationScreen::HeadUpNotificationScreen] Rendering HeadUpNotificationScreen for notification: 10|com.pr
+02:13:52.758  8232  8232 I probe   : nav loop done after 30 updates (갱신 중단)

@@ -1,0 +1,7 @@
+## resolve ACTION_MANAGE_OVERLAY_PERMISSION (user 10)
+No activity found
+
+## appops before
+No operations.
+Default mode: default
+SYSTEM_ALERT_WINDOW: allow; rejectTime=+9s459ms ago

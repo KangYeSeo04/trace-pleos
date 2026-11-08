@@ -1,0 +1,11 @@
+STEP 콘솔_seat_occupied_driver=true
+1793614140366 · 기획3·B·Seat 탑승 getCurrentSeatOccupancy SeatArea(ROW_1_LEFT) · false (+40691ms)
+STEP 콘솔_seat_occupied_passenger=true
+1793614143400 · 기획3·B·Seat 탑승 getCurrentSeatOccupancy SeatArea(ROW_1_RIGHT) · false (+43713ms)
+STEP 콘솔_seat_occupied_driver=false
+1793614146430 · 기획3·B·Seat 탑승 getCurrentSeatOccupancy SeatArea(ROW_1_LEFT) · true (+6064ms)
+STEP 콘솔_seat_occupied_rear_left=true
+1793614149468 · 기획3·B·Seat 탑승 getCurrentSeatOccupancy SeatArea(ROW_2_LEFT) · false (+49796ms)
+STEP 콘솔_seat_occupied_rear_right=false
+STEP 콘솔_seat_occupied_passenger=false
+1793614155532 · 기획3·B·Seat 탑승 getCurrentSeatOccupancy SeatArea(ROW_1_RIGHT) · true (+12132ms)

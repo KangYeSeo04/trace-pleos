@@ -1,0 +1,14 @@
+  Window #0 Window{2e4cece u0 ScreenDecorOverlayBottom}:
+  Window #1 Window{6ecd89c u0 ScreenDecorOverlay}:
+  Window #2 Window{838114e u0 BottomCarSystemBar}:
+  Window #3 Window{77e00dc u10 ai.umos.notification}:
+  Window #4 Window{8329d53 u10 Sys2033:ai.umos.drivingview/ai.umos.drivingview.DrivingViewActivity}:
+  Window #5 Window{491e885 u10 Sys2033:ai.umos.homescreen/ai.umos.homescreen.HomeActivity}:
+  Window #6 Window{7aa1759 u10 ai.umos.ambientai}:
+  Window #7 Window{d406b29 u0 HeadsUpNotification}:
+  Window #8 Window{e09692d u0 SystemUIOverlayWindow}:
+  Window #9 Window{c468c38 u0 TopCarSystemBar}:
+  Window #10 Window{e670ecc u10 com.probe.topbar}:
+  Window #11 Window{b541ff9 u10 Sys2038:ai.umos.homescreen/ai.umos.homescreen.HomeActivity}:
+  Window #12 Window{32d4780 u10 com.android.car.rotary}:
+  Window #13 Window{7dc0e11 u0 ShellDropTarget}:

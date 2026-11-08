@@ -1,0 +1,7 @@
+--------- beginning of main
+11-05 06:11:36.196  7384  7384 I PipTest : hasSystemFeature(FEATURE_PICTURE_IN_PICTURE) = false
+11-05 06:11:36.198  7384  7384 I PipTest : SDK_INT=34, MANUFACTURER=42dot Co., Ltd., MODEL=Car on arm64 emulator
+11-05 06:11:36.198  7384  7384 I PipTest : [onCreate] isInMultiWindowMode=true, isInPictureInPictureMode=false
+11-05 06:11:36.199  7384  7384 I PipTest : [onResume] isInMultiWindowMode=true, isInPictureInPictureMode=false
+11-05 06:11:43.102  7384  7384 I PipTest : enterPictureInPictureMode() = false
+11-05 06:11:43.104  7384  7384 I PipTest : [enterPip 직후] isInMultiWindowMode=true, isInPictureInPictureMode=false

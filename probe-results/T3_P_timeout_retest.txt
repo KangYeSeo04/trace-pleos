@@ -1,0 +1,7 @@
+02:19:37.536  8232  8232 I probe   : run cmd=T3 arg=6000
+02:19:37.544  8232  8232 I probe   : nav notify seq=0 frame=0 period=5000
+02:19:37.778  4716  4737 D NOTIFICATION_INJECTOR: [NOTIFICATION_INJECTOR_DEBUG][OverlayController::emit] hunEventFlow: SHOW
+02:19:42.550  8232  8232 I probe   : nav notify seq=1 frame=0 period=5000
+02:19:47.555  8232  8232 I probe   : nav loop done after 2 updates (갱신 중단)
+02:20:16.968  4716  4716 I NOTIFICATION_INJECTOR: [HeadUpNotificationHandler::dismiss] dismiss head up notification
+02:20:16.973  4716  4737 D NOTIFICATION_INJECTOR: [NOTIFICATION_INJECTOR_DEBUG][OverlayController::emit] hunEventFlow: HIDE

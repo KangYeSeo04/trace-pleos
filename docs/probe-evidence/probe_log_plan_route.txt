@@ -1,0 +1,29 @@
+1793614228020 · 권한·pleos.car.NAVI_ROUTE · 허용
+1793614228020 · 권한·pleos.car.NAVI_ROUTE_SEARCH · 허용
+1793614228621 · 기획1·주변 장소 검색 · 지원=NaviHelper에 좌표·키워드 검색 메서드 없음. requestNavigationScreen(SearchPlace/NearbyChargingStations)은 내비 화면만 열고 결과를 돌려주지 않음
+1793614228621 · 기획2·주의 지점 onCautionPointInfo · 지원=onCautionPointInfo(List<CautionPoint>) type=CautionPointType.SPEED_BUMP 등, 경로·안전 안내 중에만 옴
+1793614228622 · EV·C·경로 충전정보 onDrivingInfo · 지원=경로 안내 중일 때 onDrivingInfo로 옴 (충전기 수·최대출력·목표SOC·충전계획)
+1793614228622 · EV·C·도착 예상 SOC onTripInfo · 지원=requestTrip(TripRequest) 응답으로만 옴 → 이번 PROBE에선 호출 안 함
+1793614228972 · EV·C·충전 사업자 getChargerOperatorInfo · 35개: HD/현대자동차(E-pit), PI/GS차지비, EV/에버온, PW/파워큐브, ME/환경부, KP/한국전력공사, CV/채비, EC/이지차저, ST/SK일렉링크, LU/LG유플러스, HM/투루차저, NT/한국전자금융, SF/스타코프, EP/이카플러그, PL/플러그링크, HE/한국전기차충전서비스, EZ/차지인, KL/클린일렉스, KE/한국전기차인프라기술, JE/제주전기자동차서비스, HY/현대엔지니어링, HW/한화솔루션, JA/이브이시스, IN/신세계아이앤씨, BN/블루네트웍스, PC/파킹클라우드, TD/타디스테크놀로지, EH/이앤에이치에너지, MS/미래에스�
+1793614228980 · 기획1·경유지 getWaypointInfo · 0개: 
+1793614228987 · 기획1·Geocoder.isPresent · false
+1793614228989 · 기획1·Geocoder.getFromLocation · 0개 (37.4127212,127.094681): 
+1793614228997 · 기획1·목적지 getDestinationInfo · address=, displayLatitude=null, displayLongitude=null, latitude=0.0, longitude=0.0, name=, poiId=, poiProvider=, poiSubId=null, remainDistance=0, remainTime=0, tollFare=0
+1793614229004 · 기획1·최근 목적지 getRecentDestinationInfo · 1개: 이케아팝업스토어 현대백화점판교점|경기도 성남시 분당구 판교역로146번길 20|poi=36khde3d9dnscm5nqher
+1793614229015 · 기획1·즐겨찾기 getBookmarkInfo · 2개: |HOME| / |OFFICE|
+1793614229022 · EV·C·경로 상태 getRouteStateInfo · naviMode=SAFE_GUIDING, remainDestinationChargingInt=0, remainWaypointChargingInt=[0, 0], routeOption=RECOMMENDED, termsAgreement=true, trafficStatus=TrafficStatus(summary=TrafficCongestionSummary(totalCongestionDist=0.0, totalCongestionTime=60, totalCongestionAvrSpeed=0.0), congestionItemList=[], trafficEventList=[])
+STEP 목적지_시험_버튼
+1793614233786 · 기획1·경로 시작 onRouteStarted · requestRoute(lat+0.01, lon+0.01, poiName 비움) 보냄
+1793614233787 · EV·C·도착 예상 SOC onTripInfo · requestTrip(부산역 좌표) 보냄
+1793614234208 · EV·C·도착 예상 SOC onTripInfo · distance=378751, energyConsumption=54892.4921875, estimatedSocAtDest=29, eta=15084, summary=TripSummary(trafficConditions=[TrafficInfo(congestionType=MODERATE, startRatio=0, endRatio=4), TrafficInfo(congestionType=FAST, startRatio=4, endRatio=8), TrafficInfo(congestionType=FAST, startRatio=8, endRatio=12), TrafficInfo(congestionType=FAST, startRatio=12, endRatio=16), TrafficInfo(congestionType=FAST, startRatio=16, endRatio=20), TrafficInfo(congestionType=FAST, startRatio=20, endRatio=24), TrafficInfo(congestionType=FAST, startRatio=24, endRatio=28), TrafficInfo(congestionType=FAST, startRatio=28, endRatio=32), TrafficInfo(congestionType
+1793614234208 · 기획1·requestTrip 경로 지점 routePoints · DESTINATION/NORMAL/MANUAL name= poi=
+1793614236791 · 기획1·경유지 getWaypointInfo · 0개:  (+7811ms)
+1793614236793 · 기획1·목적지 getDestinationInfo · address=, displayLatitude=null, displayLongitude=null, latitude=0.0, longitude=0.0, name=, poiId=, poiProvider=, poiSubId=null, remainDistance=0, remainTime=0, tollFare=0 (+7796ms)
+1793614236794 · EV·C·경로 상태 getRouteStateInfo · naviMode=SAFE_GUIDING, remainDestinationChargingInt=0, remainWaypointChargingInt=[0, 0], routeOption=RECOMMENDED, termsAgreement=true, trafficStatus=TrafficStatus(summary=TrafficCongestionSummary(totalCongestionDist=0.0, totalCongestionTime=60, totalCongestionAvrSpeed=0.0), congestionItemList=[], trafficEventList=[]) (+7772ms)
+1793614236795 · 기획1·최근 목적지 getRecentDestinationInfo · 2개: ||poi= / 이케아팝업스토어 현대백화점판교점|경기도 성남시 분당구 판교역로146번길 20|poi=36khde3d9dnscm5nqher (+7791ms)
+1793614236798 · EV·C·충전 사업자 getChargerOperatorInfo · 35개: HD/현대자동차(E-pit), PI/GS차지비, EV/에버온, PW/파워큐브, ME/환경부, KP/한국전력공사, CV/채비, EC/이지차저, ST/SK일렉링크, LU/LG유플러스, HM/투루차저, NT/한국전자금융, SF/스타코프, EP/이카플러그, PL/플러그링크, HE/한국전기차충전서비스, EZ/차지인, KL/클린일렉스, KE/한국전기차인프라기술, JE/제주전기자동차서비스, HY/현대엔지니어링, HW/한화솔루션, JA/이브이시스, IN/신세계아이앤씨, BN/블루네트웍스, PC/파킹클라우드, TD/타디스테크놀로지, EH/이앤에이치에너지, MS/미래에스�
+1793614236800 · 기획1·즐겨찾기 getBookmarkInfo · 2개: |HOME| / |OFFICE| (+7785ms)
+1793614239230 · 기획1·경로 시작 onRouteStarted · distance=1900, duration=420, name=, remainDestinationChargingValue=77162, tollFare=0 (+5444ms)
+1793614239236 · C·onNavigationStatus · ROUTE_DRIVE
+1793614239249 · EV·C·경로 상태 getRouteStateInfo · naviMode=ROUTE_GUIDING, remainDestinationChargingInt=77162, remainWaypointChargingInt=[0, 0], routeOption=RECOMMENDED, termsAgreement=true, trafficStatus=TrafficStatus(summary=TrafficCongestionSummary(totalCongestionDist=0.0, totalCongestionTime=60, totalCongestionAvrSpeed=0.0), congestionItemList=[], trafficEventList=[]) (+2455ms)
+1793614240290 · EV·C·경로 충전정보 onDrivingInfo · destination={chargerCount=0, chargingPlan=null, distance=1900, duration=420, maxChargingPower=0, name=, remainDestinationChargingValue=77162, targetSoc=10} chargingPlan={null} waypoints=0

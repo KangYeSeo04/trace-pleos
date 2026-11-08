@@ -1,0 +1,36 @@
+02:08:48.490  8232  8232 I probe   : init: areNotificationsEnabled=true
+02:08:49.094   746   746 W AccessibilityManagerService:  wait for adding window timeout: 18
+02:08:53.740  8232  8232 I probe   : service action=T3
+02:08:53.742  8232  8232 I probe   : startForeground ok channel=probe_low
+02:08:53.742  8232  8232 I probe   : run cmd=T3 arg=60000
+02:08:53.744  8232  8232 I probe   : nav notify seq=0 frame=0 period=5000
+02:08:53.965  4716  4737 D NOTIFICATION_INJECTOR: [NOTIFICATION_INJECTOR_DEBUG][OverlayController::emit] hunEventFlow: SHOW
+02:08:58.755  8232  8232 I probe   : nav notify seq=1 frame=0 period=5000
+02:08:58.960  4716  4716 D NOTIFICATION_INJECTOR: [NOTIFICATION_INJECTOR_DEBUG][HeadUpNotificationHandler::onNotificationPosted] notification already shown: 103, channelId: probe_high, just upda
+02:09:03.760  8232  8232 I probe   : nav notify seq=2 frame=0 period=5000
+02:09:03.961  4716  4716 D NOTIFICATION_INJECTOR: [NOTIFICATION_INJECTOR_DEBUG][HeadUpNotificationHandler::onNotificationPosted] notification already shown: 103, channelId: probe_high, just upda
+02:09:08.764  8232  8232 I probe   : nav notify seq=3 frame=0 period=5000
+02:09:08.966  4716  4716 D NOTIFICATION_INJECTOR: [NOTIFICATION_INJECTOR_DEBUG][HeadUpNotificationHandler::onNotificationPosted] notification already shown: 103, channelId: probe_high, just upda
+02:09:13.769  8232  8232 I probe   : nav notify seq=4 frame=0 period=5000
+02:09:13.973  4716  4716 D NOTIFICATION_INJECTOR: [NOTIFICATION_INJECTOR_DEBUG][HeadUpNotificationHandler::onNotificationPosted] notification already shown: 103, channelId: probe_high, just upda
+02:09:18.773  8232  8232 I probe   : nav notify seq=5 frame=0 period=5000
+02:09:18.975  4716  4716 D NOTIFICATION_INJECTOR: [NOTIFICATION_INJECTOR_DEBUG][HeadUpNotificationHandler::onNotificationPosted] notification already shown: 103, channelId: probe_high, just upda
+02:09:23.778  8232  8232 I probe   : nav notify seq=6 frame=0 period=5000
+02:09:23.981  4716  4716 D NOTIFICATION_INJECTOR: [NOTIFICATION_INJECTOR_DEBUG][HeadUpNotificationHandler::onNotificationPosted] notification already shown: 103, channelId: probe_high, just upda
+02:09:28.790  8232  8232 I probe   : nav notify seq=7 frame=0 period=5000
+02:09:29.068  4716  4716 D NOTIFICATION_INJECTOR: [NOTIFICATION_INJECTOR_DEBUG][HeadUpNotificationHandler::onNotificationPosted] notification already shown: 103, channelId: probe_high, just upda
+02:09:30.641  4716  4716 I NOTIFICATION_INJECTOR: [HeadUpNotificationHandler::dismiss] dismiss head up notification
+02:09:30.643  4716  4737 D NOTIFICATION_INJECTOR: [NOTIFICATION_INJECTOR_DEBUG][OverlayController::emit] hunEventFlow: HIDE
+02:09:33.796  8232  8232 I probe   : nav notify seq=8 frame=0 period=5000
+02:09:34.001  4716  4737 D NOTIFICATION_INJECTOR: [NOTIFICATION_INJECTOR_DEBUG][OverlayController::emit] hunEventFlow: SHOW
+02:09:34.340  4716  4716 I NOTIFICATION_INJECTOR: [HeadUpNotificationHandler::dismiss] dismiss head up notification
+02:09:34.342  4716  4737 D NOTIFICATION_INJECTOR: [NOTIFICATION_INJECTOR_DEBUG][OverlayController::emit] hunEventFlow: HIDE
+02:09:38.802  8232  8232 I probe   : nav notify seq=9 frame=0 period=5000
+02:09:39.007  4716  4737 D NOTIFICATION_INJECTOR: [NOTIFICATION_INJECTOR_DEBUG][OverlayController::emit] hunEventFlow: SHOW
+02:09:40.506  4716  4716 I NOTIFICATION_INJECTOR: [HeadUpNotificationHandler::dismiss] dismiss head up notification
+02:09:40.507  4716  4737 D NOTIFICATION_INJECTOR: [NOTIFICATION_INJECTOR_DEBUG][OverlayController::emit] hunEventFlow: HIDE
+02:09:43.808  8232  8232 I probe   : nav notify seq=10 frame=0 period=5000
+02:09:44.017  4716  4737 D NOTIFICATION_INJECTOR: [NOTIFICATION_INJECTOR_DEBUG][OverlayController::emit] hunEventFlow: SHOW
+02:09:48.815  8232  8232 I probe   : nav notify seq=11 frame=0 period=5000
+02:09:49.019  4716  4716 D NOTIFICATION_INJECTOR: [NOTIFICATION_INJECTOR_DEBUG][HeadUpNotificationHandler::onNotificationPosted] notification already shown: 103, channelId: probe_high, just upda
+02:09:53.819  8232  8232 I probe   : nav loop done after 12 updates (갱신 중단)

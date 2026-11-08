@@ -1,0 +1,8 @@
+    mAttrs={(0,0)(fillx90) gr=TOP CENTER_VERTICAL sim={adjust=pan} layoutInDisplayCutoutMode=always ty=2041 fmt=TRANSLUCENT if=INPUT_FEATURE_SPY
+  Window #9 Window{e670ecc u10 com.probe.topbar}:
+    mAttrs={(0,0)(fillx60) gr=TOP CENTER_VERTICAL sim={adjust=pan} ty=APPLICATION_OVERLAY fmt=TRANSLUCENT
+  Window #10 Window{b541ff9 u10 Sys2038:ai.umos.homescreen/ai.umos.homescreen.HomeActivity}:
+--
+    mAttrs={(0,0)(fillxfill) sim={adjust=nothing forwardNavigation} ty=BASE_APPLICATION fmt=TRANSLUCENT wanim=0x10302fe preferredRefreshRate=60.0
+  Window #17 Window{b17edb2 u10 com.probe.topbar/com.probe.topbar.MainActivity}:
+    mAttrs={(0,0)(fillxfill) sim={adjust=pan} layoutInDisplayCutoutMode=always ty=BASE_APPLICATION wanim=0x10302f2

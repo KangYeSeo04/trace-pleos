@@ -1,0 +1,106 @@
+03:11:19.843   746 13111 W ActivityTaskManager: callingPackage for (uid=2000, pid=27514) has no WPC
+03:11:19.844   746 13111 D ConnectWindowUtil: alter windowingMode: WINDOWING_MODE_MULTI_WINDOW, launchBounds: Rect(0, 0 - 1682, 1210), removeWithTaskOrganizer: ComponentInfo{com.probe.topbar/com.probe.topbar.MainActivity}
+03:11:19.846   746 13111 I ActivityTaskManager: startSpecificActivity: com.probe.topbar/.MainActivity userId=10 hasSavedState=true isProcessRunning=true attachedToProcess=false hasProcess=false state=INITIALIZING launchFailed=false wpc=ProcessRecord{a773d39 13391:com.probe.topbar/u10a175} wpcH
+03:11:19.848   746 13111 I ActivityTaskManager: START u10 {flg=0x10000000 cmp=com.probe.topbar/.MainActivity} with LAUNCH_MULTIPLE from uid 2000 (BAL_ALLOW_PERMISSION) result code=0
+03:11:19.849  2590  2590 I HOME_SCREEN: [HOME_SCREEN][PackageManagerRepositoryImpl::getTaskType] component: Intent { flg=0x10000000 cmp=com.probe.topbar/.MainActivity } (1000038)
+03:11:19.854   746 13111 I ActivityTaskManager: START u10 {act=android.content.pm.action.REQUEST_PERMISSIONS pkg=com.android.permissioncontroller cmp=com.android.permissioncontroller/.permission.ui.GrantPermissionsActivity (has extras)} with LAUNCH_MULTIPLE from uid 1010175 (BAL_ALLOW_VISIBLE_
+03:11:19.857  2590  2590 I HOME_SCREEN: [HOME_SCREEN][PackageManagerRepositoryImpl::getTaskType] component: Intent { flg=0x10000000 cmp=com.probe.topbar/.MainActivity } (1000038)
+03:11:19.858  2590  2590 I HOME_SCREEN: [HOME_SCREEN][PackageManagerRepositoryImpl::getTaskType] component: Intent { flg=0x10000000 cmp=com.probe.topbar/.MainActivity } (1000038)
+03:11:19.860  2590  2590 D HOME_SCREEN: [HOME_SCREEN][TaskViewManager::onTaskCreated] onTaskCreated: ComponentInfo{com.probe.topbar/com.probe.topbar.MainActivity} (1000038)
+03:11:19.861  2590  2590 I HOME_SCREEN: [HOME_SCREEN][TaskViewManager::onTaskCreated] ComponentInfo{com.probe.topbar/com.probe.topbar.MainActivity} (1000038), distractionOptimized: false)
+03:11:19.861   746 13110 I ActivityTaskManager: startSpecificActivity: com.android.permissioncontroller/.permission.ui.GrantPermissionsActivity userId=10 hasSavedState=true isProcessRunning=true attachedToProcess=false hasProcess=false state=INITIALIZING launchFailed=false wpc=ProcessRecord{98
+03:11:19.863  2590  2590 I HOME_SCREEN: [HOME_SCREEN][TaskViewManager::onTaskMovedToFront] ComponentInfo{com.probe.topbar/com.probe.topbar.MainActivity} (1000038)
+03:11:19.863  2590  2590 I HOME_SCREEN: [HOME_SCREEN][PackageManagerRepositoryImpl::getTaskType] component: Intent { flg=0x10000000 cmp=com.probe.topbar/.MainActivity } (1000038)
+03:11:19.887   746 13110 I ActivityTaskManager: startSpecificActivity: com.android.permissioncontroller/.permission.ui.GrantPermissionsActivity userId=10 hasSavedState=true isProcessRunning=true attachedToProcess=false hasProcess=false state=INITIALIZING launchFailed=false wpc=ProcessRecord{98
+03:11:19.896   746   984 D CoreBackPreview: Window{f499edb u10 com.probe.topbar/com.probe.topbar.MainActivity}: Setting back callback OnBackInvokedCallbackInfo{mCallback=android.window.IOnBackInvokedCallback$Stub$Proxy@5f57e42, mPriority=0, mIsAnimationCallback=false}
+03:11:19.939  2590  2590 D HOME_SCREEN: [HOME_SCREEN][ConnectTaskView::onTaskCreated] ConnectTaskView onTaskCreated(ComponentInfo{com.probe.topbar/com.probe.topbar.MainActivity})
+03:11:19.950  2590  2590 D HOME_SCREEN: [HOME_SCREEN][TaskViewContainer::handleTaskInfoChanged] topActivity changed: ComponentInfo{com.probe.topbar/com.probe.topbar.MainActivity} [1000038]
+03:11:19.952  2590  2590 I HOME_SCREEN: [HOME_SCREEN][ConnectTaskView::isSupportFullscreen] ComponentInfo{com.probe.topbar/com.probe.topbar.MainActivity} is support fullscreen: false
+03:11:19.954   746   801 D WindowManager: Disable applyEnterAnimationLocked (windowStateAnimator)
+03:11:19.966  2590  2590 D HOME_SCREEN: [HOME_SCREEN][TaskSlotLayout::showTaskView] showTaskView: ComponentInfo{com.probe.topbar/com.probe.topbar.MainActivity}
+03:11:19.967  2590  3098 D HOME_SCREEN: [HOME_SCREEN][AppLauncherImpl::onTaskAppeared] onTaskAppeared: ComponentInfo{com.probe.topbar/com.probe.topbar.MainActivity} (1000038)
+03:11:19.978  2590  2590 D HOME_SCREEN: [HOME_SCREEN][TaskViewContainer::updateTaskViewBounds] [ComponentInfo{com.probe.topbar/com.probe.topbar.MainActivity}] taskViewBounds: Rect(0, 0 - 0, 0) -> updateBounds: Rect(853, 90 - 2535, 1300)
+03:11:20.007   746   801 D WindowManager: Disable applyEnterAnimationLocked (windowStateAnimator)
+03:11:20.045   746 15497 I ImeTracker: com.probe.topbar:67e1b5e9: onRequestHide at ORIGIN_SERVER_HIDE_INPUT reason HIDE_UNSPECIFIED_WINDOW
+03:11:20.045   746 15497 I ImeTracker: com.probe.topbar:67e1b5e9: onCancelled at PHASE_SERVER_SHOULD_HIDE
+03:11:20.090  2590  2624 W umos.homescreen: ApkAssets: Deleting an ApkAssets object '<empty> and /data/app/~~GHVa_IBoBJUYcj5kqvZuYA==/com.probe.topbar-8wZbpw3CidYxWmx_njHFkw==/base.apk' with 1 weak references
+03:11:20.190  2590  2590 I HOME_SCREEN: [HOME_SCREEN][TaskStatusHandler::handleActiveTaskStatusChanged] update task status: com.probe.topbar/com.probe.topbar.MainActivity
+03:11:20.190  2590  2590 D HOME_SCREEN: [HOME_SCREEN][HomeScreenContentProvider::setTaskStatus] setTaskStatus: size=1, status=com.probe.topbar/com.probe.topbar.MainActivity
+03:11:20.195   996   996 D HomeScreenContentResolver: onActiveTaskStatusChanged: [com.probe.topbar/com.probe.topbar.MainActivity]
+03:11:20.195  4465  4465 D PLEOS_UI_SERVICE: [PLEOS_UI_SERVICE][HomeScreenRepositoryImpl::notifyTaskStatusChanged] HomeScreen task status changed: [TaskStatus(componentName=ComponentInfo{com.probe.topbar/com.probe.topbar.MainActivity}, slotNo=0, slotWeight=2)]
+03:11:20.196  2060 17735 D [GAA]   : getActiveTasks changed: [com.probe.topbar/com.probe.topbar.MainActivity]
+03:11:20.196  2060 17735 D [GAA]   : onUpdateForegroundContext homeActiveTasks:[com.probe.topbar]
+03:11:20.198   746   841 D WindowManager: Disable applyAnimationLocked (windowStateAnimator)
+03:11:20.209  1432  1456 D GnbContentProvider: updated type: 2 hit: 1, selection: id = ?, selectionArgs: com.probe.topbar/com.probe.topbar.MainActivity, suppressNotify: true
+03:11:20.210   996   996 D GnbMixedRecentController: type: mixed_gnb_app, : , mixedId: com.probe.topbar/com.probe.topbar.MainActivity, orderType: leftOrder
+03:11:20.217   996   996 D GnbMixedRecentController: type: mixed_gnb_app, : , mixedId: com.probe.topbar/com.probe.topbar.MainActivity, orderType: bottomOrder
+03:11:20.221   996   996 D GnbMixedContainer: setLayoutInfo, orderType:bottomOrder, slotId:-1 isRemovable: true, id:com.probe.topbar/com.probe.topbar.MainActivity, alwaysFavoritePackages:[ai.umos.vehiclecontrol, ai.umos.maps.android.navigation.app]
+03:11:20.221   996   996 D GnbAppButton: updateClickListener open com.probe.topbar/com.probe.topbar.MainActivity view: 186072662
+03:11:22.883   746 13110 I ActivityManager: Background started FGS: Allowed [callingPackage: com.android.shell; callingUid: 2000; uidState: NONE; uidBFSL: n/a; intent: Intent { act=START cmp=com.probe.topbar/.OverlayService }; code:SYSTEM_UID; tempAllowListReason:<,reasonCode:SYSTEM_ALLOW_LIST
+03:11:22.885 13391 13391 I probe   : overlay service action=START
+03:11:22.886 13391 13391 I probe   : overlay canDrawOverlays=true preset=A
+03:11:22.891   746 13110 D CoreBackPreview: Window{ea1f731 u10 ProbeCharacter}: Setting back callback OnBackInvokedCallbackInfo{mCallback=android.window.IOnBackInvokedCallback$Stub$Proxy@3fce984, mPriority=0, mIsAnimationCallback=false}
+03:11:22.905 13391 13391 I probe   : overlay preset=A locationOnScreen x=0 y=90 w=64 h=64 statusBarInsetTop=0px status_bar_height(dimen)=90px
+03:11:23.088  2060  2060 D [GAA]   : [Notification] Notification posted packageName:com.probe.topbar, notification:StatusBarNotification(pkg=com.probe.topbar user=UserHandle{10} id=2 tag=null key=10|com.probe.topbar|2|null|1010175: Notification(channel=probe_low shortcut=null contentView=null 
+03:11:25.179 13391 13391 I probe   : overlay service action=POS_A
+03:11:25.180 13391 13391 I probe   : overlay canDrawOverlays=true preset=A
+03:11:25.381  2060  2060 D [GAA]   : [Notification] Notification posted packageName:com.probe.topbar, notification:StatusBarNotification(pkg=com.probe.topbar user=UserHandle{10} id=2 tag=null key=10|com.probe.topbar|2|null|1010175: Notification(channel=probe_low shortcut=null contentView=null 
+03:11:25.480 13391 13391 I probe   : overlay preset=A locationOnScreen x=853 y=90 w=64 h=64 statusBarInsetTop=0px status_bar_height(dimen)=90px
+03:11:27.481 13391 13391 I probe   : overlay service action=POS_B
+03:11:27.482 13391 13391 I probe   : overlay canDrawOverlays=true preset=B
+03:11:27.684  2060  2060 D [GAA]   : [Notification] Notification posted packageName:com.probe.topbar, notification:StatusBarNotification(pkg=com.probe.topbar user=UserHandle{10} id=2 tag=null key=10|com.probe.topbar|2|null|1010175: Notification(channel=probe_low shortcut=null contentView=null 
+03:11:27.783 13391 13391 I probe   : overlay preset=B locationOnScreen x=2471 y=90 w=64 h=64 statusBarInsetTop=0px status_bar_height(dimen)=90px
+03:11:29.780 13391 13391 I probe   : overlay service action=POS_C
+03:11:29.781 13391 13391 I probe   : overlay canDrawOverlays=true preset=C
+03:11:29.984  2060  2060 D [GAA]   : [Notification] Notification posted packageName:com.probe.topbar, notification:StatusBarNotification(pkg=com.probe.topbar user=UserHandle{10} id=2 tag=null key=10|com.probe.topbar|2|null|1010175: Notification(channel=probe_low shortcut=null contentView=null 
+03:11:30.081 13391 13391 I probe   : overlay preset=C locationOnScreen x=853 y=1236 w=64 h=64 statusBarInsetTop=0px status_bar_height(dimen)=90px
+03:11:32.031 13391 13391 I probe   : overlay service action=POS_D
+03:11:32.031 13391 13391 I probe   : overlay canDrawOverlays=true preset=D
+03:11:32.234  2060  2060 D [GAA]   : [Notification] Notification posted packageName:com.probe.topbar, notification:StatusBarNotification(pkg=com.probe.topbar user=UserHandle{10} id=2 tag=null key=10|com.probe.topbar|2|null|1010175: Notification(channel=probe_low shortcut=null contentView=null 
+03:11:32.333 13391 13391 I probe   : overlay preset=D locationOnScreen x=2471 y=1236 w=64 h=64 statusBarInsetTop=0px status_bar_height(dimen)=90px
+03:11:34.291 13391 13391 I probe   : overlay service action=POS_E
+03:11:34.292 13391 13391 I probe   : overlay canDrawOverlays=true preset=E
+03:11:34.493  2060  2060 D [GAA]   : [Notification] Notification posted packageName:com.probe.topbar, notification:StatusBarNotification(pkg=com.probe.topbar user=UserHandle{10} id=2 tag=null key=10|com.probe.topbar|2|null|1010175: Notification(channel=probe_low shortcut=null contentView=null 
+03:11:34.592 13391 13391 I probe   : overlay preset=E locationOnScreen x=0 y=0 w=64 h=64 statusBarInsetTop=64px status_bar_height(dimen)=90px
+03:11:36.555 13391 13391 I probe   : overlay service action=POS_F
+03:11:36.556 13391 13391 I probe   : overlay canDrawOverlays=true preset=F
+03:11:36.758  2060  2060 D [GAA]   : [Notification] Notification posted packageName:com.probe.topbar, notification:StatusBarNotification(pkg=com.probe.topbar user=UserHandle{10} id=2 tag=null key=10|com.probe.topbar|2|null|1010175: Notification(channel=probe_low shortcut=null contentView=null 
+03:11:36.857 13391 13391 I probe   : overlay preset=F locationOnScreen x=2471 y=90 w=64 h=64 statusBarInsetTop=0px status_bar_height(dimen)=90px
+03:11:38.827 13391 13391 I probe   : overlay service action=POS_B
+03:11:38.828 13391 13391 I probe   : overlay canDrawOverlays=true preset=B
+03:11:38.855   746   796 I ActivityTaskManager: START u10 {act=android.intent.action.MAIN cat=[android.intent.category.HOME] flg=0x10000100 cmp=ai.umos.homescreen/.HomeActivity (has extras)} with LAUNCH_SINGLE_TASK from uid 0 (BAL_ALLOW_ALLOWLISTED_UID) result code=2
+03:11:38.891  2590  2590 I HOME_SCREEN: [HOME_SCREEN][TaskViewManager::onTaskMovedToFront] ComponentInfo{com.probe.topbar/com.probe.topbar.MainActivity} (1000038)
+03:11:38.891  2590  2590 I HOME_SCREEN: [HOME_SCREEN][PackageManagerRepositoryImpl::getTaskType] component: Intent { flg=0x10000000 cmp=com.probe.topbar/.MainActivity } (1000038)
+03:11:38.905   746   841 I ImeTracker: com.probe.topbar:88b78b24: onRequestHide at ORIGIN_SERVER_HIDE_INPUT reason HIDE_SAME_WINDOW_FOCUSED_WITHOUT_EDITOR
+03:11:38.906   746   841 I ImeTracker: com.probe.topbar:88b78b24: onCancelled at PHASE_SERVER_SHOULD_HIDE
+03:11:39.030  2060  2060 D [GAA]   : [Notification] Notification posted packageName:com.probe.topbar, notification:StatusBarNotification(pkg=com.probe.topbar user=UserHandle{10} id=2 tag=null key=10|com.probe.topbar|2|null|1010175: Notification(channel=probe_low shortcut=null contentView=null 
+03:11:39.129 13391 13391 I probe   : overlay preset=B locationOnScreen x=2496 y=90 w=64 h=64 statusBarInsetTop=0px status_bar_height(dimen)=90px
+03:11:41.125   746 15497 I ActivityTaskManager: START u10 {act=android.intent.action.MAIN cat=[android.intent.category.LAUNCHER] flg=0x10000000 cmp=ai.umos.maps.android.navigation.app/.MainActivity} with LAUNCH_SINGLE_TOP from uid 10119 (BAL_ALLOW_VISIBLE_WINDOW) result code=2
+03:11:41.204   746   801 D WindowManager: Disable applyEnterAnimationLocked (windowStateAnimator)
+03:11:41.429   746   841 D WindowManager: Disable applyAnimationLocked (windowStateAnimator)
+03:11:41.433  2590  2590 D HOME_SCREEN: [HOME_SCREEN][TaskViewContainer::isPreventHide] isPreventHide(com.probe.topbar): false
+03:11:41.440  2590  2590 D HOME_SCREEN: [HOME_SCREEN][ConnectTaskView::onTaskVisibilityChanged] ConnectTaskView onTaskVisibilityChanged(ComponentInfo{com.probe.topbar/com.probe.topbar.MainActivity}): false
+03:11:41.448   996   996 D GnbMixedRecentController: type: mixed_gnb_app, : , mixedId: com.probe.topbar/com.probe.topbar.MainActivity, orderType: leftOrder
+03:11:41.448   996   996 D GnbMixedRecentController: type: mixed_gnb_app, : , mixedId: com.probe.topbar/com.probe.topbar.MainActivity, orderType: bottomOrder
+03:11:41.457   996   996 D GnbMixedContainer: setLayoutInfo, orderType:bottomOrder, slotId:-1 isRemovable: true, id:com.probe.topbar/com.probe.topbar.MainActivity, alwaysFavoritePackages:[ai.umos.vehiclecontrol, ai.umos.maps.android.navigation.app]
+03:11:41.457   996   996 D GnbAppButton: updateClickListener open com.probe.topbar/com.probe.topbar.MainActivity view: 186072662
+03:11:44.431   746   841 W ActivityTaskManager: callingPackage for (uid=2000, pid=32506) has no WPC
+03:11:44.439   746   841 I ActivityTaskManager: startSpecificActivity: com.android.car.settings/.common.CarSettingActivities$HomepageActivity userId=10 hasSavedState=true isProcessRunning=false attachedToProcess=false hasProcess=false state=INITIALIZING launchFailed=false wpc=null wpcHasThread
+03:11:44.441   746   841 I ActivityTaskManager: START u10 {act=android.settings.SETTINGS flg=0x10000000 cmp=com.android.car.settings/.common.CarSettingActivities$HomepageActivity} with LAUNCH_SINGLE_TASK from uid 2000 (BAL_ALLOW_PERMISSION) result code=0
+03:11:44.452   746   775 I ActivityTaskManager: startSpecificActivity: com.android.car.settings/.common.CarSettingActivities$HomepageActivity userId=10 hasSavedState=true isProcessRunning=false attachedToProcess=false hasProcess=false state=INITIALIZING launchFailed=false wpc=ProcessRecord{706
+03:11:44.452   746   775 I ActivityTaskManager: startSpecificActivity: com.android.car.settings/.common.CarSettingActivities$HomepageActivity userId=10 hasSavedState=true isProcessRunning=false attachedToProcess=false hasProcess=false state=INITIALIZING launchFailed=false wpc=ProcessRecord{706
+03:11:44.858   746   801 D WindowManager: Disable applyEnterAnimationLocked (windowStateAnimator)
+03:11:44.859   746   795 I ActivityTaskManager: Displayed com.android.car.settings/.common.CarSettingActivities$HomepageActivity for user 10: +426ms
+03:11:44.865  1432  1432 D NotificationCenterListener: onNotificationRemoved 0|android|0|com.android.server.wm.AlertWindowNotification - com.probe.topbar|1000
+03:11:44.865   996   996 D NotificationCenterListener: onNotificationRemoved 0|android|0|com.android.server.wm.AlertWindowNotification - com.probe.topbar|1000
+03:11:44.868  4716  4716 I NOTIFICATION_INJECTOR: [HeadUpNotificationListenerService::onNotificationRemoved] onNotificationRemoved id: 0, category: null, channelId: com.android.server.wm.AlertWindowNotification - com.probe.topbar
+03:11:44.897   746   801 D WindowManager: Disable applyEnterAnimationLocked (windowStateAnimator)
+03:11:45.077   746 13110 D WindowManager: Disable applyAnimationLocked (windowStateAnimator)
+03:11:45.085   996   996 D GnbMixedRecentController: type: mixed_gnb_app, : , mixedId: com.probe.topbar/com.probe.topbar.MainActivity, orderType: leftOrder
+03:11:45.086   996   996 D GnbMixedRecentController: type: mixed_gnb_app, : , mixedId: com.probe.topbar/com.probe.topbar.MainActivity, orderType: bottomOrder
+03:11:47.741   746 15497 W ActivityTaskManager: takeTaskSnapshot: taskId=1000031 not found or not visible
+03:11:47.751  2590  2590 D HOME_SCREEN: [HOME_SCREEN][TaskViewContainer::updateDrivingRestrictionRegion] TaskViewContainer(com.probe.topbar) updateDrivingRestrictionRegion : 1682 x 1210
+03:11:47.751   746   841 W ActivityTaskManager: takeTaskSnapshot: taskId=1000038 not found or not visible
+03:11:51.074   746   775 D CoreBackPreview: Window{f499edb u10 com.probe.topbar/com.probe.topbar.MainActivity}: Setting back callback null
+03:11:51.077   746   775 W InputManager-JNI: Input channel object 'f499edb com.probe.topbar/com.probe.topbar.MainActivity (client)' was disposed without first being removed with the input manager!
+03:11:51.079   746   806 W UsageStatsService: Unexpected activity event reported! (com.probe.topbar/com.probe.topbar.MainActivity event : 23 instanceId : 260453293)

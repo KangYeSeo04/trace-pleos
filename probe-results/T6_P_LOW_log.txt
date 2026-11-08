@@ -1,0 +1,2 @@
+02:24:38.241 15974 15974 I probe   : service action=FGS_LOW
+02:24:38.242 15974 15974 I probe   : startForeground ok channel=probe_low
