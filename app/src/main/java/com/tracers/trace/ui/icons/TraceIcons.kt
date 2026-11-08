@@ -369,4 +369,59 @@ object TraceIcons {
             }
         }.build()
     }
+
+    /** 닫기 아이콘 (X) */
+    val Close: ImageVector by lazy {
+        ImageVector.Builder(
+            name = "Close",
+            defaultWidth = 24.dp,
+            defaultHeight = 24.dp,
+            viewportWidth = 24f,
+            viewportHeight = 24f
+        ).apply {
+            path(
+                fill = null,
+                stroke = SolidColor(Color.Black),
+                strokeLineWidth = 2.2f,
+                strokeLineCap = StrokeCap.Round,
+                strokeLineJoin = StrokeJoin.Round
+            ) {
+                // M6 6l12 12M18 6L6 18
+                moveTo(6f, 6f)
+                lineToRelative(12f, 12f)
+                moveTo(18f, 6f)
+                lineTo(6f, 18f)
+            }
+        }.build()
+    }
+
+    /** 정보 아이콘 (i) */
+    val Info: ImageVector by lazy {
+        ImageVector.Builder(
+            name = "Info",
+            defaultWidth = 24.dp,
+            defaultHeight = 24.dp,
+            viewportWidth = 24f,
+            viewportHeight = 24f
+        ).apply {
+            path(
+                fill = null,
+                stroke = SolidColor(Color.Black),
+                strokeLineWidth = 1.8f,
+                strokeLineCap = StrokeCap.Round,
+                strokeLineJoin = StrokeJoin.Round
+            ) {
+                // circle cx=12 cy=12 r=9
+                moveTo(21f, 12f)
+                arcTo(9f, 9f, 0f, true, true, 3f, 12f)
+                arcTo(9f, 9f, 0f, true, true, 21f, 12f)
+                // M12 11v5
+                moveTo(12f, 11f)
+                verticalLineToRelative(5f)
+                // M12 8h.01
+                moveTo(12f, 8f)
+                horizontalLineToRelative(0.01f)
+            }
+        }.build()
+    }
 }
