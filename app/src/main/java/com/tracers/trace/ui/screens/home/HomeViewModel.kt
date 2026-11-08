@@ -4,6 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.tracers.trace.data.vehicle.Gear
 import com.tracers.trace.data.vehicle.VehicleSignals
+import com.tracers.trace.data.sample.SampleData
 import com.tracers.trace.domain.DriveState
 import com.tracers.trace.domain.DriveStateDetector
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -55,57 +56,15 @@ class HomeViewModel(
 
     private fun updateDriveMode(driveState: DriveState) {
         val isDriving = driveState == DriveState.DRIVING
-        val caption: String
-        val captionSub: String
 
-        // 주행 모드 캡션 (B-03 연결 전까지는 기본 문구)
-        // TODO(B-03): 기체 상태 6종에 따라 캡션 변경
-        if (isDriving) {
-            caption = "비행 중"
-            captionSub = "데이터를 모으는 중이에요"
-        } else {
-            // 정차 모드 캡션 (점검·충전 상태는 B-03, C-02 연결 후)
-            // TODO(B-03, C-02): 점검 임박, 충전 타이밍 등 우선순위에 따라 캡션 표시
-            caption = "정차 중"
-            captionSub = ""
-        }
+        // TODO(feat): SDK 연결 후 실제 데이터로 교체
+        // 현재는 샘플 데이터 사용 (디자인 확인용)
+        val sample = SampleData.homeUiState
 
-        _uiState.value = _uiState.value.copy(
+        _uiState.value = sample.copy(
             isDriving = isDriving,
-            caption = caption,
-            captionSub = captionSub,
-            // 타일 데이터는 아직 연결 전 → 빈 상태 유지
-            efficiency = TileState.Efficiency(
-                value = "–",
-                unit = "km/kWh",
-                status = "데이터를 모으는 중이에요",
-                statusLevel = StatusLevel.Normal,
-                barPercent = 0f
-            ),
-            maintenance = TileState.Maintenance(
-                value = "–",
-                unit = "일",
-                status = "데이터를 모으는 중이에요",
-                statusLevel = StatusLevel.Normal,
-                barPercent = 0f
-            ),
-            coin = TileState.Coin(
-                value = "0",
-                unit = "",
-                status = if (isDriving) "별 모으는 중" else "주행 시작 시 적립",
-                statusLevel = StatusLevel.Gold,
-                barPercent = 0f,
-                barMarkPercent = 0.5f
-            ),
-            region = TileState.Region(
-                city = "–",
-                district = "–",
-                value = "–",
-                unit = "",
-                status = "데이터를 모으는 중이에요",
-                statusLevel = StatusLevel.Normal,
-                barPercent = 0f
-            )
+            caption = if (isDriving) "비행 중" else sample.caption,
+            captionSub = if (isDriving) "순항 고도에서 안정적으로 비행 중이에요" else sample.captionSub
         )
     }
 
