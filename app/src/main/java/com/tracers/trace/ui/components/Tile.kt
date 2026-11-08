@@ -83,7 +83,8 @@ fun Tile(
         else -> if (isDriving) 52.sp else 44.sp
     }
 
-    val minHeight = if (isDriving) 150.dp else 216.dp
+    // 타일 높이는 정차 모드 기준으로 고정 (S02: "S01과 같은 배치")
+    val minHeight = 216.dp
 
     // 주행 모드 클릭 시 파란 테두리 (A-04 음성 안내 시각 피드백)
     val borderModifier = if (isDriving) {
