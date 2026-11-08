@@ -12,7 +12,9 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -78,12 +80,22 @@ fun TraceNavHost(
     val driveState by homeViewModel.driveState.collectAsState()
     val requiresDistractionOptimization by uxRestrictionsMonitor.requiresDistractionOptimization.collectAsState()
 
+    // 시스템 제한의 이전 값 추적 (false→true 전환 감지용)
+    var previousUxRestriction by remember { mutableStateOf(requiresDistractionOptimization) }
+
     LaunchedEffect(driveState, requiresDistractionOptimization, currentRoute) {
-        // 주행 시작 (우리 판단 또는 시스템 판단) && 홈이 아닌 화면 → 홈으로 복귀
-        val isDrivingRestricted = driveState == DriveState.DRIVING || requiresDistractionOptimization
-        if (isDrivingRestricted && currentRoute != TraceDestinations.HOME) {
+        // 자동 복귀 조건:
+        // 1. DriveStateDetector가 DRIVING 상태이거나
+        // 2. 시스템 제한이 false → true로 바뀌는 순간 (이미 true인 상태로는 복귀하지 않음)
+        val isDriving = driveState == DriveState.DRIVING
+        val uxRestrictionJustActivated = !previousUxRestriction && requiresDistractionOptimization
+
+        if ((isDriving || uxRestrictionJustActivated) && currentRoute != TraceDestinations.HOME) {
             navController.popBackStack(TraceDestinations.HOME, inclusive = false)
         }
+
+        // 이전 값 업데이트
+        previousUxRestriction = requiresDistractionOptimization
     }
 
     NavHost(
