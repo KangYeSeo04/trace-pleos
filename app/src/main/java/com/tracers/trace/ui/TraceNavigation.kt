@@ -29,8 +29,7 @@ import com.tracers.trace.data.uxrestrictions.CarUxRestrictionsMonitor
 import com.tracers.trace.data.vehicle.PleosVehicleSignals
 import com.tracers.trace.domain.DriveState
 import com.tracers.trace.ui.icons.TraceIcons
-import com.tracers.trace.ui.screens.efficiency.EfficiencyScreen
-import com.tracers.trace.ui.screens.efficiency.EfficiencyUiState
+import com.tracers.trace.ui.screens.efficiency.*
 import com.tracers.trace.ui.screens.home.HomeScreen
 import com.tracers.trace.ui.screens.home.HomeViewModel
 import com.tracers.trace.ui.screens.spaceflight.SpaceFlightScreen
@@ -117,9 +116,9 @@ fun TraceNavHost(
             )
         }
         composable(TraceDestinations.EFFICIENCY) {
-            // TODO(feat): ViewModel 연결, 샘플 데이터는 Preview만 사용
+            // TODO(feat): ViewModel 연결
             EfficiencyScreen(
-                uiState = EfficiencyUiState(),  // 빈 상태로 시작
+                uiState = createSampleEfficiencyUiState(),
                 onNavigateBack = { navController.popBackStack() }
             )
         }
@@ -174,4 +173,56 @@ private fun PlaceholderScreen(
             )
         }
     }
+}
+
+// TODO(feat): ViewModel 연결 시 삭제
+private fun createSampleEfficiencyUiState(): EfficiencyUiState {
+    val days = (1..30).map { day ->
+        CalendarDay(
+            dayOfMonth = day,
+            hasDriving = day <= 6,
+            hasCharging = day == 2 || day == 5,
+            isFuture = day > 6,
+            isToday = day == 6
+        )
+    }
+
+    val months = listOf(
+        MonthBar("5월", 6.2f), MonthBar("6월", 6.4f), MonthBar("7월", 5.1f),
+        MonthBar("8월", 5.0f), MonthBar("9월", 6.1f), MonthBar("10월", 5.6f)
+    )
+
+    return EfficiencyUiState(
+        average90Days = EfficiencyAverage(
+            avgEfficiency = 5.8f,
+            todayComparison = TodayComparison(6.4f, 1.1f, true),
+            summary = EfficiencySummary(38f, 17, 4, 11)
+        ),
+        chargeTiming = ChargeTiming(
+            title = "목요일까지 충분해요",
+            description = "배터리 64% · 하루 평균 34 km 기준",
+            forecast = listOf(
+                ChargeForecastDay("지금", 64, true),
+                ChargeForecastDay("내일", 53, false),
+                ChargeForecastDay("수", 42, false),
+                ChargeForecastDay("목", 31, false),
+                ChargeForecastDay("금", 19, false)
+            )
+        ),
+        calendar = DrivingCalendar(
+            year = 2026, month = 11, days = days, selectedDay = 2,
+            selectedDayDetail = DayDetail(
+                dateLabel = "11월 2일 월요일", durationMinutes = 58, distanceKm = 42.6f,
+                efficiency = 6.4f, efficiencyDiff = 1.1f, isAboveAverage = true,
+                chargingRecord = ChargingRecord("08:10 – 08:52", true, "[충전소 이름]", 31, 64, 28f)
+            )
+        ),
+        monthlyEfficiency = MonthlyEfficiency(
+            months = months, avg90Days = 5.8f, selectedMonth = null, dailyChart = null
+        ),
+        prediction = MonthPrediction(
+            monthLabel = "11월", normalRangeKm = 380, predictedRangeKm = 323, changePercent = -15,
+            tip = "히터 사용이 늘어 주행거리가 줄어요. 출발 10분 전 예약 공조를 켜 두면 덜 줄어들어요."
+        )
+    )
 }
