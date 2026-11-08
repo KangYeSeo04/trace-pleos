@@ -272,6 +272,13 @@ private fun TileGrid(
     onRegionClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
+    // 주행 모드일 때는 상세 이동 대신 음성 안내 (TODO: A-04)
+    // TODO(A-04): TTS 호출
+    val effClick: () -> Unit = if (isDriving) { {} } else onEfficiencyClick
+    val maintClick: () -> Unit = if (isDriving) { {} } else onMaintenanceClick
+    val coinClick: () -> Unit = if (isDriving) { {} } else onCoinClick
+    val regionClick: () -> Unit = if (isDriving) { {} } else onRegionClick
+
     Column(
         modifier = modifier.fillMaxWidth(),
         verticalArrangement = Arrangement.spacedBy(10.dp)
@@ -283,13 +290,13 @@ private fun TileGrid(
             Tile(
                 state = efficiency,
                 isDriving = isDriving,
-                onClick = onEfficiencyClick,
+                onClick = effClick,
                 modifier = Modifier.weight(1f)
             )
             Tile(
                 state = maintenance,
                 isDriving = isDriving,
-                onClick = onMaintenanceClick,
+                onClick = maintClick,
                 modifier = Modifier.weight(1f)
             )
         }
@@ -300,13 +307,13 @@ private fun TileGrid(
             Tile(
                 state = coin,
                 isDriving = isDriving,
-                onClick = onCoinClick,
+                onClick = coinClick,
                 modifier = Modifier.weight(1f)
             )
             Tile(
                 state = region,
                 isDriving = isDriving,
-                onClick = onRegionClick,
+                onClick = regionClick,
                 modifier = Modifier.weight(1f)
             )
         }
