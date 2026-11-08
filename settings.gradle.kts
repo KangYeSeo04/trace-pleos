@@ -25,5 +25,5 @@ dependencyResolutionManagement {
 
 rootProject.name = "trace"
 include(":app")
-include(":topbar-probe")
-include(":pip-probe")
+// topbar-probe: 상단바 표시 실험 코드. 빌드에서 제외하되 참고용으로 폴더는 유지
+// include(":topbar-probe")
