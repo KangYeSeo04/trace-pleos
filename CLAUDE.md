@@ -83,9 +83,11 @@ TRACE는 플레오스 커넥트(AAOS 기반 차량 OS)용 Android 앱이다. 흩
 
 ### 글꼴
 
-- Pretendard 400·500·600·700. `design/fonts/pretendard_*.otf`를 `res/font/`로 옮겨 쓴다(SIL OFL 1.1).
-- 숫자 일부에 Inter가 쓰였다. HTML의 `font-family`를 확인해 같은 곳에만 Inter를 쓴다.
-- 글자 간격: 기본 `-0.01em`.
+- **Pretendard** 400·500·600·700. `design/fonts/pretendard_*.otf`를 `res/font/`로 복사(SIL OFL 1.1). 본문에 사용.
+- **Inter** 400·500·600·700. `design/fonts/inter_fonts/inter_*.otf`를 `res/font/`로 복사(SIL OFL 1.1). 타일 큰 숫자에 사용.
+- 글자 간격: 본문 `-0.01em`, 숫자 `-0.035em`.
+- 숫자는 고정폭: `fontFeatureSettings = "tnum"`.
+- TODO: `res/font/`에 라이선스 표기 파일 추가 (Pretendard + Inter, SIL OFL 1.1).
 
 ### 그리기
 

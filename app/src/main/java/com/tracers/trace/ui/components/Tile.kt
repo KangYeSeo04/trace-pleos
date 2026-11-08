@@ -29,6 +29,7 @@ import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontFamily
+import com.tracers.trace.ui.theme.InterFontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -116,10 +117,11 @@ fun Tile(
                         Text(
                             text = state.city,
                             style = TextStyle(
-                                fontFamily = FontFamily.Default, // Inter 대체
+                                fontFamily = InterFontFamily,
                                 fontWeight = FontWeight.SemiBold,
                                 fontSize = bigSize,
-                                letterSpacing = (-0.035).sp
+                                letterSpacing = bigSize * -0.035f,
+                                fontFeatureSettings = "tnum"
                             ),
                             color = colors.t1
                         )
@@ -149,10 +151,11 @@ fun Tile(
                     Text(
                         text = state.value,
                         style = TextStyle(
-                            fontFamily = FontFamily.Default, // Inter 대체
+                            fontFamily = InterFontFamily,
                             fontWeight = FontWeight.SemiBold,
                             fontSize = bigSize,
-                            letterSpacing = (-0.035).sp,
+                            letterSpacing = bigSize * -0.035f,
+                            fontFeatureSettings = "tnum"
                         ),
                         color = colors.t1
                     )
