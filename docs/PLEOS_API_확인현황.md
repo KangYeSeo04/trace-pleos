@@ -1,20 +1,64 @@
-# Pleos API 확인 현황 (2026.10.29 기준, 공개 문서 기준)
+# Pleos API 확인 현황
 
 ## 확인된 것 (핵심 기능에 사용)
-- 차량 속도: AAOS PERF_VEHICLE_SPEED (CarPropertyManager, Car.PERMISSION_SPEED)
-- 브레이크: Vehicle SDK Brake API (브레이크 페달·주차 브레이크 상태 조회)
-- 조향각: Vehicle SDK Steeringwheel API (getSteeringWheelAngle, 변경 콜백)
-- 방향지시등: Vehicle SDK TurnSignal API (상태 조회)
-- 기어: AAOS GEAR_SELECTION 사용 가능 (CURRENT_GEAR는 불가)
-- 위치: NaviHelper getCurrentLocationInfo
-- 음성: Gleo AI STT·TTS (전 차종 호환)
-- 서드파티 앱은 AAOS 차량 속성을 읽기만 가능(쓰기 불가)
 
-## 확인 필요
-- 브레이크 값이 밟음 여부인지, 밟은 정도(%)인지
-- 속도·조향각의 실제 갱신 주기
+| 항목 | API | 비고 |
+|------|-----|------|
+| 차량 속도 | AAOS `PERF_VEHICLE_SPEED` | 중앙값 100ms 간격 |
+| 기어 | AAOS `GEAR_SELECTION` 또는 Vehicle SDK `Gear` | CURRENT_GEAR는 불가 |
+| 브레이크 | Vehicle SDK `Brake.getCurrentBrakePedalStatus` | **Boolean on/off만** (밟은 정도 % 아님) |
+| 조향각 | Vehicle SDK `SteeringWheel.getCurrentSteeringWheelAngle` | 약 3.1초마다 + 변경 시. **콘솔과 부호 반대** (콘솔 +90 → SDK -90) |
+| 방향지시등 | Vehicle SDK `TurnSignal` | OFF/LEFT/RIGHT/HAZARD |
+| 위치 | NaviHelper `getCurrentLocationInfo` | 위도, 경도, heading, 주소 포함 |
+| 제한속도 | NaviHelper `onCurrentRoadSpeedLimit` | 1초마다 콜백 |
+| 음성 | Gleo AI STT·TTS | initialize 성공, **registerApp에 Client ID/Secret 필요** |
+| EV 배터리 % | Vehicle SDK `EvBattery.getEvBatteryStateOfCharge` | 0~100 |
+| EV 배터리 잔량 | Vehicle SDK `EvBattery.getEvBatteryLevel` 또는 AAOS `EV_BATTERY_LEVEL` | Wh 단위 |
+| EV 배터리 용량 | Vehicle SDK `EvBattery.getEvBatteryCapacity` | Wh 단위 |
+| 남은 주행가능거리 | Vehicle SDK `Odometer.getRangeRemainingDistance` 또는 AAOS `RANGE_REMAINING` | m 단위 |
+| 충전구 열림 | Vehicle SDK `EvBattery.isEvChargePortOpen` | |
+| 총 주행거리 | Vehicle SDK `Odometer.getCurrentDistanceDriven` | km 단위 (AAOS PERF_ODOMETER는 권한 오류) |
+| 에어컨 | Vehicle SDK `HVAC.getHvacAcState` | |
+| 와이퍼 | Vehicle SDK `Wiper.getCurrentWiperState` | ON/OFF (단계는 안 나옴) |
+| 서드파티 앱은 AAOS 차량 속성을 읽기만 가능(쓰기 불가) | | |
+
+## 에뮬레이터 실측 결과 (2026.11.02)
+
+에뮬레이터: Pleos Connect v2.1.0, **차량이 전기차(EV)로 고정**되어 있음. 상세: `docs/probe-result.md`, `probe-results/RESULTS.md`
+
+### 에뮬레이터 미지원 (차량 설정이 EV라서)
+
+| 항목 | 이유 |
+|------|------|
+| 연료량/연비 4종 (Fuel API) | VHAL에 연료 속성이 없음. EV 배터리로 대체 |
+| EV 전비 4종 (Instantaneous/Current/SinceCharge/Cumulative) | VHAL에 해당 vendor 속성(0x21600b13~15)이 없음. **앱에서 잔량 감소량 ÷ 거리 증가량으로 직접 계산** |
+| 이번 주행 거리/시간 (Trip) | SDK `getTripCurrentDrivingDistance/Time` 미지원. **앱에서 총 주행거리 차이로 계산** |
+| 드라이브 모드 (ECO/SPORT) | VHAL에 속성 없음 |
+| 점검 (엔진오일, 브레이크액, 워셔액) | VHAL에 속성 없음 |
+| 충전 진행 (EV_CHARGE_STATE, 속도, 남은 시간) | 값은 읽히나 콘솔로 바꿔도 **고정값만 반환** |
+
+### 권한 오류 (서드파티 불가)
+
+| 항목 | 필요 권한 |
+|------|----------|
+| 경고등 (Telltales) | `PRIVATE_CAR_SAFETY` |
+| 타이어 공기압 | `PRIVATE_CAR_SAFETY` |
+| AAOS 주행거리 (PERF_ODOMETER) | `CAR_MILEAGE` (시스템 전용) → Vehicle SDK `getCurrentDistanceDriven` 사용 |
+| AAOS 좌석 탑승/벨트 | `CONTROL_CAR_SEATS` (시스템 전용) → Vehicle SDK `Seat` 사용 (값이 반대로 옴, 실차 확인 필요) |
+
+### 주의 사항
+
+- **조향각 부호가 반대**: 콘솔 steering=+90이 SDK에서는 -90으로 옴. 앱에서 부호를 뒤집어야 함
+- **좌석 탑승 값이 반대**: 콘솔 Occupied=true가 SDK에서는 false로 옴. 실차에서 확인 필요
+- **TTS·STT**: `initialize`는 성공하나 `registerApp`에 Client ID/Secret 필요 (local.properties에 설정)
+
+## 확인 필요 (실차에서)
+
 - 백그라운드에서 상시 기록(30초 링버퍼)이 허용되는지
-- 버추얼 콘솔에서 조작 가능한 상태값 목록
+- 조향각 부호: 실차에서 어느 쪽이 양수인지
+- 좌석 탑승 SDK 값 의미
+- EV 전비 SDK가 실차에서 지원되는지, 단위는 무엇인지
+- 과속방지턱 (`onCautionPointInfo`) 콜백이 경로 안내 중에 오는지
 
 ## 현재 공개 문서에 없거나 미지원
 - 가속 페달 위치, 가속도(G센서), 안전벨트 상태
