@@ -114,11 +114,7 @@ fun Tile(
                 .background(colors.tile)
                 .then(borderModifier)
                 .clickable(enabled = !driving, onClick = onClick)
-                .padding(18.dp)
-                .onGloballyPositioned { coords ->
-                    val heightDp = with(density) { coords.size.height.toDp() }
-                    android.util.Log.d("HomeLayout", "Tile $tileLabel height: $heightDp (mode: ${if (driving) "driving" else "parked"})")
-                },
+                .padding(18.dp),
             verticalArrangement = Arrangement.Top
         ) {
             // 헤더
