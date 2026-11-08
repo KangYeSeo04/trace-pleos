@@ -75,6 +75,7 @@ fun HomeScreen(
             caption = uiState.caption,
             captionSub = uiState.captionSub,
             captionIconPath = uiState.captionIconPath,
+            isDriving = uiState.isDriving,
             onClick = onNavigateToSpace,
             modifier = Modifier.weight(25f)
         )
@@ -191,6 +192,7 @@ private fun HeroStage(
     caption: String,
     captionSub: String,
     captionIconPath: String?,
+    isDriving: Boolean,
     onClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
@@ -200,7 +202,7 @@ private fun HeroStage(
         modifier = modifier
             .fillMaxWidth()
             .clip(RoundedCornerShape(20.dp))
-            .clickable(role = Role.Button, onClick = onClick)
+            .clickable(enabled = !isDriving, role = Role.Button, onClick = onClick)
             .onGloballyPositioned { coords ->
                 val heightDp = with(density) { coords.size.height.toDp() }
                 Log.d("HomeLayout", "HeroStage height: $heightDp")

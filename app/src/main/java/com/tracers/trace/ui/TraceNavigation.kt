@@ -129,7 +129,7 @@ fun TraceNavHost(
         composable(TraceDestinations.SPACE) {
             SpaceFlightScreen(
                 onNavigateBack = { navController.popBackStack() },
-                isDrivingRestricted = requiresDistractionOptimization
+                isDrivingRestricted = driveState == DriveState.DRIVING
             )
         }
     }
