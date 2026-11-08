@@ -25,12 +25,12 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
-import com.tracers.trace.data.sample.SampleData
 import com.tracers.trace.data.uxrestrictions.CarUxRestrictionsMonitor
 import com.tracers.trace.data.vehicle.PleosVehicleSignals
 import com.tracers.trace.domain.DriveState
 import com.tracers.trace.ui.icons.TraceIcons
 import com.tracers.trace.ui.screens.efficiency.EfficiencyScreen
+import com.tracers.trace.ui.screens.efficiency.EfficiencyUiState
 import com.tracers.trace.ui.screens.home.HomeScreen
 import com.tracers.trace.ui.screens.home.HomeViewModel
 import com.tracers.trace.ui.screens.spaceflight.SpaceFlightScreen
@@ -119,7 +119,7 @@ fun TraceNavHost(
         composable(TraceDestinations.EFFICIENCY) {
             // TODO(feat): ViewModel 연결
             EfficiencyScreen(
-                uiState = SampleData.efficiencyUiState,
+                uiState = EfficiencyUiState(),
                 onNavigateBack = { navController.popBackStack() }
             )
         }
