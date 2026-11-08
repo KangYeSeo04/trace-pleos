@@ -56,8 +56,11 @@ TRACE는 플레오스 커넥트(AAOS 기반 차량 OS)용 Android 앱이다. 흩
 ### 단위
 
 - 디자인 기준 프레임: 삼분할 오른쪽 칸 **600 × 800 CSS px**
-- 변환: **디자인 1px = 1dp** 를 기본으로 하고, `TraceDimens`의 `scale` 한 곳에서만 조정한다. 화면 코드에 배율 계산을 흩뿌리지 않는다.
+- 변환: `scale = min(칸가로/600, 칸세로/800)`. 실행 시 칸 크기로 동적 계산.
+- **TraceTheme 최상위**에서 `LocalDensity`를 `density × scale`로 덮어써서 제공. 화면 코드는 디자인 px 숫자를 dp·sp로 그대로 쓴다. 시스템 글자 크기 설정(fontScale)은 유지.
 - 글자 크기도 같은 비율(px → sp). 숫자는 고정폭(`fontFeatureSettings = "tnum"`).
+- 가로 기준으로 키우고 남는 세로 공간은 홈의 비행 무대 높이가 가져간다. 상세 화면은 세로 스크롤이라 아래로 길어진다.
+- 실측(2026.11.08): 에뮬레이터 2560×1440 px, 160dpi, 3분할 TRACE 칸 841×1210 dp, scale 1.40.
 
 ### 다크 테마 토큰 (`ui/theme/TraceColors.kt`)
 
