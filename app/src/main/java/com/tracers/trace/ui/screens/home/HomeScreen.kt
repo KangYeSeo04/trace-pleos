@@ -70,20 +70,20 @@ fun HomeScreen(
         // 앱 바
         HomeAppBar(isDriving = uiState.isDriving)
 
-        // 비행 무대 (남는 세로 공간을 차지)
+        // 비행 무대 (디자인 정차 비율: 250 / 390 = 25 / 39)
         HeroStage(
             caption = uiState.caption,
             captionSub = uiState.captionSub,
             captionIconPath = uiState.captionIconPath,
             onClick = onNavigateToSpace,
-            modifier = Modifier.weight(1f)
+            modifier = Modifier.weight(25f)
         )
 
-        // 타일 그리드 2×2 (고정 높이: 190 + 10 + 190 = 390dp)
+        // 타일 그리드 2×2 (디자인 정차 비율: 390 / 250 = 39 / 25)
         Box(
             modifier = Modifier
                 .fillMaxWidth()
-                .height(390.dp)
+                .weight(39f)
         ) {
             TileGrid(
                 efficiency = uiState.efficiency,

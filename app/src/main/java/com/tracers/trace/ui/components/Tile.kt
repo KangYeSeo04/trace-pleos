@@ -89,12 +89,8 @@ fun Tile(
         else -> if (isDriving) 52.sp else 44.sp
     }
 
-    // 주행 모드 클릭 시 파란 테두리 (A-04 음성 안내 시각 피드백)
-    val borderModifier = if (isDriving) {
-        Modifier.border(width = 2.dp, color = colors.accent, shape = RoundedCornerShape(20.dp))
-    } else {
-        Modifier
-    }
+    // TODO(A-04): 주행 모드에서 음성 재생 중에만 파란 테두리 + "안내 중" 표시
+    val borderModifier = Modifier
 
     val density = androidx.compose.ui.platform.LocalDensity.current
     val tileLabel = when (state) {
@@ -117,12 +113,13 @@ fun Tile(
                 .clip(RoundedCornerShape(20.dp))
                 .background(colors.tile)
                 .then(borderModifier)
-                .clickable(onClick = onClick)
+                .clickable(enabled = !driving, onClick = onClick)
                 .padding(18.dp)
                 .onGloballyPositioned { coords ->
                     val heightDp = with(density) { coords.size.height.toDp() }
                     android.util.Log.d("HomeLayout", "Tile $tileLabel height: $heightDp (mode: ${if (driving) "driving" else "parked"})")
-                }
+                },
+            verticalArrangement = Arrangement.Top
         ) {
             // 헤더
             TileHeader(
