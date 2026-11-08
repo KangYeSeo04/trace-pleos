@@ -20,7 +20,10 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.layout.onGloballyPositioned
+import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Path
@@ -83,14 +86,22 @@ fun Tile(
         else -> if (isDriving) 52.sp else 44.sp
     }
 
-    // 타일 높이는 정차 모드 기준으로 고정 (S02: "S01과 같은 배치")
-    val minHeight = 216.dp
+    // 타일 높이는 정차·주행 모두 190dp 고정 (디자인 150과 다름, S02: "S01과 같은 배치")
+    val minHeight = 190.dp
 
     // 주행 모드 클릭 시 파란 테두리 (A-04 음성 안내 시각 피드백)
     val borderModifier = if (isDriving) {
         Modifier.border(width = 2.dp, color = colors.accent, shape = RoundedCornerShape(20.dp))
     } else {
         Modifier
+    }
+
+    val density = androidx.compose.ui.platform.LocalDensity.current
+    val tileLabel = when (state) {
+        is TileState.Efficiency -> "Efficiency"
+        is TileState.Maintenance -> "Maintenance"
+        is TileState.Coin -> "Coin"
+        is TileState.Region -> "Region"
     }
 
     Column(
@@ -102,6 +113,10 @@ fun Tile(
             .then(borderModifier)
             .clickable(onClick = onClick)
             .padding(18.dp)
+            .onGloballyPositioned { coords ->
+                val heightDp = with(density) { coords.size.height.toDp() }
+                android.util.Log.d("HomeLayout", "Tile $tileLabel height: $heightDp")
+            }
     ) {
         // 헤더
         TileHeader(
@@ -190,23 +205,23 @@ fun Tile(
             color = statusColor
         )
 
-        // 진행 막대 (정차 모드만)
-        if (!isDriving) {
-            Spacer(modifier = Modifier.height(14.dp))
-            TileProgressBar(
-                percent = state.barPercent,
-                barColor = barColor,
-                markPercent = state.barMarkPercent
-            )
+        // 진행 막대 (주행 모드에서는 보이지 않지만 자리는 유지)
+        Spacer(modifier = Modifier.height(14.dp))
+        TileProgressBar(
+            percent = state.barPercent,
+            barColor = barColor,
+            markPercent = state.barMarkPercent,
+            modifier = Modifier.alpha(if (isDriving) 0f else 1f)
+        )
 
-            // 보조 텍스트
-            Spacer(modifier = Modifier.height(10.dp))
-            Text(
-                text = state.subText,
-                fontSize = 13.sp,
-                color = colors.t2
-            )
-        }
+        // 보조 텍스트 (주행 모드에서는 보이지 않지만 자리는 유지)
+        Spacer(modifier = Modifier.height(10.dp))
+        Text(
+            text = state.subText,
+            fontSize = 13.sp,
+            color = colors.t2,
+            modifier = Modifier.alpha(if (isDriving) 0f else 1f)
+        )
     }
 }
 
