@@ -66,6 +66,20 @@ data class TripKmRecord(
 ) {
     val totalKm: Int get() = cleanCells.size
     val cleanKm: Int get() = cleanCells.count { it }
+
+    /** 적립이 멈춘 km를 이어진 구간으로 묶는다(km는 1부터). 주행이 길어도 막대 칸이 늘지 않게 (CoinDark runs) */
+    val stoppedRuns: List<IntRange>
+        get() {
+            val runs = mutableListOf<IntRange>()
+            cleanCells.forEachIndexed { i, clean ->
+                if (clean) return@forEachIndexed
+                val km = i + 1
+                val last = runs.lastOrNull()
+                if (last != null && last.last == km - 1) runs[runs.lastIndex] = last.first..km
+                else runs += km..km
+            }
+            return runs
+        }
 }
 
 /**

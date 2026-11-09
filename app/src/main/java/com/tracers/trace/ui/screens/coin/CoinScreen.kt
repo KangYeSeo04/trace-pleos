@@ -365,10 +365,16 @@ internal fun formatCoins(value: Int): String = String.format(Locale.KOREA, "%,d"
 
 // ===== Preview =====
 
-@Preview(widthDp = 600, heightDp = 1900, showBackground = true)
+@Preview(name = "다크", widthDp = 600, heightDp = 1900, showBackground = true)
 @Composable
-private fun CoinScreenPreview() {
-    TraceTheme { CoinScreen(uiState = SampleData.coinUiState, onNavigateBack = {}) }
+private fun CoinScreenDarkPreview() {
+    TraceTheme(darkTheme = true) { CoinScreen(uiState = SampleData.coinUiState, onNavigateBack = {}) }
+}
+
+@Preview(name = "라이트", widthDp = 600, heightDp = 1900, showBackground = true)
+@Composable
+private fun CoinScreenLightPreview() {
+    TraceTheme(darkTheme = false) { CoinScreen(uiState = SampleData.coinUiState, onNavigateBack = {}) }
 }
 
 @Preview(widthDp = 600, heightDp = 800, showBackground = true)
