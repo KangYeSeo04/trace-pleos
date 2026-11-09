@@ -18,7 +18,9 @@ data class EfficiencyUiState(
 data class EfficiencyAverage(
     val avgEfficiency: Float,          // 예: 5.8
     val todayComparison: TodayComparison?,
-    val summary: EfficiencySummary
+    val summary: EfficiencySummary,
+    /** 앱이 잔량 감소량 ÷ 거리로 계산한 값이면 true → "추정" 표시 */
+    val isEstimated: Boolean = false
 )
 
 /**

@@ -172,7 +172,7 @@ private fun Average90DaysSection(average: EfficiencyAverage) {
             .padding(22.dp)
     ) {
         Text(
-            text = "최근 90일 평균",
+            text = if (average.isEstimated) "최근 90일 평균 · 추정" else "최근 90일 평균",
             fontSize = 14.sp,
             fontWeight = FontWeight.Medium,
             color = colors.t2
@@ -242,7 +242,13 @@ private fun Average90DaysSection(average: EfficiencyAverage) {
             modifier = Modifier.fillMaxWidth(),
             horizontalArrangement = Arrangement.spacedBy(0.dp)
         ) {
-            SummaryItem("회생제동", String.format("%.0f", average.summary.regenBraking), "kWh", Modifier.weight(1f))
+            SummaryItem(
+                "회생제동",
+                // 10 kWh 미만은 소수 한 자리 (기록 초기에 0으로만 보이지 않게)
+                String.format(if (average.summary.regenBraking < 10f) "%.1f" else "%.0f", average.summary.regenBraking),
+                "kWh",
+                Modifier.weight(1f)
+            )
             SummaryItem("공조", "${average.summary.hvac}", "%", Modifier.weight(1f))
             SummaryItem("급가속", "${average.summary.hardAccel}", "회", Modifier.weight(1f))
             SummaryItem("충전", "${average.summary.charges}", "회", Modifier.weight(1f))

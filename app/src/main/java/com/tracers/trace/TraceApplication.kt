@@ -2,6 +2,7 @@ package com.tracers.trace
 
 import android.app.Application
 import com.tracers.trace.data.record.DriveRecordCollector
+import com.tracers.trace.data.record.EfficiencySource
 import com.tracers.trace.data.record.RecordRepository
 import com.tracers.trace.data.record.TraceDatabase
 import com.tracers.trace.data.vehicle.PleosVehicleSignals
@@ -24,11 +25,14 @@ class TraceApplication : Application() {
         private set
     lateinit var recordCollector: DriveRecordCollector
         private set
+    lateinit var efficiencySource: EfficiencySource
+        private set
 
     override fun onCreate() {
         super.onCreate()
         vehicleSignals = PleosVehicleSignals(this)
         recordRepository = RecordRepository(TraceDatabase.create(this))
         recordCollector = DriveRecordCollector(vehicleSignals, recordRepository, appScope).also { it.start() }
+        efficiencySource = EfficiencySource(recordRepository, vehicleSignals)
     }
 }

@@ -3,6 +3,10 @@ package com.tracers.trace.ui.screens.home
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.tracers.trace.domain.DriveState
+import com.tracers.trace.domain.EfficiencySummary
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -17,6 +21,8 @@ import kotlinx.coroutines.launch
 class HomeViewModel(
     /** A-01 주행 상태. 앱 전체에서 DriveRecordCollector 하나가 판정한 값을 받는다 */
     val driveState: StateFlow<DriveState>,
+    /** C-01 전비 계산 결과 (Room 기록 기반). 기록이 없으면 summary.averageKmPerKwh == null */
+    efficiency: Flow<EfficiencySummary>,
 ) : ViewModel() {
 
     private val _uiState = MutableStateFlow(HomeUiState())
@@ -25,11 +31,12 @@ class HomeViewModel(
     init {
         // DriveState → HomeUiState.isDriving
         viewModelScope.launch {
-            driveState.collect { updateDriveMode(it) }
+            combine(driveState, efficiency.onStart<EfficiencySummary?> { emit(null) }) { st, eff -> st to eff }
+                .collect { (st, eff) -> updateDriveMode(st, eff) }
         }
     }
 
-    private fun updateDriveMode(driveState: DriveState) {
+    private fun updateDriveMode(driveState: DriveState, efficiency: EfficiencySummary?) {
         val isDriving = driveState == DriveState.DRIVING
         val caption: String
         val captionSub: String
@@ -48,13 +55,7 @@ class HomeViewModel(
             isDriving = isDriving,
             caption = caption,
             captionSub = captionSub,
-            efficiency = TileState.Efficiency(
-                value = "–",
-                unit = "km/kWh",
-                status = "데이터를 모으는 중이에요",
-                statusLevel = StatusLevel.Normal,
-                barPercent = 0f
-            ),
+            efficiency = EfficiencyTileMapper.map(efficiency, isDriving),
             maintenance = TileState.Maintenance(
                 value = "–",
                 unit = "일",

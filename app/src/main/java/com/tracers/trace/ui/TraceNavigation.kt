@@ -21,7 +21,11 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.lifecycle.viewmodel.initializer
+import androidx.lifecycle.viewmodel.viewModelFactory
 import androidx.navigation.NavHostController
+import kotlinx.coroutines.flow.map
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
@@ -30,7 +34,7 @@ import com.tracers.trace.data.uxrestrictions.CarUxRestrictionsMonitor
 import com.tracers.trace.domain.DriveState
 import com.tracers.trace.ui.icons.TraceIcons
 import com.tracers.trace.ui.screens.efficiency.EfficiencyScreen
-import com.tracers.trace.ui.screens.efficiency.EfficiencyUiState
+import com.tracers.trace.ui.screens.efficiency.EfficiencyViewModel
 import com.tracers.trace.ui.screens.home.HomeScreen
 import com.tracers.trace.ui.screens.home.HomeViewModel
 import com.tracers.trace.ui.screens.spaceflight.SpaceFlightScreen
@@ -69,7 +73,12 @@ fun TraceNavHost(
     val app = context.applicationContext as TraceApplication
 
     // HomeViewModel 생성 (Activity 생명주기 동안 유지)
-    val homeViewModel = remember { HomeViewModel(app.recordCollector.driveState) }
+    val homeViewModel = remember {
+        HomeViewModel(
+            driveState = app.recordCollector.driveState,
+            efficiency = app.efficiencySource.observe().map { it.summary },
+        )
+    }
 
     // CarUxRestrictionsMonitor 생성 (Activity 생명주기 동안 유지)
     val uxRestrictionsMonitor = remember {
@@ -117,9 +126,13 @@ fun TraceNavHost(
             )
         }
         composable(TraceDestinations.EFFICIENCY) {
-            // TODO(feat): ViewModel 연결
+            // 이 화면의 back stack entry에 묶인다: 나가면(뒤로·A-02 복귀) 정리되어 계산도 멈춘다
+            val efficiencyViewModel: EfficiencyViewModel = viewModel(
+                factory = viewModelFactory { initializer { EfficiencyViewModel(app.efficiencySource) } }
+            )
+            val efficiencyUiState by efficiencyViewModel.uiState.collectAsState()
             EfficiencyScreen(
-                uiState = EfficiencyUiState(),
+                uiState = efficiencyUiState,
                 onNavigateBack = { navController.popBackStack() }
             )
         }
