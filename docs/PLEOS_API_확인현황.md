@@ -58,6 +58,21 @@
 - manifest 권한 중 런타임(dangerous) 권한은 `android.car.permission.CAR_SPEED` 하나. 나머지(`CAR_POWERTRAIN`, `pleos.car.permission.*`)는 normal이라 설치 시 자동 허용
 - `CAR_SPEED`가 없으면 `PERF_VEHICLE_SPEED` 구독이 `registerCallback=false`(propertyId is not in carPropertyConfig list)로 실패 → 앱 시작 시 요청
 
+### 알려진 문제: 권한 허용 직후 같은 실행에서 주행 시 화면 차단 (2026.11.09)
+
+- 현상: 앱 첫 실행에서 `CAR_SPEED` 권한 창이 뜨고 허용한 뒤, **앱을 다시 켜지 않고** 주행(D·30)이 되면 TRACE 칸 전체가 시스템의 "주행 중에는 사용할 수 없습니다" 화면으로 바뀜.
+  - 앱을 껐다 켜면 정상(주행 모드 표시). 권한이 이미 허용된 상태로 시작한 실행도 정상. 권한 요청 코드가 없던 빌드도 정상.
+- 원인 추정: 권한 창(PermissionController의 GrantPermissionsActivity)은 DO(distractionOptimized)가 아닌 화면이다. 그 창이 한 번 TRACE 태스크에 떴던 것을 홈(HOME_SCREEN의 TaskView)이 기억해, 창이 닫힌 뒤에도 그 태스크를 주행 중 차단 대상으로 본다. 허용 직후 태스크에는 MainActivity 하나만 남아 있음(`dumpsys activity` sz=1)에도 차단이 유지됨.
+- 시도: 권한 결과 콜백에서 `activity.recreate()` → 효과 없음 (같은 실행에서 여전히 차단). 코드는 되돌림.
+- 재현:
+  1. `adb shell pm revoke --user 10 com.tracers.trace android.car.permission.CAR_SPEED`
+  2. `adb shell pm clear-permission-flags --user 10 com.tracers.trace android.car.permission.CAR_SPEED user-set user-fixed`
+  3. 앱 실행 → 권한 창에서 "허용"
+  4. 버추얼 콘솔에서 기어 D, 속도 30 → 약 2초 뒤 차단 화면
+- 대응:
+  - 시연: 시연 전에 앱을 한 번 실행해 권한을 미리 허용하고 앱을 다시 켜 둔다.
+  - 실차: 첫 실행(권한 요청)은 보통 주차 중이고, 다음 실행부터는 권한 창이 뜨지 않아 영향이 없다.
+
 ### 에뮬레이터 미지원 (차량 설정이 EV라서)
 
 | 항목 | 이유 |
