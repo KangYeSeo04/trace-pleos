@@ -1,7 +1,13 @@
 package com.tracers.trace.ui.screens.maintenance
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.setValue
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -34,16 +40,18 @@ import com.tracers.trace.ui.theme.TraceTheme
 
 /**
  * 점검 항목 카드 (S04-3·4, D-01). 타일 바탕, 모서리 20, 행 사이 1px 구분선.
+ * 행을 누르면 그 항목의 정비 기록이 아래에 펼쳐지고, 다시 누르면 접힌다 (디자인 it.open).
  *
- * @param onItemClick 행 탭 → 그 항목 정비 기록 펼치기 (2회차)
+ * @param records 펼침 목록용 정비 기록. 항목 이름이 itemNames에 있는 기록만 보인다
  */
 @Composable
 fun MaintenanceItemsCard(
     items: List<MaintenanceItem>,
+    records: List<MaintenanceRecord>,
     modifier: Modifier = Modifier,
-    onItemClick: (MaintenanceItem) -> Unit = {},
 ) {
     val colors = TraceTheme.colors
+    var openName by rememberSaveable { mutableStateOf<String?>(null) }
 
     Column(
         modifier = modifier
@@ -62,10 +70,43 @@ fun MaintenanceItemsCard(
         }
         items.forEachIndexed { i, item ->
             if (i > 0) {
-                Box(Modifier.fillMaxWidth().height(1.dp).background(colors.line))
+                RowDivider()
             }
-            // TODO(2회차): 펼치면 이 항목의 정비 기록 목록 (디자인 it.open / it.recs)
-            MaintenanceItemRow(item = item, onClick = { onItemClick(item) })
+            MaintenanceItemRow(
+                item = item,
+                onClick = { openName = if (openName == item.name) null else item.name }
+            )
+            if (openName == item.name) {
+                ItemRecords(records.filter { item.name in it.itemNames })
+            }
+        }
+    }
+}
+
+/** 펼침 목록: 좌우 20·아래 14 띄움, 패널 바탕, 1px 테두리, 모서리 14 */
+@Composable
+private fun ItemRecords(records: List<MaintenanceRecord>) {
+    val colors = TraceTheme.colors
+    val shape = RoundedCornerShape(14.dp)
+    Column(
+        modifier = Modifier
+            .padding(start = 20.dp, end = 20.dp, bottom = 14.dp)
+            .fillMaxWidth()
+            .clip(shape)
+            .background(colors.panel)
+            .border(1.dp, colors.line, shape)
+    ) {
+        records.forEachIndexed { i, rec ->
+            if (i > 0) RowDivider()
+            MaintenanceRecordRow(rec, showCost = false, contentPadding = PaddingValues(horizontal = 16.dp, vertical = 12.dp))
+        }
+        if (records.isEmpty()) {
+            Text(
+                text = "아직 정비 기록이 없어요",
+                style = TraceTheme.type.body(14f),
+                color = colors.t2,
+                modifier = Modifier.padding(horizontal = 16.dp, vertical = 14.dp)
+            )
         }
     }
 }
