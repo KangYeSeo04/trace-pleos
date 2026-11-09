@@ -111,7 +111,7 @@ class DriveRecordCollector(
                     signals.batteryLevelWh, signals.batteryPercent, signals.batteryCapacityWh,
                 ) { wh, pct, cap -> Triple(wh, pct, cap) }
                 combine(
-                    signals.speedMps, battery, signals.odometerKm, signals.hvacAcOn, signals.chargePortOpen,
+                    signals.speedMps, battery, signals.odometerKm, signals.hvacOn, signals.chargePortOpen,
                 ) { v, (wh, pct, cap), odo, ac, port ->
                     VehicleSample(
                         timeMs = clock(),
@@ -119,7 +119,7 @@ class DriveRecordCollector(
                         batteryKwh = BatteryEnergy.kwh(wh, pct, cap),
                         batteryPercent = pct,
                         odometerKm = odo?.toDouble(),
-                        hvacAcOn = ac,
+                        hvacOn = ac,
                         chargePortOpen = port,
                     ) to cap?.let { it / 1000.0 }
                 }.collect { (sample, capacityKwh) ->

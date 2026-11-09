@@ -135,4 +135,12 @@ class EfficiencyMappersTest {
         assertEquals(5.0f, m.months[0].avgEfficiency, 1e-4f)
         assertEquals(6.0f, m.months[1].avgEfficiency, 1e-4f)
     }
+
+    @Test
+    fun `공조 비중을 모르면 홈 타일은 공조 대시, 전비 화면 요약도 null`() {
+        val noHvac = summary().copy(hvacSharePercent = null)
+        assertEquals("추정 · 공조 — · 회생 0.8 kWh", EfficiencyTileMapper.map(noHvac, false).subText)
+        val ui = EfficiencyUiMapper.map(noHvac, ChargeForecast.InsufficientData, listOf(trip(0, 12.0, 2.0)), emptyList(), 80, now, zone)
+        assertNull(ui.average90Days!!.summary.hvac)
+    }
 }

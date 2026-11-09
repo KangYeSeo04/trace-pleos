@@ -42,7 +42,7 @@ object EfficiencyTileMapper {
             barMarkPercent = 50f,
             subText = buildList {
                 add("추정")
-                summary.hvacSharePercent?.let { add("공조 $it%") }
+                add(summary.hvacSharePercent?.let { "공조 $it%" } ?: "공조 —")
                 add("회생 ${fmt(summary.regenKwh)} kWh")
             }.joinToString(" · "),
         )

@@ -17,7 +17,8 @@ import kotlinx.coroutines.flow.StateFlow
  * - 충전구 열림: Vehicle SDK EvBattery.isEvChargePortOpen
  * - 총 주행거리(km): Vehicle SDK Odometer.getCurrentDistanceDriven
  * - EV 배터리 용량(Wh): Vehicle SDK EvBattery.getEvBatteryCapacity (시작 시 1회)
- * - 공조 AC 켜짐: Vehicle SDK HVAC.getHvacAcState (지원 영역 중 하나라도 켜지면 true)
+ * - 공조 전원: Vehicle SDK HVAC.getHvacPowerState (지원 영역 중 하나라도 켜지면 true).
+ *   AC 상태(getHvacAcState)는 전원이 꺼져도 true로 와서 쓰지 않는다 (2026.11.09 실측)
  */
 interface VehicleSignals {
 
@@ -57,8 +58,11 @@ interface VehicleSignals {
     /** EV 배터리 전체 용량 (Wh). 잔량 kWh 대체 계산(용량 × %)에도 쓴다 */
     val batteryCapacityWh: StateFlow<Float?>
 
-    /** 공조(에어컨) 켜짐 여부 */
-    val hvacAcOn: StateFlow<Boolean?>
+    /** 공조 전원 켜짐 여부 */
+    val hvacOn: StateFlow<Boolean?>
+
+    /** 공조 전원 신호 지원 여부. null = 확인 중, false = 미지원(공조 비중 "—") */
+    val hvacSupported: StateFlow<Boolean?>
 
     /** SDK 연결 시작 */
     fun start()

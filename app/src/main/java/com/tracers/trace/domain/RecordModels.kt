@@ -8,7 +8,7 @@ package com.tracers.trace.domain
  * @property batteryKwh 배터리 잔량 (kWh). [BatteryEnergy.kwh]로 만든다
  * @property batteryPercent 배터리 % (0~100)
  * @property odometerKm 총 주행거리 (km)
- * @property hvacAcOn 공조 AC 켜짐
+ * @property hvacOn 공조 전원 켜짐
  * @property chargePortOpen 충전구 열림
  */
 data class VehicleSample(
@@ -17,7 +17,7 @@ data class VehicleSample(
     val batteryKwh: Double? = null,
     val batteryPercent: Int? = null,
     val odometerKm: Double? = null,
-    val hvacAcOn: Boolean? = null,
+    val hvacOn: Boolean? = null,
     val chargePortOpen: Boolean? = null,
 )
 

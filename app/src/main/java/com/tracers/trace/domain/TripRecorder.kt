@@ -73,7 +73,7 @@ class TripRecorder(
             batteryKwh = s.batteryKwh ?: prev.batteryKwh,
             batteryPercent = s.batteryPercent ?: prev.batteryPercent,
             odometerKm = s.odometerKm ?: prev.odometerKm,
-            hvacAcOn = s.hvacAcOn ?: prev.hvacAcOn,
+            hvacOn = s.hvacOn ?: prev.hvacOn,
             chargePortOpen = s.chargePortOpen ?: prev.chargePortOpen,
         )
     }
@@ -115,7 +115,7 @@ class TripRecorder(
                 val dt = s.timeMs - p.timeMs
                 if (dt > 0) {
                     // 시작 기준 샘플이 시작 시각보다 앞설 수 있으므로 시작 이후 구간만 센다
-                    if (p.hvacAcOn == true) hvacOnMs += s.timeMs - maxOf(p.timeMs, startMs).coerceAtMost(s.timeMs)
+                    if (p.hvacOn == true) hvacOnMs += s.timeMs - maxOf(p.timeMs, startMs).coerceAtMost(s.timeMs)
                     val v = p.speedMps
                     if (v != null && dt <= MAX_GAP_MS) integratedKm += v * dt / 1_000_000.0
                 }

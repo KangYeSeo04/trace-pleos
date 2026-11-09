@@ -13,7 +13,7 @@ import androidx.room.PrimaryKey
  * @property energyUsedKwh 주행 중 배터리 잔량 감소량 합 (회생으로 오른 양은 빼지 않은 순수 소비)
  * @property hardAccelCount 급가속 횟수 (차속 변화로 추정)
  * @property regenKwh 주행 중 배터리 잔량 상승량 합 = 회생제동 추정
- * @property hvacOnSec 주행 중 공조 AC가 켜져 있던 시간 (초)
+ * @property hvacOnSec 주행 중 공조 전원이 켜져 있던 시간 (초)
  * @property startBatteryPercent 시작 시 배터리 %
  * @property endBatteryPercent 종료 시 배터리 %
  */

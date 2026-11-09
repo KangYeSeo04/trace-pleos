@@ -35,15 +35,17 @@ class EfficiencySource(
 ) {
     fun observe(): Flow<EfficiencySnapshot> {
         val since = clock() - EfficiencyCalculator.WINDOW_DAYS * DAY_MS
+        val battery = combine(signals.batteryPercent, signals.batteryCapacityWh) { pct, cap -> pct to cap }
         return combine(
             repository.observeTrips(since),
             repository.observeCharges(since),
-            signals.batteryPercent,
-            signals.batteryCapacityWh,
-        ) { trips, charges, pct, capWh ->
+            battery,
+            signals.hvacSupported,
+        ) { trips, charges, (pct, capWh), hvacSupported ->
             val now = clock()
             val z = zone()
-            val summary = EfficiencyCalculator(z).summarize(trips, charges, now)
+            // 확인 중(null)이면 일단 계산하고, 미지원(false)이 확정되면 "—"
+            val summary = EfficiencyCalculator(z).summarize(trips, charges, now, hvacSupported = hvacSupported != false)
             val forecast = ChargeForecaster(z).forecast(
                 currentPercent = pct,
                 capacityKwh = capWh?.let { it / 1000.0 },

@@ -249,7 +249,12 @@ private fun Average90DaysSection(average: EfficiencyAverage) {
                 "kWh",
                 Modifier.weight(1f)
             )
-            SummaryItem("공조", "${average.summary.hvac}", "%", Modifier.weight(1f))
+            SummaryItem(
+                "공조",
+                average.summary.hvac?.toString() ?: "—",
+                if (average.summary.hvac != null) "%" else "",
+                Modifier.weight(1f)
+            )
             SummaryItem("급가속", "${average.summary.hardAccel}", "회", Modifier.weight(1f))
             SummaryItem("충전", "${average.summary.charges}", "회", Modifier.weight(1f))
         }

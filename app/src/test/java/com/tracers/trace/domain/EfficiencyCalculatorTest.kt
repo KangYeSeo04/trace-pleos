@@ -111,4 +111,11 @@ class EfficiencyCalculatorTest {
         assertEquals(0, s.chargeCount)
         assertEquals(0, s.daily.size)
     }
+
+    @Test
+    fun `공조 신호를 지원하지 않으면 공조 비중은 null`() {
+        val trips = listOf(trip(now - dayMs, km = 10.0, used = 2.0, durSec = 1000, hvacSec = 0))
+        assertNull(calc.summarize(trips, emptyList(), now, hvacSupported = false).hvacSharePercent)
+        assertEquals(0, calc.summarize(trips, emptyList(), now, hvacSupported = true).hvacSharePercent)
+    }
 }

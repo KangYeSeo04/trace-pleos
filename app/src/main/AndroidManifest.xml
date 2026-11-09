@@ -18,7 +18,7 @@
     <uses-permission android:name="pleos.car.permission.CAR_LIGHTS" />  <!-- 방향지시등 -->
     <uses-permission android:name="pleos.car.permission.CAR_ENERGY" />  <!-- EV 배터리 -->
     <uses-permission android:name="pleos.car.permission.CAR_INFO" />    <!-- EV 배터리 용량 -->
-    <uses-permission android:name="pleos.car.permission.CAR_CLIMATE" /> <!-- 공조 AC 상태 (읽기만) -->
+    <uses-permission android:name="pleos.car.permission.CAR_CLIMATE" /> <!-- 공조 전원 상태 (읽기만) -->
 
     <!-- NaviHelper / TTS / STT -->
     <uses-permission android:name="pleos.car.permission.NAVI_ROUTE" />

@@ -51,7 +51,7 @@ object EfficiencyUiMapper {
             } else null,
             summary = EfficiencySummary(
                 regenBraking = s.regenKwh.toFloat(),
-                hvac = s.hvacSharePercent ?: 0,
+                hvac = s.hvacSharePercent,
                 hardAccel = s.hardAccelCount,
                 charges = s.chargeCount,
             ),

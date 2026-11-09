@@ -37,7 +37,7 @@ data class TodayComparison(
  */
 data class EfficiencySummary(
     val regenBraking: Float,  // 회생제동 kWh
-    val hvac: Int,            // 공조 %
+    val hvac: Int?,           // 공조 %. null이면 "—" (공조 신호 미지원)
     val hardAccel: Int,       // 급가속 횟수
     val charges: Int          // 충전 횟수
 )

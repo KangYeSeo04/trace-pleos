@@ -15,7 +15,7 @@ class TripRecorderTest {
         ac: Boolean? = false, pct: Int? = 80,
     ) = VehicleSample(
         timeMs = t, speedMps = kmh(speedKmh), batteryKwh = kwh,
-        batteryPercent = pct, odometerKm = odo, hvacAcOn = ac,
+        batteryPercent = pct, odometerKm = odo, hvacOn = ac,
     )
 
     @Test

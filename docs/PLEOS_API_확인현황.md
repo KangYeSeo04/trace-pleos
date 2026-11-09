@@ -18,7 +18,8 @@
 | 남은 주행가능거리 | Vehicle SDK `Odometer.getRangeRemainingDistance` 또는 AAOS `RANGE_REMAINING` | m 단위 |
 | 충전구 열림 | Vehicle SDK `EvBattery.isEvChargePortOpen` | |
 | 총 주행거리 | Vehicle SDK `Odometer.getCurrentDistanceDriven` | km 단위 (AAOS PERF_ODOMETER는 권한 오류) |
-| 에어컨 | Vehicle SDK `HVAC.getHvacAcState` | |
+| 에어컨 | Vehicle SDK `HVAC.getHvacAcState` | **공조 전원이 꺼져도 true로 옴** → 공조 켜짐 판단에는 쓰지 않음 |
+| 공조 전원 | Vehicle SDK `HVAC.getHvacPowerState` / `registerHvacPowerState` | `checkHvacPowerCapabilities`로 영역 확인 후 구독. 공조 비중(C-01)에 사용 (2026.11.09 실측) |
 | 와이퍼 | Vehicle SDK `Wiper.getCurrentWiperState` | ON/OFF (단계는 안 나옴) |
 | 서드파티 앱은 AAOS 차량 속성을 읽기만 가능(쓰기 불가) | | |
 
@@ -39,6 +40,23 @@
 - scale은 실행 시 칸 크기로 동적 계산: `min(칸가로/600, 칸세로/800)`
 - TraceTheme에서 LocalDensity를 `density × scale`로 덮어써서, 화면 코드는 디자인 px 숫자를 dp·sp로 그대로 사용
 - 남는 세로 공간(현재 약 90dp)은 홈의 비행 무대가 가져감
+
+### 공조 전원 (2026.11.09 측정)
+
+| 항목 | 결과 |
+|------|------|
+| `checkHvacPowerCapabilities` | accessType `READ_WRITE`, 영역 1개 |
+| `getHvacPowerState` 초기값 | 콘솔 power=false → `false` |
+| 콘솔 전원 끔→켬→끔→켬→끔 (3초 간격) | 콜백이 매번 바뀐 값으로 옴 (`true`/`false`, 지연 수십 ms) |
+| `getHvacAcState` | 콘솔 power=false, ac=true 상태에서 `true` → 전원과 무관하게 AC 스위치 값만 옴 |
+
+- 앱은 공조 전원 값을 쓴다. capability가 NONE이거나 영역이 없거나, 구독 후 5초 안에 값이 안 오면 미지원으로 보고 공조 비중을 "—"로 표시한다.
+- 실차 확인 필요: 전원 값이 히터만 켠 경우에도 true인지
+
+### 런타임 권한 (2026.11.09 측정)
+
+- manifest 권한 중 런타임(dangerous) 권한은 `android.car.permission.CAR_SPEED` 하나. 나머지(`CAR_POWERTRAIN`, `pleos.car.permission.*`)는 normal이라 설치 시 자동 허용
+- `CAR_SPEED`가 없으면 `PERF_VEHICLE_SPEED` 구독이 `registerCallback=false`(propertyId is not in carPropertyConfig list)로 실패 → 앱 시작 시 요청
 
 ### 에뮬레이터 미지원 (차량 설정이 EV라서)
 

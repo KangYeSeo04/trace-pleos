@@ -26,7 +26,7 @@ data class EfficiencySummary(
     val totalDistanceKm: Double,
     /** 90일 회생제동 추정 kWh */
     val regenKwh: Double,
-    /** 90일 주행 시간 중 공조 AC 켠 비중 (0~100) */
+    /** 90일 주행 시간 중 공조 켠 비중 (0~100). 공조 신호 미지원이면 null */
     val hvacSharePercent: Int?,
     val hardAccelCount: Int,
     val chargeCount: Int,
@@ -55,6 +55,8 @@ class EfficiencyCalculator(private val zone: ZoneId) {
         charges: List<ChargeRecord>,
         nowMs: Long,
         windowDays: Int = WINDOW_DAYS,
+        /** 공조 전원 신호를 지원하지 않는 차면 false → 공조 비중 null ("—") */
+        hvacSupported: Boolean = true,
     ): EfficiencySummary {
         val today = dateOf(nowMs)
         val from = today.minusDays(windowDays.toLong() - 1)
@@ -69,7 +71,7 @@ class EfficiencyCalculator(private val zone: ZoneId) {
         val diff = if (todayValue != null && average != null) todayValue - average else null
 
         val durSec = inWindow.sumOf { it.durationSec }
-        val hvacShare = if (durSec > 0) (inWindow.sumOf { it.hvacOnSec } * 100.0 / durSec).roundToInt().coerceAtMost(100) else null
+        val hvacShare = if (hvacSupported && durSec > 0) (inWindow.sumOf { it.hvacOnSec } * 100.0 / durSec).roundToInt().coerceAtMost(100) else null
 
         return EfficiencySummary(
             averageKmPerKwh = average,
