@@ -69,7 +69,7 @@ class EfficiencyCalculator(private val zone: ZoneId) {
         val diff = if (todayValue != null && average != null) todayValue - average else null
 
         val durSec = inWindow.sumOf { it.durationSec }
-        val hvacShare = if (durSec > 0) (inWindow.sumOf { it.hvacOnSec } * 100.0 / durSec).roundToInt() else null
+        val hvacShare = if (durSec > 0) (inWindow.sumOf { it.hvacOnSec } * 100.0 / durSec).roundToInt().coerceAtMost(100) else null
 
         return EfficiencySummary(
             averageKmPerKwh = average,

@@ -3,6 +3,7 @@ package com.tracers.trace.domain
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertNotNull
 import org.junit.Assert.assertNull
+import org.junit.Assert.assertTrue
 import org.junit.Test
 
 class TripRecorderTest {
@@ -216,5 +217,18 @@ class TripRecorderTest {
         r.onSample(sample(6_300, speedKmh = 40.0, odo = 1002.0))
         val trip = r.onDriveState(DriveState.PARKED, 6_300)!!
         assertEquals(1, trip.hardAccelCount)
+    }
+
+    @Test
+    fun `공조 시간은 주행 시작 이후만 센다 (주행 시간을 넘지 않는다)`() {
+        val r = TripRecorder()
+        r.onSample(sample(0, speedKmh = 0.0, ac = true))           // 정차 중 공조 켬
+        r.onSample(sample(10_000, speedKmh = 30.0, ac = true))     // 10초 뒤 출발
+        r.onDriveState(DriveState.DRIVING, 12_000)
+        r.onSample(sample(40_000, speedKmh = 30.0, ac = true, odo = 1001.0))
+        val trip = r.onDriveState(DriveState.PARKED, 40_000)!!
+        assertEquals(10_000L, trip.startedAtMs)
+        assertEquals(30L, trip.hvacOnSec)
+        assertTrue(trip.hvacOnSec <= trip.durationSec)
     }
 }

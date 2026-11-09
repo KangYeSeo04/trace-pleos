@@ -114,7 +114,8 @@ class TripRecorder(
             if (p != null) {
                 val dt = s.timeMs - p.timeMs
                 if (dt > 0) {
-                    if (p.hvacAcOn == true) hvacOnMs += dt
+                    // 시작 기준 샘플이 시작 시각보다 앞설 수 있으므로 시작 이후 구간만 센다
+                    if (p.hvacAcOn == true) hvacOnMs += s.timeMs - maxOf(p.timeMs, startMs).coerceAtMost(s.timeMs)
                     val v = p.speedMps
                     if (v != null && dt <= MAX_GAP_MS) integratedKm += v * dt / 1_000_000.0
                 }
