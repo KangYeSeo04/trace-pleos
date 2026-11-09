@@ -1,5 +1,6 @@
 package com.tracers.trace.ui
 
+import com.tracers.trace.TraceApplication
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
@@ -26,7 +27,6 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.tracers.trace.data.uxrestrictions.CarUxRestrictionsMonitor
-import com.tracers.trace.data.vehicle.PleosVehicleSignals
 import com.tracers.trace.domain.DriveState
 import com.tracers.trace.ui.icons.TraceIcons
 import com.tracers.trace.ui.screens.efficiency.EfficiencyScreen
@@ -65,10 +65,11 @@ fun TraceNavHost(
 ) {
     val context = LocalContext.current
 
-    // HomeViewModel 생성 (Activity 생명주기 동안 유지)
+    // HomeViewModel 생성 (Activity 생명주기 동안 유지).
+    // 차량 신호는 Application의 단일 인스턴스를 쓴다 (구독·해제도 Application이 맡음)
     val homeViewModel = remember {
-        val vehicleSignals = PleosVehicleSignals(context)
-        HomeViewModel(vehicleSignals)
+        val app = context.applicationContext as TraceApplication
+        HomeViewModel(app.vehicleSignals)
     }
 
     // CarUxRestrictionsMonitor 생성 (Activity 생명주기 동안 유지)

@@ -31,7 +31,7 @@ class HomeViewModel(
     val driveState: StateFlow<DriveState> = driveStateDetector.currentState
 
     init {
-        vehicleSignals.start()
+        // 신호 구독 시작·해제는 TraceApplication이 한 번만 한다
 
         // 기어와 속도를 DriveStateDetector에 전달
         viewModelScope.launch {
@@ -106,8 +106,4 @@ class HomeViewModel(
         )
     }
 
-    override fun onCleared() {
-        super.onCleared()
-        vehicleSignals.stop()
-    }
 }
