@@ -20,15 +20,16 @@ import com.tracers.trace.ui.theme.TraceTheme
  * @param percent 채움 비율 (0~100)
  * @param barColor 막대 색상
  * @param markPercent 눈금 위치 (null이면 눈금 없음)
+ * @param trackColor 막대 바탕색 (기본 track)
  */
 @Composable
 fun ProgressBar(
     percent: Float,
     barColor: Color,
     markPercent: Float? = null,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    trackColor: Color = TraceTheme.colors.track,
 ) {
-    val trackColor = TraceTheme.colors.track
     val markColor = TraceTheme.colors.t2
 
     Box(

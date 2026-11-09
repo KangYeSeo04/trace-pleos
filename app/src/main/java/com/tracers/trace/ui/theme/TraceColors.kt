@@ -24,6 +24,10 @@ data class TraceColors(
     val line: Color = Color(0xFF2C3036),
     /** 막대 바탕 */
     val track: Color = Color(0xFF33373E),
+    /** 점검 항목 막대 바탕 (MaintDark track) */
+    val itemTrack: Color = Color(0xFF363A41),
+    /** 점검 항목 여유 막대 (MaintDark ok, 75% 미만 회색) */
+    val barNeutral: Color = Color(0xFF6B7179),
     /** 강조 파랑 (유일한 강조색) */
     val accent: Color = Color(0xFF4C9AFF),
     /** 강조 파랑 반투명 (칩 배경) */

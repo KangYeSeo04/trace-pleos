@@ -10,7 +10,10 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -60,8 +63,23 @@ fun MaintenanceScreen(
             uiState.visit?.let { visit ->
                 VisitDetectionCard(visit = visit, onRecord = onRecordVisit, onDismiss = onDismissVisit)
             }
+
+            // 방문 감지 카드가 없으면 첫 섹션 제목이 스크롤 영역 맨 위에 붙는다
+            SectionTitle("점검 항목", top = if (uiState.visit == null) 0.dp else 26.dp)
+            MaintenanceItemsCard(items = uiState.items)
         }
     }
+}
+
+/** 섹션 제목: 위 26, 좌우 4, 아래 10, 15sp 600 t2 */
+@Composable
+private fun SectionTitle(text: String, top: Dp = 26.dp) {
+    Text(
+        text = text,
+        style = TraceTheme.type.body(15f, FontWeight.SemiBold),
+        color = TraceTheme.colors.t2,
+        modifier = Modifier.padding(start = 4.dp, end = 4.dp, top = top, bottom = 10.dp)
+    )
 }
 
 // ===== Preview =====
