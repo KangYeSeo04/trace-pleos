@@ -7,7 +7,7 @@ import kotlinx.coroutines.flow.StateFlow
  *
  * 지원 범위 (docs/PLEOS_API_확인현황.md 기준):
  * - 속도: AAOS PERF_VEHICLE_SPEED (100ms 간격)
- * - 기어: Vehicle SDK Gear (P/R/N/D)
+ * - 기어: AAOS GEAR_SELECTION (P/R/N/D). Vehicle SDK Gear는 deprecated라 쓰지 않음
  * - 브레이크: Vehicle SDK Brake (Boolean on/off만, % 아님)
  * - 조향각: Vehicle SDK SteeringWheel (부호 보정 필요: 콘솔 +90 → SDK -90)
  * - 방향지시등: Vehicle SDK TurnSignal (OFF/LEFT/RIGHT/HAZARD)
