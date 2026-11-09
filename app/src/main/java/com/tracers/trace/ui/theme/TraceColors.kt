@@ -42,6 +42,14 @@ data class TraceColors(
     val heroBg: Color = Color(0xFF050608),
     /** 밤하늘 비행운 (CoinDark 캔버스 tc '222,230,236') */
     val heroTrail: Color = Color(0xFFDEE6EC),
+    /** 히어로 위 글자 (사진 위라 테마와 무관하게 흰색) */
+    val heroText: Color = Color(0xFFFFFFFF),
+    /** 히어로 하단 어둡게 (linear-gradient 끝 rgba(0,0,0,0.6)) */
+    val heroScrim: Color = Color(0x99000000),
+    /** 히어로 위 흰 버튼 바탕 */
+    val heroButton: Color = Color(0xFFFFFFFF),
+    /** 히어로 위 흰 버튼 글자 */
+    val heroButtonText: Color = Color(0xFF111418),
 )
 
 val LocalTraceColors = staticCompositionLocalOf { TraceColors() }

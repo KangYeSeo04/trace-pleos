@@ -2,6 +2,17 @@ package com.tracers.trace.ui.screens.coin
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Row
+import androidx.compose.material3.Text
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.graphics.Brush
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.semantics.Role
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.unit.sp
+import java.util.Locale
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
@@ -110,6 +121,7 @@ private fun CoinHero(
     modifier: Modifier = Modifier,
 ) {
     val colors = TraceTheme.colors
+    val type = TraceTheme.type
     Box(
         modifier = modifier
             .fillMaxWidth()
@@ -126,8 +138,68 @@ private fun CoinHero(
             modifier = Modifier.fillMaxSize()
         )
         CoinHeroCanvas(animate = animate, modifier = Modifier.fillMaxSize())
+
+        // 하단 150 그라데이션 (투명 → 0.6)
+        Box(
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(150.dp)
+                .align(Alignment.BottomCenter)
+                .background(Brush.verticalGradient(listOf(Color.Transparent, colors.heroScrim)))
+        )
+
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .align(Alignment.BottomStart)
+                .padding(start = 22.dp, end = 22.dp, bottom = 20.dp),
+            horizontalArrangement = Arrangement.SpaceBetween,
+            verticalAlignment = Alignment.Bottom
+        ) {
+            Column(verticalArrangement = Arrangement.spacedBy(4.dp)) {
+                Text(
+                    text = "보유 코인",
+                    style = type.body(14f),
+                    color = colors.heroText.copy(alpha = 0.72f)
+                )
+                Text(
+                    text = formatCoins(uiState.balance),
+                    style = type.number(44f).copy(lineHeight = 44.sp),
+                    color = colors.heroText
+                )
+                Text(
+                    text = uiState.starsThisTrip
+                        ?.let { "이번 주행에서 별 ${it}개를 모았어요" }
+                        ?: "주행하면 1 km마다 별이 생겨요",
+                    style = type.body(14f),
+                    color = colors.heroText.copy(alpha = 0.8f)
+                )
+            }
+
+            // E-04: 받을 코인이 있을 때만
+            if (uiState.claimableCoins > 0) {
+                Box(
+                    modifier = Modifier
+                        .height(48.dp)
+                        .clip(RoundedCornerShape(24.dp))
+                        .background(colors.heroButton)
+                        .clickable(role = Role.Button, onClick = onClaimCoins)
+                        .padding(horizontal = 20.dp),
+                    contentAlignment = Alignment.Center
+                ) {
+                    Text(
+                        text = "${formatCoins(uiState.claimableCoins)}코인 받기",
+                        style = type.body(15f, FontWeight.Bold),
+                        color = colors.heroButtonText
+                    )
+                }
+            }
+        }
     }
 }
+
+/** 1,284 형식 */
+internal fun formatCoins(value: Int): String = String.format(Locale.KOREA, "%,d", value)
 
 // ===== Preview =====
 
