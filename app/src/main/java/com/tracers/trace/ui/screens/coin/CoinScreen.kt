@@ -269,10 +269,53 @@ private fun ShopLinkSection(shop: ShopTeaser?, onOpenShop: () -> Unit) {
     }
 }
 
-/** 받은 기록 (E-04). */
+/**
+ * 받은 기록 (E-04). 최근 순, 최대 30건. 줄 안쪽 15 20, 줄 사이 1px line.
+ */
 @Composable
 private fun CoinHistorySection(history: List<CoinHistoryEntry>) {
-    // TODO(2회차): 받은 +N(t1)·쓴 −N(t2) 목록, 줄 사이 1px line. 헤더 "적립 기준" 안내 창도 2회차
+    val colors = TraceTheme.colors
+    val type = TraceTheme.type
+    SectionTitle("받은 기록")
+    Column(
+        modifier = Modifier
+            .fillMaxWidth()
+            .clip(RoundedCornerShape(20.dp))
+            .background(colors.tile)
+    ) {
+        if (history.isEmpty()) {
+            Text(
+                text = "아직 받은 코인이 없어요",
+                style = type.body(15f),
+                color = colors.t2,
+                modifier = Modifier.padding(horizontal = 20.dp, vertical = 18.dp)
+            )
+            return@Column
+        }
+        history.take(CoinUiState.HISTORY_LIMIT).forEachIndexed { i, entry ->
+            if (i > 0) Box(Modifier.fillMaxWidth().height(1.dp).background(colors.line))
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 20.dp, vertical = 15.dp),
+                horizontalArrangement = Arrangement.SpaceBetween,
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Column(
+                    modifier = Modifier.weight(1f),
+                    verticalArrangement = Arrangement.spacedBy(3.dp)
+                ) {
+                    Text(text = entry.title, style = type.body(15f, FontWeight.SemiBold), color = colors.t1)
+                    Text(text = entry.subtitle, style = type.body(13f), color = colors.t2)
+                }
+                Text(
+                    text = formatSignedCoins(entry.amount),
+                    style = type.number(16f),
+                    color = if (entry.amount < 0) colors.t2 else colors.t1
+                )
+            }
+        }
+    }
 }
 
 /** 섹션 제목: 위 26, 좌우 4, 아래 10, 15sp 600 t2 */
@@ -285,6 +328,10 @@ private fun SectionTitle(text: String) {
         modifier = Modifier.padding(start = 4.dp, end = 4.dp, top = 26.dp, bottom = 10.dp)
     )
 }
+
+/** 적립 "+31", 구매 "−500" (디자인은 U+2212 빼기 기호) */
+internal fun formatSignedCoins(value: Int): String =
+    if (value < 0) "\u2212" + formatCoins(-value) else "+" + formatCoins(value)
 
 /** 1,284 형식 */
 internal fun formatCoins(value: Int): String = String.format(Locale.KOREA, "%,d", value)

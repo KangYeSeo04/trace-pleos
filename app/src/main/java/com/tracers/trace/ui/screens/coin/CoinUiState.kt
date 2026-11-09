@@ -19,9 +19,14 @@ data class CoinUiState(
     val tripRecord: TripKmRecord? = null,
     /** 꾸미기 진입 카드. null이면 목표 없이 "상점 둘러보기" */
     val shop: ShopTeaser? = null,
-    /** 받은 기록 (2회차), 최신이 앞 */
+    /** 받은 기록. 최신이 앞, 화면에는 앞에서 [HISTORY_LIMIT]건까지 */
     val history: List<CoinHistoryEntry> = emptyList(),
-)
+) {
+    companion object {
+        /** 받은 기록 최대 표시 건수 */
+        const val HISTORY_LIMIT = 30
+    }
+}
 
 /**
  * 안전점수 카드: 이번 주행의 거리축 점수 변화.
@@ -75,7 +80,7 @@ data class ShopTeaser(
 )
 
 /**
- * 받은 기록 한 줄 (2회차).
+ * 받은 기록 한 줄. 적립은 "+N"(t1), 구매는 "−N"(t2 회색).
  *
  * @param amount 받은 코인은 양수, 쓴 코인은 음수
  */
