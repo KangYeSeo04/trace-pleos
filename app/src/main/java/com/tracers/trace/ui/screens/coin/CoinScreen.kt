@@ -100,6 +100,9 @@ fun CoinScreen(
                 animate = heroVisible,
                 onClaimCoins = onClaimCoins
             )
+
+            SectionTitle("안전점수")
+            SafetyScoreCard(chart = uiState.safetyScore)
         }
     }
 }
@@ -196,6 +199,17 @@ private fun CoinHero(
             }
         }
     }
+}
+
+/** 섹션 제목: 위 26, 좌우 4, 아래 10, 15sp 600 t2 */
+@Composable
+private fun SectionTitle(text: String) {
+    Text(
+        text = text,
+        style = TraceTheme.type.body(15f, FontWeight.SemiBold),
+        color = TraceTheme.colors.t2,
+        modifier = Modifier.padding(start = 4.dp, end = 4.dp, top = 26.dp, bottom = 10.dp)
+    )
 }
 
 /** 1,284 형식 */

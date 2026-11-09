@@ -34,6 +34,8 @@ data class TraceColors(
     val goodSoft: Color = Color(0x2438C08A), // rgba(56,192,138,0.14)
     /** 주의 */
     val caution: Color = Color(0xFFF0A33C),
+    /** 주의 반투명 (칩 배경). goodSoft와 같은 0.14 비율 */
+    val cautionSoft: Color = Color(0x24F0A33C), // rgba(240,163,60,0.14)
     /** 경고 */
     val warn: Color = Color(0xFFEF7A70),
     /** 코인·별 */
