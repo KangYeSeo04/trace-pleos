@@ -62,6 +62,10 @@ data class TraceColors(
     val heroButton: Color = Color(0xFFFFFFFF),
     /** 히어로 위 흰 버튼 글자 */
     val heroButtonText: Color = Color(0xFF111418),
+    /** 안내 창 뒤 어둡게 (rgba(0,0,0,0.55)) */
+    val dialogScrim: Color = Color(0x8C000000),
+    /** accent 바탕 위 글자 */
+    val onAccent: Color = Color(0xFFFFFFFF),
 )
 
 val LocalTraceColors = staticCompositionLocalOf { TraceColors() }

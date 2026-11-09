@@ -29,6 +29,9 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.setValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.BiasAlignment
 import androidx.compose.ui.Modifier
@@ -50,7 +53,6 @@ import com.tracers.trace.ui.theme.TraceTheme
  *
  * @param onNavigateBack 뒤로 → 홈
  * @param onClaimCoins "N코인 받기" 버튼. 적립 처리는 2단계(E-04)
- * @param onOpenHelp 헤더 "적립 기준 보기". 안내 창은 2회차
  * @param onOpenShop 꾸미기 진입 카드 → 상점(S07)
  */
 @Composable
@@ -59,7 +61,6 @@ fun CoinScreen(
     onNavigateBack: () -> Unit,
     modifier: Modifier = Modifier,
     onClaimCoins: () -> Unit = {},
-    onOpenHelp: () -> Unit = {},
     onOpenShop: () -> Unit = {},
 ) {
     val colors = TraceTheme.colors
@@ -69,9 +70,12 @@ fun CoinScreen(
     val heroVisible by remember(density) {
         derivedStateOf { scrollState.value < with(density) { (HeroTop + HeroHeight).toPx() } }
     }
+    // 헤더 "적립 기준 보기" 안내 창
+    var helpOpen by rememberSaveable { mutableStateOf(false) }
 
+    Box(modifier = modifier.fillMaxSize()) {
     Column(
-        modifier = modifier
+        modifier = Modifier
             .fillMaxSize()
             .background(colors.panel)
     ) {
@@ -83,7 +87,7 @@ fun CoinScreen(
                 HeaderIconButton(
                     icon = TraceIcons.Help,
                     contentDescription = "적립 기준 보기",
-                    onClick = onOpenHelp
+                    onClick = { helpOpen = true }
                 )
             }
         )
@@ -110,14 +114,15 @@ fun CoinScreen(
             SectionTitle("안전점수")
             SafetyScoreCard(chart = uiState.safetyScore)
 
-            // 아래 카드는 2회차. 디자인 순서와 간격만 자리 잡아 둔다.
-            // 이번 주행 1km 기록: SectionTitle("이번 주행 1km 기록") + 카드 (위 26)
             TripKmRecordSection(record = uiState.tripRecord)
-            // 상점 바로가기: 72 높이 줄 (위 10)
             ShopLinkSection(shop = uiState.shop, onOpenShop = onOpenShop)
-            // 받은 기록: SectionTitle("받은 기록") + 목록 (위 26)
             CoinHistorySection(history = uiState.history)
         }
+    }
+
+    if (helpOpen) {
+        AccrualRulesDialog(onClose = { helpOpen = false })
+    }
     }
 }
 
