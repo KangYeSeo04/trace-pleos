@@ -18,6 +18,20 @@ class SpeedSpikeFilterTest {
     }
 
     @Test
+    fun `같은 튄 값이 100ms마다 반복돼도 300ms 안에 돌아오면 값 하나로 보고 버린다 (콘솔 실측 36→28×3→35)`() {
+        val out = SpeedSpikeFilter().run(
+            r(0, 36.0), r(100, 36.0), r(200, 28.0), r(300, 28.0), r(400, 28.0), r(500, 35.0), r(600, 35.0),
+        )
+        assertEquals(listOf(0L to 36.0, 100L to 36.0, 500L to 35.0, 600L to 35.0), out)
+    }
+
+    @Test
+    fun `같은 값이 300ms 넘게 이어지면 진짜 변화로 내보낸다 (시각은 원래대로)`() {
+        val out = SpeedSpikeFilter().run(r(0, 60.0), r(100, 40.0), r(200, 40.0), r(300, 40.0), r(400, 40.0), r(500, 40.0))
+        assertEquals(listOf(0L to 60.0, 100L to 40.0, 200L to 40.0, 300L to 40.0, 400L to 40.0, 500L to 40.0), out)
+    }
+
+    @Test
     fun `아래로 튀는 값도 버린다 (60→0→60)`() {
         val out = SpeedSpikeFilter().run(r(0, 60.0), r(100, 0.0), r(200, 60.0))
         assertEquals(listOf(0L to 60.0, 200L to 60.0), out)
