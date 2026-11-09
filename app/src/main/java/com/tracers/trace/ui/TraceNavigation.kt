@@ -42,6 +42,7 @@ import com.tracers.trace.ui.screens.home.HomeViewModel
 import com.tracers.trace.ui.screens.maintenance.MaintenanceScreen
 import com.tracers.trace.ui.screens.maintenance.MaintenanceFormActions
 import com.tracers.trace.ui.screens.maintenance.MaintenanceViewModel
+import com.tracers.trace.ui.screens.region.RegionClearScreen
 import com.tracers.trace.ui.screens.region.RegionScreen
 import com.tracers.trace.ui.screens.region.RegionViewModel
 import com.tracers.trace.ui.screens.spaceflight.SpaceFlightScreen
@@ -55,6 +56,7 @@ import com.tracers.trace.ui.theme.TraceTheme
  * - coin: S06 코인 상세
  * - shop: S07 상점·꾸미기
  * - region: S08 지역 상세
+ * - region/clear: S08 지역별로 지우기 (G-04)
  * - space: 우주 비행 (신규)
  * - universe: 내 우주 (신규)
  */
@@ -65,6 +67,7 @@ object TraceDestinations {
     const val COIN = "coin"
     const val SHOP = "shop"
     const val REGION = "region"
+    const val REGION_CLEAR = "region/clear"
     const val SPACE = "space"
     const val UNIVERSE = "universe"
 }
@@ -206,19 +209,26 @@ fun TraceNavHost(
             PlaceholderScreen(onBack = { navController.popBackStack() })
         }
         composable(TraceDestinations.REGION) {
-            // G-01 판정·기록 저장은 아직 없다: 빈 상태(방문 0곳)로 뜬다
-            val regionViewModel: RegionViewModel = viewModel()
+            val regionViewModel = regionViewModel(app)
             val regionUiState by regionViewModel.uiState.collectAsState()
             RegionScreen(
                 uiState = regionUiState,
                 onNavigateBack = { navController.popBackStack() },
                 onSelectRegion = regionViewModel::onSelectRegion,
                 onToggleLocationRecording = regionViewModel::onToggleLocationRecording,
-                // TODO(G-04): 지역별 지우기 → 방문 지역 목록 화면
-                onOpenRegionClear = {},
+                onOpenRegionClear = { navController.navigate(TraceDestinations.REGION_CLEAR) },
                 onClearAll = regionViewModel::onClearAll,
                 // TODO(P2): 도감 보기 → 방문 지역 도감
                 onOpenDex = {},
+            )
+        }
+        composable(TraceDestinations.REGION_CLEAR) {
+            val regionViewModel = regionViewModel(app)
+            val regionUiState by regionViewModel.uiState.collectAsState()
+            RegionClearScreen(
+                visited = regionUiState.visited,
+                onNavigateBack = { navController.popBackStack() },
+                onDelete = regionViewModel::onDeleteRegion,
             )
         }
         composable(TraceDestinations.SPACE) {
@@ -229,6 +239,24 @@ fun TraceNavHost(
         }
     }
 }
+
+/** 지역 화면 ViewModel (화면의 back stack entry에 묶인다) */
+@Composable
+private fun regionViewModel(app: TraceApplication): RegionViewModel = viewModel(
+    factory = viewModelFactory {
+        initializer {
+            RegionViewModel(
+                visits = app.regionRepository.observe(),
+                status = app.regionRecorder.status,
+                data = app.regionRecorder.data,
+                recordingOn = app.locationRecording.on,
+                setRecording = app.locationRecording::set,
+                deleteRegion = app.regionRecorder::delete,
+                clearAll = app.regionRecorder::clearAll,
+            )
+        }
+    }
+)
 
 /**
  * 빈 화면 + 뒤로 버튼 (상세 화면 자리 표시용).
