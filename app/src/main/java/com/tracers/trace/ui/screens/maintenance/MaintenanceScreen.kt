@@ -22,12 +22,16 @@ import com.tracers.trace.ui.theme.TraceTheme
  * 정비 상세 화면 (S04). 디자인: design/html/MaintDark.dc.html (600 × 2600)
  *
  * @param onNavigateBack 뒤로 → 홈
+ * @param onRecordVisit 방문 감지 [기록하기] → S05 (2회차)
+ * @param onDismissVisit 방문 감지 [정비 안 했어요] → 카드 숨김
  */
 @Composable
 fun MaintenanceScreen(
     uiState: MaintenanceUiState,
     onNavigateBack: () -> Unit,
     modifier: Modifier = Modifier,
+    onRecordVisit: () -> Unit = {},
+    onDismissVisit: () -> Unit = {},
     scrollState: ScrollState = rememberScrollState(),
 ) {
     val colors = TraceTheme.colors
@@ -53,6 +57,9 @@ fun MaintenanceScreen(
                 .verticalScroll(scrollState)
                 .padding(start = 20.dp, end = 20.dp, top = 12.dp, bottom = 28.dp)
         ) {
+            uiState.visit?.let { visit ->
+                VisitDetectionCard(visit = visit, onRecord = onRecordVisit, onDismiss = onDismissVisit)
+            }
         }
     }
 }

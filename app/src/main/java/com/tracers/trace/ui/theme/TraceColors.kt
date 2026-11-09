@@ -28,6 +28,8 @@ data class TraceColors(
     val accent: Color = Color(0xFF4C9AFF),
     /** 강조 파랑 반투명 (칩 배경) */
     val accentSoft: Color = Color(0x294C9AFF), // rgba(76,154,255,0.16)
+    /** 강조 파랑 옅은 바탕 (MaintDark 방문 감지 카드 accentSoft rgba(76,154,255,0.12)) */
+    val accentCard: Color = Color(0x1F4C9AFF),
     /** 좋음 */
     val good: Color = Color(0xFF38C08A),
     /** 좋음 반투명 (칩 배경) */

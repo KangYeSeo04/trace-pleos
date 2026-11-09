@@ -507,4 +507,42 @@ object TraceIcons {
             }
         }.build()
     }
+
+    /** 위치 핀 (MaintDark 방문 감지 카드) */
+    val MapPin: ImageVector by lazy {
+        ImageVector.Builder(
+            name = "MapPin",
+            defaultWidth = 24.dp,
+            defaultHeight = 24.dp,
+            viewportWidth = 24f,
+            viewportHeight = 24f
+        ).apply {
+            path(
+                fill = null,
+                stroke = SolidColor(Color.Black),
+                strokeLineWidth = 2f,
+                strokeLineCap = StrokeCap.Round,
+                strokeLineJoin = StrokeJoin.Round
+            ) {
+                // M12 21s-6-5.5-6-11a6 6 0 0112 0c0 5.5-6 11-6 11z
+                moveTo(12f, 21f)
+                reflectiveCurveToRelative(-6f, -5.5f, -6f, -11f)
+                arcToRelative(6f, 6f, 0f, false, true, 12f, 0f)
+                curveToRelative(0f, 5.5f, -6f, 11f, -6f, 11f)
+                close()
+            }
+            path(
+                fill = null,
+                stroke = SolidColor(Color.Black),
+                strokeLineWidth = 2f,
+                strokeLineCap = StrokeCap.Round,
+                strokeLineJoin = StrokeJoin.Round
+            ) {
+                // circle cx=12 cy=10 r=2
+                moveTo(14f, 10f)
+                arcTo(2f, 2f, 0f, true, true, 10f, 10f)
+                arcTo(2f, 2f, 0f, true, true, 14f, 10f)
+            }
+        }.build()
+    }
 }
