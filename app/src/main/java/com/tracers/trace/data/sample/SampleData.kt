@@ -210,6 +210,7 @@ object SampleData {
 
     private fun maintRecord(
         id: Long, date: String, km: Int, title: String, place: String, auto: Boolean, items: List<String>,
+        cost: Int? = null,
     ) = MaintenanceRecord(
         id = id,
         date = LocalDate.parse(date),
@@ -218,11 +219,13 @@ object SampleData {
         place = place,
         method = if (auto) RecordInputMethod.AutoDetected else RecordInputMethod.Manual,
         itemNames = items,
+        costWon = cost,
     )
 
+    /** 금액은 디자인이 [금액] 자리표시라 임의 값 */
     private val maintenanceRecords = listOf(
-        maintRecord(1, "2026-05-14", 30_900, "타이어 위치 교환 · 브레이크액 점검", "[정비소 이름]", true, listOf("타이어 위치 교환", "브레이크액")),
-        maintRecord(2, "2026-01-08", 30_000, "에어컨 필터 교체", "[정비소 이름]", true, listOf("에어컨 필터")),
+        maintRecord(1, "2026-05-14", 30_900, "타이어 위치 교환 · 브레이크액 점검", "[정비소 이름]", true, listOf("타이어 위치 교환", "브레이크액"), 45_000),
+        maintRecord(2, "2026-01-08", 30_000, "에어컨 필터 교체", "[정비소 이름]", true, listOf("에어컨 필터"), 25_000),
         maintRecord(3, "2025-11-20", 24_600, "와이퍼 블레이드 교체", "셀프 교체", false, listOf("와이퍼 블레이드")),
         maintRecord(4, "2025-08-02", 20_900, "타이어 위치 교환", "[정비소 이름]", true, listOf("타이어 위치 교환")),
         maintRecord(5, "2025-06-11", 19_800, "브레이크액 교체", "[정비소 이름]", true, listOf("브레이크액")),
@@ -239,10 +242,9 @@ object SampleData {
         records = maintenanceRecords,
         calendar = MaintenanceCalendar(month = YearMonth.of(2026, 5), selectedDate = LocalDate.of(2026, 5, 14)),
         form = MaintenanceRecordForm(
-            date = LocalDate.of(2026, 11, 5),
-            odometerKm = 38_800,
+            dateText = "2026. 11. 5",
+            odometerDigits = "38800",
             place = "[정비소 이름]",
-            itemOptions = listOf("타이어 위치 교환", "에어컨 필터", "와이퍼", "브레이크", "12V 배터리", "기타"),
             selectedItems = setOf("타이어 위치 교환"),
         ),
     )

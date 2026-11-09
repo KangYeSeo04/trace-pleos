@@ -117,25 +117,32 @@ data class MaintenanceCalendar(
 )
 
 /**
- * 기록 추가 양식 (S05, 2회차).
- * 디자인엔 메모 칸이 없어 넣지 않았다(기획안 S05-6과 다름).
+ * 기록 추가 양식 (S05). 입력 중인 글자를 그대로 들고 있고, 저장할 때 값으로 바꾼다.
  *
- * @param date 날짜. 기본 오늘, 방문 감지면 방문일
- * @param odometerKm 주행거리. Odometer 값, 수정 가능
+ * @param dateText 날짜 ("2026. 11. 5"). 기본 오늘, 방문 감지면 방문일
+ * @param odometerDigits 주행거리 숫자만 ("38800"). 화면에서 "38,800 km"로 보인다
  * @param place 장소. 방문 감지면 자동 입력
- * @param itemOptions 항목 칩 목록
+ * @param itemOptions 항목 칩 목록 (디자인 순서)
  * @param selectedItems 고른 항목. 최소 1개여야 저장 가능
- * @param costWon 비용 (선택)
+ * @param costDigits 비용 숫자만 (선택). 화면에서 "80,000원"으로 보인다
+ * @param memo 메모 (선택, [MEMO_MAX]자까지). 디자인엔 없고 기획안 S05-6에서 추가
  * @param isEditing 기존 기록 수정이면 true (제목 "기록 수정")
  */
 data class MaintenanceRecordForm(
-    val date: LocalDate? = null,
-    val odometerKm: Int? = null,
+    val dateText: String = "",
+    val odometerDigits: String = "",
     val place: String = "",
-    val itemOptions: List<String> = emptyList(),
+    val itemOptions: List<String> = ITEM_OPTIONS,
     val selectedItems: Set<String> = emptySet(),
-    val costWon: Int? = null,
+    val costDigits: String = "",
+    val memo: String = "",
     val isEditing: Boolean = false,
 ) {
     val canSave: Boolean get() = selectedItems.isNotEmpty()
+
+    companion object {
+        /** 디자인의 항목 칩 6개 */
+        val ITEM_OPTIONS = listOf("타이어 위치 교환", "에어컨 필터", "와이퍼", "브레이크", "12V 배터리", "기타")
+        const val MEMO_MAX = 200
+    }
 }

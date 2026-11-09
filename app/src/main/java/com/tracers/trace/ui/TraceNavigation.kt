@@ -40,7 +40,7 @@ import com.tracers.trace.ui.screens.efficiency.EfficiencyViewModel
 import com.tracers.trace.ui.screens.home.HomeScreen
 import com.tracers.trace.ui.screens.home.HomeViewModel
 import com.tracers.trace.ui.screens.maintenance.MaintenanceScreen
-import com.tracers.trace.ui.screens.maintenance.MaintenanceUiState
+import com.tracers.trace.ui.screens.maintenance.MaintenanceViewModel
 import com.tracers.trace.ui.screens.spaceflight.SpaceFlightScreen
 import com.tracers.trace.ui.theme.TraceTheme
 
@@ -148,9 +148,14 @@ fun TraceNavHost(
         }
         composable(TraceDestinations.MAINTENANCE) {
             // SDK 연결 전이라 빈 상태로 뜬다. 주기 계산·방문 감지는 2단계(D-01·D-03)
+            // back stack entry에 묶여 A-02 복귀로 나가면 양식 내용도 정리된다 (임시 저장은 TODO(D-05))
+            val maintenanceViewModel: MaintenanceViewModel = viewModel()
+            val maintenanceUiState by maintenanceViewModel.uiState.collectAsState()
             MaintenanceScreen(
-                uiState = MaintenanceUiState(),
-                onNavigateBack = { navController.popBackStack() }
+                uiState = maintenanceUiState,
+                onNavigateBack = { navController.popBackStack() },
+                onRecordVisit = maintenanceViewModel::onRecordVisit,
+                onDismissVisit = maintenanceViewModel::onDismissVisit,
             )
         }
         composable(TraceDestinations.COIN) {
