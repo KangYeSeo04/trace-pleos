@@ -21,3 +21,6 @@ build/
 *.keystore
 .idea/deploymentTargetSelector.xml
 .idea/deviceManager.xml
+
+# tools/geo 다운로드 캐시
+tools/geo/.cache/

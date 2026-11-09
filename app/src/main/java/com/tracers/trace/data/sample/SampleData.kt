@@ -4,6 +4,7 @@ import com.tracers.trace.ui.screens.coin.*
 import com.tracers.trace.ui.screens.efficiency.*
 import com.tracers.trace.ui.screens.home.*
 import com.tracers.trace.ui.screens.maintenance.*
+import com.tracers.trace.ui.screens.region.*
 import java.time.LocalDate
 import java.time.YearMonth
 
@@ -261,4 +262,28 @@ object SampleData {
 
     /** 빈 상태: 방문 감지 없음, 점검 항목·기록 없음 */
     val maintenanceUiStateEmpty = MaintenanceUiState()
+
+    // ===== 지역 상세 화면 (RegionDark.dc.html) =====
+
+    /** 디자인 VIS 12곳, 값은 디자인 DEX·OLD 예시. 지금 지역 = 경주시 */
+    val regionUiState = RegionUiState(
+        visited = listOf(
+            VisitedRegion("11000", "서울", "서울특별시", 9840.0, 600_000),
+            VisitedRegion("28000", "인천", "인천광역시", 86.0, 5 * 60),
+            VisitedRegion("41280", "고양시", "경기도", 210.0, 3 * 24 * 60),
+            VisitedRegion("41450", "하남시", "경기도", 95.0, 26 * 60),
+            VisitedRegion("41110", "수원시", "경기도", 312.0, 6 * 60),
+            VisitedRegion("51110", "춘천시", "강원특별자치도", 140.0, 32 * 60),
+            VisitedRegion("51130", "원주시", "강원특별자치도", 75.0, 9 * 60),
+            VisitedRegion("51150", "강릉시", "강원특별자치도", 214.0, 190),
+            VisitedRegion("47130", "경주시", "경상북도", 128.0, 3240),
+            VisitedRegion("52110", "전주시", "전북특별자치도", 158.0, 9 * 60),
+            VisitedRegion("26000", "부산", "부산광역시", 205.0, 74 * 60),
+            VisitedRegion("50110", "제주시", "제주특별자치도", 260.0, 4 * 24 * 60),
+        ),
+        currentRegionCode = "47130",
+    )
+
+    /** 빈 상태: 방문 0곳, 지금 지역 모름 */
+    val regionUiStateEmpty = RegionUiState()
 }

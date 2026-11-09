@@ -59,7 +59,7 @@ class CoinScreenCaptureTest {
     }
 
     private companion object {
-        /** 디자인 1px = 1.5 화면 px (600 × 800 → 900 × 1200, 화면 높이 1440 안에 들어감) */
-        const val CAPTURE_DENSITY = 1.5f
+        /** 디자인 1px = 1.4 화면 px. 테스트 창 너비가 841px(3분할 칸)이라 600 × 1.4 = 840 */
+        const val CAPTURE_DENSITY = 1.4f
     }
 }

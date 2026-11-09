@@ -42,6 +42,8 @@ import com.tracers.trace.ui.screens.home.HomeViewModel
 import com.tracers.trace.ui.screens.maintenance.MaintenanceScreen
 import com.tracers.trace.ui.screens.maintenance.MaintenanceFormActions
 import com.tracers.trace.ui.screens.maintenance.MaintenanceViewModel
+import com.tracers.trace.ui.screens.region.RegionScreen
+import com.tracers.trace.ui.screens.region.RegionViewModel
 import com.tracers.trace.ui.screens.spaceflight.SpaceFlightScreen
 import com.tracers.trace.ui.theme.TraceTheme
 
@@ -204,7 +206,20 @@ fun TraceNavHost(
             PlaceholderScreen(onBack = { navController.popBackStack() })
         }
         composable(TraceDestinations.REGION) {
-            PlaceholderScreen(onBack = { navController.popBackStack() })
+            // G-01 판정·기록 저장은 아직 없다: 빈 상태(방문 0곳)로 뜬다
+            val regionViewModel: RegionViewModel = viewModel()
+            val regionUiState by regionViewModel.uiState.collectAsState()
+            RegionScreen(
+                uiState = regionUiState,
+                onNavigateBack = { navController.popBackStack() },
+                onSelectRegion = regionViewModel::onSelectRegion,
+                onToggleLocationRecording = regionViewModel::onToggleLocationRecording,
+                // TODO(G-04): 지역별 지우기 → 방문 지역 목록 화면
+                onOpenRegionClear = {},
+                onClearAll = regionViewModel::onClearAll,
+                // TODO(P2): 도감 보기 → 방문 지역 도감
+                onOpenDex = {},
+            )
         }
         composable(TraceDestinations.SPACE) {
             SpaceFlightScreen(

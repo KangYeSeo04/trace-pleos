@@ -88,6 +88,7 @@ TRACE는 플레오스 커넥트(AAOS 기반 차량 OS)용 Android 앱이다. 흩
 - 글자 간격: 본문 `-0.01em`, 숫자 `-0.035em`.
 - 숫자는 고정폭: `fontFeatureSettings = "tnum"`.
 - TODO: `res/font/`에 라이선스 표기 파일 추가 (Pretendard + Inter, SIL OFL 1.1).
+- TODO: 앱 라이선스 고지에 지역 경계 데이터 출처 표시 추가 (SGIS 공공누리 제1유형 + admdongkor CC BY 4.0, 문구는 `docs/지역경계_데이터.md`).
 
 ### 그리기
 
