@@ -72,6 +72,37 @@ data class TraceColors(
     val dialogScrim: Color = Color(0x8C000000),
     /** accent 바탕 위 글자 */
     val onAccent: Color = Color(0xFFFFFFFF),
+    /** 켜기·끄기 스위치 손잡이 (RegionDark #FFFFFF) */
+    val switchKnob: Color = Color(0xFFFFFFFF),
+
+    // ===== 지역 지도 (RegionDark mapC, dark) =====
+    /** 지도 바다 */
+    val mapSea: Color = Color(0xFF1B2433),
+    /** 지도 땅 */
+    val mapLand: Color = Color(0xFF1F2124),
+    /** 해안선·섬 박스 선 */
+    val mapLine: Color = Color(0xFFA9AFB8),
+    /** 시·도·섬 박스 라벨 */
+    val mapLabel: Color = Color(0xFF8E949D),
+    /** 지도 위 제목 글자 */
+    val mapText: Color = Color(0xFFFFFFFF),
+    /** 지도 위 보조 글자 (rgba(255,255,255,0.7)) */
+    val mapSub: Color = Color(0xB3FFFFFF),
+    /** 선택 지역 테두리·지금 지역 링 */
+    val mapSelected: Color = Color(0xFFFFFFFF),
+    /** 방문 지역 색 (RegionDark VIS 12색). RegionUiState의 colorIndex로 고른다 */
+    val regionPalette: List<Color> = listOf(
+        Color(0xFF6A4BD8), Color(0xFF9A6BEA), Color(0xFF6B7A22), Color(0xFF2F6BF0),
+        Color(0xFFE8762E), Color(0xFF5A3CE0), Color(0xFFC7882F), Color(0xFFB24FE0),
+        Color(0xFF3C8AA6), Color(0xFFC23B61), Color(0xFF2C9A72), Color(0xFFD9A72E),
+    ),
+    /** 시·도 묶음 색 (RegionDark C, 범례). 키는 regions_display.json의 group. 서울은 경기 색 */
+    val regionGroup: Map<String, Color> = mapOf(
+        "seoul" to Color(0xFF7FA8F5), "gg" to Color(0xFF7FA8F5), "gw" to Color(0xFF6ED3AC),
+        "cb" to Color(0xFFF0B45A), "cn" to Color(0xFFE3CC6E), "gb" to Color(0xFFB99BF0),
+        "gn" to Color(0xFFF28BA9), "jb" to Color(0xFF6CC9D8), "jn" to Color(0xFFA2D47E),
+        "jj" to Color(0xFFF4A07E),
+    ),
 )
 
 val LocalTraceColors = staticCompositionLocalOf { TraceColors() }
