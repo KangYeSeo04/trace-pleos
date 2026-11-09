@@ -16,6 +16,8 @@ import kotlinx.coroutines.flow.StateFlow
  * - EV 주행가능거리(m): Vehicle SDK Odometer.getRangeRemainingDistance
  * - 충전구 열림: Vehicle SDK EvBattery.isEvChargePortOpen
  * - 총 주행거리(km): Vehicle SDK Odometer.getCurrentDistanceDriven
+ * - EV 배터리 용량(Wh): Vehicle SDK EvBattery.getEvBatteryCapacity (시작 시 1회)
+ * - 공조 AC 켜짐: Vehicle SDK HVAC.getHvacAcState (지원 영역 중 하나라도 켜지면 true)
  */
 interface VehicleSignals {
 
@@ -51,6 +53,12 @@ interface VehicleSignals {
 
     /** 총 주행 거리 (km). 이번 주행 거리는 앱에서 시작 시점과의 차이로 계산 */
     val odometerKm: StateFlow<Float?>
+
+    /** EV 배터리 전체 용량 (Wh). 잔량 kWh 대체 계산(용량 × %)에도 쓴다 */
+    val batteryCapacityWh: StateFlow<Float?>
+
+    /** 공조(에어컨) 켜짐 여부 */
+    val hvacAcOn: StateFlow<Boolean?>
 
     /** SDK 연결 시작 */
     fun start()

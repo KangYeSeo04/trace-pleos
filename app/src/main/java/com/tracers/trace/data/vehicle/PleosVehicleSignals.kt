@@ -1,12 +1,14 @@
 package com.tracers.trace.data.vehicle
 
 import ai.pleos.playground.vehicle.Vehicle
+import ai.pleos.playground.vehicle.api.model.area.SeatArea
 import ai.pleos.playground.vehicle.constant.area.TurnSignalValue
 import ai.pleos.playground.vehicle.listener.BrakePedalStatusListener
 import ai.pleos.playground.vehicle.listener.DistanceDrivenListener
 import ai.pleos.playground.vehicle.listener.EvBatteryLevelListener
 import ai.pleos.playground.vehicle.listener.EvBatteryStateOfChargeListener
 import ai.pleos.playground.vehicle.listener.EvChargePortOpenListener
+import ai.pleos.playground.vehicle.listener.HvacAcStateListener
 import ai.pleos.playground.vehicle.listener.RangeRemainingListener
 import ai.pleos.playground.vehicle.listener.SteeringWheelAngleListener
 import ai.pleos.playground.vehicle.listener.TurnSignalStateListener
@@ -50,6 +52,12 @@ class PleosVehicleSignals(context: Context) : VehicleSignals {
     private val _rangeRemainingM = MutableStateFlow<Float?>(null)
     private val _chargePortOpen = MutableStateFlow<Boolean?>(null)
     private val _odometerKm = MutableStateFlow<Float?>(null)
+    private val _batteryCapacityWh = MutableStateFlow<Float?>(null)
+    private val _hvacAcOn = MutableStateFlow<Boolean?>(null)
+
+    /** 공조 영역별 AC 상태. 한 곳이라도 켜져 있으면 켜짐 */
+    private val acByArea = mutableMapOf<SeatArea, Boolean>()
+    private var acAreas: List<SeatArea> = emptyList()
 
     override val speedMps: StateFlow<Float?> = _speedMps.asStateFlow()
     override val gear: StateFlow<Gear?> = _gear.asStateFlow()
@@ -61,6 +69,8 @@ class PleosVehicleSignals(context: Context) : VehicleSignals {
     override val rangeRemainingM: StateFlow<Float?> = _rangeRemainingM.asStateFlow()
     override val chargePortOpen: StateFlow<Boolean?> = _chargePortOpen.asStateFlow()
     override val odometerKm: StateFlow<Float?> = _odometerKm.asStateFlow()
+    override val batteryCapacityWh: StateFlow<Float?> = _batteryCapacityWh.asStateFlow()
+    override val hvacAcOn: StateFlow<Boolean?> = _hvacAcOn.asStateFlow()
 
     // ---------- AAOS 속도·기어 콜백 ----------
 
@@ -170,6 +180,21 @@ class PleosVehicleSignals(context: Context) : VehicleSignals {
         override fun onFailed(e: Exception) { Log.w(TAG, "주행거리 실패", e) }
     }
 
+    private inner class AcListener(private val area: SeatArea) : HvacAcStateListener {
+        override fun onHvacAcStateUpdated(state: Boolean?) = onAcState(area, state)
+        override fun onFailed(e: Exception) { Log.w(TAG, "공조 실패", e) }
+    }
+
+    private val acListeners = mutableMapOf<SeatArea, AcListener>()
+
+    private fun onAcState(area: SeatArea, state: Boolean?) {
+        main.post {
+            if (state == null) acByArea.remove(area) else acByArea[area] = state
+            _hvacAcOn.value = if (acByArea.isEmpty()) null else acByArea.values.any { it }
+            log("공조AC", _hvacAcOn.value)
+        }
+    }
+
     // ---------- 시작/중지 ----------
 
     override fun start() {
@@ -249,6 +274,38 @@ class PleosVehicleSignals(context: Context) : VehicleSignals {
             vehicle.getOdometer().getCurrentDistanceDriven({ _odometerKm.value = it }, {})
             vehicle.getOdometer().registerDistanceDriven(odometerListener)
         }.onFailure { Log.w(TAG, "주행거리 구독 실패", it) }
+
+        // 배터리 용량 (고정값이라 한 번만 읽음)
+        // SDK는 deprecated(→ AAOS INFO_EV_BATTERY_CAPACITY)지만 확인현황에서 확인된 쪽을 쓴다
+        // TODO(확인필요): AAOS INFO_EV_BATTERY_CAPACITY 읽기 가능 여부
+        runCatching {
+            @Suppress("DEPRECATION")
+            vehicle.getEvBattery().getEvBatteryCapacity(
+                { _batteryCapacityWh.value = it; log("배터리용량Wh", it) },
+                { Log.w(TAG, "배터리용량 실패", it) }
+            )
+        }.onFailure { Log.w(TAG, "배터리용량 조회 실패", it) }
+
+        // 공조 AC: 지원 영역을 먼저 받고 영역마다 구독
+        runCatching {
+            vehicle.getHVAC().checkHvacAcCapabilities({ _, areas ->
+                main.post { subscribeAc(areas) }
+            }, { Log.w(TAG, "공조 지원 확인 실패", it) })
+        }.onFailure { Log.w(TAG, "공조 구독 실패", it) }
+    }
+
+    private fun subscribeAc(areas: List<SeatArea>) {
+        if (!started) return
+        acAreas = areas
+        log("공조영역", areas.size)
+        areas.forEach { area ->
+            runCatching {
+                vehicle.getHVAC().getHvacAcState(area, { onAcState(area, it) }, {})
+                val l = AcListener(area)
+                acListeners[area] = l
+                vehicle.getHVAC().registerHvacAcState(area, l)
+            }.onFailure { Log.w(TAG, "공조 영역 구독 실패", it) }
+        }
     }
 
     private fun subscribeAaos() {
@@ -287,6 +344,11 @@ class PleosVehicleSignals(context: Context) : VehicleSignals {
         runCatching { vehicle.getOdometer().unregisterRangeRemainingListener(rangeListener) }
         runCatching { vehicle.getEvBattery().unregisterEvChargePortOpen(chargePortListener) }
         runCatching { vehicle.getOdometer().unregisterDistanceDriven(odometerListener) }
+        acListeners.forEach { (area, l) ->
+            runCatching { vehicle.getHVAC().unregisterHvacAcState(area, l) }
+        }
+        acListeners.clear()
+        acByArea.clear()
         runCatching { vehicle.release() }
 
         // AAOS 해제
