@@ -38,6 +38,10 @@ data class TraceColors(
     val warn: Color = Color(0xFFEF7A70),
     /** 코인·별 */
     val gold: Color = Color(0xFFE9B949),
+    /** 히어로 사진이 뜨기 전 바탕 (CoinDark heroBg) */
+    val heroBg: Color = Color(0xFF050608),
+    /** 밤하늘 비행운 (CoinDark 캔버스 tc '222,230,236') */
+    val heroTrail: Color = Color(0xFFDEE6EC),
 )
 
 val LocalTraceColors = staticCompositionLocalOf { TraceColors() }
