@@ -21,7 +21,10 @@ JSON 시나리오의 시간 순서대로 호출한다.
   "steps": [
     {"t": 0, "gear": "Park", "speed_kph": 0, "soc": 80, "battery_kwh": 61.9, "odometer_km": 12345,
      "range_m": 371000, "hvac": {"power": false}, "turn_signal": "Off", "note": "출발 전"},
-    {"t": 5, "gear": "Drive", "speed_kph": 30}
+    {"t": 5, "gear": "Drive", "speed_kph": 30},
+    {"t": 9, "regen_kwh": 0.2},                       # 배터리를 한 번 올림 (회생 흉내)
+    {"t": 20, "gear": "Park", "charge_port": true, "charge_kw": 50},  # P + 충전구 열림 → auto가 50kW로 충전
+    {"t": 40, "charge_kw": 0, "charge_port": false}
   ]
 }
 step 키는 모두 선택이고, 없는 키는 직전 값을 유지한다.
@@ -72,6 +75,8 @@ class Car:
         self.capacity = float(e["maximum_capacity_kwh"])
         self.energy = float(e["current_energy_kwh"])
         self.hvac_power = bool(st["hvac"]["power_on"])
+        self.port_open = bool(e["charging_door_opened"])
+        self.charge_kw = 0.0
         self.mark = mark
 
     def log(self, t, text):
@@ -102,6 +107,15 @@ class Car:
         if "hvac" in s:
             self.hvac_power = bool(s["hvac"].get("power", self.hvac_power))
             put("/vehicle/hvac", **s["hvac"])
+        if "charge_port" in s:
+            self.port_open = bool(s["charge_port"])
+            put("/vehicle/ev-battery", field="charge_port_open", value=self.port_open)
+        if "charge_kw" in s:
+            self.charge_kw = float(s["charge_kw"])
+        if "regen_kwh" in s:
+            self.energy = min(self.capacity, self.energy + float(s["regen_kwh"]))
+            put("/vehicle/ev-battery", field="battery_level", value=round(self.energy, 3))
+            put("/vehicle/ev-battery", field="soc", value=round(self.energy / self.capacity * 100))
         if "turn_signal" in s:
             put("/vehicle/turn-signal", mode=s["turn_signal"])
         changed = {k: v for k, v in s.items() if k not in ("t", "note")}
@@ -112,10 +126,11 @@ class Car:
         sim_dt = dt * auto.get("speedup", 1)
         dist = self.controls["speed"] * sim_dt / 3600.0 if self.gear == "Drive" else 0.0
         used = dist / auto["km_per_kwh"] + (auto.get("hvac_kw", 0) * sim_dt / 3600.0 if self.hvac_power else 0)
-        if dist == 0 and used == 0:
+        charged = self.charge_kw * sim_dt / 3600.0 if (self.port_open and self.gear == "Park") else 0.0
+        if dist == 0 and used == 0 and charged == 0:
             return
         self.odo += dist
-        self.energy = max(0.0, self.energy - used)
+        self.energy = min(self.capacity, max(0.0, self.energy - used + charged))
         put("/vehicle/odometer", traveled_distance_km=round(self.odo, 3))
         put("/vehicle/ev-battery", field="battery_level", value=round(self.energy, 3))
         put("/vehicle/ev-battery", field="soc", value=round(self.energy / self.capacity * 100))
