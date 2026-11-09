@@ -58,6 +58,7 @@ class DriveRecordCollector(
     private val kmSegmenter = KmSegmenter()
     private val roughWindow = RoughDrivingWindow()
     private val _roughDriving = MutableStateFlow(false)
+    private val _charging = MutableStateFlow(false)
 
     /** 두 수집 코루틴이 같은 계산 객체를 건드리므로 순서를 묶는다 */
     private val lock = Mutex()
@@ -71,6 +72,9 @@ class DriveRecordCollector(
 
     /** B-04 거칠었음: 급가속·급감속이 최근 2분에 2회 이상 */
     val roughDriving: StateFlow<Boolean> = _roughDriving.asStateFlow()
+
+    /** B-03 충전 중: 충전구가 열려 충전을 세는 중 */
+    val charging: StateFlow<Boolean> = _charging.asStateFlow()
 
     fun start() {
         if (job != null) return
@@ -115,6 +119,7 @@ class DriveRecordCollector(
                             !wasRecording && tripRecorder.isRecording -> saveSnapshot()
                         }
                         chargeDetector.onDriveState(st, now, capacity)?.let { saveCharge(it) }
+                        _charging.value = chargeDetector.isCharging
                         // 주차하면 덜 찬 1km는 점수 없이 버리고 다음 주행은 1km부터
                         if (st == DriveState.PARKED) kmSegmenter.reset()
                     }
@@ -162,6 +167,7 @@ class DriveRecordCollector(
                     lock.withLock {
                         tripRecorder.onSample(sample)
                         chargeDetector.onSample(sample, capacityKwh)?.let { saveCharge(it) }
+                        _charging.value = chargeDetector.isCharging
                     }
                 }
             }

@@ -2,6 +2,7 @@ package com.tracers.trace.ui.screens.home
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.tracers.trace.data.record.EfficiencySnapshot
 import com.tracers.trace.domain.CoinWallet
 import com.tracers.trace.domain.DriveState
 import com.tracers.trace.domain.EfficiencySummary
@@ -27,8 +28,10 @@ import kotlinx.coroutines.launch
 class HomeViewModel(
     /** A-01 주행 상태. 앱 전체에서 DriveRecordCollector 하나가 판정한 값을 받는다 */
     val driveState: StateFlow<DriveState>,
-    /** C-01 전비 계산 결과 (Room 기록 기반). 기록이 없으면 summary.averageKmPerKwh == null */
-    efficiency: Flow<EfficiencySummary>,
+    /** C-01·C-02 전비·충전 예측 (Room 기록 기반). 기록이 없으면 summary.averageKmPerKwh == null */
+    efficiency: Flow<EfficiencySnapshot>,
+    /** B-03 충전 중 */
+    charging: StateFlow<Boolean>,
     /** 런타임 권한이 모두 허용됐는지. false면 무대에 "차량 정보 권한이 필요해요" */
     permissionsGranted: StateFlow<Boolean>,
     /** E-01·E-02 안전점수·코인 지갑 */
@@ -55,22 +58,24 @@ class HomeViewModel(
             coinWallet.onStart { emit(CoinWallet()) },
             latestTripKms.onStart { emit(emptyList()) },
         ) { w, kms -> w to kms }
+        val eff = combine(efficiency.onStart<EfficiencySnapshot?> { emit(null) }, charging) { e, c -> e to c }
 
         viewModelScope.launch {
             combine(
                 driveState,
-                efficiency.onStart<EfficiencySummary?> { emit(null) },
+                eff,
                 permissionsGranted,
                 flight,
                 coin,
-            ) { st, eff, granted, fl, (w, kms) -> Inputs(st, eff, granted, fl, w, kms) }
+            ) { st, (e, chg), granted, fl, (w, kms) -> Inputs(st, e, chg, granted, fl, w, kms) }
                 .collect(::updateDriveMode)
         }
     }
 
     private data class Inputs(
         val state: DriveState,
-        val efficiency: EfficiencySummary?,
+        val snapshot: EfficiencySnapshot?,
+        val charging: Boolean,
         val granted: Boolean,
         val flight: FlightStatus?,
         val wallet: CoinWallet,
@@ -79,7 +84,8 @@ class HomeViewModel(
 
     private fun updateDriveMode(input: Inputs) {
         val driveState = input.state
-        val efficiency = input.efficiency
+        val efficiency = input.snapshot?.summary
+        var iconPath: String? = null
         val permissionsGranted = input.granted
         val isDriving = driveState == DriveState.DRIVING
         val caption: String
@@ -105,15 +111,18 @@ class HomeViewModel(
                 }
             }
         } else {
-            // TODO(B-03, C-02): 점검 임박, 충전 타이밍 등 우선순위에 따라 캡션 표시
-            caption = "정차 중"
-            captionSub = ""
+            // B-03 정차 쪽: 충전 중 > 점검 임박(TODO D-02) > 충전 타이밍 > 쉬는 중
+            val c = ParkedCaptionMapper.map(input.charging, input.snapshot)
+            caption = c.title
+            captionSub = c.sub
+            if (c.title != "쉬는 중") iconPath = BOLT_ICON_PATH
         }
 
         _uiState.value = _uiState.value.copy(
             isDriving = isDriving,
             caption = caption,
             captionSub = captionSub,
+            captionIconPath = iconPath,
             efficiency = EfficiencyTileMapper.map(efficiency, isDriving),
             maintenance = TileState.Maintenance(
                 value = "–",
@@ -135,4 +144,8 @@ class HomeViewModel(
         )
     }
 
+    private companion object {
+        /** 충전 문구 앞 번개 아이콘 (디자인 HomeDark 정차 문구) */
+        const val BOLT_ICON_PATH = "M13 3L5 14h6l-1 7 8-11h-6z"
+    }
 }

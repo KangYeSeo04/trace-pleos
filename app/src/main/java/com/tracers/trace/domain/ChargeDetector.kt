@@ -17,6 +17,9 @@ class ChargeDetector {
     private var lastKwh: Double? = null
     private var session: Session? = null
 
+    /** 충전구가 열려 충전 1회를 세는 중 (B-03 "충전 중") */
+    val isCharging: Boolean get() = session != null
+
     private class Session(val startMs: Long, var startPercent: Int?, var startKwh: Double?) {
         var endPercent: Int? = startPercent
         var endKwh: Double? = startKwh

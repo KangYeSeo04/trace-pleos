@@ -78,7 +78,8 @@ fun TraceNavHost(
     val homeViewModel = remember {
         HomeViewModel(
             driveState = app.recordCollector.driveState,
-            efficiency = app.efficiencySource.observe().map { it.summary },
+            efficiency = app.efficiencySource.observe(),
+            charging = app.recordCollector.charging,
             permissionsGranted = app.permissionsGranted,
             coinWallet = app.coinRepository.observeWallet(),
             latestTripKms = app.coinRepository.observeLatestTripKms(),

@@ -68,9 +68,7 @@ object EfficiencyUiMapper {
         zone: ZoneId,
     ): ChargeTiming? {
         val ready = forecast as? ChargeForecast.Ready ?: return null
-        val firstDate = trips.minOfOrNull { Instant.ofEpochMilli(it.startedAtMs).atZone(zone).toLocalDate() }
-        val days = firstDate?.let { java.time.temporal.ChronoUnit.DAYS.between(it, today).coerceIn(1, 90) } ?: 1
-        val dailyKm = (summary.totalDistanceKm / days).roundToInt()
+        val dailyKm = dailyAverageKm(summary, trips, today, zone)
 
         val low = ready.firstLowDate
         val title = when {
@@ -145,7 +143,14 @@ object EfficiencyUiMapper {
         )
     }
 
-    private fun weekdayName(d: DayOfWeek) = when (d) {
+    /** 하루 평균 주행거리: 90일 거리 ÷ 첫 기록일부터 오늘까지 일수 (1~90) */
+    internal fun dailyAverageKm(summary: DomainSummary, trips: List<TripRecord>, today: LocalDate, zone: ZoneId): Int {
+        val firstDate = trips.minOfOrNull { Instant.ofEpochMilli(it.startedAtMs).atZone(zone).toLocalDate() }
+        val days = firstDate?.let { java.time.temporal.ChronoUnit.DAYS.between(it, today).coerceIn(1, 90) } ?: 1
+        return (summary.totalDistanceKm / days).roundToInt()
+    }
+
+    internal fun weekdayName(d: DayOfWeek) = when (d) {
         DayOfWeek.MONDAY -> "월"
         DayOfWeek.TUESDAY -> "화"
         DayOfWeek.WEDNESDAY -> "수"
