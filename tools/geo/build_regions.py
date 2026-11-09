@@ -522,9 +522,21 @@ def main():
             "center": [rnd(lp[0], DISPLAY_DECIMALS), rnd(lp[1], DISPLAY_DECIMALS)], "d": d,
         })
 
+    # 시·도 묶음 라벨 자리: 묶음 경계(본토 부분) 안에서 경계와 가장 먼 점. 서울(경기 안)·제주(섬 박스 라벨)는 없음
+    grp_rings, grp_nodes = dissolve(emd_rings, {i: GROUP_OF_SIDO[sgg_info[s][0]] for i, s in emd_sgg.items()})
+    simp_g = Simplifier(projs["main"], 1.0)
     group_out = []
     for gid, gname, _ in GROUPS:
-        group_out.append({"id": gid, "name": gname, "regions": sum(1 for r in regions if r["group"] == gid)})
+        label = None
+        if gid not in ("seoul", "jj"):
+            rings = [[projs["main"](p) for p in simp_g.ring(r, grp_nodes)] for r in grp_rings[gid]]
+            rings = [r for r in rings if len(r) >= 3]
+            big = max(rings, key=lambda r: abs(area(r)))
+            holes = [r for r in rings if r is not big and abs(area(r)) > 20]
+            lp = label_point([big] + holes)
+            label = [rnd(lp[0], 1), rnd(lp[1], 1)]
+        group_out.append({"id": gid, "name": gname, "regions": sum(1 for r in regions if r["group"] == gid),
+                          "labelPos": label})
 
     def content_box(*ids):
         pts = [p for i in ids for _, r in ring_insets[i] for p in r]
