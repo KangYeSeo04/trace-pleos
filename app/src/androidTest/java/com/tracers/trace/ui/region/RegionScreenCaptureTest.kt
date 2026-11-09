@@ -55,6 +55,8 @@ class RegionScreenCaptureTest {
                 scroll.dispatchRawDelta(px)
             }
             rule.waitForIdle()
+            Thread.sleep(1_000) // 지도 비트맵은 백그라운드에서 그려진다
+            rule.waitForIdle()
             val bmp = rule.onNodeWithTag("root").captureToImage().asAndroidBitmap()
             File(dir, "region_$name.png").outputStream().use { bmp.compress(Bitmap.CompressFormat.PNG, 100, it) }
         }

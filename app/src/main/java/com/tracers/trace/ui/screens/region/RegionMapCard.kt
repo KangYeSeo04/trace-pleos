@@ -54,6 +54,23 @@ import androidx.compose.ui.text.rememberTextMeasurer
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.snapshotFlow
+import androidx.compose.ui.geometry.Size
+import androidx.compose.ui.graphics.Canvas
+import androidx.compose.ui.graphics.FilterQuality
+import androidx.compose.ui.graphics.ImageBitmap
+import androidx.compose.ui.graphics.drawscope.CanvasDrawScope
+import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.ui.unit.Density
+import androidx.compose.ui.unit.LayoutDirection
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.sync.Mutex
+import kotlinx.coroutines.sync.withLock
+import kotlinx.coroutines.withContext
 import com.tracers.trace.ui.icons.TraceIcons
 import com.tracers.trace.ui.theme.TraceTheme
 import kotlin.math.abs
@@ -248,6 +265,27 @@ private fun MapCanvas(
         val k0 = min(maxWidth.value / map.width, maxHeight.value / map.height)
         val ox = (maxWidth.value - map.width * k0) / 2
         val oy = (maxHeight.value - map.height * k0) / 2
+        val dpx = LocalDensity.current.density
+        val wPx = constraints.maxWidth
+        val hPx = constraints.maxHeight
+        val paint = MapPaint(colors.mapLine, colors.mapLand, colors.mapSea, colors.mapSelected)
+
+        // 지도 본체(해안선·땅·방문 색·선택 테두리)는 비트맵으로 미리 그린다.
+        // 복잡한 Path를 매 프레임 그리면 CPU 래스터화로 끊기므로, 조작 중에는 비트맵만 옮기고
+        // 손을 뗀 뒤(150ms) 지금 배율로 선명한 비트맵을 다시 만든다.
+        var base by remember { mutableStateOf<MapRaster?>(null) }
+        var sharp by remember { mutableStateOf<MapRaster?>(null) }
+        LaunchedEffect(map, visitedPaths, selected, wPx, hPx, dpx, paint) {
+            if (wPx <= 0 || hPx <= 0) return@LaunchedEffect
+            val geo = MapGeometry(k0, ox, oy, dpx, wPx, hPx)
+            base = rasterize(map, visitedPaths, selected, paint, geo, 1f, 0f, 0f)
+            sharp = null
+            snapshotFlow { Triple(zoom.scale, zoom.offsetX, zoom.offsetY) }.collectLatest { (zs, zx, zy) ->
+                delay(SHARPEN_DELAY_MS)
+                sharp = if (zs == 1f && zx == 0f && zy == 0f) null
+                else rasterize(map, visitedPaths, selected, paint, geo, zs, zx, zy)
+            }
+        }
 
         Canvas(
             modifier = Modifier
@@ -304,13 +342,17 @@ private fun MapCanvas(
             val s = zoom.scale
             val tx = zoom.offsetX * d
             val ty = zoom.offsetY * d
-            // 지도 좌표 → 화면 px: d·(s·(k0·p + o) + t)
-            withTransform({
-                translate(tx, ty)
-                scale(s * d * k0, s * d * k0, pivot = Offset.Zero)
-                translate(ox / k0, oy / k0)
-            }) {
-                drawMap(map, visitedPaths, selected, colors.mapLine, colors.mapLand, colors.mapSea, colors.mapSelected)
+            val b = base
+            if (b == null) {
+                // 첫 비트맵이 나오기 전 한 번만: 바로 그린다. 지도 좌표 → 화면 px: d·(s·(k0·p + o) + t)
+                withTransform({
+                    translate(tx, ty)
+                    scale(s * d * k0, s * d * k0, pivot = Offset.Zero)
+                    translate(ox / k0, oy / k0)
+                }) { drawMap(map, visitedPaths, selected, paint) }
+            } else {
+                drawRaster(b, s, zoom.offsetX, zoom.offsetY)
+                sharp?.let { drawRaster(it, s, zoom.offsetX, zoom.offsetY) }
             }
             // 라벨: 배율은 지도와 함께, 글자는 이미 화면 px로 쟀으므로 위치만 옮긴다
             withTransform({
@@ -342,26 +384,70 @@ private fun MapCanvas(
     }
 }
 
+private const val SHARPEN_DELAY_MS = 150L
+
+private data class MapPaint(val line: Color, val land: Color, val sea: Color, val selected: Color)
+
+/** viewBox → 칸(dp) 맞춤과 픽셀 크기 */
+private data class MapGeometry(val k0: Float, val ox: Float, val oy: Float, val density: Float, val wPx: Int, val hPx: Int)
+
+/** (scale, x, y) 확대 상태로 칸 전체를 그린 비트맵 */
+private class MapRaster(val image: ImageBitmap, val scale: Float, val x: Float, val y: Float)
+
+private val rasterMutex = Mutex()
+
+private suspend fun rasterize(
+    map: RegionMap,
+    visited: List<Pair<MapRegion, Color>>,
+    selected: MapRegion?,
+    paint: MapPaint,
+    g: MapGeometry,
+    s: Float,
+    x: Float,
+    y: Float,
+): MapRaster = withContext(Dispatchers.Default) {
+    rasterMutex.withLock {
+        val image = ImageBitmap(g.wPx, g.hPx)
+        CanvasDrawScope().draw(Density(g.density), LayoutDirection.Ltr, Canvas(image), Size(g.wPx.toFloat(), g.hPx.toFloat())) {
+            drawRect(paint.sea)
+            val d = g.density
+            withTransform({
+                translate(x * d, y * d)
+                scale(s * d * g.k0, s * d * g.k0, pivot = Offset.Zero)
+                translate(g.ox / g.k0, g.oy / g.k0)
+            }) { drawMap(map, visited, selected, paint) }
+        }
+        MapRaster(image, s, x, y)
+    }
+}
+
+/** 비트맵을 지금 확대 상태에 맞춰 옮기고 키워 그린다: 화면 = (s/s0)·비트맵 + d·(t − (s/s0)·t0) */
+private fun DrawScope.drawRaster(r: MapRaster, s: Float, tx: Float, ty: Float) {
+    val k = s / r.scale
+    val d = density
+    withTransform({
+        translate(d * (tx - k * r.x), d * (ty - k * r.y))
+        scale(k, k, pivot = Offset.Zero)
+    }) { drawImage(r.image, filterQuality = FilterQuality.Low) }
+}
+
 /** 디자인 SVG 순서: 섬 박스 → 해안선(선색 2.6) → 땅색 → 방문 지역 색 → 선택 지역 흰 테두리 2.4 */
 private fun DrawScope.drawMap(
     map: RegionMap,
     visited: List<Pair<MapRegion, Color>>,
     selected: MapRegion?,
-    line: Color,
-    land: Color,
-    sea: Color,
-    selectedColor: Color,
+    paint: MapPaint,
 ) {
     val frameStroke = Stroke(width = 1.2f)
     map.insets.forEach { ins ->
-        drawRect(sea, topLeft = ins.frame.topLeft, size = ins.frame.size)
-        drawRect(line, topLeft = ins.frame.topLeft, size = ins.frame.size, style = frameStroke)
+        drawRect(paint.sea, topLeft = ins.frame.topLeft, size = ins.frame.size)
+        drawRect(paint.line, topLeft = ins.frame.topLeft, size = ins.frame.size, style = frameStroke)
     }
-    drawPath(map.allPath, line, style = Stroke(width = 2.6f, join = StrokeJoin.Round))
-    drawPath(map.allPath, land)
+    drawPath(map.allPath, paint.line, style = Stroke(width = 2.6f, join = StrokeJoin.Round))
+    drawPath(map.allPath, paint.land)
     visited.forEach { (r, c) -> drawPath(r.path, c) }
     if (selected != null && visited.any { it.first === selected }) {
-        drawPath(selected.path, selectedColor, style = Stroke(width = 2.4f, join = StrokeJoin.Round))
+        drawPath(selected.path, paint.selected, style = Stroke(width = 2.4f, join = StrokeJoin.Round))
     }
 }
 

@@ -73,6 +73,7 @@ fun RegionScreen(
     onClearAll: () -> Unit = {},
     onOpenDex: () -> Unit = {},
     scrollState: ScrollState = rememberScrollState(),
+    zoom: MapZoomState = remember { MapZoomState() },
 ) {
     val colors = TraceTheme.colors
     val context = LocalContext.current
@@ -87,7 +88,6 @@ fun RegionScreen(
     val regionColors = remember(uiState.visited, palette) {
         uiState.visited.associate { it.code to palette[it.colorIndex.mod(palette.size)] }
     }
-    val zoom = remember { MapZoomState() }
     var confirmClear by rememberSaveable { mutableStateOf(false) }
 
     Box(modifier = modifier.fillMaxSize()) {
