@@ -88,6 +88,7 @@ fun TraceNavHost(
             latestTripKms = app.coinRepository.observeLatestTripKms(),
             roughDriving = app.recordCollector.roughDriving,
             speedMps = app.vehicleSignals.speedMps,
+            maintenance = app.maintenanceSource.observe(),
         )
     }
 

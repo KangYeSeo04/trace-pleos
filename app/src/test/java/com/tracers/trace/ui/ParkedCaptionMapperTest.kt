@@ -4,6 +4,9 @@ import com.tracers.trace.data.record.EfficiencySnapshot
 import com.tracers.trace.domain.ChargeForecast
 import com.tracers.trace.domain.DayForecast
 import com.tracers.trace.domain.EfficiencySummary
+import com.tracers.trace.domain.MaintenanceCalculator
+import com.tracers.trace.domain.MaintenanceEntry
+import com.tracers.trace.domain.MaintenanceItemType
 import com.tracers.trace.domain.TripRecord
 import com.tracers.trace.ui.screens.home.ParkedCaptionMapper
 import com.tracers.trace.ui.screens.home.ParkedCaptionMapper.Caption
@@ -37,13 +40,13 @@ class ParkedCaptionMapperTest {
     @Test
     fun `충전 중이 가장 먼저`() {
         val r = ParkedCaptionMapper.map(charging = true, snap(ChargeForecast.Ready(days(64, 55, 45, 35, 25), null)))
-        assertEquals(Caption("충전 중", "배터리 64% · 하루 평균 34 km"), r)
+        assertEquals(Caption("충전 중", "배터리 64% · 하루 평균 34 km", bolt = true), r)
     }
 
     @Test
     fun `5일 안에 20% 미만이 안 되면 마지막 날까지 여유`() {
         val r = ParkedCaptionMapper.map(false, snap(ChargeForecast.Ready(days(64, 55, 45, 35, 25), null)))
-        assertEquals(Caption("충전은 금요일까지 여유 있어요", "배터리 64% · 하루 평균 34 km 기준 · 추정"), r)
+        assertEquals(Caption("충전은 금요일까지 여유 있어요", "배터리 64% · 하루 평균 34 km 기준 · 추정", bolt = true), r)
     }
 
     @Test
@@ -60,5 +63,21 @@ class ParkedCaptionMapperTest {
         assertEquals(Caption("쉬는 중", "배터리 64% · 하루 평균 34 km"), ParkedCaptionMapper.map(false, snap(ChargeForecast.InsufficientData)))
         assertEquals(Caption("쉬는 중", "하루 평균 34 km"), ParkedCaptionMapper.map(false, snap(ChargeForecast.Unavailable, percent = null)))
         assertEquals(Caption("쉬는 중", ""), ParkedCaptionMapper.map(false, null))
+    }
+
+    private val wiperDue10Days = MaintenanceCalculator.calculate(
+        listOf(MaintenanceEntry(date = today.minusMonths(12).plusDays(10), odometerKm = 30_000, place = "", items = setOf(MaintenanceItemType.WIPER))),
+        null, today, 31_000.0,
+    ).single()
+
+    @Test
+    fun `점검 임박은 충전 중 다음, 충전 타이밍보다 먼저`() {
+        val ready = snap(ChargeForecast.Ready(days(40, 30, 21, 12, 3), today.plusDays(3)))
+        assertEquals("충전 중", ParkedCaptionMapper.map(true, ready, wiperDue10Days).title)
+        assertEquals(
+            Caption("점검이 다가와요", "와이퍼 블레이드 · 10일 남음"),
+            ParkedCaptionMapper.map(false, ready, wiperDue10Days),
+        )
+        assertEquals("목요일 전에 충전하면 좋아요", ParkedCaptionMapper.map(false, ready, null).title)
     }
 }
