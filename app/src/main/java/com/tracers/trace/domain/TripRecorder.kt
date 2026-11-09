@@ -10,8 +10,8 @@ package com.tracers.trace.domain
  * 스레드 안전하지 않다. 한 코루틴에서만 부른다.
  */
 class TripRecorder(
-    /** 급가속 기준 (km/h per 초). TODO(B-04): 기획 확정 전 임시 기준 */
-    private val hardAccelKmhPerSec: Double = HARD_ACCEL_KMH_PER_SEC,
+    /** 급가속 기준 (km/h per 초). 기획안 B-04 */
+    private val hardAccelKmhPerSec: Double = DrivingThresholds.HARD_ACCEL_KMH_PER_SEC,
     /** 이보다 짧은 주행은 버린다 (주차장 이동 등) */
     private val minDistanceKm: Double = MIN_DISTANCE_KM,
 ) {
@@ -112,7 +112,8 @@ class TripRecorder(
             if (dt < ACCEL_WINDOW_MS) return
             if (dt <= MAX_GAP_MS) {
                 val kmhPerSec = (v - v0) * 3.6 / (dt / 1000.0)
-                if (kmhPerSec >= hardAccelKmhPerSec) {
+                // 차속이 Float(m/s)라 경계값이 10.9999처럼 나오므로 작은 오차를 허용
+                if (kmhPerSec >= hardAccelKmhPerSec - EPSILON_KMH) {
                     if (accelArmed) hardAccel++
                     accelArmed = false
                 } else {
@@ -141,8 +142,8 @@ class TripRecorder(
     }
 
     companion object {
-        const val HARD_ACCEL_KMH_PER_SEC = 8.0
         const val MIN_DISTANCE_KM = 0.1
+        private const val EPSILON_KMH = 1e-3
         private const val ACCEL_WINDOW_MS = 1_000L
         /** 이보다 긴 샘플 간격은 끊긴 것으로 보고 거리 적분·가속 판단에서 뺀다 */
         private const val MAX_GAP_MS = 5_000L

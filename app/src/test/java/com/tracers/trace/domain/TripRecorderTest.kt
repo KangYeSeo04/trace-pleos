@@ -77,20 +77,20 @@ class TripRecorderTest {
     }
 
     @Test
-    fun `1초에 8kmh 이상 빨라지면 급가속 1회, 계속 가속해도 한 번만 센다`() {
+    fun `1초에 11kmh 이상 빨라지면 급가속 1회, 계속 가속해도 한 번만 센다`() {
         val r = TripRecorder()
         r.onSample(sample(0, speedKmh = 0.0))
         r.onDriveState(DriveState.DRIVING, 0)
-        // 0 → 10 → 20 → 30 km/h, 1초 간격: 한 번의 급가속
-        r.onSample(sample(1_000, speedKmh = 10.0))
-        r.onSample(sample(2_000, speedKmh = 20.0))
-        r.onSample(sample(3_000, speedKmh = 30.0))
+        // 0 → 12 → 24 → 36 km/h, 1초 간격: 한 번의 급가속
+        r.onSample(sample(1_000, speedKmh = 12.0))
+        r.onSample(sample(2_000, speedKmh = 24.0))
+        r.onSample(sample(3_000, speedKmh = 36.0))
         // 정속
-        r.onSample(sample(4_000, speedKmh = 30.0))
-        // 다시 급가속
-        r.onSample(sample(5_000, speedKmh = 40.0))
-        // 완만한 가속은 세지 않음
-        r.onSample(sample(6_000, speedKmh = 43.0))
+        r.onSample(sample(4_000, speedKmh = 36.0))
+        // 정확히 기준값(+11)도 급가속
+        r.onSample(sample(5_000, speedKmh = 47.0))
+        // 기준 미만(+10)은 세지 않음
+        r.onSample(sample(6_000, speedKmh = 57.0))
         r.onSample(sample(7_000, speedKmh = 46.0, odo = 1001.0))
         val trip = r.onDriveState(DriveState.PARKED, 7_000)!!
         assertEquals(2, trip.hardAccelCount)
@@ -101,7 +101,7 @@ class TripRecorderTest {
         val r = TripRecorder()
         r.onSample(sample(0, speedKmh = 0.0))
         r.onDriveState(DriveState.DRIVING, 0)
-        // 0.1초마다 0.5 km/h씩 → 1초에 5 km/h: 급가속 아님
+        // 0.1초마다 0.5 km/h씩 → 1초에 5 km/h: 급가속 아님 (기준 11)
         for (i in 1..30) r.onSample(sample(i * 100L, speedKmh = i * 0.5))
         r.onSample(sample(3_100, speedKmh = 15.0, odo = 1001.0))
         val trip = r.onDriveState(DriveState.PARKED, 3_100)!!
