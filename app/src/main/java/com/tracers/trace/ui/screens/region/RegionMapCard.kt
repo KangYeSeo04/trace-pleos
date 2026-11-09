@@ -36,6 +36,7 @@ import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.StrokeJoin
 import androidx.compose.ui.graphics.drawscope.DrawScope
+import androidx.compose.ui.graphics.drawscope.Fill
 import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.graphics.drawscope.withTransform
 import androidx.compose.ui.graphics.vector.ImageVector
@@ -322,12 +323,13 @@ private fun MapCanvas(
                     val p = at(g.labelX!!, g.labelY!!)
                     val tl = Offset(p.x - layout.size.width / 2f, p.y - layout.firstBaseline)
                     drawText(layout, color = colors.mapLand, topLeft = tl, drawStyle = halo)
-                    drawText(layout, color = colors.mapLabel, topLeft = tl)
+                    // drawStyle을 밝혀 쓰지 않으면 앞의 테두리(Stroke) 스타일이 남는다
+                    drawText(layout, color = colors.mapLabel, topLeft = tl, drawStyle = Fill)
                 }
                 insetLabels.forEach { (ins, layout) ->
                     val p = at(ins.labelX, ins.labelY)
                     val x = if (ins.labelCentered) p.x - layout.size.width / 2f else p.x
-                    drawText(layout, color = colors.mapLabel, topLeft = Offset(x, p.y - layout.firstBaseline))
+                    drawText(layout, color = colors.mapLabel, topLeft = Offset(x, p.y - layout.firstBaseline), drawStyle = Fill)
                 }
             }
             // 지금 지역 링: 확대와 무관하게 같은 크기
