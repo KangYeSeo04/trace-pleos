@@ -7,6 +7,9 @@ import com.tracers.trace.domain.ChargeDetector
 import com.tracers.trace.domain.ChargeRecord
 import com.tracers.trace.domain.DriveState
 import com.tracers.trace.domain.DriveStateDetector
+import com.tracers.trace.domain.DrivingEventDetector
+import com.tracers.trace.domain.SpeedReading
+import com.tracers.trace.domain.SpeedSpikeFilter
 import com.tracers.trace.domain.TripRecorder
 import com.tracers.trace.domain.VehicleSample
 import kotlinx.coroutines.CoroutineScope
@@ -40,6 +43,8 @@ class DriveRecordCollector(
     private val driveStateDetector = DriveStateDetector(scope)
     private val tripRecorder = TripRecorder()
     private val chargeDetector = ChargeDetector()
+    private val spikeFilter = SpeedSpikeFilter()
+    private val eventDetector = DrivingEventDetector()
 
     /** 두 수집 코루틴이 같은 계산 객체를 건드리므로 순서를 묶는다 */
     private val lock = Mutex()
@@ -105,7 +110,14 @@ class DriveRecordCollector(
                 }
             }
 
-            // 6) 차량 값 → 누적
+            // 6) 차속 하나하나 → 잡음 거르기 → 위험 운전 이벤트 (값을 건너뛰지 않는 흐름)
+            launch {
+                signals.speedReadings.collect { r ->
+                    lock.withLock { spikeFilter.push(r).forEach(::onSpeed) }
+                }
+            }
+
+            // 7) 차량 값 → 누적
             launch {
                 val battery = combine(
                     signals.batteryLevelWh, signals.batteryPercent, signals.batteryCapacityWh,
@@ -130,6 +142,11 @@ class DriveRecordCollector(
                 }
             }
         }
+    }
+
+    /** 걸러진 차속 하나. lock 안에서 부른다 */
+    private fun onSpeed(r: SpeedReading) {
+        eventDetector.onSpeed(r).forEach { e -> tripRecorder.onDrivingEvent(e) }
     }
 
     private fun saveSnapshot() {

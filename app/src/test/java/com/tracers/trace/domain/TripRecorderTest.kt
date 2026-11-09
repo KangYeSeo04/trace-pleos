@@ -78,35 +78,41 @@ class TripRecorderTest {
     }
 
     @Test
-    fun `1초에 11kmh 이상 빨라지면 급가속 1회, 계속 가속해도 한 번만 센다`() {
+    fun `급가속 횟수는 판정기가 낸 급가속 이벤트만 센다 (급감속·급정거·과속은 넣지 않음)`() {
         val r = TripRecorder()
         r.onSample(sample(0, speedKmh = 0.0))
         r.onDriveState(DriveState.DRIVING, 0)
-        // 0 → 12 → 24 → 36 km/h, 1초 간격: 한 번의 급가속
-        r.onSample(sample(1_000, speedKmh = 12.0))
-        r.onSample(sample(2_000, speedKmh = 24.0))
-        r.onSample(sample(3_000, speedKmh = 36.0))
-        // 정속
-        r.onSample(sample(4_000, speedKmh = 36.0))
-        // 정확히 기준값(+11)도 급가속
-        r.onSample(sample(5_000, speedKmh = 47.0))
-        // 기준 미만(+10)은 세지 않음
-        r.onSample(sample(6_000, speedKmh = 57.0))
+        r.onDrivingEvent(DrivingEvent(DrivingEventType.HARD_ACCEL, 1_000))
+        r.onDrivingEvent(DrivingEvent(DrivingEventType.HARD_DECEL, 2_000))
+        r.onDrivingEvent(DrivingEvent(DrivingEventType.HARD_STOP, 3_000))
+        r.onDrivingEvent(DrivingEvent(DrivingEventType.SPEEDING, 4_000))
+        r.onDrivingEvent(DrivingEvent(DrivingEventType.HARD_ACCEL, 5_000))
         r.onSample(sample(7_000, speedKmh = 46.0, odo = 1001.0))
         val trip = r.onDriveState(DriveState.PARKED, 7_000)!!
         assertEquals(2, trip.hardAccelCount)
     }
 
     @Test
-    fun `100ms 간격 샘플도 1초 창으로 판단한다`() {
+    fun `주행도 출발 후보도 아닐 때 온 급가속은 세지 않는다`() {
         val r = TripRecorder()
         r.onSample(sample(0, speedKmh = 0.0))
-        r.onDriveState(DriveState.DRIVING, 0)
-        // 0.1초마다 0.5 km/h씩 → 1초에 5 km/h: 급가속 아님 (기준 11)
-        for (i in 1..30) r.onSample(sample(i * 100L, speedKmh = i * 0.5))
-        r.onSample(sample(3_100, speedKmh = 15.0, odo = 1001.0))
-        val trip = r.onDriveState(DriveState.PARKED, 3_100)!!
-        assertEquals(0, trip.hardAccelCount)
+        r.onDrivingEvent(DrivingEvent(DrivingEventType.HARD_ACCEL, 0))
+        r.onDriveState(DriveState.DRIVING, 1_000)
+        r.onSample(sample(60_000, speedKmh = 30.0, odo = 1001.0))
+        assertEquals(0, r.onDriveState(DriveState.PARKED, 60_000)!!.hardAccelCount)
+    }
+
+    @Test
+    fun `진행 중 주행의 시작 시각을 알려 준다 (1km 기록을 주행에 묶는 데 쓴다)`() {
+        val r = TripRecorder()
+        assertNull(r.currentStartMs)
+        r.onSample(sample(0, speedKmh = 0.0))
+        r.onSample(sample(1_000, speedKmh = 20.0))
+        assertNull(r.currentStartMs)
+        r.onDriveState(DriveState.DRIVING, 3_000)
+        assertEquals(1_000L, r.currentStartMs)
+        r.onDriveState(DriveState.PARKED, 9_000)
+        assertNull(r.currentStartMs)
     }
 
     @Test
@@ -180,6 +186,7 @@ class TripRecorderTest {
         r.onSample(sample(0, speedKmh = 0.0, kwh = 60.0, odo = 1000.0))
         // 차가 움직이기 시작 (아직 DRIVING 판정 전)
         r.onSample(sample(1_000, speedKmh = 35.0, kwh = 59.9, odo = 1000.01))
+        r.onDrivingEvent(DrivingEvent(DrivingEventType.HARD_ACCEL, 1_000)) // 출발 급가속 (판정 전)
         r.onSample(sample(2_000, speedKmh = 40.0, kwh = 59.8, odo = 1000.02))
         r.onSample(sample(3_000, speedKmh = 40.0, kwh = 59.7, odo = 1000.03))
         r.onDriveState(DriveState.DRIVING, 3_000) // 2초 유지 뒤 판정
@@ -203,20 +210,6 @@ class TripRecorderTest {
         val trip = r.onDriveState(DriveState.PARKED, 6_000)!!
         assertEquals(5_000L, trip.startedAtMs)
         assertEquals(0.5, trip.energyUsedKwh, 1e-6)
-    }
-
-    @Test
-    fun `차속이 바뀔 때만 오는 신호도 1초 전 값과 비교한다 (정차 4초 뒤 0에서 40)`() {
-        val r = TripRecorder()
-        r.onSample(sample(0, speedKmh = 30.0))
-        r.onDriveState(DriveState.DRIVING, 0)
-        r.onSample(sample(1_000, speedKmh = 0.0, odo = 1001.0)) // 신호 대기 (감속은 급가속 아님)
-        // 0 km/h 동안 이벤트 없음, 4.1초 뒤 40 km/h → 1초 전에는 0이었으므로 +40/s
-        r.onSample(sample(5_100, speedKmh = 40.0))
-        r.onSample(sample(5_200, speedKmh = 40.0))
-        r.onSample(sample(6_300, speedKmh = 40.0, odo = 1002.0))
-        val trip = r.onDriveState(DriveState.PARKED, 6_300)!!
-        assertEquals(1, trip.hardAccelCount)
     }
 
     @Test
