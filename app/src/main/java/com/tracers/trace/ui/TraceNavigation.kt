@@ -39,6 +39,8 @@ import com.tracers.trace.ui.screens.efficiency.EfficiencyScreen
 import com.tracers.trace.ui.screens.efficiency.EfficiencyViewModel
 import com.tracers.trace.ui.screens.home.HomeScreen
 import com.tracers.trace.ui.screens.home.HomeViewModel
+import com.tracers.trace.ui.screens.maintenance.MaintenanceScreen
+import com.tracers.trace.ui.screens.maintenance.MaintenanceUiState
 import com.tracers.trace.ui.screens.spaceflight.SpaceFlightScreen
 import com.tracers.trace.ui.theme.TraceTheme
 
@@ -145,7 +147,11 @@ fun TraceNavHost(
             )
         }
         composable(TraceDestinations.MAINTENANCE) {
-            PlaceholderScreen(onBack = { navController.popBackStack() })
+            // SDK 연결 전이라 빈 상태로 뜬다. 주기 계산·방문 감지는 2단계(D-01·D-03)
+            MaintenanceScreen(
+                uiState = MaintenanceUiState(),
+                onNavigateBack = { navController.popBackStack() }
+            )
         }
         composable(TraceDestinations.COIN) {
             val coinViewModel: CoinViewModel = viewModel(
