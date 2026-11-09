@@ -48,5 +48,7 @@ class MainActivity : ComponentActivity() {
         super.onResume()
         // 설정 앱에서 권한을 허용하고 돌아온 경우
         app.refreshPermissions()
+        // 날짜가 바뀌었을 수 있어 정비 주기 다시 계산 (D-01)
+        app.maintenanceSource.refresh()
     }
 }

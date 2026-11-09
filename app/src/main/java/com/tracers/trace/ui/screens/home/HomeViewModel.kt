@@ -3,6 +3,8 @@ package com.tracers.trace.ui.screens.home
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.tracers.trace.data.record.EfficiencySnapshot
+import com.tracers.trace.data.record.MaintenanceSnapshot
+import com.tracers.trace.domain.MaintenanceCalculator
 import com.tracers.trace.domain.CoinWallet
 import com.tracers.trace.domain.DriveState
 import com.tracers.trace.domain.EfficiencySummary
@@ -22,7 +24,8 @@ import kotlinx.coroutines.launch
  * 홈 화면 ViewModel.
  *
  * A-01: 주행 상태 판정 → 정차/주행 모드 전환
- * B-03: 주행 중 무대 문구 (거칠었음 > 매끄럽게·천천히)
+ * B-03: 주행 중 무대 문구 (거칠었음 > 매끄럽게·천천히), 정차 문구 (충전 중 > 점검 임박 > 충전 타이밍 > 쉬는 중)
+ * D-01: 정비 타일 = 가장 급한 점검 항목
  * B-05: 주행 모드에서는 큰 숫자 + 상태 1줄만 표시
  */
 class HomeViewModel(
@@ -42,6 +45,8 @@ class HomeViewModel(
     roughDriving: StateFlow<Boolean>,
     /** 차속 (m/s). B-03 천천히·매끄럽게 */
     speedMps: StateFlow<Float?>,
+    /** D-01 점검 주기 계산 결과 (급한 순) */
+    maintenance: Flow<MaintenanceSnapshot>,
 ) : ViewModel() {
 
     private val flightResolver = FlightStatusResolver()
@@ -58,7 +63,11 @@ class HomeViewModel(
             coinWallet.onStart { emit(CoinWallet()) },
             latestTripKms.onStart { emit(emptyList()) },
         ) { w, kms -> w to kms }
-        val eff = combine(efficiency.onStart<EfficiencySnapshot?> { emit(null) }, charging) { e, c -> e to c }
+        val eff = combine(
+            efficiency.onStart<EfficiencySnapshot?> { emit(null) },
+            charging,
+            maintenance.onStart<MaintenanceSnapshot?> { emit(null) },
+        ) { e, c, m -> Triple(e, c, m) }
 
         viewModelScope.launch {
             combine(
@@ -67,7 +76,7 @@ class HomeViewModel(
                 permissionsGranted,
                 flight,
                 coin,
-            ) { st, (e, chg), granted, fl, (w, kms) -> Inputs(st, e, chg, granted, fl, w, kms) }
+            ) { st, (e, chg, m), granted, fl, (w, kms) -> Inputs(st, e, chg, granted, fl, w, kms, m) }
                 .collect(::updateDriveMode)
         }
     }
@@ -80,6 +89,7 @@ class HomeViewModel(
         val flight: FlightStatus?,
         val wallet: CoinWallet,
         val latestTripKms: List<KmRecord>,
+        val maintenance: MaintenanceSnapshot?,
     )
 
     private fun updateDriveMode(input: Inputs) {
@@ -91,7 +101,7 @@ class HomeViewModel(
         val caption: String
         val captionSub: String
 
-        // TODO(B-03): 충전·점검 임박 상태는 해당 기능이 생기면 앞에 붙인다
+        val statuses = input.maintenance?.statuses.orEmpty()
         if (!permissionsGranted) {
             caption = "차량 정보 권한이 필요해요"
             captionSub = ""
@@ -111,11 +121,11 @@ class HomeViewModel(
                 }
             }
         } else {
-            // B-03 정차 쪽: 충전 중 > 점검 임박(TODO D-02) > 충전 타이밍 > 쉬는 중
-            val c = ParkedCaptionMapper.map(input.charging, input.snapshot)
+            // B-03 정차 쪽: 충전 중 > 점검 임박(D-02) > 충전 타이밍 > 쉬는 중
+            val c = ParkedCaptionMapper.map(input.charging, input.snapshot, MaintenanceCalculator.mostImminent(statuses))
             caption = c.title
             captionSub = c.sub
-            if (c.title != "쉬는 중") iconPath = BOLT_ICON_PATH
+            if (c.bolt) iconPath = BOLT_ICON_PATH
         }
 
         _uiState.value = _uiState.value.copy(
@@ -124,13 +134,7 @@ class HomeViewModel(
             captionSub = captionSub,
             captionIconPath = iconPath,
             efficiency = EfficiencyTileMapper.map(efficiency, isDriving),
-            maintenance = TileState.Maintenance(
-                value = "–",
-                unit = "일",
-                status = "데이터를 모으는 중이에요",
-                statusLevel = StatusLevel.Normal,
-                barPercent = 0f
-            ),
+            maintenance = MaintenanceTileMapper.map(statuses.firstOrNull()),
             coin = CoinTileMapper.map(input.wallet, input.latestTripKms, driveState),
             region = TileState.Region(
                 city = "–",

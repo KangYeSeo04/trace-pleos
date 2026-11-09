@@ -223,7 +223,7 @@ private fun FormField(
 
 /** 항목 칩: 높이 44, 좌우 16, 모서리 22. 선택 accent 바탕 흰 글자 600, 아니면 패널 바탕 t1 500 */
 @Composable
-private fun ItemChip(name: String, selected: Boolean, onClick: () -> Unit) {
+internal fun ItemChip(name: String, selected: Boolean, onClick: () -> Unit) {
     val colors = TraceTheme.colors
     Box(
         modifier = Modifier

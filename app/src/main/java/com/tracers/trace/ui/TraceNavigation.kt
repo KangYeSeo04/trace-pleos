@@ -88,6 +88,7 @@ fun TraceNavHost(
             latestTripKms = app.coinRepository.observeLatestTripKms(),
             roughDriving = app.recordCollector.roughDriving,
             speedMps = app.vehicleSignals.speedMps,
+            maintenance = app.maintenanceSource.observe(),
         )
     }
 
@@ -148,9 +149,18 @@ fun TraceNavHost(
             )
         }
         composable(TraceDestinations.MAINTENANCE) {
-            // SDK 연결 전이라 빈 상태로 뜬다. 주기 계산·방문 감지는 2단계(D-01·D-03)
+            // 정비 기록·주기 계산(D-01·D-05). 방문 감지(D-03)는 아직 없다
             // back stack entry에 묶여 A-02 복귀로 나가면 양식 내용도 정리된다 (임시 저장은 TODO(D-05))
-            val maintenanceViewModel: MaintenanceViewModel = viewModel()
+            val maintenanceViewModel: MaintenanceViewModel = viewModel(
+                factory = viewModelFactory {
+                    initializer {
+                        MaintenanceViewModel(
+                            snapshots = app.maintenanceSource.observe(),
+                            saveRecord = { app.maintenanceSource.add(it) },
+                        )
+                    }
+                }
+            )
             val maintenanceUiState by maintenanceViewModel.uiState.collectAsState()
             MaintenanceScreen(
                 uiState = maintenanceUiState,
@@ -160,6 +170,7 @@ fun TraceNavHost(
                 onPrevMonth = maintenanceViewModel::onPrevMonth,
                 onNextMonth = maintenanceViewModel::onNextMonth,
                 onSelectDate = maintenanceViewModel::onSelectDate,
+                onSelectFilter = maintenanceViewModel::onSelectFilter,
                 formActions = remember(maintenanceViewModel) {
                     MaintenanceFormActions(
                         onDateChange = maintenanceViewModel::onDateChange,

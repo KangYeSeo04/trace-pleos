@@ -5,6 +5,8 @@ import com.tracers.trace.data.permission.RuntimePermissions
 import com.tracers.trace.data.record.CoinRepository
 import com.tracers.trace.data.record.DriveRecordCollector
 import com.tracers.trace.data.record.EfficiencySource
+import com.tracers.trace.data.record.MaintenanceRepository
+import com.tracers.trace.data.record.MaintenanceSource
 import com.tracers.trace.data.record.RecordRepository
 import com.tracers.trace.data.record.TraceDatabase
 import com.tracers.trace.data.vehicle.PleosVehicleSignals
@@ -34,6 +36,8 @@ class TraceApplication : Application() {
         private set
     lateinit var efficiencySource: EfficiencySource
         private set
+    lateinit var maintenanceSource: MaintenanceSource
+        private set
 
     private val _permissionsGranted = MutableStateFlow(false)
 
@@ -48,6 +52,8 @@ class TraceApplication : Application() {
         coinRepository = CoinRepository(db)
         recordCollector = DriveRecordCollector(vehicleSignals, recordRepository, coinRepository, appScope)
         efficiencySource = EfficiencySource(recordRepository, vehicleSignals)
+        // 주행거리 첫 값을 기다렸다가 기준점을 남긴다 (차량 신호 구독은 권한 허용 뒤 recordCollector가 시작)
+        maintenanceSource = MaintenanceSource(MaintenanceRepository(db), vehicleSignals, appScope).apply { start() }
         refreshPermissions()
     }
 

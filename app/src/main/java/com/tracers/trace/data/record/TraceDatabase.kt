@@ -12,8 +12,9 @@ import androidx.sqlite.db.SupportSQLiteDatabase
     entities = [
         TripSummaryEntity::class, ChargeSessionEntity::class, TripInProgressEntity::class,
         KmRecordEntity::class, CoinWalletEntity::class, CoinHistoryEntity::class,
+        MaintenanceRecordEntity::class, MaintenanceBaselineEntity::class,
     ],
-    version = 3,
+    version = 4,
     exportSchema = false,
 )
 abstract class TraceDatabase : RoomDatabase() {
@@ -23,11 +24,12 @@ abstract class TraceDatabase : RoomDatabase() {
     abstract fun kmRecordDao(): KmRecordDao
     abstract fun coinWalletDao(): CoinWalletDao
     abstract fun coinHistoryDao(): CoinHistoryDao
+    abstract fun maintenanceDao(): MaintenanceDao
 
     companion object {
         fun create(context: Context): TraceDatabase =
             Room.databaseBuilder(context.applicationContext, TraceDatabase::class.java, "trace.db")
-                .addMigrations(MIGRATION_1_2, MIGRATION_2_3)
+                .addMigrations(MIGRATION_1_2, MIGRATION_2_3, MIGRATION_3_4)
                 .build()
 
         /** 1 → 2: 진행 중 주행 요약 한 줄 테이블 추가 */
@@ -66,6 +68,24 @@ abstract class TraceDatabase : RoomDatabase() {
                         "`kind` TEXT NOT NULL, `amount` INTEGER NOT NULL, `note` TEXT)"
                 )
                 db.execSQL("CREATE INDEX IF NOT EXISTS `index_coin_history_atMs` ON `coin_history` (`atMs`)")
+            }
+        }
+
+        /** 3 → 4: 정비 기록, 정비 기준점(앱이 처음 본 날짜·주행거리) 테이블 추가 (D-01·D-05) */
+        val MIGRATION_3_4 = object : Migration(3, 4) {
+            override fun migrate(db: SupportSQLiteDatabase) {
+                db.execSQL(
+                    "CREATE TABLE IF NOT EXISTS `maintenance_record` (" +
+                        "`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `epochDay` INTEGER NOT NULL, " +
+                        "`odometerKm` INTEGER NOT NULL, `place` TEXT NOT NULL, `items` TEXT NOT NULL, " +
+                        "`other` INTEGER NOT NULL, `costWon` INTEGER, `memo` TEXT NOT NULL, " +
+                        "`inputMethod` TEXT NOT NULL, `createdAtMs` INTEGER NOT NULL)"
+                )
+                db.execSQL("CREATE INDEX IF NOT EXISTS `index_maintenance_record_epochDay` ON `maintenance_record` (`epochDay`)")
+                db.execSQL(
+                    "CREATE TABLE IF NOT EXISTS `maintenance_baseline` (" +
+                        "`id` INTEGER NOT NULL, `epochDay` INTEGER NOT NULL, `odometerKm` REAL NOT NULL, PRIMARY KEY(`id`))"
+                )
             }
         }
     }
