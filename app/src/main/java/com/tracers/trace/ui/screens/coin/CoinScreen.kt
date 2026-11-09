@@ -212,7 +212,8 @@ private fun CoinHero(
 /** 이번 주행 1km 기록 (E-03). */
 @Composable
 private fun TripKmRecordSection(record: TripKmRecord?) {
-    // TODO(2회차): 37칸 격자(10열, 칸 34, 간격 6), 급가속·급감속·과속·차량 경고 4칸, 제외 안내 문구
+    SectionTitle("이번 주행 1km 기록")
+    TripKmRecordCard(record = record)
 }
 
 /** 상점 바로가기 줄 → S07. */

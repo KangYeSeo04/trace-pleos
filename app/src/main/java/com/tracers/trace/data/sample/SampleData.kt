@@ -167,7 +167,7 @@ object SampleData {
             hardAccel = 2,
             hardBrake = 1,
             speeding = 1,
-            vehicleWarnings = 1,
+            hardStop = 1,
         ),
         shop = ShopTeaser(newInStorage = 1, nextItemName = "은하수 비행운", coinsToNext = 216),
         history = listOf(

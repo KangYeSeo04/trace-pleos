@@ -40,6 +40,12 @@ data class TraceColors(
     val warn: Color = Color(0xFFEF7A70),
     /** 코인·별 */
     val gold: Color = Color(0xFFE9B949),
+    /** 깨끗한 km 칸 바탕 (CoinDark cellOn rgba(233,185,73,0.14)) */
+    val goldSoft: Color = Color(0x24E9B949),
+    /** 위험 km 칸 바탕 (CoinDark cellOff) */
+    val cellOff: Color = Color(0xFF2A2E34),
+    /** 위험 km 흐린 별 (CoinDark dim) */
+    val dim: Color = Color(0xFF555B63),
     /** 히어로 사진이 뜨기 전 바탕 (CoinDark heroBg) */
     val heroBg: Color = Color(0xFF050608),
     /** 밤하늘 비행운 (CoinDark 캔버스 tc '222,230,236') */

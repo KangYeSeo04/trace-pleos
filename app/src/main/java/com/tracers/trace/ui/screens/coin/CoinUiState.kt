@@ -47,7 +47,8 @@ data class SafetyScoreChart(
 }
 
 /**
- * 이번 주행 1km 기록 카드 (2회차).
+ * 이번 주행 1km 기록 카드 (E-03).
+ * 이벤트는 급가속·급감속·급정거·과속 4종. 디자인의 "차량 경고"는 ADAS(미지원)라 뺐다.
  *
  * @param cleanCells km마다 깨끗했는지. 크기 = 주행 km
  */
@@ -56,7 +57,7 @@ data class TripKmRecord(
     val hardAccel: Int,
     val hardBrake: Int,
     val speeding: Int,
-    val vehicleWarnings: Int,
+    val hardStop: Int,
 ) {
     val totalKm: Int get() = cleanCells.size
     val cleanKm: Int get() = cleanCells.count { it }

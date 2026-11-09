@@ -455,4 +455,28 @@ object TraceIcons {
             }
         }.build()
     }
+
+    /** 네 갈래 별 (채움). CoinDark 1km 칸 */
+    val Star4: ImageVector by lazy {
+        ImageVector.Builder(
+            name = "Star4",
+            defaultWidth = 24.dp,
+            defaultHeight = 24.dp,
+            viewportWidth = 24f,
+            viewportHeight = 24f
+        ).apply {
+            path(fill = SolidColor(Color.Black), stroke = null) {
+                // M12 3l2.4 6.6L21 12l-6.6 2.4L12 21l-2.4-6.6L3 12l6.6-2.4z
+                moveTo(12f, 3f)
+                lineToRelative(2.4f, 6.6f)
+                lineTo(21f, 12f)
+                lineToRelative(-6.6f, 2.4f)
+                lineTo(12f, 21f)
+                lineToRelative(-2.4f, -6.6f)
+                lineTo(3f, 12f)
+                lineToRelative(6.6f, -2.4f)
+                close()
+            }
+        }.build()
+    }
 }
