@@ -15,6 +15,7 @@ import ai.pleos.playground.vehicle.listener.SteeringWheelAngleListener
 import ai.pleos.playground.vehicle.listener.TurnSignalStateListener
 import ai.pleos.playground.navi.helper.NaviHelper
 import ai.pleos.playground.navi.helper.listener.NaviHelperEventListener
+import ai.pleos.playground.navi.data.CurrentLocationInfo
 import android.car.Car
 import android.car.VehicleGear
 import android.car.VehiclePropertyIds
@@ -26,6 +27,7 @@ import android.os.Looper
 import android.util.Log
 import android.os.SystemClock
 import com.tracers.trace.domain.SpeedReading
+import com.tracers.trace.domain.region.GeoFix
 import kotlinx.coroutines.channels.BufferOverflow
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -70,6 +72,7 @@ class PleosVehicleSignals(context: Context) : VehicleSignals {
     private val _batteryCapacityWh = MutableStateFlow<Float?>(null)
     private val _hvacOn = MutableStateFlow<Boolean?>(null)
     private val _hvacSupported = MutableStateFlow<Boolean?>(null)
+    private val _location = MutableStateFlow<GeoFix?>(null)
 
     /** 공조 영역별 전원 상태. 한 곳이라도 켜져 있으면 켜짐 */
     private val powerByArea = mutableMapOf<SeatArea, Boolean>()
@@ -89,6 +92,7 @@ class PleosVehicleSignals(context: Context) : VehicleSignals {
     override val batteryCapacityWh: StateFlow<Float?> = _batteryCapacityWh.asStateFlow()
     override val hvacOn: StateFlow<Boolean?> = _hvacOn.asStateFlow()
     override val hvacSupported: StateFlow<Boolean?> = _hvacSupported.asStateFlow()
+    override val location: StateFlow<GeoFix?> = _location.asStateFlow()
 
     // ---------- AAOS 속도·기어 콜백 ----------
 
@@ -130,6 +134,22 @@ class PleosVehicleSignals(context: Context) : VehicleSignals {
             if (v != _speedLimitKmh.value) log("제한속도", v)
             _speedLimitKmh.value = v
         }
+
+        override fun onCurrentLocationInfo(currentLocationInfo: CurrentLocationInfo) {
+            // 주소(address)는 쓰지 않는다. 좌표도 판정에만 쓰고 로그에 남기지 않는다
+            val fix = GeoFix(currentLocationInfo.latitude, currentLocationInfo.longitude, System.currentTimeMillis())
+            if (_location.value == null) log("위치 첫 콜백", if (fix.isValid) "유효" else "무효")
+            _location.value = fix
+        }
+    }
+
+    /** NaviHelper 연결이 됐는지. 연결 전 요청은 버린다 */
+    @Volatile private var naviReady = false
+
+    override fun requestLocation() {
+        if (!started || !naviReady) return
+        // NAVI_ROUTE(normal) 권한. 실패해도 지역 판정만 "위치를 못 받음"이 된다
+        runCatching { navi.getCurrentLocationInfo() }.onFailure { Log.w(TAG, "위치 요청 실패", it) }
     }
 
     // ---------- Vehicle SDK 리스너 ----------
@@ -255,6 +275,7 @@ class PleosVehicleSignals(context: Context) : VehicleSignals {
         runCatching {
             navi.addListener(naviListener)
             navi.initialize()
+            naviReady = true
         }.onFailure { Log.w(TAG, "NaviHelper 연결 실패", it) }
     }
 
@@ -411,7 +432,9 @@ class PleosVehicleSignals(context: Context) : VehicleSignals {
         // NaviHelper 해제
         runCatching { navi.removeListener(naviListener) }
         runCatching { navi.release() }
+        naviReady = false
         _speedLimitKmh.value = null
+        _location.value = null
 
         // AAOS 해제
         runCatching { carPropertyManager?.unregisterCallback(aaosCallback) }

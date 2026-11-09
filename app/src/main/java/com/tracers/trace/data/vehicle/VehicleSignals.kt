@@ -1,6 +1,7 @@
 package com.tracers.trace.data.vehicle
 
 import com.tracers.trace.domain.SpeedReading
+import com.tracers.trace.domain.region.GeoFix
 import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.StateFlow
 
@@ -20,6 +21,7 @@ import kotlinx.coroutines.flow.StateFlow
  * - 충전구 열림: Vehicle SDK EvBattery.isEvChargePortOpen
  * - 총 주행거리(km): Vehicle SDK Odometer.getCurrentDistanceDriven
  * - EV 배터리 용량(Wh): Vehicle SDK EvBattery.getEvBatteryCapacity (시작 시 1회)
+ * - 위치: NaviHelper getCurrentLocationInfo → onCurrentLocationInfo (위도·경도. 요청할 때만 온다)
  * - 공조 전원: Vehicle SDK HVAC.getHvacPowerState (지원 영역 중 하나라도 켜지면 true).
  *   AC 상태(getHvacAcState)는 전원이 꺼져도 true로 와서 쓰지 않는다 (2026.11.09 실측)
  */
@@ -78,6 +80,15 @@ interface VehicleSignals {
 
     /** 공조 전원 신호 지원 여부. null = 확인 중, false = 미지원(공조 비중 "—") */
     val hvacSupported: StateFlow<Boolean?>
+
+    /**
+     * 마지막으로 받은 현재 위치. [requestLocation]을 부를 때마다 NaviHelper가 한 번 답한다.
+     * null = 아직 못 받음. 지역 판정(G-01)에만 쓰고 저장하지 않는다
+     */
+    val location: StateFlow<GeoFix?>
+
+    /** 현재 위치를 한 번 요청한다. 결과는 [location]으로 온다 (답이 안 올 수도 있다) */
+    fun requestLocation()
 
     /** SDK 연결 시작 */
     fun start()

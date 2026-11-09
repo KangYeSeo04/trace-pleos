@@ -3,6 +3,7 @@ package com.tracers.trace
 import android.app.Application
 import com.tracers.trace.data.permission.RuntimePermissions
 import com.tracers.trace.data.record.CoinRepository
+import com.tracers.trace.data.region.LocationPoller
 import com.tracers.trace.data.record.DriveRecordCollector
 import com.tracers.trace.data.record.EfficiencySource
 import com.tracers.trace.data.record.MaintenanceRepository
@@ -38,6 +39,7 @@ class TraceApplication : Application() {
         private set
     lateinit var maintenanceSource: MaintenanceSource
         private set
+    private lateinit var locationPoller: LocationPoller
 
     private val _permissionsGranted = MutableStateFlow(false)
 
@@ -54,6 +56,7 @@ class TraceApplication : Application() {
         efficiencySource = EfficiencySource(recordRepository, vehicleSignals)
         // 주행거리 첫 값을 기다렸다가 기준점을 남긴다 (차량 신호 구독은 권한 허용 뒤 recordCollector가 시작)
         maintenanceSource = MaintenanceSource(MaintenanceRepository(db), vehicleSignals, appScope).apply { start() }
+        locationPoller = LocationPoller(vehicleSignals, recordCollector.driveState, MutableStateFlow(true), appScope)
         refreshPermissions()
     }
 
@@ -64,6 +67,9 @@ class TraceApplication : Application() {
     fun refreshPermissions() {
         val granted = RuntimePermissions.missing(this).isEmpty()
         _permissionsGranted.value = granted
-        if (granted) recordCollector.start()
+        if (granted) {
+            recordCollector.start()
+            locationPoller.start()
+        }
     }
 }
