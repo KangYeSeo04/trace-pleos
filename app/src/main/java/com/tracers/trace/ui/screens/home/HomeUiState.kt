@@ -83,9 +83,11 @@ sealed class TileState {
     data class Region(
         val city: String = "",
         val district: String = "",
-        /** 현재 위치 좌표 (서울 지도 viewBox 100x80 기준) */
-        val locationX: Float = 50f,
-        val locationY: Float = 40f,
+        /** 작은 지도에 그릴 161 지역 코드 (regions_display.json). null이면 지도 없음 */
+        val mapCode: String? = null,
+        /** 지금 위치 (작은 지도의 점). 화면에만 쓰고 저장하지 않는다. null이면 점 없음 */
+        val mapLatitude: Double? = null,
+        val mapLongitude: Double? = null,
         override val value: String = "",
         override val unit: String = "",
         override val status: String = "",

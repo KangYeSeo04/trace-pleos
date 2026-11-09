@@ -25,6 +25,9 @@
     <uses-permission android:name="pleos.car.permission.TTS_SERVICE" />
     <uses-permission android:name="pleos.car.permission.STT_SERVICE" />
 
+    <!-- FusedLocation (dangerous). NaviHelper 위치가 멈춰 있을 때만 보조로 쓴다 (G-01) -->
+    <uses-permission android:name="pleos.car.permission.FUSED_LOCATION" />
+
     <application
         android:name=".TraceApplication"
         android:allowBackup="true"

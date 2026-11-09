@@ -11,6 +11,7 @@
 | 방향지시등 | Vehicle SDK `TurnSignal` | OFF/LEFT/RIGHT/HAZARD |
 | 위치 | NaviHelper `getCurrentLocationInfo` | 위도, 경도, heading, 주소 포함 |
 | 제한속도 | NaviHelper `onCurrentRoadSpeedLimit` | 1초마다 콜백 |
+| 위치(보조) | FusedLocation 1.1.3 `getLastKnownLocation` | 런타임 권한 `pleos.car.permission.FUSED_LOCATION`(dangerous). NaviHelper 위치가 멈춰 있을 때만 씀. 근거: 기획 단계 probe `isSupported=true`(`docs/probe-result.md` D, `probe-evidence/probe_log_ev_drive.txt`), 2026.11.09 geo fix 실측 아래 |
 | 음성 | Gleo AI STT·TTS | initialize 성공, **registerApp에 Client ID/Secret 필요** |
 | EV 배터리 % | Vehicle SDK `EvBattery.getEvBatteryStateOfCharge` | 0~100 |
 | EV 배터리 잔량 | Vehicle SDK `EvBattery.getEvBatteryLevel` 또는 AAOS `EV_BATTERY_LEVEL` | Wh 단위 |
@@ -63,6 +64,19 @@
 
 - **에뮬레이터에서 제한속도 0, 과속(E-01)은 단위 테스트로만 검증.** 앱은 0이면 "정보 없음"으로 보고 과속을 세지 않는다.
 - 실차 확인 필요: 실제 도로에서 값이 오는지, 내비 경로 안내 중에만 오는지
+
+### 위치: NaviHelper vs FusedLocation (2026.11.09 측정)
+
+| 항목 | 결과 |
+|------|------|
+| NaviHelper `getCurrentLocationInfo` | 항상 같은 자리(성남 수정구 부근)만 답함. `adb emu geo fix`와 D·30 주행에도 그대로 |
+| FusedLocation `isSupported` | `true` (initialize 1.5초 뒤) |
+| FusedLocation `getLastKnownLocation` | geo fix를 따라옴: 판교 → 강남 → 중랑으로 바꾸자 지역 판정이 성남시 → 서울(강남구 → 중랑구)로 바뀜 |
+| 권한 | `pleos.car.permission.FUSED_LOCATION` dangerous (서비스 패키지 `ai.pleos.playground.service.location.fused`), 없으면 SDK가 `need Permission` |
+
+- 앱은 NaviHelper를 먼저 쓰고, 차속 > 0인데 NaviHelper 위치가 1분 넘게 그대로면 FusedLocation으로 바꾼다. NaviHelper가 다시 움직이면 돌아간다. 바뀔 때 `VehicleSignals` 로그에 `위치 출처 → …`
+- FusedLocation 권한은 다른 권한과 함께 요청하지만, 거절해도 수집은 시작한다(NaviHelper만 사용)
+- 실차 확인 필요: 실차 NaviHelper 위치가 주행 중 바뀌는지(바뀌면 FusedLocation으로 넘어가지 않음)
 
 ### 가상 콘솔 차속 (2026.11.09 측정)
 

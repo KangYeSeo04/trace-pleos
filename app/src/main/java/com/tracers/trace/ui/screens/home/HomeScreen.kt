@@ -401,8 +401,9 @@ private object SampleHomeUiState {
         region = TileState.Region(
             city = "서울",
             district = "중랑구",
-            locationX = 72.9f,
-            locationY = 28.6f,
+            mapCode = "11000",
+            mapLatitude = 37.6063,
+            mapLongitude = 127.0928,
             value = "서울",
             unit = "중랑구",
             status = "161곳 중 12곳 방문",
@@ -444,8 +445,9 @@ private object SampleHomeUiState {
         region = TileState.Region(
             city = "서울",
             district = "성동구",
-            locationX = 50f,
-            locationY = 40f,
+            mapCode = "11000",
+            mapLatitude = 37.5634,
+            mapLongitude = 127.0369,
             value = "서울",
             unit = "성동구",
             status = "성동구",

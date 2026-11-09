@@ -11,7 +11,10 @@ import kotlinx.coroutines.sync.withLock
 import kotlinx.coroutines.withContext
 import org.json.JSONArray
 import org.json.JSONObject
+import kotlin.math.PI
 import kotlin.math.hypot
+import kotlin.math.ln
+import kotlin.math.tan
 
 /**
  * 화면용 지도(assets/regions_display.json, tools/geo/build_regions.py로 생성).
@@ -25,8 +28,72 @@ class RegionMap(
     val groups: List<MapGroup>,
     /** 지역 사이 경계(해안선 제외) 선들 */
     val borderPath: Path,
+    /** 섬 박스별 위경도 → 지도 좌표 [s, ox, oy] (meta.transforms). 없으면 빈 맵 */
+    val transforms: Map<String, FloatArray> = emptyMap(),
 ) {
     val byCode: Map<String, MapRegion> = regions.associateBy { it.code }
+
+    /** 위경도를 [transform] 박스의 지도 좌표로 (build_regions.py와 같은 메르카토르) */
+    fun project(transform: String, latitude: Double, longitude: Double): Offset? {
+        val t = transforms[transform] ?: return null
+        val x = Math.toRadians(longitude) * t[0] + t[1]
+        val y = -ln(tan(PI / 4 + Math.toRadians(latitude) / 2)) * t[0] + t[2]
+        return Offset(x.toFloat(), y.toFloat())
+    }
+
+    /**
+     * 홈 지역 타일의 작은 지도: 지역 [code]의 모양(지금 위치가 있는 박스의 고리만)과 지금 위치 점.
+     * 위치가 그 지역 모양 밖으로 나오면(해안·단순화 오차) 점은 모양 안쪽 가장자리로 붙이지 않고 그대로 둔다.
+     */
+    fun miniMap(code: String, latitude: Double?, longitude: Double?): MiniMap? {
+        val r = byCode[code] ?: return null
+        // 이 지역이 놓인 박스들: 본토(main) 또는 섬 박스, 독도는 울릉 박스 안의 다른 배율
+        val frames = insets.filter { code in it.regions }
+        fun frameOf(ring: FloatArray): String {
+            val b = ringBounds(ring)
+            return frames.firstOrNull { it.frame.contains(b.topLeft) && it.frame.contains(b.bottomRight) }?.id ?: MAIN
+        }
+        val ringFrames = r.rings.map(::frameOf)
+        val candidates = (listOf(r.inset) + frames.map { it.id } + MAIN + (if (r.inset == ULLEUNG) listOf(DOKDO) else emptyList()))
+            .distinct().filter { it in transforms }
+        var dot: Offset? = null
+        var frame = if (r.inset == ULLEUNG) ULLEUNG else ringFrames.firstOrNull { it == r.inset } ?: MAIN
+        if (latitude != null && longitude != null) {
+            val hit = candidates.firstNotNullOfOrNull { t ->
+                project(t, latitude, longitude)?.takeIf { r.contains(it.x, it.y) }?.let { t to it }
+            }
+            val (t, p) = hit ?: (r.inset to project(r.inset, latitude, longitude))
+            dot = p
+            frame = if (t == DOKDO) ULLEUNG else t
+        }
+        val rings = r.rings.filterIndexed { i, _ -> ringFrames[i] == frame }.ifEmpty { r.rings }
+        val path = Path().apply {
+            fillType = PathFillType.EvenOdd
+            rings.forEach { ring ->
+                moveTo(ring[0], ring[1])
+                var i = 2
+                while (i < ring.size) { lineTo(ring[i], ring[i + 1]); i += 2 }
+                close()
+            }
+        }
+        return MiniMap(path, path.getBounds(), dot)
+    }
+
+    private fun ringBounds(ring: FloatArray): Rect {
+        var x0 = Float.MAX_VALUE; var y0 = Float.MAX_VALUE; var x1 = -Float.MAX_VALUE; var y1 = -Float.MAX_VALUE
+        var i = 0
+        while (i < ring.size) {
+            x0 = minOf(x0, ring[i]); x1 = maxOf(x1, ring[i]); y0 = minOf(y0, ring[i + 1]); y1 = maxOf(y1, ring[i + 1])
+            i += 2
+        }
+        return Rect(x0, y0, x1, y1)
+    }
+
+    private companion object {
+        const val MAIN = "main"
+        const val ULLEUNG = "ulleung"
+        const val DOKDO = "dokdo"
+    }
 
     /** 모든 지역을 합친 Path: 해안선(선색 굵게) → 땅색 채우기를 한 번씩만 그리려고 쓴다 */
     val allPath: Path = Path().apply {
@@ -46,6 +113,9 @@ class RegionMap(
             ?.code
     }
 }
+
+/** 홈 타일 작은 지도: 지역 모양(지도 좌표)과 그 범위, 지금 위치(없으면 null) */
+class MiniMap(val path: Path, val bounds: Rect, val dot: Offset?)
 
 class MapRegion(
     val code: String,
@@ -157,7 +227,13 @@ object RegionMapStore {
                 while (i < l.size) { lineTo(l[i], l[i + 1]); i += 2 }
             }
         }
-        return RegionMap(vb.getDouble(0).toFloat(), vb.getDouble(1).toFloat(), regions, insets, groups, borderPath)
+        val transforms = root.optJSONObject("meta")?.optJSONObject("transforms")?.let { t ->
+            t.keys().asSequence().associateWith { k ->
+                val a = t.getJSONArray(k)
+                FloatArray(3) { a.getDouble(it).toFloat() }
+            }
+        }.orEmpty()
+        return RegionMap(vb.getDouble(0).toFloat(), vb.getDouble(1).toFloat(), regions, insets, groups, borderPath, transforms)
     }
 
     /** "M x y L x y x y … Z M …" (build_regions.py 출력 형식) → 고리(또는 선)별 좌표 배열. 점이 [minPoints]개 미만이면 버린다 */

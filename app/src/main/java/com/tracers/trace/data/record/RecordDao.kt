@@ -30,6 +30,10 @@ interface ChargeSessionDao {
 
     @Query("DELETE FROM charge_session WHERE startedAtMs < :beforeMs")
     suspend fun deleteBefore(beforeMs: Long): Int
+
+    /** 위치 기록 전체 지우기(G-04): 충전 기록은 두고 장소만 지운다 */
+    @Query("UPDATE charge_session SET placeLabel = NULL")
+    suspend fun clearPlaceLabels()
 }
 
 @Dao
