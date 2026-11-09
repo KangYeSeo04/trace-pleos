@@ -39,7 +39,7 @@ class DriveRecordCollector(
     private val lock = Mutex()
     private var jobs: List<Job> = emptyList()
 
-    /** A-01 주행 상태. 화면도 이 값을 쓰도록 다음 회차에 연결 */
+    /** A-01 주행 상태. 앱 전체(홈 모드, A-02 자동 복귀)가 이 값 하나를 쓴다 */
     val driveState: StateFlow<DriveState> = driveStateDetector.currentState
 
     fun start() {

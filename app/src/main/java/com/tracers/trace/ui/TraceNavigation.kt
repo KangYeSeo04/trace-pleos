@@ -65,12 +65,11 @@ fun TraceNavHost(
 ) {
     val context = LocalContext.current
 
-    // HomeViewModel 생성 (Activity 생명주기 동안 유지).
-    // 차량 신호는 Application의 단일 인스턴스를 쓴다 (구독·해제도 Application이 맡음)
-    val homeViewModel = remember {
-        val app = context.applicationContext as TraceApplication
-        HomeViewModel(app.vehicleSignals)
-    }
+    // 차량 신호·주행 상태 판정·기록은 Application의 단일 인스턴스를 쓴다
+    val app = context.applicationContext as TraceApplication
+
+    // HomeViewModel 생성 (Activity 생명주기 동안 유지)
+    val homeViewModel = remember { HomeViewModel(app.recordCollector.driveState) }
 
     // CarUxRestrictionsMonitor 생성 (Activity 생명주기 동안 유지)
     val uxRestrictionsMonitor = remember {
@@ -80,7 +79,7 @@ fun TraceNavHost(
     // A-02: 주행 시작 시 자동 복귀
     val navBackStackEntry by navController.currentBackStackEntryAsState()
     val currentRoute = navBackStackEntry?.destination?.route
-    val driveState by homeViewModel.driveState.collectAsState()
+    val driveState by app.recordCollector.driveState.collectAsState()
     val requiresDistractionOptimization by uxRestrictionsMonitor.requiresDistractionOptimization.collectAsState()
 
     // 시스템 제한의 이전 값 추적 (false→true 전환 감지용)
@@ -88,7 +87,7 @@ fun TraceNavHost(
 
     LaunchedEffect(driveState, requiresDistractionOptimization, currentRoute) {
         // 자동 복귀 조건:
-        // 1. DriveStateDetector가 DRIVING 상태이거나
+        // 1. DriveRecordCollector의 주행 상태가 DRIVING이거나
         // 2. 시스템 제한이 false → true로 바뀌는 순간 (이미 true인 상태로는 복귀하지 않음)
         val isDriving = driveState == DriveState.DRIVING
         val uxRestrictionJustActivated = !previousUxRestriction && requiresDistractionOptimization

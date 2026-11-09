@@ -2,14 +2,10 @@ package com.tracers.trace.ui.screens.home
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.tracers.trace.data.vehicle.Gear
-import com.tracers.trace.data.vehicle.VehicleSignals
 import com.tracers.trace.domain.DriveState
-import com.tracers.trace.domain.DriveStateDetector
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.launch
 
 /**
@@ -19,37 +15,17 @@ import kotlinx.coroutines.launch
  * B-05: 주행 모드에서는 큰 숫자 + 상태 1줄만 표시
  */
 class HomeViewModel(
-    private val vehicleSignals: VehicleSignals
+    /** A-01 주행 상태. 앱 전체에서 DriveRecordCollector 하나가 판정한 값을 받는다 */
+    val driveState: StateFlow<DriveState>,
 ) : ViewModel() {
-
-    private val driveStateDetector = DriveStateDetector(viewModelScope)
 
     private val _uiState = MutableStateFlow(HomeUiState())
     val uiState: StateFlow<HomeUiState> = _uiState.asStateFlow()
 
-    /** 현재 주행 상태 (A-02 자동 복귀에서 사용) */
-    val driveState: StateFlow<DriveState> = driveStateDetector.currentState
-
     init {
-        // 신호 구독 시작·해제는 TraceApplication이 한 번만 한다
-
-        // 기어와 속도를 DriveStateDetector에 전달
-        viewModelScope.launch {
-            combine(
-                vehicleSignals.gear,
-                vehicleSignals.speedMps
-            ) { gear, speedMps ->
-                gear to speedMps
-            }.collect { (gear, speedMps) ->
-                driveStateDetector.update(gear, speedMps)
-            }
-        }
-
         // DriveState → HomeUiState.isDriving
         viewModelScope.launch {
-            driveStateDetector.currentState.collect { driveState ->
-                updateDriveMode(driveState)
-            }
+            driveState.collect { updateDriveMode(it) }
         }
     }
 
