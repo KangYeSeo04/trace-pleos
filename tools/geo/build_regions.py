@@ -49,7 +49,7 @@ JEJU_FRAME = (449, 540, 547, 598)        # 디자인 제주 박스
 ULLEUNG_RECT = (489, 52, 505, 68)        # 디자인 울릉도 모양 상자
 DOKDO_RECT = (519, 78, 527.6, 82.6)      # 디자인 독도 원 두 개를 감싸는 상자
 ULLEUNG_FRAME = (453, 36, 497, 82)       # 디자인 울릉 박스
-LABELS = {"ulleung": ("울릉도·독도", 498, 28, "middle"), "jeju": ("제주", 460, 530, "start")}
+LABELS = {"ulleung": ("울릉도·독도", 498, 28, "middle"), "jeju": ("제주", 500, 518, "start")}  # 제주: 추자도(x 470~484, y 507~519) 오른쪽
 # 본토에서 떼어 박스로 옮기는 먼 섬(읍·면 단위). 배율은 본토와 같고 위치만 옮긴다.
 #   center: 박스 안 내용의 중심 자리, label: (글자, x, y, 정렬)
 MOVED = [
@@ -525,6 +525,45 @@ def main():
     # 시·도 묶음 라벨 자리: 묶음 경계(본토 부분) 안에서 경계와 가장 먼 점. 서울(경기 안)·제주(섬 박스 라벨)는 없음
     grp_rings, grp_nodes = dissolve(emd_rings, {i: GROUP_OF_SIDO[sgg_info[s][0]] for i, s in emd_sgg.items()})
     simp_g = Simplifier(projs["main"], 1.0)
+    # 지역 사이 경계(해안선 제외): 단순화된 화면 고리에서 서로 다른 두 지역이 함께 쓰는 변
+    def q(p):
+        return (rnd(p[0], DISPLAY_DECIMALS), rnd(p[1], DISPLAY_DECIMALS))
+    seg_owner = defaultdict(set)
+    for ins_id, items in ring_insets.items():
+        for rc, r in items:
+            n = len(r)
+            for i in range(n):
+                a, b = q(r[i]), q(r[(i + 1) % n])
+                if a != b:
+                    seg_owner[ekey(a, b)].add(rc)
+    inner = [e for e, owners in seg_owner.items() if len(owners) >= 2]
+    adj = defaultdict(list)
+    for e in inner:
+        adj[e[0]].append(e)
+        adj[e[1]].append(e)
+    used = set()
+    lines = []
+    starts = sorted(v for v, es in adj.items() if len(es) != 2) + sorted(adj)
+    for v0 in starts:
+        for e0 in sorted(adj[v0]):
+            if e0 in used:
+                continue
+            used.add(e0)
+            line = [v0]
+            cur = e0[1] if e0[0] == v0 else e0[0]
+            line.append(cur)
+            while len(adj[cur]) == 2:
+                nxt = next((e for e in adj[cur] if e not in used), None)
+                if nxt is None:
+                    break
+                used.add(nxt)
+                cur = nxt[1] if nxt[0] == cur else nxt[0]
+                line.append(cur)
+            lines.append(line)
+    borders_d = " ".join("M" + " ".join(f"{p[0]} {p[1]}" if k != 1 else f"L{p[0]} {p[1]}"
+                                       for k, p in enumerate(ln)) for ln in lines).replace(" L", "L")
+    print("지역 경계선", len(lines), "개,", len(inner), "변")
+
     group_out = []
     for gid, gname, _ in GROUPS:
         label = None
@@ -610,6 +649,12 @@ def main():
         for bn, bb in things[i + 1:]:
             if an.split(".")[0] != bn.split(".")[0] and overlaps(ab, bb):
                 problems.append(f"{an} ↔ {bn}")
+    all_pts = [p for items in ring_insets.values() for _, r in items for p in r]
+    for i in insets:
+        lr = label_rect(i["label"], *i["labelPos"], i["labelAnchor"])
+        n = sum(1 for x, y in all_pts if lr[0] <= x <= lr[2] and lr[1] <= y <= lr[3])
+        if n:
+            problems.append(f"{i['id']}.label ↔ 섬 꼭짓점 {n}개")
     mb = content_box("main")
     print(f"본토 범위 x {mb[0]:.0f}~{mb[2]:.0f}, y {mb[1]:.0f}~{mb[3]:.0f} (세로 {mb[3] - mb[1]:.0f})")
     print("제주 추자도 당김:", chuja_pulled)
@@ -630,6 +675,7 @@ def main():
                         "fillRule": "evenOdd", "scale": {k: rnd(v[0] / T["main"][0], 2) for k, v in T.items()},
                         "uiRects": UI_RECTS},
         "viewBox": [VIEW_W, VIEW_H], "groups": group_out, "insets": insets, "regions": regions,
+        "borders": borders_d,
     }
     lookup = {
         "meta": meta | {"crs": "WGS84 lon,lat", "fillRule": "evenOdd",
