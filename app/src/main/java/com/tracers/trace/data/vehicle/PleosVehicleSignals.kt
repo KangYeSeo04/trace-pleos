@@ -22,7 +22,13 @@ import android.content.Context
 import android.os.Handler
 import android.os.Looper
 import android.util.Log
+import android.os.SystemClock
+import com.tracers.trace.domain.SpeedReading
+import kotlinx.coroutines.channels.BufferOverflow
+import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.SharedFlow
+import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 
@@ -44,6 +50,10 @@ class PleosVehicleSignals(context: Context) : VehicleSignals {
 
     // StateFlow 백업 필드
     private val _speedMps = MutableStateFlow<Float?>(null)
+    /** 100ms 간격 기준 약 50초 분량. 받는 쪽이 이만큼 밀리면 가장 오래된 값부터 버린다 */
+    private val _speedReadings = MutableSharedFlow<SpeedReading>(
+        extraBufferCapacity = SPEED_BUFFER, onBufferOverflow = BufferOverflow.DROP_OLDEST,
+    )
     private val _gear = MutableStateFlow<Gear?>(null)
     private val _brakePedal = MutableStateFlow<Boolean?>(null)
     private val _steeringAngle = MutableStateFlow<Float?>(null)
@@ -61,6 +71,7 @@ class PleosVehicleSignals(context: Context) : VehicleSignals {
     private val powerByArea = mutableMapOf<SeatArea, Boolean>()
 
     override val speedMps: StateFlow<Float?> = _speedMps.asStateFlow()
+    override val speedReadings: SharedFlow<SpeedReading> = _speedReadings.asSharedFlow()
     override val gear: StateFlow<Gear?> = _gear.asStateFlow()
     override val brakePedal: StateFlow<Boolean?> = _brakePedal.asStateFlow()
     override val steeringAngle: StateFlow<Float?> = _steeringAngle.asStateFlow()
@@ -82,6 +93,7 @@ class PleosVehicleSignals(context: Context) : VehicleSignals {
                 VehiclePropertyIds.PERF_VEHICLE_SPEED -> {
                     val mps = value.value as? Float ?: return
                     _speedMps.value = mps
+                    _speedReadings.tryEmit(SpeedReading(sensorTimeToEpochMs(value.timestamp), mps))
                     log("속도", "%.2f m/s (%.1f km/h)".format(mps, mps * 3.6f))
                 }
                 VehiclePropertyIds.GEAR_SELECTION -> {
@@ -380,6 +392,20 @@ class PleosVehicleSignals(context: Context) : VehicleSignals {
     companion object {
         private const val TAG = "VehicleSignals"
         private const val HVAC_VALUE_TIMEOUT_MS = 5_000L
+        private const val SPEED_BUFFER = 512
+
+        /**
+         * CarPropertyValue.timestamp(부팅 후 ns)를 epoch ms로. 콜백이 몰려 와도 측정 간격을 지키려고
+         * 받은 시각 대신 측정 시각을 쓴다. 값이 이상하면(0, 미래) 받은 시각
+         */
+        internal fun sensorTimeToEpochMs(
+            timestampNanos: Long,
+            nowEpochMs: Long = System.currentTimeMillis(),
+            nowElapsedNanos: Long = SystemClock.elapsedRealtimeNanos(),
+        ): Long {
+            val ageMs = (nowElapsedNanos - timestampNanos) / 1_000_000
+            return if (timestampNanos <= 0 || ageMs < 0 || ageMs > 60_000) nowEpochMs else nowEpochMs - ageMs
+        }
 
         /** AAOS VehicleGear 값 → 앱 Gear. 수동 단수(1~9단)는 전진이므로 DRIVE로 본다 */
         internal fun mapAaosGear(raw: Int): Gear = when (raw) {

@@ -10,4 +10,12 @@ object DrivingThresholds {
 
     /** 급감속: 차속이 1초에 이만큼 이상 내림 (km/h per 초, 양수로 표기). B-04에서 사용 */
     const val HARD_DECEL_KMH_PER_SEC = 7.5
+
+    // ---------- 차속 잡음 ----------
+
+    /** 이 시간 안에 튀었다 돌아오는 값 하나는 잡음으로 버린다 (ms) */
+    const val SPIKE_WINDOW_MS = 300L
+
+    /** 직전 값과 이만큼 이상 차이 날 때만 튐 후보로 본다 (km/h). 100ms 간격에서 3km/h = 초당 30km/h라 실제 운전으로는 나오지 않음 */
+    const val SPIKE_MIN_JUMP_KMH = 3.0
 }

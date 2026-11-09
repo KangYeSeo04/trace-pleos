@@ -1,5 +1,7 @@
 package com.tracers.trace.data.vehicle
 
+import com.tracers.trace.domain.SpeedReading
+import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.StateFlow
 
 /**
@@ -24,6 +26,12 @@ interface VehicleSignals {
 
     /** 차량 속도 (m/s). km/h로 변환: speedMps * 3.6 */
     val speedMps: StateFlow<Float?>
+
+    /**
+     * 차속 값 하나하나 (측정 시각 포함). [speedMps]는 StateFlow라 늦게 읽으면 중간 값이 빠지므로,
+     * 급가속·급감속처럼 값의 순서가 중요한 판정은 이 흐름을 쓴다. 버퍼가 있어 값을 건너뛰지 않는다
+     */
+    val speedReadings: SharedFlow<SpeedReading>
 
     /** 기어 상태 */
     val gear: StateFlow<Gear?>
