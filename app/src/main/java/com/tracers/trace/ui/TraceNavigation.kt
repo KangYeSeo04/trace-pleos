@@ -170,6 +170,7 @@ fun TraceNavHost(
                 onPrevMonth = maintenanceViewModel::onPrevMonth,
                 onNextMonth = maintenanceViewModel::onNextMonth,
                 onSelectDate = maintenanceViewModel::onSelectDate,
+                onSelectFilter = maintenanceViewModel::onSelectFilter,
                 formActions = remember(maintenanceViewModel) {
                     MaintenanceFormActions(
                         onDateChange = maintenanceViewModel::onDateChange,

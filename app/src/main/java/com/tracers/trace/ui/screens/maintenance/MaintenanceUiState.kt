@@ -1,5 +1,6 @@
 package com.tracers.trace.ui.screens.maintenance
 
+import com.tracers.trace.domain.MaintenanceItemType
 import com.tracers.trace.domain.MaintenanceThresholds
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
@@ -24,7 +25,18 @@ data class MaintenanceUiState(
     val calendar: MaintenanceCalendar? = null,
     /** 기록 추가 양식 (S05, 2회차) */
     val form: MaintenanceRecordForm = MaintenanceRecordForm(),
-)
+) {
+    /** 필터 칩: 기록이 하나라도 있는 점검 항목 이름 (항목 정의 순서). 앞에 "전체"는 화면이 붙인다 */
+    val filterOptions: List<String>
+        get() {
+            val used = records.flatMapTo(mutableSetOf()) { it.itemNames }
+            return MaintenanceItemType.entries.map { it.displayName }.filter { it in used }
+        }
+
+    /** 필터를 적용한 정비 기록 */
+    val filteredRecords: List<MaintenanceRecord>
+        get() = recordFilter?.let { f -> records.filter { f in it.itemNames } } ?: records
+}
 
 /**
  * 방문 감지 카드: "어제 [정비소 이름]에 1시간 12분 머물렀어요".

@@ -138,4 +138,25 @@ class MaintenanceViewModelTest {
         assertEquals("38800", s.form.odometerDigits)
         assertEquals("2026. 11. 9", s.form.dateText)
     }
+
+    @Test
+    fun `기록 필터는 기록이 있는 항목만, 고르면 그 항목 기록만, 다시 누르면 전체`() {
+        val store = FakeStore(38_800.0)
+        store.records.value = listOf(
+            MaintenanceEntry(id = 2, date = today, odometerKm = 38_000, place = "", items = setOf(MaintenanceItemType.TIRE_ROTATION, MaintenanceItemType.BRAKE_FLUID)),
+            MaintenanceEntry(id = 1, date = today.minusDays(30), odometerKm = 37_000, place = "", items = setOf(MaintenanceItemType.WIPER)),
+        )
+        store.emit(today)
+        val vm = MaintenanceViewModel(today = today, snapshots = store.snapshots.filterNotNull())
+        assertEquals(listOf("와이퍼 블레이드", "타이어 위치 교환", "브레이크액"), vm.uiState.value.filterOptions)
+        assertEquals(2, vm.uiState.value.filteredRecords.size)
+
+        vm.onSelectFilter("와이퍼 블레이드")
+        assertEquals(listOf(1L), vm.uiState.value.filteredRecords.map { it.id })
+        vm.onSelectFilter("와이퍼 블레이드")
+        assertEquals(2, vm.uiState.value.filteredRecords.size)
+        vm.onSelectFilter("브레이크액")
+        vm.onSelectFilter(null)
+        assertEquals(null, vm.uiState.value.recordFilter)
+    }
 }

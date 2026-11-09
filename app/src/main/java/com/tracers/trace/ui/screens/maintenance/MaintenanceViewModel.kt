@@ -89,6 +89,13 @@ class MaintenanceViewModel(
         state.copy(calendar = state.calendar?.let { MaintenanceCalendarLogic.move(it, k) })
     }
 
+    // ===== 기록 필터 (S04-5) =====
+
+    /** null = 전체. 같은 항목을 다시 누르면 전체로 */
+    fun onSelectFilter(name: String?) = _uiState.update { s ->
+        s.copy(recordFilter = if (name == null || name == s.recordFilter) null else name)
+    }
+
     // ===== 기록 추가 양식 =====
 
     fun onDateChange(text: String) = updateForm { it.copy(dateText = text) }

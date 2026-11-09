@@ -2,7 +2,10 @@ package com.tracers.trace.ui.screens.maintenance
 
 import androidx.compose.foundation.ScrollState
 import androidx.compose.foundation.background
+import androidx.compose.foundation.horizontalScroll
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -33,6 +36,7 @@ import java.time.YearMonth
  * @param onPrevMonth 달력 이전 달
  * @param onNextMonth 달력 다음 달
  * @param onSelectDate 달력 날짜 고르기
+ * @param onSelectFilter 기록 필터 고르기 (null = 전체)
  * @param formActions 기록 추가 양식 입력
  */
 @Composable
@@ -45,6 +49,7 @@ fun MaintenanceScreen(
     onPrevMonth: () -> Unit = {},
     onNextMonth: () -> Unit = {},
     onSelectDate: (LocalDate) -> Unit = {},
+    onSelectFilter: (String?) -> Unit = {},
     formActions: MaintenanceFormActions = MaintenanceFormActions(),
     scrollState: ScrollState = rememberScrollState(),
 ) {
@@ -91,11 +96,36 @@ fun MaintenanceScreen(
             )
 
             SectionTitle("정비 기록")
-            MaintenanceRecordList(records = uiState.records)
+            if (uiState.records.isNotEmpty()) {
+                RecordFilterRow(
+                    options = uiState.filterOptions,
+                    selected = uiState.recordFilter,
+                    onSelect = onSelectFilter,
+                )
+            }
+            MaintenanceRecordList(records = uiState.filteredRecords)
 
             SectionTitle("기록 추가")
             MaintenanceRecordFormCard(form = uiState.form, actions = formActions)
         }
+    }
+}
+
+/**
+ * 기록 필터 (S04-5): 전체 + 항목별. 디자인에 없어 기록 추가 양식의 항목 칩 모양을 가로 스크롤로 썼다.
+ * 칩 사이 8, 목록과 사이 10
+ */
+@Composable
+private fun RecordFilterRow(options: List<String>, selected: String?, onSelect: (String?) -> Unit) {
+    Row(
+        modifier = Modifier
+            .fillMaxWidth()
+            .horizontalScroll(rememberScrollState())
+            .padding(bottom = 10.dp),
+        horizontalArrangement = Arrangement.spacedBy(8.dp)
+    ) {
+        ItemChip("전체", selected = selected == null, onClick = { onSelect(null) })
+        options.forEach { name -> ItemChip(name, selected = selected == name, onClick = { onSelect(name) }) }
     }
 }
 
