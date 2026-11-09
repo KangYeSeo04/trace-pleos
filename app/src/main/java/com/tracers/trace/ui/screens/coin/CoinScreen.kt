@@ -23,6 +23,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.ScrollState
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
@@ -62,9 +63,9 @@ fun CoinScreen(
     modifier: Modifier = Modifier,
     onClaimCoins: () -> Unit = {},
     onOpenShop: () -> Unit = {},
+    scrollState: ScrollState = rememberScrollState(),
 ) {
     val colors = TraceTheme.colors
-    val scrollState = rememberScrollState()
     val density = LocalDensity.current
     // 히어로가 스크롤로 화면 밖에 나가면 애니메이션을 멈춘다
     val heroVisible by remember(density) {
@@ -186,7 +187,7 @@ private fun CoinHero(
                 )
                 Text(
                     text = formatCoins(uiState.balance),
-                    style = type.number(44f).copy(lineHeight = 44.sp),
+                    style = type.numberTight(44f),
                     color = colors.heroText
                 )
                 Text(

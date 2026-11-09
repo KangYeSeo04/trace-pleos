@@ -65,7 +65,7 @@ internal fun SafetyScoreCard(chart: SafetyScoreChart?, modifier: Modifier = Modi
             Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
                 Text(
                     text = formatScore(chart.currentScore),
-                    style = type.number(40f),
+                    style = type.numberTight(40f),
                     color = colors.t1,
                     modifier = Modifier.alignByBaseline()
                 )
