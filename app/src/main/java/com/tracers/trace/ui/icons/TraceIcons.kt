@@ -424,4 +424,87 @@ object TraceIcons {
             }
         }.build()
     }
+
+    /** 도움말 아이콘 (원 + 물음표). CoinDark.dc.html "적립 기준 보기" */
+    val Help: ImageVector by lazy {
+        ImageVector.Builder(
+            name = "Help",
+            defaultWidth = 24.dp,
+            defaultHeight = 24.dp,
+            viewportWidth = 24f,
+            viewportHeight = 24f
+        ).apply {
+            path(
+                fill = null,
+                stroke = SolidColor(Color.Black),
+                strokeLineWidth = 2f,
+                strokeLineCap = StrokeCap.Round,
+                strokeLineJoin = StrokeJoin.Round
+            ) {
+                // circle cx=12 cy=12 r=9
+                moveTo(21f, 12f)
+                arcTo(9f, 9f, 0f, true, true, 3f, 12f)
+                arcTo(9f, 9f, 0f, true, true, 21f, 12f)
+                // M9.6 9.3a2.5 2.5 0 014.8.9c0 1.7-2.4 2.2-2.4 3.6
+                moveTo(9.6f, 9.3f)
+                arcToRelative(2.5f, 2.5f, 0f, false, true, 4.8f, 0.9f)
+                curveToRelative(0f, 1.7f, -2.4f, 2.2f, -2.4f, 3.6f)
+                // M12 17h.01
+                moveTo(12f, 17f)
+                horizontalLineToRelative(0.01f)
+            }
+        }.build()
+    }
+
+    /** 네 갈래 별 (채움). CoinDark 1km 칸 */
+    val Star4: ImageVector by lazy {
+        ImageVector.Builder(
+            name = "Star4",
+            defaultWidth = 24.dp,
+            defaultHeight = 24.dp,
+            viewportWidth = 24f,
+            viewportHeight = 24f
+        ).apply {
+            path(fill = SolidColor(Color.Black), stroke = null) {
+                // M12 3l2.4 6.6L21 12l-6.6 2.4L12 21l-2.4-6.6L3 12l6.6-2.4z
+                moveTo(12f, 3f)
+                lineToRelative(2.4f, 6.6f)
+                lineTo(21f, 12f)
+                lineToRelative(-6.6f, 2.4f)
+                lineTo(12f, 21f)
+                lineToRelative(-2.4f, -6.6f)
+                lineTo(3f, 12f)
+                lineToRelative(6.6f, -2.4f)
+                close()
+            }
+        }.build()
+    }
+
+    /** 상점 아이콘 (민트 비행운 + 흰 기체). CoinDark 상점 줄. 색이 박혀 있어 tint 없이 쓴다 */
+    val ShopTrail: ImageVector by lazy {
+        ImageVector.Builder(
+            name = "ShopTrail",
+            defaultWidth = 20.dp,
+            defaultHeight = 20.dp,
+            viewportWidth = 20f,
+            viewportHeight = 20f
+        ).apply {
+            path(
+                fill = null,
+                stroke = SolidColor(Color(0xFF96E1CD)),
+                strokeLineWidth = 1.8f,
+                strokeLineCap = StrokeCap.Round
+            ) {
+                // M3 16 C 8 15, 11 10, 15.5 5
+                moveTo(3f, 16f)
+                curveTo(8f, 15f, 11f, 10f, 15.5f, 5f)
+            }
+            path(fill = SolidColor(Color.White), stroke = null) {
+                // circle cx=15.8 cy=4.7 r=1.8
+                moveTo(17.6f, 4.7f)
+                arcTo(1.8f, 1.8f, 0f, true, true, 14f, 4.7f)
+                arcTo(1.8f, 1.8f, 0f, true, true, 17.6f, 4.7f)
+            }
+        }.build()
+    }
 }

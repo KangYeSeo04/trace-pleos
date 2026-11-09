@@ -33,6 +33,8 @@ import androidx.navigation.compose.rememberNavController
 import com.tracers.trace.data.uxrestrictions.CarUxRestrictionsMonitor
 import com.tracers.trace.domain.DriveState
 import com.tracers.trace.ui.icons.TraceIcons
+import com.tracers.trace.ui.screens.coin.CoinScreen
+import com.tracers.trace.ui.screens.coin.CoinViewModel
 import com.tracers.trace.ui.screens.efficiency.EfficiencyScreen
 import com.tracers.trace.ui.screens.efficiency.EfficiencyViewModel
 import com.tracers.trace.ui.screens.home.HomeScreen
@@ -141,6 +143,17 @@ fun TraceNavHost(
             PlaceholderScreen(onBack = { navController.popBackStack() })
         }
         composable(TraceDestinations.COIN) {
+            val coinViewModel: CoinViewModel = viewModel()
+            val coinUiState by coinViewModel.uiState.collectAsState()
+            CoinScreen(
+                uiState = coinUiState,
+                onNavigateBack = { navController.popBackStack() },
+                onClaimCoins = coinViewModel::onClaimCoins,
+                onOpenShop = { navController.navigate(TraceDestinations.SHOP) }
+            )
+        }
+        composable(TraceDestinations.SHOP) {
+            // TODO(S07): 상점·꾸미기 화면
             PlaceholderScreen(onBack = { navController.popBackStack() })
         }
         composable(TraceDestinations.REGION) {

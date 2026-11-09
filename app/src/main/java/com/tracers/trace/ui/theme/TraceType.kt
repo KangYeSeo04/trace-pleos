@@ -6,6 +6,7 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.LineHeightStyle
 import androidx.compose.ui.unit.sp
 import com.tracers.trace.R
 
@@ -68,6 +69,13 @@ data class TraceType(
         letterSpacing = (sizeSp * numberLetterSpacing).sp,
         fontFeatureSettings = "tnum",
     )
+
+    /** 큰 숫자용: CSS line-height: 1 (글자 위아래 여백을 잘라 크기와 같은 높이) */
+    fun numberTight(sizeSp: Float, weight: FontWeight = FontWeight.SemiBold): TextStyle =
+        number(sizeSp, weight).copy(
+            lineHeight = sizeSp.sp,
+            lineHeightStyle = LineHeightStyle(LineHeightStyle.Alignment.Center, LineHeightStyle.Trim.Both),
+        )
 }
 
 val LocalTraceType = staticCompositionLocalOf { TraceType() }

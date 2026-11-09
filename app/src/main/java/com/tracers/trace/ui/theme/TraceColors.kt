@@ -34,10 +34,38 @@ data class TraceColors(
     val goodSoft: Color = Color(0x2438C08A), // rgba(56,192,138,0.14)
     /** 주의 */
     val caution: Color = Color(0xFFF0A33C),
+    /** 주의 반투명 (칩 배경). goodSoft와 같은 0.14 비율 */
+    val cautionSoft: Color = Color(0x24F0A33C), // rgba(240,163,60,0.14)
     /** 경고 */
     val warn: Color = Color(0xFFEF7A70),
     /** 코인·별 */
     val gold: Color = Color(0xFFE9B949),
+    /** 깨끗한 km 칸 바탕 (CoinDark cellOn rgba(233,185,73,0.14)) */
+    val goldSoft: Color = Color(0x24E9B949),
+    /** 위험 km 칸 바탕 (CoinDark cellOff) */
+    val cellOff: Color = Color(0xFF2A2E34),
+    /** 위험 km 흐린 별 (CoinDark dim) */
+    val dim: Color = Color(0xFF555B63),
+    /** 히어로 사진이 뜨기 전 바탕 (CoinDark heroBg) */
+    val heroBg: Color = Color(0xFF050608),
+    /** 밤하늘 비행운 (CoinDark 캔버스 tc '222,230,236') */
+    val heroTrail: Color = Color(0xFFDEE6EC),
+    /** 로고·상점 아이콘 바탕 그라데이션 위 (linear-gradient #1B2533 → #070A0F) */
+    val logoBgTop: Color = Color(0xFF1B2533),
+    /** 로고·상점 아이콘 바탕 그라데이션 아래 */
+    val logoBgBottom: Color = Color(0xFF070A0F),
+    /** 히어로 위 글자 (사진 위라 테마와 무관하게 흰색) */
+    val heroText: Color = Color(0xFFFFFFFF),
+    /** 히어로 하단 어둡게 (linear-gradient 끝 rgba(0,0,0,0.6)) */
+    val heroScrim: Color = Color(0x99000000),
+    /** 히어로 위 흰 버튼 바탕 */
+    val heroButton: Color = Color(0xFFFFFFFF),
+    /** 히어로 위 흰 버튼 글자 */
+    val heroButtonText: Color = Color(0xFF111418),
+    /** 안내 창 뒤 어둡게 (rgba(0,0,0,0.55)) */
+    val dialogScrim: Color = Color(0x8C000000),
+    /** accent 바탕 위 글자 */
+    val onAccent: Color = Color(0xFFFFFFFF),
 )
 
 val LocalTraceColors = staticCompositionLocalOf { TraceColors() }
