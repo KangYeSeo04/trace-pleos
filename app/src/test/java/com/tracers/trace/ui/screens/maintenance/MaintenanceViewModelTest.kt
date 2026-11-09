@@ -159,4 +159,22 @@ class MaintenanceViewModelTest {
         vm.onSelectFilter(null)
         assertEquals(null, vm.uiState.value.recordFilter)
     }
+
+    @Test
+    fun `주행거리 0도 입력·저장, 지금 주행거리가 0이면 0으로 미리 채운다`() {
+        assertEquals("0", MaintenanceViewModel.digitsOnly("000", 9))
+        assertEquals("", MaintenanceViewModel.digitsOnly("km", 9))
+
+        val store = FakeStore(0.0).apply { emit(today) }
+        val vm = MaintenanceViewModel(
+            today = today,
+            snapshots = store.snapshots.filterNotNull(),
+            saveRecord = { store.save(it); store.emit(today) },
+        )
+        assertEquals("0", vm.uiState.value.form.odometerDigits)
+        vm.onToggleItem("와이퍼")
+        assertTrue(vm.uiState.value.form.canSave)
+        vm.onSave()
+        assertEquals(0, store.saved.single().odometerKm)
+    }
 }

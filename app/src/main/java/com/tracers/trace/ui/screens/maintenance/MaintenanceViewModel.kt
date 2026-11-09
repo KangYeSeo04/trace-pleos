@@ -140,7 +140,8 @@ class MaintenanceViewModel(
         itemOptions = base.itemOptions,
     )
 
-    private fun odometerDigits(): String = currentOdometerKm?.takeIf { it > 0 }?.toString() ?: ""
+    /** 지금 총 주행거리로 미리 채운다 (0이어도 채움). 모르면 빈칸 */
+    private fun odometerDigits(): String = currentOdometerKm?.takeIf { it >= 0 }?.toString() ?: ""
 
     private fun updateForm(block: (MaintenanceRecordForm) -> MaintenanceRecordForm) =
         _uiState.update { it.copy(form = block(it.form)) }
@@ -151,9 +152,12 @@ class MaintenanceViewModel(
         /** 주행거리·비용 최대 자릿수 (999,999,999) */
         const val MAX_DIGITS = 9
 
-        /** 숫자만 남기고 앞 0은 지운다 */
-        internal fun digitsOnly(text: String, max: Int): String =
-            text.filter { it.isDigit() }.trimStart('0').take(max)
+        /** 숫자만 남기고 앞 0은 지운다. 0만 있으면 "0" (0 km 입력) */
+        internal fun digitsOnly(text: String, max: Int): String {
+            val digits = text.filter { it.isDigit() }
+            if (digits.isEmpty()) return ""
+            return digits.trimStart('0').ifEmpty { "0" }.take(max)
+        }
 
         /** 양식 → 저장할 기록. 저장할 수 없으면 null */
         internal fun toEntry(form: MaintenanceRecordForm, method: MaintenanceInputMethod): MaintenanceEntry? {
