@@ -4,6 +4,8 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
+import androidx.activity.result.contract.ActivityResultContracts
+import com.tracers.trace.data.permission.RuntimePermissions
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.Surface
 import androidx.compose.ui.Modifier
@@ -15,9 +17,23 @@ import com.tracers.trace.ui.theme.TraceTheme
  */
 class MainActivity : ComponentActivity() {
 
+    private val app get() = application as TraceApplication
+
+    /** 런타임 권한을 한 번에 요청. 결과와 상관없이 다시 확인해 수집 시작 여부를 정한다 */
+    private val permissionLauncher =
+        registerForActivityResult(ActivityResultContracts.RequestMultiplePermissions()) {
+            app.refreshPermissions()
+        }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
+
+        // 앱 시작 시 한 번 (화면 회전 등 재생성 때는 다시 묻지 않는다)
+        if (savedInstanceState == null) {
+            val missing = RuntimePermissions.missing(this)
+            if (missing.isNotEmpty()) permissionLauncher.launch(missing.toTypedArray())
+        }
 
         setContent {
             TraceTheme {
@@ -26,5 +42,11 @@ class MainActivity : ComponentActivity() {
                 }
             }
         }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        // 설정 앱에서 권한을 허용하고 돌아온 경우
+        app.refreshPermissions()
     }
 }

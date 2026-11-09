@@ -1,0 +1,35 @@
+{
+  "name": "출퇴근 3회 + 충전 1회 (거리·소비·충전 60배속, 약 2분 30초). 페달 값을 주면 콘솔이 차속을 따로 올리므로 차속만 지정",
+  "auto": { "km_per_kwh": 6.0, "hvac_kw": 1.5, "speedup": 60, "tick_s": 1.0 },
+  "steps": [
+    { "t": 0,   "note": "출발 전", "gear": "Park", "speed_kph": 0, "accelerator": 0, "brake": 0, "battery_kwh": 46.4, "soc": 60, "range_m": 278000, "hvac": { "power": false }, "charge_port": false, "charge_kw": 0 },
+
+    { "t": 4,   "note": "출근 · D", "gear": "Drive" },
+    { "t": 6,   "note": "급출발 0→30 (급가속)", "speed_kph": 30 },
+    { "t": 9,   "speed_kph": 50 },
+    { "t": 22,  "note": "감속 · 회생", "speed_kph": 10, "regen_kwh": 0.15 },
+    { "t": 23,  "note": "신호 대기 (D·0)", "speed_kph": 0 },
+    { "t": 27,  "speed_kph": 40 },
+    { "t": 38,  "speed_kph": 15, "regen_kwh": 0.1 },
+    { "t": 40,  "speed_kph": 0 },
+    { "t": 42,  "note": "회사 도착 P", "gear": "Park" },
+
+    { "t": 52,  "note": "퇴근 · 공조 켬", "hvac": { "power": true, "ac": true, "driver_temp": 22, "fan_speed": 4 } },
+    { "t": 54,  "gear": "Drive" },
+    { "t": 56,  "note": "급출발 0→25 (급가속)", "speed_kph": 25 },
+    { "t": 59,  "speed_kph": 55 },
+    { "t": 76,  "note": "감속 · 회생", "speed_kph": 20, "regen_kwh": 0.2 },
+    { "t": 78,  "speed_kph": 0 },
+    { "t": 80,  "note": "집 도착 P, 공조 끔", "gear": "Park", "hvac": { "power": false } },
+
+    { "t": 86,  "note": "충전구 열고 50kW 충전", "charge_port": true, "charge_kw": 50 },
+    { "t": 106, "note": "충전 끝", "charge_kw": 0 },
+    { "t": 108, "note": "충전구 닫음", "charge_port": false },
+
+    { "t": 114, "note": "저녁 외출 · D", "gear": "Drive" },
+    { "t": 116, "speed_kph": 35 },
+    { "t": 130, "speed_kph": 0 },
+    { "t": 132, "note": "도착 P", "gear": "Park" },
+    { "t": 140, "note": "끝" }
+  ]
+}

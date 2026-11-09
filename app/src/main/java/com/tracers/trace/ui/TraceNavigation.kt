@@ -1,5 +1,6 @@
 package com.tracers.trace.ui
 
+import com.tracers.trace.TraceApplication
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
@@ -20,17 +21,20 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.lifecycle.viewmodel.initializer
+import androidx.lifecycle.viewmodel.viewModelFactory
 import androidx.navigation.NavHostController
+import kotlinx.coroutines.flow.map
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.tracers.trace.data.uxrestrictions.CarUxRestrictionsMonitor
-import com.tracers.trace.data.vehicle.PleosVehicleSignals
 import com.tracers.trace.domain.DriveState
 import com.tracers.trace.ui.icons.TraceIcons
 import com.tracers.trace.ui.screens.efficiency.EfficiencyScreen
-import com.tracers.trace.ui.screens.efficiency.EfficiencyUiState
+import com.tracers.trace.ui.screens.efficiency.EfficiencyViewModel
 import com.tracers.trace.ui.screens.home.HomeScreen
 import com.tracers.trace.ui.screens.home.HomeViewModel
 import com.tracers.trace.ui.screens.spaceflight.SpaceFlightScreen
@@ -65,10 +69,16 @@ fun TraceNavHost(
 ) {
     val context = LocalContext.current
 
+    // 차량 신호·주행 상태 판정·기록은 Application의 단일 인스턴스를 쓴다
+    val app = context.applicationContext as TraceApplication
+
     // HomeViewModel 생성 (Activity 생명주기 동안 유지)
     val homeViewModel = remember {
-        val vehicleSignals = PleosVehicleSignals(context)
-        HomeViewModel(vehicleSignals)
+        HomeViewModel(
+            driveState = app.recordCollector.driveState,
+            efficiency = app.efficiencySource.observe().map { it.summary },
+            permissionsGranted = app.permissionsGranted,
+        )
     }
 
     // CarUxRestrictionsMonitor 생성 (Activity 생명주기 동안 유지)
@@ -79,7 +89,7 @@ fun TraceNavHost(
     // A-02: 주행 시작 시 자동 복귀
     val navBackStackEntry by navController.currentBackStackEntryAsState()
     val currentRoute = navBackStackEntry?.destination?.route
-    val driveState by homeViewModel.driveState.collectAsState()
+    val driveState by app.recordCollector.driveState.collectAsState()
     val requiresDistractionOptimization by uxRestrictionsMonitor.requiresDistractionOptimization.collectAsState()
 
     // 시스템 제한의 이전 값 추적 (false→true 전환 감지용)
@@ -87,7 +97,7 @@ fun TraceNavHost(
 
     LaunchedEffect(driveState, requiresDistractionOptimization, currentRoute) {
         // 자동 복귀 조건:
-        // 1. DriveStateDetector가 DRIVING 상태이거나
+        // 1. DriveRecordCollector의 주행 상태가 DRIVING이거나
         // 2. 시스템 제한이 false → true로 바뀌는 순간 (이미 true인 상태로는 복귀하지 않음)
         val isDriving = driveState == DriveState.DRIVING
         val uxRestrictionJustActivated = !previousUxRestriction && requiresDistractionOptimization
@@ -117,9 +127,13 @@ fun TraceNavHost(
             )
         }
         composable(TraceDestinations.EFFICIENCY) {
-            // TODO(feat): ViewModel 연결
+            // 이 화면의 back stack entry에 묶인다: 나가면(뒤로·A-02 복귀) 정리되어 계산도 멈춘다
+            val efficiencyViewModel: EfficiencyViewModel = viewModel(
+                factory = viewModelFactory { initializer { EfficiencyViewModel(app.efficiencySource) } }
+            )
+            val efficiencyUiState by efficiencyViewModel.uiState.collectAsState()
             EfficiencyScreen(
-                uiState = EfficiencyUiState(),
+                uiState = efficiencyUiState,
                 onNavigateBack = { navController.popBackStack() }
             )
         }

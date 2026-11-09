@@ -7,7 +7,7 @@ import kotlinx.coroutines.flow.StateFlow
  *
  * 지원 범위 (docs/PLEOS_API_확인현황.md 기준):
  * - 속도: AAOS PERF_VEHICLE_SPEED (100ms 간격)
- * - 기어: Vehicle SDK Gear (P/R/N/D)
+ * - 기어: AAOS GEAR_SELECTION (P/R/N/D). Vehicle SDK Gear는 deprecated라 쓰지 않음
  * - 브레이크: Vehicle SDK Brake (Boolean on/off만, % 아님)
  * - 조향각: Vehicle SDK SteeringWheel (부호 보정 필요: 콘솔 +90 → SDK -90)
  * - 방향지시등: Vehicle SDK TurnSignal (OFF/LEFT/RIGHT/HAZARD)
@@ -16,6 +16,9 @@ import kotlinx.coroutines.flow.StateFlow
  * - EV 주행가능거리(m): Vehicle SDK Odometer.getRangeRemainingDistance
  * - 충전구 열림: Vehicle SDK EvBattery.isEvChargePortOpen
  * - 총 주행거리(km): Vehicle SDK Odometer.getCurrentDistanceDriven
+ * - EV 배터리 용량(Wh): Vehicle SDK EvBattery.getEvBatteryCapacity (시작 시 1회)
+ * - 공조 전원: Vehicle SDK HVAC.getHvacPowerState (지원 영역 중 하나라도 켜지면 true).
+ *   AC 상태(getHvacAcState)는 전원이 꺼져도 true로 와서 쓰지 않는다 (2026.11.09 실측)
  */
 interface VehicleSignals {
 
@@ -51,6 +54,15 @@ interface VehicleSignals {
 
     /** 총 주행 거리 (km). 이번 주행 거리는 앱에서 시작 시점과의 차이로 계산 */
     val odometerKm: StateFlow<Float?>
+
+    /** EV 배터리 전체 용량 (Wh). 잔량 kWh 대체 계산(용량 × %)에도 쓴다 */
+    val batteryCapacityWh: StateFlow<Float?>
+
+    /** 공조 전원 켜짐 여부 */
+    val hvacOn: StateFlow<Boolean?>
+
+    /** 공조 전원 신호 지원 여부. null = 확인 중, false = 미지원(공조 비중 "—") */
+    val hvacSupported: StateFlow<Boolean?>
 
     /** SDK 연결 시작 */
     fun start()

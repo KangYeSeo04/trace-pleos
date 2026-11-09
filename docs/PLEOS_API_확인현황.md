@@ -18,7 +18,8 @@
 | 남은 주행가능거리 | Vehicle SDK `Odometer.getRangeRemainingDistance` 또는 AAOS `RANGE_REMAINING` | m 단위 |
 | 충전구 열림 | Vehicle SDK `EvBattery.isEvChargePortOpen` | |
 | 총 주행거리 | Vehicle SDK `Odometer.getCurrentDistanceDriven` | km 단위 (AAOS PERF_ODOMETER는 권한 오류) |
-| 에어컨 | Vehicle SDK `HVAC.getHvacAcState` | |
+| 에어컨 | Vehicle SDK `HVAC.getHvacAcState` | **공조 전원이 꺼져도 true로 옴** → 공조 켜짐 판단에는 쓰지 않음 |
+| 공조 전원 | Vehicle SDK `HVAC.getHvacPowerState` / `registerHvacPowerState` | `checkHvacPowerCapabilities`로 영역 확인 후 구독. 공조 비중(C-01)에 사용 (2026.11.09 실측) |
 | 와이퍼 | Vehicle SDK `Wiper.getCurrentWiperState` | ON/OFF (단계는 안 나옴) |
 | 서드파티 앱은 AAOS 차량 속성을 읽기만 가능(쓰기 불가) | | |
 
@@ -39,6 +40,38 @@
 - scale은 실행 시 칸 크기로 동적 계산: `min(칸가로/600, 칸세로/800)`
 - TraceTheme에서 LocalDensity를 `density × scale`로 덮어써서, 화면 코드는 디자인 px 숫자를 dp·sp로 그대로 사용
 - 남는 세로 공간(현재 약 90dp)은 홈의 비행 무대가 가져감
+
+### 공조 전원 (2026.11.09 측정)
+
+| 항목 | 결과 |
+|------|------|
+| `checkHvacPowerCapabilities` | accessType `READ_WRITE`, 영역 1개 |
+| `getHvacPowerState` 초기값 | 콘솔 power=false → `false` |
+| 콘솔 전원 끔→켬→끔→켬→끔 (3초 간격) | 콜백이 매번 바뀐 값으로 옴 (`true`/`false`, 지연 수십 ms) |
+| `getHvacAcState` | 콘솔 power=false, ac=true 상태에서 `true` → 전원과 무관하게 AC 스위치 값만 옴 |
+
+- 앱은 공조 전원 값을 쓴다. capability가 NONE이거나 영역이 없거나, 구독 후 5초 안에 값이 안 오면 미지원으로 보고 공조 비중을 "—"로 표시한다.
+- 실차 확인 필요: 전원 값이 히터만 켠 경우에도 true인지
+
+### 런타임 권한 (2026.11.09 측정)
+
+- manifest 권한 중 런타임(dangerous) 권한은 `android.car.permission.CAR_SPEED` 하나. 나머지(`CAR_POWERTRAIN`, `pleos.car.permission.*`)는 normal이라 설치 시 자동 허용
+- `CAR_SPEED`가 없으면 `PERF_VEHICLE_SPEED` 구독이 `registerCallback=false`(propertyId is not in carPropertyConfig list)로 실패 → 앱 시작 시 요청
+
+### 알려진 문제: 권한 허용 직후 같은 실행에서 주행 시 화면 차단 (2026.11.09)
+
+- 현상: 앱 첫 실행에서 `CAR_SPEED` 권한 창이 뜨고 허용한 뒤, **앱을 다시 켜지 않고** 주행(D·30)이 되면 TRACE 칸 전체가 시스템의 "주행 중에는 사용할 수 없습니다" 화면으로 바뀜.
+  - 앱을 껐다 켜면 정상(주행 모드 표시). 권한이 이미 허용된 상태로 시작한 실행도 정상. 권한 요청 코드가 없던 빌드도 정상.
+- 원인 추정: 권한 창(PermissionController의 GrantPermissionsActivity)은 DO(distractionOptimized)가 아닌 화면이다. 그 창이 한 번 TRACE 태스크에 떴던 것을 홈(HOME_SCREEN의 TaskView)이 기억해, 창이 닫힌 뒤에도 그 태스크를 주행 중 차단 대상으로 본다. 허용 직후 태스크에는 MainActivity 하나만 남아 있음(`dumpsys activity` sz=1)에도 차단이 유지됨.
+- 시도: 권한 결과 콜백에서 `activity.recreate()` → 효과 없음 (같은 실행에서 여전히 차단). 코드는 되돌림.
+- 재현:
+  1. `adb shell pm revoke --user 10 com.tracers.trace android.car.permission.CAR_SPEED`
+  2. `adb shell pm clear-permission-flags --user 10 com.tracers.trace android.car.permission.CAR_SPEED user-set user-fixed`
+  3. 앱 실행 → 권한 창에서 "허용"
+  4. 버추얼 콘솔에서 기어 D, 속도 30 → 약 2초 뒤 차단 화면
+- 대응:
+  - 시연: 시연 전에 앱을 한 번 실행해 권한을 미리 허용하고 앱을 다시 켜 둔다.
+  - 실차: 첫 실행(권한 요청)은 보통 주차 중이고, 다음 실행부터는 권한 창이 뜨지 않아 영향이 없다.
 
 ### 에뮬레이터 미지원 (차량 설정이 EV라서)
 

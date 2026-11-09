@@ -18,7 +18,9 @@ data class EfficiencyUiState(
 data class EfficiencyAverage(
     val avgEfficiency: Float,          // 예: 5.8
     val todayComparison: TodayComparison?,
-    val summary: EfficiencySummary
+    val summary: EfficiencySummary,
+    /** 앱이 잔량 감소량 ÷ 거리로 계산한 값이면 true → "추정" 표시 */
+    val isEstimated: Boolean = false
 )
 
 /**
@@ -35,7 +37,7 @@ data class TodayComparison(
  */
 data class EfficiencySummary(
     val regenBraking: Float,  // 회생제동 kWh
-    val hvac: Int,            // 공조 %
+    val hvac: Int?,           // 공조 %. null이면 "—" (공조 신호 미지원)
     val hardAccel: Int,       // 급가속 횟수
     val charges: Int          // 충전 횟수
 )

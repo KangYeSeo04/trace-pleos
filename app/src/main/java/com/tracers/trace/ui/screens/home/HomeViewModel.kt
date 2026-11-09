@@ -2,14 +2,14 @@ package com.tracers.trace.ui.screens.home
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.tracers.trace.data.vehicle.Gear
-import com.tracers.trace.data.vehicle.VehicleSignals
 import com.tracers.trace.domain.DriveState
-import com.tracers.trace.domain.DriveStateDetector
+import com.tracers.trace.domain.EfficiencySummary
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.launch
 
 /**
@@ -19,47 +19,39 @@ import kotlinx.coroutines.launch
  * B-05: 주행 모드에서는 큰 숫자 + 상태 1줄만 표시
  */
 class HomeViewModel(
-    private val vehicleSignals: VehicleSignals
+    /** A-01 주행 상태. 앱 전체에서 DriveRecordCollector 하나가 판정한 값을 받는다 */
+    val driveState: StateFlow<DriveState>,
+    /** C-01 전비 계산 결과 (Room 기록 기반). 기록이 없으면 summary.averageKmPerKwh == null */
+    efficiency: Flow<EfficiencySummary>,
+    /** 런타임 권한이 모두 허용됐는지. false면 무대에 "차량 정보 권한이 필요해요" */
+    permissionsGranted: StateFlow<Boolean>,
 ) : ViewModel() {
-
-    private val driveStateDetector = DriveStateDetector(viewModelScope)
 
     private val _uiState = MutableStateFlow(HomeUiState())
     val uiState: StateFlow<HomeUiState> = _uiState.asStateFlow()
 
-    /** 현재 주행 상태 (A-02 자동 복귀에서 사용) */
-    val driveState: StateFlow<DriveState> = driveStateDetector.currentState
-
     init {
-        vehicleSignals.start()
-
-        // 기어와 속도를 DriveStateDetector에 전달
-        viewModelScope.launch {
-            combine(
-                vehicleSignals.gear,
-                vehicleSignals.speedMps
-            ) { gear, speedMps ->
-                gear to speedMps
-            }.collect { (gear, speedMps) ->
-                driveStateDetector.update(gear, speedMps)
-            }
-        }
-
         // DriveState → HomeUiState.isDriving
         viewModelScope.launch {
-            driveStateDetector.currentState.collect { driveState ->
-                updateDriveMode(driveState)
-            }
+            combine(
+                driveState,
+                efficiency.onStart<EfficiencySummary?> { emit(null) },
+                permissionsGranted,
+            ) { st, eff, granted -> Triple(st, eff, granted) }
+                .collect { (st, eff, granted) -> updateDriveMode(st, eff, granted) }
         }
     }
 
-    private fun updateDriveMode(driveState: DriveState) {
+    private fun updateDriveMode(driveState: DriveState, efficiency: EfficiencySummary?, permissionsGranted: Boolean) {
         val isDriving = driveState == DriveState.DRIVING
         val caption: String
         val captionSub: String
 
         // TODO(B-03): 기체 상태 6종에 따라 캡션 변경
-        if (isDriving) {
+        if (!permissionsGranted) {
+            caption = "차량 정보 권한이 필요해요"
+            captionSub = ""
+        } else if (isDriving) {
             caption = "비행 중"
             captionSub = "데이터를 모으는 중이에요"
         } else {
@@ -72,13 +64,7 @@ class HomeViewModel(
             isDriving = isDriving,
             caption = caption,
             captionSub = captionSub,
-            efficiency = TileState.Efficiency(
-                value = "–",
-                unit = "km/kWh",
-                status = "데이터를 모으는 중이에요",
-                statusLevel = StatusLevel.Normal,
-                barPercent = 0f
-            ),
+            efficiency = EfficiencyTileMapper.map(efficiency, isDriving),
             maintenance = TileState.Maintenance(
                 value = "–",
                 unit = "일",
@@ -106,8 +92,4 @@ class HomeViewModel(
         )
     }
 
-    override fun onCleared() {
-        super.onCleared()
-        vehicleSignals.stop()
-    }
 }
