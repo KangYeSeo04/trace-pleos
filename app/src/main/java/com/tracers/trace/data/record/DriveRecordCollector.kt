@@ -12,6 +12,7 @@ import com.tracers.trace.domain.VehicleSample
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.channels.Channel
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.launch
@@ -43,7 +44,6 @@ class DriveRecordCollector(
     /** 두 수집 코루틴이 같은 계산 객체를 건드리므로 순서를 묶는다 */
     private val lock = Mutex()
     private var job: Job? = null
-    private var lastSnapshotMs = 0L
 
     /** DB 쓰기를 들어온 순서대로 하나씩 (스냅샷 저장이 주행 마무리 뒤에 끼어들지 않게) */
     private val writes = Channel<suspend () -> Unit>(Channel.UNLIMITED)
@@ -90,14 +90,22 @@ class DriveRecordCollector(
                                 repository.finishTrip(finished)
                                 Log.i(TAG, "주행 저장: ${finished?.distanceKm ?: "짧아서 버림"}")
                             }
-                            !wasRecording && tripRecorder.isRecording -> saveSnapshot(now)
+                            !wasRecording && tripRecorder.isRecording -> saveSnapshot()
                         }
                         chargeDetector.onDriveState(st, now, capacity)?.let { saveCharge(it) }
                     }
                 }
             }
 
-            // 5) 차량 값 → 누적
+            // 5) 주행 중 진행 요약을 타이머로 저장 (차량 신호는 바뀔 때만 오기도 해서 샘플에 묶지 않는다)
+            launch {
+                while (true) {
+                    delay(SNAPSHOT_INTERVAL_MS)
+                    lock.withLock { if (tripRecorder.isRecording) saveSnapshot() }
+                }
+            }
+
+            // 6) 차량 값 → 누적
             launch {
                 val battery = combine(
                     signals.batteryLevelWh, signals.batteryPercent, signals.batteryCapacityWh,
@@ -118,18 +126,14 @@ class DriveRecordCollector(
                     lock.withLock {
                         tripRecorder.onSample(sample)
                         chargeDetector.onSample(sample, capacityKwh)?.let { saveCharge(it) }
-                        if (tripRecorder.isRecording && sample.timeMs - lastSnapshotMs >= SNAPSHOT_INTERVAL_MS) {
-                            saveSnapshot(sample.timeMs)
-                        }
                     }
                 }
             }
         }
     }
 
-    private fun saveSnapshot(now: Long) {
+    private fun saveSnapshot() {
         val snap = tripRecorder.snapshot() ?: return
-        lastSnapshotMs = now
         write { repository.saveInProgress(snap) }
     }
 
