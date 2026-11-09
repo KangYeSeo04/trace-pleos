@@ -17,7 +17,7 @@ data class CoinUiState(
     val safetyScore: SafetyScoreChart? = null,
     /** 이번 주행 1km 기록 카드 (2회차) */
     val tripRecord: TripKmRecord? = null,
-    /** 상점 바로가기 줄 (2회차) */
+    /** 꾸미기 진입 카드. null이면 목표 없이 "상점 둘러보기" */
     val shop: ShopTeaser? = null,
     /** 받은 기록 (2회차), 최신이 앞 */
     val history: List<CoinHistoryEntry> = emptyList(),
@@ -64,16 +64,14 @@ data class TripKmRecord(
 }
 
 /**
- * 상점 바로가기 줄 (2회차). "보관함에 새 친구 1개 · 은하수 비행운까지 216코인"
+ * 꾸미기(상점) 진입 카드. 부제는 다음 목표까지 남은 코인 한 줄: "은하수 비행운까지 216코인"
  *
- * @param newInStorage 보관함에 새로 들어온 아이템 수
- * @param nextItemName 다음 목표 아이템 이름. null이면 목표 문구 없음
+ * @param nextItemName 다음 목표 아이템 이름
  * @param coinsToNext 다음 목표까지 남은 코인
  */
 data class ShopTeaser(
-    val newInStorage: Int,
-    val nextItemName: String?,
-    val coinsToNext: Int?,
+    val nextItemName: String,
+    val coinsToNext: Int,
 )
 
 /**

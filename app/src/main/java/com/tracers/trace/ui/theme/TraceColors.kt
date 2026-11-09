@@ -50,6 +50,10 @@ data class TraceColors(
     val heroBg: Color = Color(0xFF050608),
     /** 밤하늘 비행운 (CoinDark 캔버스 tc '222,230,236') */
     val heroTrail: Color = Color(0xFFDEE6EC),
+    /** 로고·상점 아이콘 바탕 그라데이션 위 (linear-gradient #1B2533 → #070A0F) */
+    val logoBgTop: Color = Color(0xFF1B2533),
+    /** 로고·상점 아이콘 바탕 그라데이션 아래 */
+    val logoBgBottom: Color = Color(0xFF070A0F),
     /** 히어로 위 글자 (사진 위라 테마와 무관하게 흰색) */
     val heroText: Color = Color(0xFFFFFFFF),
     /** 히어로 하단 어둡게 (linear-gradient 끝 rgba(0,0,0,0.6)) */

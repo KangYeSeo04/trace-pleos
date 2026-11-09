@@ -169,7 +169,7 @@ object SampleData {
             speeding = 1,
             hardStop = 1,
         ),
-        shop = ShopTeaser(newInStorage = 1, nextItemName = "은하수 비행운", coinsToNext = 216),
+        shop = ShopTeaser(nextItemName = "은하수 비행운", coinsToNext = 216),
         history = listOf(
             CoinHistoryEntry("11월 5일 퇴근", "31 km · 안전점수 85점대", 31),
             CoinHistoryEntry("11월 5일 출근", "29 km · 안전점수 84점대", 29),

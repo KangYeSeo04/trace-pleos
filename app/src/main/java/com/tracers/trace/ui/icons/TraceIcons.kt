@@ -479,4 +479,32 @@ object TraceIcons {
             }
         }.build()
     }
+
+    /** 상점 아이콘 (민트 비행운 + 흰 기체). CoinDark 상점 줄. 색이 박혀 있어 tint 없이 쓴다 */
+    val ShopTrail: ImageVector by lazy {
+        ImageVector.Builder(
+            name = "ShopTrail",
+            defaultWidth = 20.dp,
+            defaultHeight = 20.dp,
+            viewportWidth = 20f,
+            viewportHeight = 20f
+        ).apply {
+            path(
+                fill = null,
+                stroke = SolidColor(Color(0xFF96E1CD)),
+                strokeLineWidth = 1.8f,
+                strokeLineCap = StrokeCap.Round
+            ) {
+                // M3 16 C 8 15, 11 10, 15.5 5
+                moveTo(3f, 16f)
+                curveTo(8f, 15f, 11f, 10f, 15.5f, 5f)
+            }
+            path(fill = SolidColor(Color.White), stroke = null) {
+                // circle cx=15.8 cy=4.7 r=1.8
+                moveTo(17.6f, 4.7f)
+                arcTo(1.8f, 1.8f, 0f, true, true, 14f, 4.7f)
+                arcTo(1.8f, 1.8f, 0f, true, true, 17.6f, 4.7f)
+            }
+        }.build()
+    }
 }

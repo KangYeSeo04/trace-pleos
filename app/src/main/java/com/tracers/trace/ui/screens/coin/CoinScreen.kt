@@ -5,6 +5,10 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.size
+import androidx.compose.material3.Icon
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.material3.Text
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.graphics.Brush
@@ -47,6 +51,7 @@ import com.tracers.trace.ui.theme.TraceTheme
  * @param onNavigateBack 뒤로 → 홈
  * @param onClaimCoins "N코인 받기" 버튼. 적립 처리는 2단계(E-04)
  * @param onOpenHelp 헤더 "적립 기준 보기". 안내 창은 2회차
+ * @param onOpenShop 꾸미기 진입 카드 → 상점(S07)
  */
 @Composable
 fun CoinScreen(
@@ -55,6 +60,7 @@ fun CoinScreen(
     modifier: Modifier = Modifier,
     onClaimCoins: () -> Unit = {},
     onOpenHelp: () -> Unit = {},
+    onOpenShop: () -> Unit = {},
 ) {
     val colors = TraceTheme.colors
     val scrollState = rememberScrollState()
@@ -108,7 +114,7 @@ fun CoinScreen(
             // 이번 주행 1km 기록: SectionTitle("이번 주행 1km 기록") + 카드 (위 26)
             TripKmRecordSection(record = uiState.tripRecord)
             // 상점 바로가기: 72 높이 줄 (위 10)
-            ShopLinkSection(shop = uiState.shop)
+            ShopLinkSection(shop = uiState.shop, onOpenShop = onOpenShop)
             // 받은 기록: SectionTitle("받은 기록") + 목록 (위 26)
             CoinHistorySection(history = uiState.history)
         }
@@ -216,10 +222,51 @@ private fun TripKmRecordSection(record: TripKmRecord?) {
     TripKmRecordCard(record = record)
 }
 
-/** 상점 바로가기 줄 → S07. */
+/**
+ * 꾸미기 진입 카드 → S07. 디자인: 위 10, 높이 72, 모서리 20, 좌우 20, 간격 14, 아이콘 칸 40·모서리 12.
+ */
 @Composable
-private fun ShopLinkSection(shop: ShopTeaser?) {
-    // TODO(2회차): 40×40 아이콘 + "상점" + 보관함·목표 문구 + 화살표, 탭 → 상점
+private fun ShopLinkSection(shop: ShopTeaser?, onOpenShop: () -> Unit) {
+    val colors = TraceTheme.colors
+    val type = TraceTheme.type
+    Spacer(Modifier.height(10.dp))
+    Row(
+        modifier = Modifier
+            .fillMaxWidth()
+            .height(72.dp)
+            .clip(RoundedCornerShape(20.dp))
+            .background(colors.tile)
+            .clickable(role = Role.Button, onClickLabel = "상점 열기", onClick = onOpenShop)
+            .padding(horizontal = 20.dp),
+        verticalAlignment = Alignment.CenterVertically,
+        horizontalArrangement = Arrangement.spacedBy(14.dp)
+    ) {
+        Box(
+            modifier = Modifier
+                .size(40.dp)
+                .clip(RoundedCornerShape(12.dp))
+                .background(Brush.verticalGradient(listOf(colors.logoBgTop, colors.logoBgBottom))),
+            contentAlignment = Alignment.Center
+        ) {
+            Image(imageVector = TraceIcons.ShopTrail, contentDescription = null, modifier = Modifier.size(22.dp))
+        }
+        Column(modifier = Modifier.weight(1f), verticalArrangement = Arrangement.spacedBy(2.dp)) {
+            Text(text = "상점", style = type.body(16f, FontWeight.SemiBold), color = colors.t1)
+            Text(
+                text = shop?.let { "${it.nextItemName}까지 ${formatCoins(it.coinsToNext)}코인" } ?: "꾸미기 아이템 둘러보기",
+                style = type.body(13f),
+                color = colors.t2,
+                maxLines = 1,
+                overflow = TextOverflow.Ellipsis
+            )
+        }
+        Icon(
+            imageVector = TraceIcons.ChevronRight,
+            contentDescription = null,
+            tint = colors.t3,
+            modifier = Modifier.size(18.dp)
+        )
+    }
 }
 
 /** 받은 기록 (E-04). */

@@ -148,8 +148,13 @@ fun TraceNavHost(
             CoinScreen(
                 uiState = coinUiState,
                 onNavigateBack = { navController.popBackStack() },
-                onClaimCoins = coinViewModel::onClaimCoins
+                onClaimCoins = coinViewModel::onClaimCoins,
+                onOpenShop = { navController.navigate(TraceDestinations.SHOP) }
             )
+        }
+        composable(TraceDestinations.SHOP) {
+            // TODO(S07): 상점·꾸미기 화면
+            PlaceholderScreen(onBack = { navController.popBackStack() })
         }
         composable(TraceDestinations.REGION) {
             PlaceholderScreen(onBack = { navController.popBackStack() })
