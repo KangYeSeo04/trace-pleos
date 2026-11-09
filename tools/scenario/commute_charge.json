@@ -2,7 +2,7 @@
   "name": "출퇴근 3회 + 충전 1회 (거리·소비·충전 60배속, 약 2분 30초)",
   "auto": { "km_per_kwh": 6.0, "hvac_kw": 1.5, "speedup": 60, "tick_s": 1.0 },
   "steps": [
-    { "t": 0,   "note": "출발 전", "gear": "Park", "speed_kph": 0, "brake": 0, "accelerator": 0, "battery_kwh": 46.4, "soc": 60, "odometer_km": 12345, "range_m": 278000, "hvac": { "power": false }, "charge_port": false, "charge_kw": 0 },
+    { "t": 0,   "note": "출발 전", "gear": "Park", "speed_kph": 0, "brake": 0, "accelerator": 0, "battery_kwh": 46.4, "soc": 60, "range_m": 278000, "hvac": { "power": false }, "charge_port": false, "charge_kw": 0 },
 
     { "t": 4,   "note": "출근 · D", "gear": "Drive" },
     { "t": 6,   "note": "급출발 0→30 (급가속)", "speed_kph": 30, "accelerator": 40 },

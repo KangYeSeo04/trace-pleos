@@ -28,6 +28,7 @@ JSON 시나리오의 시간 순서대로 호출한다.
   ]
 }
 step 키는 모두 선택이고, 없는 키는 직전 값을 유지한다.
+콘솔은 총 주행거리(odometer_km)를 줄이지 못하게 막으므로, 반복 재생할 시나리오는 odometer_km를 빼고 현재 값에서 이어 간다.
 """
 import argparse
 import json
@@ -54,12 +55,16 @@ def get_state():
         return json.load(r)
 
 
+def open_session():
+    urllib.request.urlopen(urllib.request.Request(
+        f"{BASE}/browser/session?client=scenario", method="POST"), timeout=2).read()
+
+
 def heartbeat(stop):
     # 브라우저 세션이 없으면 콘솔이 값을 내보내지 않으므로 1초마다 신호를 보낸다
     while not stop.is_set():
         try:
-            urllib.request.urlopen(urllib.request.Request(
-                f"{BASE}/browser/session?client=scenario", method="POST"), timeout=2).read()
+            open_session()
         except Exception:
             pass
         stop.wait(1)
@@ -147,11 +152,14 @@ def main():
     auto = sc.get("auto")
 
     stop = threading.Event()
-    threading.Thread(target=heartbeat, args=(stop,), daemon=True).start()
     try:
+        # 첫 값을 보내기 전에 세션을 먼저 연다 (없으면 콘솔이 emulator_inactive로 거절)
+        open_session()
+        time.sleep(0.5)
         car = Car(get_state(), args.adb_mark)
     except Exception as e:
         sys.exit(f"가상 콘솔에 연결할 수 없음 ({e}). adb forward tcp:8088 tcp:8088 확인")
+    threading.Thread(target=heartbeat, args=(stop,), daemon=True).start()
     print(f"시나리오: {sc.get('name', args.scenario)} ({steps[-1]['t']}s)", flush=True)
 
     start = time.monotonic()

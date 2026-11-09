@@ -203,4 +203,18 @@ class TripRecorderTest {
         assertEquals(5_000L, trip.startedAtMs)
         assertEquals(0.5, trip.energyUsedKwh, 1e-6)
     }
+
+    @Test
+    fun `차속이 바뀔 때만 오는 신호도 1초 전 값과 비교한다 (정차 4초 뒤 0에서 40)`() {
+        val r = TripRecorder()
+        r.onSample(sample(0, speedKmh = 30.0))
+        r.onDriveState(DriveState.DRIVING, 0)
+        r.onSample(sample(1_000, speedKmh = 0.0, odo = 1001.0)) // 신호 대기 (감속은 급가속 아님)
+        // 0 km/h 동안 이벤트 없음, 4.1초 뒤 40 km/h → 1초 전에는 0이었으므로 +40/s
+        r.onSample(sample(5_100, speedKmh = 40.0))
+        r.onSample(sample(5_200, speedKmh = 40.0))
+        r.onSample(sample(6_300, speedKmh = 40.0, odo = 1002.0))
+        val trip = r.onDriveState(DriveState.PARKED, 6_300)!!
+        assertEquals(1, trip.hardAccelCount)
+    }
 }
