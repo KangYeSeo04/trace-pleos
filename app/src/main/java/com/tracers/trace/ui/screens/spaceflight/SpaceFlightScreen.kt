@@ -127,10 +127,18 @@ fun SpaceFlightScreen(
     }
 }
 
-@Preview(widthDp = 600, heightDp = 800)
+@Preview(name = "우주 · 다크", widthDp = 600, heightDp = 800)
 @Composable
-private fun SpaceFlightScreenPreview() {
-    TraceTheme {
+private fun SpaceFlightScreenDarkPreview() {
+    TraceTheme(darkTheme = true) {
+        SpaceFlightScreen(onNavigateBack = {})
+    }
+}
+
+@Preview(name = "구름 · 라이트", widthDp = 600, heightDp = 800)
+@Composable
+private fun SpaceFlightScreenLightPreview() {
+    TraceTheme(darkTheme = false) {
         SpaceFlightScreen(onNavigateBack = {})
     }
 }

@@ -357,18 +357,34 @@ private fun TileGrid(
 // Preview
 // ============================================================
 
-@Preview(widthDp = 600, heightDp = 800)
+@Preview(name = "정차 · 다크", widthDp = 600, heightDp = 800)
 @Composable
-private fun HomeScreenParkedPreview() {
-    TraceTheme {
+private fun HomeScreenParkedDarkPreview() {
+    TraceTheme(darkTheme = true) {
         HomeScreen(uiState = SampleHomeUiState.parked)
     }
 }
 
-@Preview(widthDp = 600, heightDp = 800)
+@Preview(name = "정차 · 라이트", widthDp = 600, heightDp = 800)
 @Composable
-private fun HomeScreenDrivingPreview() {
-    TraceTheme {
+private fun HomeScreenParkedLightPreview() {
+    TraceTheme(darkTheme = false) {
+        HomeScreen(uiState = SampleHomeUiState.parked)
+    }
+}
+
+@Preview(name = "주행 · 다크", widthDp = 600, heightDp = 800)
+@Composable
+private fun HomeScreenDrivingDarkPreview() {
+    TraceTheme(darkTheme = true) {
+        HomeScreen(uiState = SampleHomeUiState.driving)
+    }
+}
+
+@Preview(name = "주행 · 라이트", widthDp = 600, heightDp = 800)
+@Composable
+private fun HomeScreenDrivingLightPreview() {
+    TraceTheme(darkTheme = false) {
         HomeScreen(uiState = SampleHomeUiState.driving)
     }
 }
