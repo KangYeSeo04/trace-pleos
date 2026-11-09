@@ -156,6 +156,9 @@ fun TraceNavHost(
                 onNavigateBack = { navController.popBackStack() },
                 onRecordVisit = maintenanceViewModel::onRecordVisit,
                 onDismissVisit = maintenanceViewModel::onDismissVisit,
+                onPrevMonth = maintenanceViewModel::onPrevMonth,
+                onNextMonth = maintenanceViewModel::onNextMonth,
+                onSelectDate = maintenanceViewModel::onSelectDate,
             )
         }
         composable(TraceDestinations.COIN) {

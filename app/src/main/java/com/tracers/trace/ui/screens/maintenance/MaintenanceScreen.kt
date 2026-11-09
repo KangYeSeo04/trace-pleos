@@ -20,6 +20,8 @@ import androidx.compose.ui.unit.dp
 import com.tracers.trace.data.sample.SampleData
 import com.tracers.trace.ui.components.DetailHeader
 import com.tracers.trace.ui.theme.TraceTheme
+import java.time.LocalDate
+import java.time.YearMonth
 
 /**
  * 정비 상세 화면 (S04). 디자인: design/html/MaintDark.dc.html (600 × 2600)
@@ -27,6 +29,9 @@ import com.tracers.trace.ui.theme.TraceTheme
  * @param onNavigateBack 뒤로 → 홈
  * @param onRecordVisit 방문 감지 [기록하기] → S05 (2회차)
  * @param onDismissVisit 방문 감지 [정비 안 했어요] → 카드 숨김
+ * @param onPrevMonth 달력 이전 달
+ * @param onNextMonth 달력 다음 달
+ * @param onSelectDate 달력 날짜 고르기
  */
 @Composable
 fun MaintenanceScreen(
@@ -35,6 +40,9 @@ fun MaintenanceScreen(
     modifier: Modifier = Modifier,
     onRecordVisit: () -> Unit = {},
     onDismissVisit: () -> Unit = {},
+    onPrevMonth: () -> Unit = {},
+    onNextMonth: () -> Unit = {},
+    onSelectDate: (LocalDate) -> Unit = {},
     scrollState: ScrollState = rememberScrollState(),
 ) {
     val colors = TraceTheme.colors
@@ -72,7 +80,14 @@ fun MaintenanceScreen(
             // 달력에서 날을 고르면 그날 기록이 보인다 (uiState.records)
 
             SectionTitle("정비 달력")
-            // TODO(2회차): 정비 달력 카드 (uiState.calendar, uiState.records)
+            MaintenanceCalendarCard(
+                // 미리보기처럼 ViewModel 없이 그릴 때는 이번 달
+                calendar = uiState.calendar ?: MaintenanceCalendar(YearMonth.now()),
+                records = uiState.records,
+                onPrevMonth = onPrevMonth,
+                onNextMonth = onNextMonth,
+                onSelectDate = onSelectDate
+            )
 
             SectionTitle("기록 추가")
             // TODO(2회차): 기록 추가 양식 S05 (uiState.form)
