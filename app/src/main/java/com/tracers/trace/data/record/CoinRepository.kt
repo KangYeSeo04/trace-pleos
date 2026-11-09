@@ -6,20 +6,11 @@ import com.tracers.trace.domain.CoinHistoryKind
 import com.tracers.trace.domain.CoinLedger
 import com.tracers.trace.domain.CoinWallet
 import com.tracers.trace.domain.EventCounts
+import com.tracers.trace.domain.KmRecord
 import com.tracers.trace.domain.KmResult
 import com.tracers.trace.domain.KmSegment
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
-
-/** 1km 기록 한 줄 (domain 쪽 모양) */
-data class KmRecord(
-    val tripStartedAtMs: Long,
-    val segment: KmSegment,
-    val kmScore: Int,
-    val scoreBefore: Double,
-    val scoreAfter: Double,
-    val coinsEarned: Int,
-)
 
 /**
  * 안전점수·코인 저장소 (E-01~E-04). 계산은 [CoinLedger], 여기서는 읽기 → 계산 → 쓰기를

@@ -30,6 +30,16 @@ data class KmSegment(
     val counts: EventCounts,
 )
 
+/** 저장된 1km 기록 한 줄: 구간 + 그때의 점수·적립 */
+data class KmRecord(
+    val tripStartedAtMs: Long,
+    val segment: KmSegment,
+    val kmScore: Int,
+    val scoreBefore: Double,
+    val scoreAfter: Double,
+    val coinsEarned: Int,
+)
+
 /**
  * 주행을 1km 단위로 나눈다. 거리는 걸러진 차속을 적분한다 (차속은 다음 값이 올 때까지 유지된다고 봄).
  * 총 주행거리(Odometer)는 갱신 주기를 모르고 km 단위 Float라, 1km 경계를 정하는 데는 차속을 쓴다.

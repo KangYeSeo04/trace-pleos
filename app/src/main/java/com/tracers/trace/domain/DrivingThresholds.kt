@@ -30,6 +30,14 @@ object DrivingThresholds {
     /** 이 횟수 이상이면 거칠었음 */
     const val ROUGH_MIN_EVENTS = 2
 
+    // ---------- 기체 상태 (B-03) ----------
+
+    /** 주행 중 이 속도 아래로 내려가면 "천천히 비행 중" (km/h) */
+    const val SLOW_BELOW_KMH = 25.0
+
+    /** 이 속도 이상이 되면 "매끄럽게 비행 중" (km/h). 두 기준 사이에서는 직전 문구 유지 */
+    const val SMOOTH_FROM_KMH = 35.0
+
     // ---------- 1km 점수 (E-01) ----------
 
     /** 1km 구간 길이 (km) */
