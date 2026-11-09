@@ -395,6 +395,52 @@ object TraceIcons {
         }.build()
     }
 
+    /** 지도 원래 크기 (RegionDark: M4 9V4h5M20 9V4h-5M4 15v5h5M20 15v5h-5, 선 2) */
+    val FitScreen: ImageVector by lazy {
+        strokeIcon("FitScreen", 2f) {
+            moveTo(4f, 9f); verticalLineTo(4f); horizontalLineToRelative(5f)
+            moveTo(20f, 9f); verticalLineTo(4f); horizontalLineToRelative(-5f)
+            moveTo(4f, 15f); verticalLineToRelative(5f); horizontalLineToRelative(5f)
+            moveTo(20f, 15f); verticalLineToRelative(5f); horizontalLineToRelative(-5f)
+        }
+    }
+
+    /** 확대 (+). 디자인에 없어 FitScreen과 같은 선 굵기로 그림 */
+    val Plus: ImageVector by lazy {
+        strokeIcon("Plus", 2f) {
+            moveTo(12f, 5f); verticalLineTo(19f)
+            moveTo(5f, 12f); horizontalLineTo(19f)
+        }
+    }
+
+    /** 축소 (−) */
+    val Minus: ImageVector by lazy {
+        strokeIcon("Minus", 2f) {
+            moveTo(5f, 12f); horizontalLineTo(19f)
+        }
+    }
+
+    private fun strokeIcon(
+        name: String,
+        width: Float,
+        block: androidx.compose.ui.graphics.vector.PathBuilder.() -> Unit,
+    ): ImageVector = ImageVector.Builder(
+        name = name,
+        defaultWidth = 24.dp,
+        defaultHeight = 24.dp,
+        viewportWidth = 24f,
+        viewportHeight = 24f
+    ).apply {
+        path(
+            fill = null,
+            stroke = SolidColor(Color.Black),
+            strokeLineWidth = width,
+            strokeLineCap = StrokeCap.Round,
+            strokeLineJoin = StrokeJoin.Round,
+            pathBuilder = block
+        )
+    }.build()
+
     /** 정보 아이콘 (i) */
     val Info: ImageVector by lazy {
         ImageVector.Builder(
