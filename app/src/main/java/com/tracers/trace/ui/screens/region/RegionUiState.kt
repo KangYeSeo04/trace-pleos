@@ -29,9 +29,8 @@ data class RegionUiState(
 }
 
 /**
- * 방문한 지역 하나.
+ * 방문한 지역 하나. 색은 지도 데이터의 시·도 묶음(group)으로 정한다(TraceColors.regionGroup).
  *
- * @param colorIndex TraceColors.regionPalette 안의 색 번호(넘치면 순환)
  * @param distanceKm 이 지역에서 달린 거리
  * @param stayMinutes 이 지역에 머문 시간(분)
  */
@@ -40,7 +39,6 @@ data class VisitedRegion(
     val code: String,
     val name: String,
     val sidoName: String,
-    val colorIndex: Int,
     val distanceKm: Double,
     val stayMinutes: Long,
 )

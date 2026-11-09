@@ -61,6 +61,7 @@ import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.Canvas
 import androidx.compose.ui.graphics.FilterQuality
 import androidx.compose.ui.graphics.ImageBitmap
+import androidx.compose.ui.graphics.PathEffect
 import androidx.compose.ui.graphics.drawscope.CanvasDrawScope
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.unit.Density
@@ -268,7 +269,7 @@ private fun MapCanvas(
         val dpx = LocalDensity.current.density
         val wPx = constraints.maxWidth
         val hPx = constraints.maxHeight
-        val paint = MapPaint(colors.mapLine, colors.mapLand, colors.mapSea, colors.mapSelected)
+        val paint = MapPaint(colors.mapLine, colors.mapLand, colors.mapSea, colors.mapSelected, colors.mapBorder)
 
         // 지도 본체(해안선·땅·방문 색·선택 테두리)는 비트맵으로 미리 그린다.
         // 복잡한 Path를 매 프레임 그리면 CPU 래스터화로 끊기므로, 조작 중에는 비트맵만 옮기고
@@ -386,7 +387,10 @@ private fun MapCanvas(
 
 private const val SHARPEN_DELAY_MS = 150L
 
-private data class MapPaint(val line: Color, val land: Color, val sea: Color, val selected: Color)
+private data class MapPaint(val line: Color, val land: Color, val sea: Color, val selected: Color, val border: Color)
+
+/** 지역 사이 경계: 굵기 0.8, 3 그리고 2.4 간격 점선 (해안선 2.6보다 확실히 약하게) */
+private val BorderStroke = Stroke(width = 0.8f, pathEffect = PathEffect.dashPathEffect(floatArrayOf(3f, 2.4f)))
 
 /** viewBox → 칸(dp) 맞춤과 픽셀 크기 */
 private data class MapGeometry(val k0: Float, val ox: Float, val oy: Float, val density: Float, val wPx: Int, val hPx: Int)
@@ -431,7 +435,7 @@ private fun DrawScope.drawRaster(r: MapRaster, s: Float, tx: Float, ty: Float) {
     }) { drawImage(r.image, filterQuality = FilterQuality.Low) }
 }
 
-/** 디자인 SVG 순서: 섬 박스 → 해안선(선색 2.6) → 땅색 → 방문 지역 색 → 선택 지역 흰 테두리 2.4 */
+/** 디자인 SVG 순서: 섬 박스 → 해안선(선색 2.6) → 땅색 → 방문 지역 색 → (추가) 지역 경계 점선 → 선택 지역 흰 테두리 2.4 */
 private fun DrawScope.drawMap(
     map: RegionMap,
     visited: List<Pair<MapRegion, Color>>,
@@ -446,6 +450,7 @@ private fun DrawScope.drawMap(
     drawPath(map.allPath, paint.line, style = Stroke(width = 2.6f, join = StrokeJoin.Round))
     drawPath(map.allPath, paint.land)
     visited.forEach { (r, c) -> drawPath(r.path, c) }
+    drawPath(map.borderPath, paint.border, style = BorderStroke)
     if (selected != null && visited.any { it.first === selected }) {
         drawPath(selected.path, paint.selected, style = Stroke(width = 2.4f, join = StrokeJoin.Round))
     }

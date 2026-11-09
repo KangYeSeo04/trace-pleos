@@ -30,8 +30,8 @@ class RegionFormatTest {
 
     @Test
     fun selectedFallsBackToCurrentRegion() {
-        val a = VisitedRegion("47130", "경주시", "경상북도", 8, 128.0, 3240)
-        val b = VisitedRegion("11000", "서울", "서울특별시", 0, 9840.0, 600000)
+        val a = VisitedRegion("47130", "경주시", "경상북도", 128.0, 3240)
+        val b = VisitedRegion("11000", "서울", "서울특별시", 9840.0, 600000)
         val s = RegionUiState(visited = listOf(a, b), currentRegionCode = "47130")
         assertEquals("47130", s.selected?.code)
         assertEquals("11000", s.copy(selectedRegionCode = "11000").selected?.code)

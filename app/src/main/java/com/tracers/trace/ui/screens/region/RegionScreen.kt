@@ -84,9 +84,11 @@ fun RegionScreen(
     ) {
         if (value == null) value = RegionMapStore.load(context)
     }
-    val palette = colors.regionPalette
-    val regionColors = remember(uiState.visited, palette) {
-        uiState.visited.associate { it.code to palette[it.colorIndex.mod(palette.size)] }
+    // 방문 지역 색 = 시·도 묶음 색 (범례와 같음)
+    val groupColors = colors.regionGroup
+    val regionColors = remember(map, uiState.visited, groupColors) {
+        val m = map ?: return@remember emptyMap()
+        uiState.visited.mapNotNull { v -> m.byCode[v.code]?.let { r -> groupColors[r.group]?.let { v.code to it } } }.toMap()
     }
     var confirmClear by rememberSaveable { mutableStateOf(false) }
 

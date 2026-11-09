@@ -23,6 +23,8 @@ class RegionMap(
     val regions: List<MapRegion>,
     val insets: List<MapInset>,
     val groups: List<MapGroup>,
+    /** 지역 사이 경계(해안선 제외) 선들 */
+    val borderPath: Path,
 ) {
     val byCode: Map<String, MapRegion> = regions.associateBy { it.code }
 
@@ -148,11 +150,18 @@ object RegionMapStore {
                 labelX = lp?.getDouble(0)?.toFloat(), labelY = lp?.getDouble(1)?.toFloat(),
             )
         }
-        return RegionMap(vb.getDouble(0).toFloat(), vb.getDouble(1).toFloat(), regions, insets, groups)
+        val borderPath = Path().apply {
+            parsePathData(root.optString("borders", ""), minPoints = 2).forEach { l ->
+                moveTo(l[0], l[1])
+                var i = 2
+                while (i < l.size) { lineTo(l[i], l[i + 1]); i += 2 }
+            }
+        }
+        return RegionMap(vb.getDouble(0).toFloat(), vb.getDouble(1).toFloat(), regions, insets, groups, borderPath)
     }
 
-    /** "M x y L x y x y … Z M …" (build_regions.py 출력 형식) → 고리별 좌표 배열 */
-    internal fun parsePathData(d: String): List<FloatArray> {
+    /** "M x y L x y x y … Z M …" (build_regions.py 출력 형식) → 고리(또는 선)별 좌표 배열. 점이 [minPoints]개 미만이면 버린다 */
+    internal fun parsePathData(d: String, minPoints: Int = 3): List<FloatArray> {
         val rings = ArrayList<FloatArray>()
         var cur = FloatArrayBuilder()
         var i = 0
@@ -172,7 +181,7 @@ object RegionMapStore {
             }
         }
         if (cur.size > 0) rings += cur.build()
-        return rings.filter { it.size >= 6 }
+        return rings.filter { it.size >= minPoints * 2 }
     }
 
     private class FloatArrayBuilder {
