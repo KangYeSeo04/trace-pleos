@@ -117,8 +117,15 @@ class PleosVehicleSignals(context: Context) : VehicleSignals {
 
     // ---------- NaviHelper 제한속도 ----------
 
+    /** 콜백이 오는지(값이 0이어도) 한 번 남기려고 */
+    @Volatile private var speedLimitSeen = false
+
     private val naviListener = object : NaviHelperEventListener {
         override fun onCurrentRoadSpeedLimit(speedLimit: Int) {
+            if (!speedLimitSeen) {
+                speedLimitSeen = true
+                log("제한속도 첫 콜백", speedLimit)
+            }
             val v = speedLimit.takeIf { it > 0 }
             if (v != _speedLimitKmh.value) log("제한속도", v)
             _speedLimitKmh.value = v
