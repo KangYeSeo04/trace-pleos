@@ -1,5 +1,7 @@
 package com.tracers.trace.ui.screens.region
 
+import com.tracers.trace.ui.theme.LightTraceColors
+import com.tracers.trace.ui.theme.DarkTraceColors
 import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.ScrollState
@@ -85,7 +87,8 @@ fun RegionScreen(
         if (value == null) value = RegionMapStore.load(context)
     }
     // 방문 지역 색 = 시·도 묶음 색 (범례와 같음)
-    val groupColors = colors.regionGroup
+    // 라스터 다시 그리기 키라서 전환 중 섞인 값이 아니라 바뀔 테마 값을 쓴다 (도별 색은 두 테마가 같다)
+    val groupColors = (if (TraceTheme.isDark) DarkTraceColors else LightTraceColors).regionGroup
     val regionColors = remember(map, uiState.visited, groupColors) {
         val m = map ?: return@remember emptyMap()
         uiState.visited.mapNotNull { v -> m.byCode[v.code]?.let { r -> groupColors[r.group]?.let { v.code to it } } }.toMap()
