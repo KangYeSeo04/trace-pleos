@@ -170,7 +170,7 @@ def render(disp, k=2):
         f16 = f12 = ImageFont.load_default()
     for ins in disp["insets"]:
         x, y = ins["labelPos"]
-        dr.text((x * k, y * k), ins["label"], fill=LABEL, font=f12, anchor="ms" if ins["id"] == "ulleung" else "ls")
+        dr.text((x * k, y * k), ins["label"], fill=LABEL, font=f12, anchor="ms" if ins.get("labelAnchor") == "middle" else "ls")
     # 묶음 이름: 각 묶음에서 가장 큰 본토 지역 중심에(확인용 표시, 실제 라벨 자리는 화면 단계에서 디자인대로)
     seen = set()
     for r, rings in regs:

@@ -42,13 +42,25 @@ SRC_SHA256 = "843ece3a0b3429742cd4a1b699cc13987a88b5e5401f382e7fdaaa194ea5e605"
 
 # ---- 화면 배치 (디자인 RegionDark.dc.html의 지도 칸에서 읽은 자리) ----
 VIEW_W, VIEW_H = 563.3, 612
-MAIN_RECT = (40, 15, 399, 565)          # 본토가 들어가는 범위(디자인 본토 경로들의 바깥 상자)
+# 본토 범위: 세로는 디자인 본토(15~565), 가로는 오른쪽 섬 박스(x≥449) 앞까지
+MAIN_RECT = (40, 15, 445, 565)
 JEJU_RECT = (462, 554, 532, 591)         # 제주 본섬이 들어가는 범위(디자인 제주시 경로 상자)
 JEJU_FRAME = (449, 540, 547, 598)        # 디자인 제주 박스
 ULLEUNG_RECT = (489, 52, 505, 68)        # 디자인 울릉도 모양 상자
 DOKDO_RECT = (519, 78, 527.6, 82.6)      # 디자인 독도 원 두 개를 감싸는 상자
 ULLEUNG_FRAME = (453, 36, 497, 82)       # 디자인 울릉 박스
-LABELS = {"ulleung": ("울릉도·독도", 498, 28), "jeju": ("제주", 460, 530)}
+LABELS = {"ulleung": ("울릉도·독도", 498, 28, "middle"), "jeju": ("제주", 460, 530, "start")}
+# 본토에서 떼어 박스로 옮기는 먼 섬(읍·면 단위). 배율은 본토와 같고 위치만 옮긴다.
+#   center: 박스 안 내용의 중심 자리, label: (글자, x, y, 정렬)
+MOVED = [
+    {"id": "baengnyeong", "sgg": "28720", "emd": ["백령면", "대청면"], "center": (30, 110),
+     "label": ("백령도", 30, 146, "middle")},
+    {"id": "heuksan", "sgg": "12870", "emd": ["흑산면"], "center": (36, 410),
+     "label": ("흑산도", 36, 357, "middle")},
+]
+# 디자인 지도 위에 얹히는 UI(겹침 검사용, viewBox 좌표): 제목·원래 크기 버튼·안내 문구
+UI_RECTS = {"title": (18, 16, 112, 66), "resetButton": (12, 551, 60, 597), "hint": (64, 566, 172, 588)}
+LABEL_H = {"middle": 12, "start": 12}
 
 DISPLAY_TOL = 0.2        # 단순화 허용 오차(디자인 px)
 DISPLAY_MIN_AREA = 0.02  # 이보다 작은 섬(디자인 px²)은 화면용에서 뺀다. 지역마다 가장 큰 고리는 항상 남김
@@ -422,11 +434,23 @@ def main():
     reg_rings, reg_nodes = dissolve(emd_rings, {i: sgg_reg[s] for i, s in emd_sgg.items()})
     ULLEUNG, JEJU = "47940", {"50110", "50130"}
 
+    # 옮길 섬 묶음: 해당 읍·면 고리들의 위경도 범위
+    moved_box = {}
+    for m in MOVED:
+        rs = [r for i, r in emd_rings if emd_sgg[i] == m["sgg"]
+              and feats[i]["properties"]["adm_nm"].split(" ")[-1] in m["emd"]]
+        moved_box[m["id"]] = bbox(rs)
+
     def inset_of(rc, ring):
         if rc in JEJU:
             return "jeju"
         if rc == ULLEUNG:
             return "dokdo" if min(p[0] for p in ring) > 131.5 else "ulleung"
+        x0, y0, x1, y1 = bbox([ring])
+        for m in MOVED:
+            bx0, by0, bx1, by1 = moved_box[m["id"]]
+            if m["sgg"] in reg[rc]["units"] and bx0 <= x0 and x1 <= bx1 and by0 <= y0 and y1 <= by1:
+                return m["id"]
         return "main"
 
     groups = defaultdict(list)
@@ -439,6 +463,10 @@ def main():
         "ulleung": fit(bbox([max(groups["ulleung"], key=lambda r: abs(area(r)))]), ULLEUNG_RECT),
         "dokdo": fit(bbox(groups["dokdo"]), DOKDO_RECT),
     }
+    sm = T["main"][0]
+    for m in MOVED:  # 본토와 같은 배율, 내용 중심을 m["center"]로
+        x0, y0, x1, y1 = bbox(groups[m["id"]])
+        T[m["id"]] = (sm, m["center"][0] - (x0 + x1) / 2 * sm, m["center"][1] - (y0 + y1) / 2 * sm)
 
     def mk_proj(name):
         s, ox, oy = T[name]
@@ -450,37 +478,47 @@ def main():
 
     projs = {k: mk_proj(k) for k in T}
 
-    def unproject(r):
-        s_, ox, oy = T[r["inset"]]
-        x = (r["center"][0] - ox) / s_
-        y = (r["center"][1] - oy) / s_
-        lon = math.degrees(x)
-        lat = math.degrees(2 * math.atan(math.exp(-y)) - math.pi / 2)
-        return [rnd(lon, LOOKUP_DECIMALS), rnd(lat, LOOKUP_DECIMALS)]
+    # 판정용 지역 중심점: 화면 배치와 무관하게 위경도 경계(판정용과 같은 단순화)에서 바로 구한다
+    simp_rc = Simplifier(meters, LOOKUP_TOL_M)
+
+    def region_center(rc):
+        rings = [simp_rc.ring(r, reg_nodes) for r in reg_rings[rc]]
+        rm = [[meters(p) for p in r] for r in rings]
+        big = max(range(len(rm)), key=lambda i: abs(area(rm[i])))
+        x, y = label_point([rm[big]] + [r for i, r in enumerate(rm) if i != big and abs(area(r)) >= LOOKUP_MIN_AREA_M2])
+        return [rnd(x / (111320.0 * math.cos(LAT0)), LOOKUP_DECIMALS), rnd(y / 110540.0, LOOKUP_DECIMALS)]
     simps = {k: Simplifier(projs[k], DISPLAY_TOL) for k in T}
+    def to_d(rings):
+        d = " ".join("M" + " ".join(f"{rnd(p[0], DISPLAY_DECIMALS)} {rnd(p[1], DISPLAY_DECIMALS)}" if k != 1 else
+                                    f"L{rnd(p[0], DISPLAY_DECIMALS)} {rnd(p[1], DISPLAY_DECIMALS)}"
+                                    for k, p in enumerate(r)) + "Z" for r in rings)
+        return d.replace(" L", "L")
+
     regions = []
     island_stats = {}
+    ring_insets = defaultdict(list)  # 인셋 → [(지역, 화면 고리)]
     for rc in sorted(reg):
         info = reg[rc]
         src = reg_rings[rc]
-        out = []
+        out, ins_of = [], []
         for r in src:
             ins = inset_of(rc, r)
             sr = simps[ins].ring(r, reg_nodes)
             out.append([projs[ins](p) for p in sr])
+            ins_of.append(ins)
         ar = [abs(area(r)) for r in out]
         big = max(range(len(out)), key=lambda i: ar[i])
-        kept = [r for i, r in enumerate(out) if i == big or ar[i] >= DISPLAY_MIN_AREA
-                or (rc == ULLEUNG)]  # 울릉군(독도 포함)은 크기와 무관하게 모두 남김
+        keep_i = [i for i in range(len(out)) if i == big or ar[i] >= DISPLAY_MIN_AREA
+                  or rc == ULLEUNG]  # 울릉군(독도 포함)은 크기와 무관하게 모두 남김
+        kept = [out[i] for i in keep_i]
+        for i in keep_i:
+            ring_insets[ins_of[i]].append((rc, out[i]))
         island_stats[rc] = (len(src), len(kept))
         lp = label_point(kept)
-        d = " ".join("M" + " ".join(f"{rnd(p[0], DISPLAY_DECIMALS)} {rnd(p[1], DISPLAY_DECIMALS)}" if k != 1 else
-                                    f"L{rnd(p[0], DISPLAY_DECIMALS)} {rnd(p[1], DISPLAY_DECIMALS)}"
-                                    for k, p in enumerate(r)) + "Z" for r in kept)
-        d = d.replace(" L", "L")
+        d = to_d(kept)
         regions.append({
             "code": rc, "name": info["name"], "sido": info["sido"], "group": info["group"],
-            "inset": inset_of(rc, src[0]) if rc != ULLEUNG else "ulleung",
+            "inset": "ulleung" if rc == ULLEUNG else ins_of[big],
             "center": [rnd(lp[0], DISPLAY_DECIMALS), rnd(lp[1], DISPLAY_DECIMALS)], "d": d,
         })
 
@@ -488,24 +526,87 @@ def main():
     for gid, gname, _ in GROUPS:
         group_out.append({"id": gid, "name": gname, "regions": sum(1 for r in regions if r["group"] == gid)})
 
-    def content_box(insets):
-        pts = []
-        for r in regions:
-            if r["inset"] in insets:
-                nums = [float(t) for t in r["d"].replace("M", " ").replace("L", " ").replace("Z", " ").split()]
-                pts += list(zip(nums[0::2], nums[1::2]))
+    def content_box(*ids):
+        pts = [p for i in ids for _, r in ring_insets[i] for p in r]
         return min(p[0] for p in pts), min(p[1] for p in pts), max(p[0] for p in pts), max(p[1] for p in pts)
 
     def union(a, b, pad):
         return [rnd(min(a[0], b[0] - pad), 1), rnd(min(a[1], b[1] - pad), 1),
                 rnd(max(a[2], b[2] + pad), 1), rnd(max(a[3], b[3] + pad), 1)]
 
+    def pad_box(b, pad):
+        return [rnd(b[0] - pad, 1), rnd(b[1] - pad, 1), rnd(b[2] + pad, 1), rnd(b[3] + pad, 1)]
+
+    def label_rect(text, x, y, anchor, size=12):
+        w = size * 0.95 * len(text)
+        x0 = x - w / 2 if anchor == "middle" else x
+        return (x0, y - size, x0 + w, y + 2)
+
+    def overlaps(a, b):
+        return a[0] < b[2] and b[0] < a[2] and a[1] < b[3] and b[1] < a[3]
+
+    main_pts = [p for _, r in ring_insets["main"] for p in r]
+
+    def hits_main(box):
+        return sum(1 for x, y in main_pts if box[0] <= x <= box[2] and box[1] <= y <= box[3])
+
+    # 제주 박스가 남해안과 겹치면 추자도(제주 본섬 북쪽 고리들)를 박스 위쪽으로 당긴다(거리 압축)
+    jeju_frame = union(JEJU_FRAME, content_box("jeju"), 4)
+    chuja_pulled = False
+    if hits_main(jeju_frame):
+        main_top = min(p[1] for rc, r in ring_insets["jeju"] for p in r if abs(area(r)) == max(
+            abs(area(q)) for c, q in ring_insets["jeju"] if c == rc))
+        north = [(rc, r) for rc, r in ring_insets["jeju"] if max(p[1] for p in r) < main_top - 2]
+        dy = (main_top - 8) - max(p[1] for _, r in north for p in r)
+        for rc, r in north:
+            r[:] = [(x, y + dy) for x, y in r]
+        chuja_pulled = True
+        jeju_frame = union(JEJU_FRAME, content_box("jeju"), 4)
+        # 옮긴 고리로 d 다시 만들기
+        for reg_out in regions:
+            if reg_out["code"] in JEJU:
+                rings = [r for c, r in ring_insets["jeju"] if c == reg_out["code"]]
+                reg_out["d"] = to_d(rings)
+
     insets = [
         {"id": "ulleung", "regions": [ULLEUNG], "label": LABELS["ulleung"][0],
-         "labelPos": list(LABELS["ulleung"][1:]), "frame": union(ULLEUNG_FRAME, content_box({"ulleung"}), 4)},
+         "labelPos": list(LABELS["ulleung"][1:3]), "labelAnchor": LABELS["ulleung"][3],
+         "frame": union(ULLEUNG_FRAME, content_box("ulleung", "dokdo"), 4)},
         {"id": "jeju", "regions": sorted(JEJU), "label": LABELS["jeju"][0],
-         "labelPos": list(LABELS["jeju"][1:]), "frame": union(JEJU_FRAME, content_box({"jeju"}), 4)},
+         "labelPos": list(LABELS["jeju"][1:3]), "labelAnchor": LABELS["jeju"][3], "frame": jeju_frame,
+         "compressed": chuja_pulled},
     ]
+    for m in MOVED:
+        insets.append({"id": m["id"], "regions": sorted({rc for rc, _ in ring_insets[m["id"]]}),
+                       "label": m["label"][0], "labelPos": list(m["label"][1:3]), "labelAnchor": m["label"][3],
+                       "frame": pad_box(content_box(m["id"]), 6),
+                       "emd": [f"{reg[rc]['name']} {e}" for rc in sorted({rc for rc, _ in ring_insets[m['id']]})
+                               for e in m["emd"]]})
+
+    # 겹침 검사: 박스·라벨 ↔ 본토, 박스·라벨 ↔ 지도 UI, 박스 ↔ 박스
+    things = [(f"{i['id']}.frame", i["frame"]) for i in insets] + \
+             [(f"{i['id']}.label", label_rect(i["label"], *i["labelPos"], i["labelAnchor"])) for i in insets]
+    problems = []
+    for name, box in things:
+        n = hits_main(box)
+        if n:
+            problems.append(f"{name} ↔ 본토 꼭짓점 {n}개")
+        for un, ub in UI_RECTS.items():
+            if overlaps(box, ub):
+                problems.append(f"{name} ↔ {un}")
+    for i, (an, ab) in enumerate(things):
+        for bn, bb in things[i + 1:]:
+            if an.split(".")[0] != bn.split(".")[0] and overlaps(ab, bb):
+                problems.append(f"{an} ↔ {bn}")
+    mb = content_box("main")
+    print(f"본토 범위 x {mb[0]:.0f}~{mb[2]:.0f}, y {mb[1]:.0f}~{mb[3]:.0f} (세로 {mb[3] - mb[1]:.0f})")
+    print("제주 추자도 당김:", chuja_pulled)
+    print("겹침:", problems or "없음")
+    for i in insets:
+        print(" ", i["id"], "frame", i["frame"])
+    if problems:
+        sys.exit("배치 겹침 → MOVED center/label 조정 필요")
+
     meta = {
         "source": f"vuski/admdongkor {SRC_VERSION} (commit {SRC_COMMIT[:12]})",
         "basedOn": "통계청 SGIS 행정동 경계",
@@ -514,14 +615,15 @@ def main():
     }
     display = {
         "meta": meta | {"projection": "Mercator, 본토와 섬 박스는 각각 다른 배율",
-                        "fillRule": "evenOdd", "scale": {k: rnd(v[0] / T["main"][0], 2) for k, v in T.items()}},
+                        "fillRule": "evenOdd", "scale": {k: rnd(v[0] / T["main"][0], 2) for k, v in T.items()},
+                        "uiRects": UI_RECTS},
         "viewBox": [VIEW_W, VIEW_H], "groups": group_out, "insets": insets, "regions": regions,
     }
     lookup = {
         "meta": meta | {"crs": "WGS84 lon,lat", "fillRule": "evenOdd",
                         "tolerance_m": LOOKUP_TOL_M, "ringFormat": "flat [lon,lat,lon,lat,…]"},
         "regions": [{"code": r["code"], "name": r["name"], "sido": r["sido"], "group": r["group"],
-                     "units": reg[r["code"]]["units"], "center": unproject(r)} for r in regions],
+                     "units": reg[r["code"]]["units"], "center": region_center(r["code"])} for r in regions],
         "units": units,
     }
     os.makedirs(OUT_DIR, exist_ok=True)
