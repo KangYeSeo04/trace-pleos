@@ -81,7 +81,7 @@ fun SpaceFlightScreen(
     Box(
         modifier = modifier
             .fillMaxSize()
-            .background(Color(0xFF0A0B0D))
+            .background(TraceTheme.colors.spaceBg)
             // 아무 곳이나 탭해도 홈으로 복귀
             .clickable(
                 interactionSource = remember { MutableInteractionSource() },

@@ -168,7 +168,7 @@ private fun TraceLogo(modifier: Modifier = Modifier) {
             .clip(RoundedCornerShape(9.dp))
             .background(
                 Brush.linearGradient(
-                    colors = listOf(Color(0xFF1B2533), Color(0xFF070A0F)),
+                    colors = listOf(TraceTheme.colors.logoBgTop, TraceTheme.colors.logoBgBottom),
                     start = androidx.compose.ui.geometry.Offset(0f, 0f),
                     end = androidx.compose.ui.geometry.Offset(30f, 30f)
                 )

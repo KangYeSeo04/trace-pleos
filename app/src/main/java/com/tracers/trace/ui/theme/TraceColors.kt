@@ -5,8 +5,9 @@ import androidx.compose.runtime.staticCompositionLocalOf
 import androidx.compose.ui.graphics.Color
 
 /**
- * TRACE 다크 테마 색상 토큰.
- * CLAUDE.md의 "다크 테마 토큰" 표 기준.
+ * TRACE 색상 토큰. 기본값은 다크 묶음(CLAUDE.md "다크 테마 토큰" 표).
+ * 라이트 묶음은 [LightTraceColors] (design/LIGHT.md 표 + Light HTML). 화면 코드는 토큰만 쓰고
+ * TraceTheme이 테마에 따라 묶음을 바꿔 준다.
  */
 @Immutable
 data class TraceColors(
@@ -74,6 +75,12 @@ data class TraceColors(
     val onAccent: Color = Color(0xFFFFFFFF),
     /** 켜기·끄기 스위치 손잡이 (RegionDark #FFFFFF) */
     val switchKnob: Color = Color(0xFFFFFFFF),
+    /** 해·달 스위치 손잡이 (Home knobBg) */
+    val themeKnob: Color = Color(0xFF3A3F48),
+    /** 해·달 스위치 손잡이 아이콘 (Home knobFg) */
+    val themeKnobIcon: Color = Color(0xFFE8ECF2),
+    /** 하늘 탭 비행 영상 뒤 바탕 (SpaceDark #0A0B0D / SpaceLight #1B3566) */
+    val spaceBg: Color = Color(0xFF0A0B0D),
 
     // ===== 지역 지도 (RegionDark mapC, dark) =====
     /** 지도 바다 */
@@ -101,4 +108,49 @@ data class TraceColors(
     ),
 )
 
-val LocalTraceColors = staticCompositionLocalOf { TraceColors() }
+/** 다크 묶음 */
+val DarkTraceColors = TraceColors()
+
+/**
+ * 라이트 묶음. 홈(HomeLight TOK)에 쓰이는 값은 홈 HTML 기준.
+ * 상세 화면 HTML은 몇 값이 조금 다르다(caution #D9820B, goodSoft #E3F3EB, gold #D19A1E 등) → 상세 라이트 회차에서 다시 맞춘다.
+ */
+val LightTraceColors = TraceColors(
+    panel = Color(0xFFFFFFFF),
+    tile = Color(0xFFF3F4F6),
+    t1 = Color(0xFF111418),
+    t2 = Color(0xFF5C636D),
+    t3 = Color(0xFF8A9099),
+    line = Color(0xFFE5E7EB),
+    track = Color(0xFFE1E4E8),           // HomeLight TOK.track
+    itemTrack = Color(0xFFDFE2E6),       // MaintLight track
+    barNeutral = Color(0xFF9AA1AA),      // MaintLight ok
+    accent = Color(0xFF1677E6),
+    accentSoft = Color(0xFFE7F0FC),      // HomeLight 칩
+    accentCard = Color(0xFFEBF3FE),      // MaintLight accentSoft
+    good = Color(0xFF12935F),
+    goodSoft = Color(0xFFE5F4EC),        // HomeLight 칩
+    caution = Color(0xFFC97A08),         // HomeLight·MaintLight
+    cautionSoft = Color(0x24C97A08),     // HTML에 없음. 다크와 같은 0.14 비율
+    warn = Color(0xFFD9474A),
+    gold = Color(0xFFC08414),            // HomeLight TOK.gold
+    goldSoft = Color(0xFFFFF4DC),        // CoinLight cellOn
+    cellOff = Color(0xFFE9EBEE),         // CoinLight
+    dim = Color(0xFFB7BCC3),             // CoinLight
+    heroBg = Color(0xFF1F3B6A),          // HomeLight·CoinLight heroBg
+    themeKnob = Color(0xFFFFFFFF),
+    themeKnobIcon = Color(0xFFF2A93B),
+    spaceBg = Color(0xFF1B3566),
+    // RegionLight mapC
+    mapSea = Color(0xFFDCE5EF),
+    mapLand = Color(0xFFFFFFFF),
+    mapLine = Color(0xFFA3ACB8),
+    mapLabel = Color(0xFF7C838D),
+    mapText = Color(0xFF111418),
+    mapSub = Color(0xFF5C636D),
+    // TODO(A-03 상세 회차): RegionLight 선택 테두리 확인. 흰 땅 위라 임시로 t1
+    mapSelected = Color(0xFF111418),
+    mapBorder = Color(0x59A3ACB8),
+)
+
+val LocalTraceColors = staticCompositionLocalOf { DarkTraceColors }

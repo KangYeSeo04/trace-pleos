@@ -13,7 +13,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.shadow
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.unit.dp
 import com.tracers.trace.ui.icons.TraceIcons
@@ -34,9 +33,9 @@ fun ThemeSwitch(
     val tileColor = TraceTheme.colors.tile
     val t2Color = TraceTheme.colors.t2
 
-    // 손잡이 색상
-    val knobBg = if (isDark) Color(0xFF3A3F48) else Color.White
-    val knobFg = if (isDark) Color(0xFFE8ECF2) else Color(0xFFF2A93B)
+    // 손잡이 색상 (Home knobBg / knobFg)
+    val knobBg = TraceTheme.colors.themeKnob
+    val knobFg = TraceTheme.colors.themeKnobIcon
     val knobX = if (isDark) 36.dp else 4.dp
 
     Box(
