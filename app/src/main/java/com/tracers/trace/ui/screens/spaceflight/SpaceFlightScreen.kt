@@ -4,6 +4,7 @@ import android.net.Uri
 import android.view.ViewGroup
 import android.widget.FrameLayout
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Box
@@ -20,7 +21,6 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -35,9 +35,9 @@ import com.tracers.trace.ui.icons.TraceIcons
 import com.tracers.trace.ui.theme.TraceTheme
 
 /**
- * 우주 비행 화면 (SpaceDark.dc.html)
+ * 하늘 탭 비행 화면 (다크 SpaceDark.dc.html 우주 / 라이트 SpaceLight.dc.html 구름)
  *
- * - res/raw/space_flight.mp4를 화면 전체에 반복·음소거 재생
+ * - 다크 res/raw/space_flight.mp4, 라이트 res/raw/cloud_flight.mp4를 화면 전체에 반복·음소거 재생
  * - 왼쪽 위 뒤로 버튼 + 화면 탭으로 홈 복귀
  * - 모션 줄이기 설정 시 첫 프레임 정지 화면
  * - 주행 제한 중에는 영상 재생 안 됨 (즉시 정지)
@@ -49,14 +49,15 @@ fun SpaceFlightScreen(
     modifier: Modifier = Modifier
 ) {
     val context = LocalContext.current
+    val videoRes = if (TraceTheme.isDark) R.raw.space_flight else R.raw.cloud_flight
 
     // TODO: 모션 줄이기 설정 확인 (AccessibilityManager.isEnabled + Settings.Global.TRANSITION_ANIMATION_SCALE)
     val isReduceMotion = false
 
     // ExoPlayer 생성 및 해제
-    val exoPlayer = remember {
+    val exoPlayer = remember(videoRes) {
         ExoPlayer.Builder(context).build().apply {
-            val videoUri = Uri.parse("android.resource://${context.packageName}/${R.raw.space_flight}")
+            val videoUri = Uri.parse("android.resource://${context.packageName}/$videoRes")
             setMediaItem(MediaItem.fromUri(videoUri))
             prepare()
             playWhenReady = !isReduceMotion
@@ -72,7 +73,7 @@ fun SpaceFlightScreen(
         }
     }
 
-    DisposableEffect(Unit) {
+    DisposableEffect(exoPlayer) {
         onDispose {
             exoPlayer.release()
         }
@@ -81,7 +82,7 @@ fun SpaceFlightScreen(
     Box(
         modifier = modifier
             .fillMaxSize()
-            .background(Color(0xFF0A0B0D))
+            .background(TraceTheme.colors.spaceBg)
             // 아무 곳이나 탭해도 홈으로 복귀
             .clickable(
                 interactionSource = remember { MutableInteractionSource() },
@@ -102,10 +103,12 @@ fun SpaceFlightScreen(
                     )
                 }
             },
+            update = { it.player = exoPlayer },
             modifier = Modifier.fillMaxSize()
         )
 
-        // 뒤로 버튼 (HTML: left: 20px, top: 20px, 48px 원형, 반투명 흰 배경, 흰 테두리, 흰 화살표)
+        // 뒤로 버튼 (Space Dark·Light: left 20, top 20, 48 원형, 바탕 흰 12%, 테두리 1px 흰 28%, 흰 화살표)
+        val colors = TraceTheme.colors
         IconButton(
             onClick = onNavigateBack,
             modifier = Modifier
@@ -113,22 +116,31 @@ fun SpaceFlightScreen(
                 .padding(start = 20.dp, top = 20.dp)
                 .size(48.dp)
                 .clip(CircleShape)
-                .background(Color.White.copy(alpha = 0.12f))
+                .background(colors.videoButton)
+                .border(1.dp, colors.videoButtonBorder, CircleShape)
         ) {
             Icon(
                 imageVector = TraceIcons.ChevronLeft,
                 contentDescription = "뒤로",
                 modifier = Modifier.size(22.dp),
-                tint = Color.White
+                tint = colors.videoButtonIcon
             )
         }
     }
 }
 
-@Preview(widthDp = 600, heightDp = 800)
+@Preview(name = "우주 · 다크", widthDp = 600, heightDp = 800)
 @Composable
-private fun SpaceFlightScreenPreview() {
-    TraceTheme {
+private fun SpaceFlightScreenDarkPreview() {
+    TraceTheme(darkTheme = true) {
+        SpaceFlightScreen(onNavigateBack = {})
+    }
+}
+
+@Preview(name = "구름 · 라이트", widthDp = 600, heightDp = 800)
+@Composable
+private fun SpaceFlightScreenLightPreview() {
+    TraceTheme(darkTheme = false) {
         SpaceFlightScreen(onNavigateBack = {})
     }
 }

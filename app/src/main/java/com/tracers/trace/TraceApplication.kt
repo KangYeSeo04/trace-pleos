@@ -1,5 +1,6 @@
 package com.tracers.trace
 
+import com.tracers.trace.data.settings.ThemeSetting
 import android.app.Application
 import com.tracers.trace.data.permission.RuntimePermissions
 import com.tracers.trace.data.record.CoinRepository
@@ -49,6 +50,9 @@ class TraceApplication : Application() {
         private set
     lateinit var regionRepository: RegionRepository
         private set
+    /** 해·달 스위치 선택 (A-03) */
+    lateinit var themeSetting: ThemeSetting
+        private set
     private lateinit var locationPoller: LocationPoller
 
     private val _permissionsGranted = MutableStateFlow(false)
@@ -69,6 +73,7 @@ class TraceApplication : Application() {
         efficiencySource = EfficiencySource(recordRepository, vehicleSignals)
         // 주행거리 첫 값을 기다렸다가 기준점을 남긴다 (차량 신호 구독은 권한 허용 뒤 recordCollector가 시작)
         maintenanceSource = MaintenanceSource(MaintenanceRepository(db), vehicleSignals, appScope).apply { start() }
+        themeSetting = ThemeSetting(this)
         locationRecording = LocationRecordingSetting(this)
         val recordingOn = locationRecording.on
         regionRepository = RegionRepository(db)

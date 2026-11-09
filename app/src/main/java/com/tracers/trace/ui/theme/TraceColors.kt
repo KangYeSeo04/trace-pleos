@@ -3,10 +3,12 @@ package com.tracers.trace.ui.theme
 import androidx.compose.runtime.Immutable
 import androidx.compose.runtime.staticCompositionLocalOf
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.lerp
 
 /**
- * TRACE 다크 테마 색상 토큰.
- * CLAUDE.md의 "다크 테마 토큰" 표 기준.
+ * TRACE 색상 토큰. 기본값은 다크 묶음(CLAUDE.md "다크 테마 토큰" 표).
+ * 라이트 묶음은 [LightTraceColors] (design/LIGHT.md 표 + Light HTML). 화면 코드는 토큰만 쓰고
+ * TraceTheme이 테마에 따라 묶음을 바꿔 준다.
  */
 @Immutable
 data class TraceColors(
@@ -24,6 +26,8 @@ data class TraceColors(
     val line: Color = Color(0xFF2C3036),
     /** 막대 바탕 */
     val track: Color = Color(0xFF33373E),
+    /** 충전 예측 막대 (EffDark/Light T.bar) */
+    val bar: Color = Color(0xFF363A41),
     /** 점검 항목 막대 바탕 (MaintDark track) */
     val itemTrack: Color = Color(0xFF363A41),
     /** 점검 항목 여유 막대 (MaintDark ok, 75% 미만 회색) */
@@ -74,6 +78,18 @@ data class TraceColors(
     val onAccent: Color = Color(0xFFFFFFFF),
     /** 켜기·끄기 스위치 손잡이 (RegionDark #FFFFFF) */
     val switchKnob: Color = Color(0xFFFFFFFF),
+    /** 해·달 스위치 손잡이 (Home knobBg) */
+    val themeKnob: Color = Color(0xFF3A3F48),
+    /** 해·달 스위치 손잡이 아이콘 (Home knobFg) */
+    val themeKnobIcon: Color = Color(0xFFE8ECF2),
+    /** 하늘 탭 비행 영상 뒤 바탕 (SpaceDark #0A0B0D / SpaceLight #1B3566) */
+    val spaceBg: Color = Color(0xFF0A0B0D),
+    /** 영상 위 뒤로 버튼 바탕 rgba(255,255,255,0.12) (영상 위라 두 테마 같음) */
+    val videoButton: Color = Color(0x1FFFFFFF),
+    /** 영상 위 뒤로 버튼 테두리 1px rgba(255,255,255,0.28) */
+    val videoButtonBorder: Color = Color(0x47FFFFFF),
+    /** 영상 위 뒤로 버튼 화살표 */
+    val videoButtonIcon: Color = Color(0xFFFFFFFF),
 
     // ===== 지역 지도 (RegionDark mapC, dark) =====
     /** 지도 바다 */
@@ -101,4 +117,106 @@ data class TraceColors(
     ),
 )
 
-val LocalTraceColors = staticCompositionLocalOf { TraceColors() }
+/** 다크 묶음 */
+val DarkTraceColors = TraceColors()
+
+/**
+ * 라이트 묶음. 화면마다 조금씩 다른 HTML 값은 상세 화면(Eff·Coin Light T) 기준으로 통일했다.
+ * 홈 HTML과 다른 값: caution #C97A08→#D9820B, goodSoft #E5F4EC→#E3F3EB, gold #C08414→#D19A1E.
+ */
+val LightTraceColors = TraceColors(
+    panel = Color(0xFFFFFFFF),
+    tile = Color(0xFFF3F4F6),
+    t1 = Color(0xFF111418),
+    t2 = Color(0xFF5C636D),
+    t3 = Color(0xFF8A9099),
+    line = Color(0xFFE5E7EB),
+    track = Color(0xFFE1E4E8),           // HomeLight TOK.track
+    bar = Color(0xFFDADDE2),             // EffLight bar
+    itemTrack = Color(0xFFDFE2E6),       // MaintLight track
+    barNeutral = Color(0xFF9AA1AA),      // MaintLight ok
+    accent = Color(0xFF1677E6),
+    accentSoft = Color(0xFFE7F0FC),      // HomeLight 칩
+    accentCard = Color(0xFFEBF3FE),      // MaintLight accentSoft
+    good = Color(0xFF12935F),
+    goodSoft = Color(0xFFE3F3EB),        // Eff·CoinLight
+    caution = Color(0xFFD9820B),         // Eff·CoinLight
+    cautionSoft = Color(0x24D9820B),     // HTML에 없음. 다크와 같은 0.14 비율
+    warn = Color(0xFFD9474A),
+    gold = Color(0xFFD19A1E),            // CoinLight
+    goldSoft = Color(0xFFFFF4DC),        // CoinLight cellOn
+    cellOff = Color(0xFFE9EBEE),         // CoinLight
+    dim = Color(0xFFB7BCC3),             // CoinLight
+    heroBg = Color(0xFF1F3B6A),          // HomeLight·CoinLight heroBg
+    themeKnob = Color(0xFFFFFFFF),
+    themeKnobIcon = Color(0xFFF2A93B),
+    spaceBg = Color(0xFF1B3566),
+    // RegionLight mapC
+    mapSea = Color(0xFFDCE5EF),
+    mapLand = Color(0xFFFFFFFF),
+    mapLine = Color(0xFFA3ACB8),
+    mapLabel = Color(0xFF7C838D),
+    mapText = Color(0xFF111418),
+    mapSub = Color(0xFF5C636D),
+    // RegionLight 선택 지역 stroke (theme === 'dark' ? '#FFFFFF' : '#111418')
+    mapSelected = Color(0xFF111418),
+    mapBorder = Color(0x59A3ACB8),
+)
+
+/** 테마 전환 크로스페이드용. t=0이면 a, t=1이면 b */
+fun lerpTraceColors(a: TraceColors, b: TraceColors, t: Float): TraceColors = when (t) {
+    0f -> a
+    1f -> b
+    else -> TraceColors(
+        panel = lerp(a.panel, b.panel, t),
+        tile = lerp(a.tile, b.tile, t),
+        t1 = lerp(a.t1, b.t1, t),
+        t2 = lerp(a.t2, b.t2, t),
+        t3 = lerp(a.t3, b.t3, t),
+        line = lerp(a.line, b.line, t),
+        track = lerp(a.track, b.track, t),
+        bar = lerp(a.bar, b.bar, t),
+        itemTrack = lerp(a.itemTrack, b.itemTrack, t),
+        barNeutral = lerp(a.barNeutral, b.barNeutral, t),
+        accent = lerp(a.accent, b.accent, t),
+        accentSoft = lerp(a.accentSoft, b.accentSoft, t),
+        accentCard = lerp(a.accentCard, b.accentCard, t),
+        good = lerp(a.good, b.good, t),
+        goodSoft = lerp(a.goodSoft, b.goodSoft, t),
+        caution = lerp(a.caution, b.caution, t),
+        cautionSoft = lerp(a.cautionSoft, b.cautionSoft, t),
+        warn = lerp(a.warn, b.warn, t),
+        gold = lerp(a.gold, b.gold, t),
+        goldSoft = lerp(a.goldSoft, b.goldSoft, t),
+        cellOff = lerp(a.cellOff, b.cellOff, t),
+        dim = lerp(a.dim, b.dim, t),
+        heroBg = lerp(a.heroBg, b.heroBg, t),
+        heroTrail = lerp(a.heroTrail, b.heroTrail, t),
+        logoBgTop = lerp(a.logoBgTop, b.logoBgTop, t),
+        logoBgBottom = lerp(a.logoBgBottom, b.logoBgBottom, t),
+        heroText = lerp(a.heroText, b.heroText, t),
+        heroScrim = lerp(a.heroScrim, b.heroScrim, t),
+        heroButton = lerp(a.heroButton, b.heroButton, t),
+        heroButtonText = lerp(a.heroButtonText, b.heroButtonText, t),
+        dialogScrim = lerp(a.dialogScrim, b.dialogScrim, t),
+        onAccent = lerp(a.onAccent, b.onAccent, t),
+        switchKnob = lerp(a.switchKnob, b.switchKnob, t),
+        themeKnob = lerp(a.themeKnob, b.themeKnob, t),
+        themeKnobIcon = lerp(a.themeKnobIcon, b.themeKnobIcon, t),
+        spaceBg = lerp(a.spaceBg, b.spaceBg, t),
+        videoButton = lerp(a.videoButton, b.videoButton, t),
+        videoButtonBorder = lerp(a.videoButtonBorder, b.videoButtonBorder, t),
+        videoButtonIcon = lerp(a.videoButtonIcon, b.videoButtonIcon, t),
+        mapSea = lerp(a.mapSea, b.mapSea, t),
+        mapLand = lerp(a.mapLand, b.mapLand, t),
+        mapLine = lerp(a.mapLine, b.mapLine, t),
+        mapLabel = lerp(a.mapLabel, b.mapLabel, t),
+        mapText = lerp(a.mapText, b.mapText, t),
+        mapSub = lerp(a.mapSub, b.mapSub, t),
+        mapSelected = lerp(a.mapSelected, b.mapSelected, t),
+        mapBorder = lerp(a.mapBorder, b.mapBorder, t),
+        regionGroup = a.regionGroup.mapValues { (k, c) -> lerp(c, b.regionGroup[k] ?: c, t) },
+    )
+}
+
+val LocalTraceColors = staticCompositionLocalOf { DarkTraceColors }

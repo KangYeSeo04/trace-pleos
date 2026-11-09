@@ -324,7 +324,7 @@ private fun ChargeForecastBar(day: ChargeForecastDay, modifier: Modifier = Modif
     val barColor = when {
         day.percentage < 20 -> colors.caution
         day.isToday -> colors.accent
-        else -> colors.track
+        else -> colors.bar
     }
     val textColor = when {
         day.percentage < 20 -> colors.caution

@@ -73,6 +73,8 @@ import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
 import kotlinx.coroutines.withContext
 import com.tracers.trace.ui.icons.TraceIcons
+import com.tracers.trace.ui.theme.DarkTraceColors
+import com.tracers.trace.ui.theme.LightTraceColors
 import com.tracers.trace.ui.theme.TraceTheme
 import kotlin.math.abs
 import kotlin.math.min
@@ -269,7 +271,9 @@ private fun MapCanvas(
         val dpx = LocalDensity.current.density
         val wPx = constraints.maxWidth
         val hPx = constraints.maxHeight
-        val paint = MapPaint(colors.mapLine, colors.mapLand, colors.mapSea, colors.mapSelected, colors.mapBorder)
+        // 테마 전환 1초 동안 colors는 매 프레임 섞인 값이라, 비트맵은 바뀔 테마 색으로 한 번만 다시 그린다
+        val target = if (TraceTheme.isDark) DarkTraceColors else LightTraceColors
+        val paint = MapPaint(target.mapLine, target.mapLand, target.mapSea, target.mapSelected, target.mapBorder)
 
         // 지도 본체(해안선·땅·방문 색·선택 테두리)는 비트맵으로 미리 그린다.
         // 복잡한 Path를 매 프레임 그리면 CPU 래스터화로 끊기므로, 조작 중에는 비트맵만 옮기고

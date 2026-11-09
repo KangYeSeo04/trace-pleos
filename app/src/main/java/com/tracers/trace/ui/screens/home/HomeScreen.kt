@@ -43,6 +43,7 @@ import com.tracers.trace.ui.components.StatusChip
 import com.tracers.trace.ui.components.ThemeSwitch
 import com.tracers.trace.ui.components.Tile
 import com.tracers.trace.ui.icons.TraceIcons
+import com.tracers.trace.ui.theme.THEME_CROSSFADE_MS
 import com.tracers.trace.ui.theme.TraceTheme
 
 /**
@@ -56,6 +57,7 @@ fun HomeScreen(
     onNavigateToCoin: () -> Unit = {},
     onNavigateToRegion: () -> Unit = {},
     onNavigateToSpace: () -> Unit = {},
+    onToggleTheme: () -> Unit = {},
     modifier: Modifier = Modifier
 ) {
     val colors = TraceTheme.colors
@@ -68,7 +70,7 @@ fun HomeScreen(
         verticalArrangement = Arrangement.spacedBy(12.dp)
     ) {
         // 앱 바
-        HomeAppBar(isDriving = uiState.isDriving)
+        HomeAppBar(isDriving = uiState.isDriving, onToggleTheme = onToggleTheme)
 
         // 비행 무대 (디자인 정차 비율: 250 / 390 = 25 / 39)
         HeroStage(
@@ -107,6 +109,7 @@ fun HomeScreen(
 @Composable
 private fun HomeAppBar(
     isDriving: Boolean,
+    onToggleTheme: () -> Unit,
     modifier: Modifier = Modifier
 ) {
     val colors = TraceTheme.colors
@@ -141,10 +144,10 @@ private fun HomeAppBar(
 
             Spacer(modifier = Modifier.width(6.dp))
 
-            // 해/달 스위치 (다크 모드만 지원, 누르면 아무 일도 안 함)
+            // 해/달 스위치 (A-03): 누르면 선택을 저장하고 그 테마를 따른다
             ThemeSwitch(
-                isDark = true,
-                onToggle = { /* 다크 모드만 지원 */ }
+                isDark = TraceTheme.isDark,
+                onToggle = onToggleTheme
             )
         }
 
@@ -168,7 +171,7 @@ private fun TraceLogo(modifier: Modifier = Modifier) {
             .clip(RoundedCornerShape(9.dp))
             .background(
                 Brush.linearGradient(
-                    colors = listOf(Color(0xFF1B2533), Color(0xFF070A0F)),
+                    colors = listOf(TraceTheme.colors.logoBgTop, TraceTheme.colors.logoBgBottom),
                     start = androidx.compose.ui.geometry.Offset(0f, 0f),
                     end = androidx.compose.ui.geometry.Offset(30f, 30f)
                 )
@@ -202,19 +205,26 @@ private fun HeroStage(
         modifier = modifier
             .fillMaxWidth()
             .clip(RoundedCornerShape(20.dp))
+            .background(TraceTheme.colors.heroBg)
             .clickable(enabled = !isDriving, role = Role.Button, onClick = onClick)
             .onGloballyPositioned { coords ->
                 val heightDp = with(density) { coords.size.height.toDp() }
                 Log.d("HomeLayout", "HeroStage height: $heightDp")
             }
     ) {
-        // 밤하늘 이미지
-        Image(
-            painter = painterResource(id = R.drawable.sky_night_hero),
-            contentDescription = "밤하늘",
-            contentScale = ContentScale.Crop,
-            modifier = Modifier.fillMaxSize()
-        )
+        // 하늘 사진 (다크 밤하늘 / 라이트 낮 하늘). 테마가 바뀌면 1초 크로스페이드
+        Crossfade(
+            targetState = TraceTheme.isDark,
+            animationSpec = tween(durationMillis = THEME_CROSSFADE_MS),
+            label = "heroSky",
+        ) { dark ->
+            Image(
+                painter = painterResource(id = if (dark) R.drawable.sky_night_hero else R.drawable.sky_day_hero),
+                contentDescription = if (dark) "밤하늘" else "낮 하늘",
+                contentScale = ContentScale.Crop,
+                modifier = Modifier.fillMaxSize()
+            )
+        }
 
         // 하단 그라데이션
         Box(
@@ -347,18 +357,34 @@ private fun TileGrid(
 // Preview
 // ============================================================
 
-@Preview(widthDp = 600, heightDp = 800)
+@Preview(name = "정차 · 다크", widthDp = 600, heightDp = 800)
 @Composable
-private fun HomeScreenParkedPreview() {
-    TraceTheme {
+private fun HomeScreenParkedDarkPreview() {
+    TraceTheme(darkTheme = true) {
         HomeScreen(uiState = SampleHomeUiState.parked)
     }
 }
 
-@Preview(widthDp = 600, heightDp = 800)
+@Preview(name = "정차 · 라이트", widthDp = 600, heightDp = 800)
 @Composable
-private fun HomeScreenDrivingPreview() {
-    TraceTheme {
+private fun HomeScreenParkedLightPreview() {
+    TraceTheme(darkTheme = false) {
+        HomeScreen(uiState = SampleHomeUiState.parked)
+    }
+}
+
+@Preview(name = "주행 · 다크", widthDp = 600, heightDp = 800)
+@Composable
+private fun HomeScreenDrivingDarkPreview() {
+    TraceTheme(darkTheme = true) {
+        HomeScreen(uiState = SampleHomeUiState.driving)
+    }
+}
+
+@Preview(name = "주행 · 라이트", widthDp = 600, heightDp = 800)
+@Composable
+private fun HomeScreenDrivingLightPreview() {
+    TraceTheme(darkTheme = false) {
         HomeScreen(uiState = SampleHomeUiState.driving)
     }
 }

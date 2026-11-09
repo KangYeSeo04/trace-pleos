@@ -1,5 +1,8 @@
 package com.tracers.trace.ui.screens.coin
 
+import com.tracers.trace.ui.theme.THEME_CROSSFADE_MS
+import androidx.compose.animation.core.tween
+import androidx.compose.animation.Crossfade
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -152,15 +155,33 @@ private fun CoinHero(
             .clip(RoundedCornerShape(20.dp))
             .background(colors.heroBg)
     ) {
-        Image(
-            painter = painterResource(R.drawable.coin_bg_night),
-            contentDescription = null,
-            contentScale = ContentScale.Crop,
-            // object-position 50% 40% → 세로 바이어스 0.4 × 2 − 1
-            alignment = BiasAlignment(horizontalBias = 0f, verticalBias = -0.2f),
-            modifier = Modifier.fillMaxSize()
-        )
-        CoinHeroCanvas(animate = animate, modifier = Modifier.fillMaxSize())
+        // 다크는 밤하늘 사진 + 캔버스 애니메이션, 라이트는 낮 하늘 정지 사진 (CoinLight isLight 분기)
+        Crossfade(
+            targetState = TraceTheme.isDark,
+            animationSpec = tween(durationMillis = THEME_CROSSFADE_MS),
+            label = "coinHero",
+        ) { dark ->
+            Box(Modifier.fillMaxSize()) {
+                if (dark) {
+                    Image(
+                        painter = painterResource(R.drawable.coin_bg_night),
+                        contentDescription = null,
+                        contentScale = ContentScale.Crop,
+                        // object-position 50% 40% → 세로 바이어스 0.4 × 2 − 1
+                        alignment = BiasAlignment(horizontalBias = 0f, verticalBias = -0.2f),
+                        modifier = Modifier.fillMaxSize()
+                    )
+                    CoinHeroCanvas(animate = animate, modifier = Modifier.fillMaxSize())
+                } else {
+                    Image(
+                        painter = painterResource(R.drawable.sky_day_hero),
+                        contentDescription = null,
+                        contentScale = ContentScale.Crop,
+                        modifier = Modifier.fillMaxSize()
+                    )
+                }
+            }
+        }
 
         // 하단 150 그라데이션 (투명 → 0.6)
         Box(
@@ -344,10 +365,16 @@ internal fun formatCoins(value: Int): String = String.format(Locale.KOREA, "%,d"
 
 // ===== Preview =====
 
-@Preview(widthDp = 600, heightDp = 1900, showBackground = true)
+@Preview(name = "다크", widthDp = 600, heightDp = 1900, showBackground = true)
 @Composable
-private fun CoinScreenPreview() {
-    TraceTheme { CoinScreen(uiState = SampleData.coinUiState, onNavigateBack = {}) }
+private fun CoinScreenDarkPreview() {
+    TraceTheme(darkTheme = true) { CoinScreen(uiState = SampleData.coinUiState, onNavigateBack = {}) }
+}
+
+@Preview(name = "라이트", widthDp = 600, heightDp = 1900, showBackground = true)
+@Composable
+private fun CoinScreenLightPreview() {
+    TraceTheme(darkTheme = false) { CoinScreen(uiState = SampleData.coinUiState, onNavigateBack = {}) }
 }
 
 @Preview(widthDp = 600, heightDp = 800, showBackground = true)

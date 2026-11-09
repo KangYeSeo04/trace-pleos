@@ -1,13 +1,18 @@
 package com.tracers.trace.ui.theme
 
+import androidx.compose.animation.core.animateFloatAsState
+import androidx.compose.animation.core.tween
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.darkColorScheme
+import androidx.compose.material3.lightColorScheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.ReadOnlyComposable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.staticCompositionLocalOf
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.unit.Density
@@ -17,10 +22,14 @@ import kotlin.math.min
 private const val DESIGN_WIDTH_DP = 600f
 private const val DESIGN_HEIGHT_DP = 800f
 
+/** 테마 전환 크로스페이드 길이 */
+const val THEME_CROSSFADE_MS = 1000
+
 /**
  * TRACE 테마.
  *
- * 이번 단계는 다크 모드만 구현. 라이트 모드는 나중에 토큰만 추가.
+ * darkTheme에 따라 색 묶음(DarkTraceColors / LightTraceColors)만 바뀐다.
+ * 바뀔 때는 두 묶음을 1초 동안 섞어 크로스페이드한다(공통 규칙: 상태 전환 1초).
  * Material3는 쓰되 기본 테마 색은 쓰지 않는다 (TraceColors 사용).
  *
  * scale = min(칸가로/600, 칸세로/800)로 동적 계산.
@@ -32,18 +41,34 @@ fun TraceTheme(
     darkTheme: Boolean = isSystemInDarkTheme(),
     content: @Composable () -> Unit
 ) {
-    val colors = TraceColors()
+    val toDark by animateFloatAsState(
+        targetValue = if (darkTheme) 1f else 0f,
+        animationSpec = tween(durationMillis = THEME_CROSSFADE_MS),
+        label = "themeCrossfade",
+    )
+    val colors = lerpTraceColors(LightTraceColors, DarkTraceColors, toDark)
     val type = TraceType()
 
     // Material3 색상은 최소한만 설정 (배경, 표면)
-    val materialColors = darkColorScheme(
-        background = colors.panel,
-        surface = colors.tile,
-        onBackground = colors.t1,
-        onSurface = colors.t1,
-        primary = colors.accent,
-        onPrimary = colors.t1,
-    )
+    val materialColors = if (darkTheme) {
+        darkColorScheme(
+            background = colors.panel,
+            surface = colors.tile,
+            onBackground = colors.t1,
+            onSurface = colors.t1,
+            primary = colors.accent,
+            onPrimary = colors.onAccent,
+        )
+    } else {
+        lightColorScheme(
+            background = colors.panel,
+            surface = colors.tile,
+            onBackground = colors.t1,
+            onSurface = colors.t1,
+            primary = colors.accent,
+            onPrimary = colors.onAccent,
+        )
+    }
 
     // 칸 크기 측정 후 scale 적용
     BoxWithConstraints(modifier = Modifier.fillMaxSize()) {
@@ -68,6 +93,7 @@ fun TraceTheme(
         CompositionLocalProvider(
             LocalDensity provides scaledDensity,
             LocalTraceColors provides colors,
+            LocalTraceIsDark provides darkTheme,
             LocalTraceType provides type,
             LocalTraceDimens provides dimens,
         ) {
@@ -79,6 +105,9 @@ fun TraceTheme(
     }
 }
 
+/** 지금 테마가 다크인지. 테마별 자산(하늘 사진·비행 영상) 고를 때 쓴다 */
+val LocalTraceIsDark = staticCompositionLocalOf { true }
+
 /**
  * 현재 테마 색상에 접근.
  * 사용: TraceTheme.colors.panel
@@ -88,6 +117,11 @@ object TraceTheme {
         @Composable
         @ReadOnlyComposable
         get() = LocalTraceColors.current
+
+    val isDark: Boolean
+        @Composable
+        @ReadOnlyComposable
+        get() = LocalTraceIsDark.current
 
     val type: TraceType
         @Composable
