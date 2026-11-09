@@ -8,12 +8,11 @@ package com.tracers.trace.domain
  *   (출발 가속·거리·에너지가 빠지지 않게). 판정 전에 다시 멈추면 후보는 버린다
  * - 종료: [DriveState.PARKED]. 신호등 정차([DriveState.STOPPED])는 주행을 끝내지 않는다
  * - 원시 샘플은 누적값만 갱신하고 버린다. 저장되는 건 [TripRecord] 하나
+ * - 급가속 횟수는 [DrivingEventDetector]가 낸 이벤트를 [onDrivingEvent]로 받아 센다 (판정기는 앱에 하나)
  *
  * 스레드 안전하지 않다. 한 코루틴에서만 부른다.
  */
 class TripRecorder(
-    /** 급가속 기준 (km/h per 초). 기획안 B-04 */
-    private val hardAccelKmhPerSec: Double = DrivingThresholds.HARD_ACCEL_KMH_PER_SEC,
     /** 이보다 짧은 주행은 버린다 (주차장 이동 등) */
     private val minDistanceKm: Double = MIN_DISTANCE_KM,
 ) {
@@ -23,6 +22,14 @@ class TripRecorder(
     private var candidate: Accumulator? = null
 
     val isRecording: Boolean get() = trip != null
+
+    /** 진행 중인 주행의 시작 시각. 주행 중이 아니면 null */
+    val currentStartMs: Long? get() = trip?.startMs
+
+    /** 위험 운전 이벤트. 급가속만 전비 요약에 센다 (출발 판정 전 후보 구간 포함) */
+    fun onDrivingEvent(e: DrivingEvent) {
+        if (e.type == DrivingEventType.HARD_ACCEL) (trip ?: candidate)?.let { it.hardAccel++ }
+    }
 
     /** 차량 값이 바뀔 때마다 부른다. 주행 중이 아니면 마지막 값만 기억한다 */
     fun onSample(s: VehicleSample) {
@@ -78,7 +85,7 @@ class TripRecorder(
         )
     }
 
-    private inner class Accumulator(private val startMs: Long, start: VehicleSample?) {
+    private inner class Accumulator(val startMs: Long, start: VehicleSample?) {
         // 앱이 켜지자마자 움직여 시작 기준값이 없으면 첫 샘플을 기준으로 쓴다
         private var startOdo = start?.odometerKm
         private var startPercent = start?.batteryPercent
@@ -92,16 +99,7 @@ class TripRecorder(
         private var integratedKm = 0.0
         private var hvacOnMs = 0L
 
-        // 급가속: 차속은 다음 값이 올 때까지 유지된다고 보고(바뀔 때만 오는 신호 대응)
-        // 지금 값과 정확히 1초 전 값을 비교한다. 1초 창 + 그 직전 값 하나만 들고 있는다
-        private val speedHistory = ArrayDeque<Pair<Long, Float>>().apply {
-            val t = start?.timeMs
-            val v = start?.speedMps
-            if (t != null && v != null) addLast(t to v)
-        }
-        // 한 번 센 뒤 가속이 풀릴 때까지 다시 세지 않는다
-        private var accelArmed = true
-        private var hardAccel = 0
+        var hardAccel = 0
 
         fun add(raw: VehicleSample) {
             val p = prev
@@ -129,27 +127,9 @@ class TripRecorder(
                 prevKwh = kwh
             }
 
-            s.speedMps?.let { v -> checkAccel(s.timeMs, v) }
             s.odometerKm?.let { endOdo = it }
             s.batteryPercent?.let { endPercent = it }
             prev = s
-        }
-
-        private fun checkAccel(t: Long, v: Float) {
-            speedHistory.addLast(t to v)
-            val windowStart = t - ACCEL_WINDOW_MS
-            while (speedHistory.size >= 2 && speedHistory[1].first <= windowStart) speedHistory.removeFirst()
-            val (anchorTime, anchorSpeed) = speedHistory.first()
-            if (anchorTime > windowStart) return // 1초 전 값을 아직 모름
-
-            val kmhPerSec = (v - anchorSpeed) * 3.6 / (ACCEL_WINDOW_MS / 1000.0)
-            // 차속이 Float(m/s)라 경계값이 10.9999처럼 나오므로 작은 오차를 허용
-            if (kmhPerSec >= hardAccelKmhPerSec - EPSILON_KMH) {
-                if (accelArmed) hardAccel++
-                accelArmed = false
-            } else {
-                accelArmed = true
-            }
         }
 
         fun snapshot(): TripRecord = finish(prev?.timeMs?.coerceAtLeast(startMs) ?: startMs)
@@ -178,8 +158,6 @@ class TripRecorder(
             snapshot.takeIf { it.distanceKm >= minDistanceKm }
 
         const val MIN_DISTANCE_KM = 0.1
-        private const val EPSILON_KMH = 1e-3
-        private const val ACCEL_WINDOW_MS = 1_000L
         /** 이보다 긴 샘플 간격은 끊긴 것으로 보고 거리 적분에서 뺀다 */
         private const val MAX_GAP_MS = 5_000L
     }

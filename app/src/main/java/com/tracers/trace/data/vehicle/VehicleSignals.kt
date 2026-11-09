@@ -1,5 +1,7 @@
 package com.tracers.trace.data.vehicle
 
+import com.tracers.trace.domain.SpeedReading
+import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.StateFlow
 
 /**
@@ -7,6 +9,7 @@ import kotlinx.coroutines.flow.StateFlow
  *
  * 지원 범위 (docs/PLEOS_API_확인현황.md 기준):
  * - 속도: AAOS PERF_VEHICLE_SPEED (100ms 간격)
+ * - 제한속도: NaviHelper onCurrentRoadSpeedLimit (km/h, 1초마다, 0 = 정보 없음)
  * - 기어: AAOS GEAR_SELECTION (P/R/N/D). Vehicle SDK Gear는 deprecated라 쓰지 않음
  * - 브레이크: Vehicle SDK Brake (Boolean on/off만, % 아님)
  * - 조향각: Vehicle SDK SteeringWheel (부호 보정 필요: 콘솔 +90 → SDK -90)
@@ -24,6 +27,18 @@ interface VehicleSignals {
 
     /** 차량 속도 (m/s). km/h로 변환: speedMps * 3.6 */
     val speedMps: StateFlow<Float?>
+
+    /**
+     * 차속 값 하나하나 (측정 시각 포함). [speedMps]는 StateFlow라 늦게 읽으면 중간 값이 빠지므로,
+     * 급가속·급감속처럼 값의 순서가 중요한 판정은 이 흐름을 쓴다. 버퍼가 있어 값을 건너뛰지 않는다
+     */
+    val speedReadings: SharedFlow<SpeedReading>
+
+    /**
+     * 지금 달리는 도로의 제한속도 (km/h). NaviHelper onCurrentRoadSpeedLimit, 1초마다.
+     * null = 정보 없음(0이 오거나 내비 연결 전). 과속 판정(E-01)에만 쓴다
+     */
+    val speedLimitKmh: StateFlow<Int?>
 
     /** 기어 상태 */
     val gear: StateFlow<Gear?>

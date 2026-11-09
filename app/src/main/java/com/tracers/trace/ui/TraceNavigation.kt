@@ -78,8 +78,13 @@ fun TraceNavHost(
     val homeViewModel = remember {
         HomeViewModel(
             driveState = app.recordCollector.driveState,
-            efficiency = app.efficiencySource.observe().map { it.summary },
+            efficiency = app.efficiencySource.observe(),
+            charging = app.recordCollector.charging,
             permissionsGranted = app.permissionsGranted,
+            coinWallet = app.coinRepository.observeWallet(),
+            latestTripKms = app.coinRepository.observeLatestTripKms(),
+            roughDriving = app.recordCollector.roughDriving,
+            speedMps = app.vehicleSignals.speedMps,
         )
     }
 
@@ -143,7 +148,11 @@ fun TraceNavHost(
             PlaceholderScreen(onBack = { navController.popBackStack() })
         }
         composable(TraceDestinations.COIN) {
-            val coinViewModel: CoinViewModel = viewModel()
+            val coinViewModel: CoinViewModel = viewModel(
+                factory = viewModelFactory {
+                    initializer { CoinViewModel(app.coinRepository, app.recordCollector.driveState) }
+                }
+            )
             val coinUiState by coinViewModel.uiState.collectAsState()
             CoinScreen(
                 uiState = coinUiState,

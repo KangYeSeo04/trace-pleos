@@ -2,6 +2,7 @@ package com.tracers.trace
 
 import android.app.Application
 import com.tracers.trace.data.permission.RuntimePermissions
+import com.tracers.trace.data.record.CoinRepository
 import com.tracers.trace.data.record.DriveRecordCollector
 import com.tracers.trace.data.record.EfficiencySource
 import com.tracers.trace.data.record.RecordRepository
@@ -27,6 +28,8 @@ class TraceApplication : Application() {
         private set
     lateinit var recordRepository: RecordRepository
         private set
+    lateinit var coinRepository: CoinRepository
+        private set
     lateinit var recordCollector: DriveRecordCollector
         private set
     lateinit var efficiencySource: EfficiencySource
@@ -40,8 +43,10 @@ class TraceApplication : Application() {
     override fun onCreate() {
         super.onCreate()
         vehicleSignals = PleosVehicleSignals(this)
-        recordRepository = RecordRepository(TraceDatabase.create(this))
-        recordCollector = DriveRecordCollector(vehicleSignals, recordRepository, appScope)
+        val db = TraceDatabase.create(this)
+        recordRepository = RecordRepository(db)
+        coinRepository = CoinRepository(db)
+        recordCollector = DriveRecordCollector(vehicleSignals, recordRepository, coinRepository, appScope)
         efficiencySource = EfficiencySource(recordRepository, vehicleSignals)
         refreshPermissions()
     }
