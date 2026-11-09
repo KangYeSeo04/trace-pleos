@@ -146,4 +146,30 @@ class TripRecorderTest {
         assertEquals(61.92, BatteryEnergy.kwh(null, 80, 77_400f)!!, 1e-6)
         assertNull(BatteryEnergy.kwh(null, 80, null))
     }
+
+    @Test
+    fun `진행 중 스냅샷은 마지막으로 받은 값까지의 요약이고 기록은 계속된다`() {
+        val r = TripRecorder()
+        assertNull(r.snapshot())
+        r.onSample(sample(0, kwh = 60.0, odo = 1000.0))
+        r.onDriveState(DriveState.DRIVING, 0)
+        r.onSample(sample(60_000, kwh = 59.0, odo = 1005.0))
+
+        val snap = r.snapshot()!!
+        assertEquals(60_000L, snap.endedAtMs)
+        assertEquals(5.0, snap.distanceKm, 1e-6)
+        assertEquals(1.0, snap.energyUsedKwh, 1e-6)
+
+        r.onSample(sample(120_000, kwh = 58.0, odo = 1010.0))
+        val trip = r.onDriveState(DriveState.PARKED, 120_000)!!
+        assertEquals(10.0, trip.distanceKm, 1e-6)
+        assertNull(r.snapshot())
+    }
+
+    @Test
+    fun `앱이 다시 켜졌을 때 남은 스냅샷은 거리 기준을 넘으면 주행으로 마무리한다`() {
+        val snap = TripRecord(0, 60_000, 5.0, 1.0, 0, 0.0, 0, 80, 79)
+        assertEquals(snap, TripRecorder.finalizeRecovered(snap))
+        assertNull(TripRecorder.finalizeRecovered(snap.copy(distanceKm = 0.05)))
+    }
 }

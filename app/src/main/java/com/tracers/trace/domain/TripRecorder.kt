@@ -42,6 +42,12 @@ class TripRecorder(
         }
     }
 
+    /**
+     * 진행 중인 주행의 지금까지 요약 (끝 시각 = 마지막으로 받은 값의 시각).
+     * 앱이 도중에 꺼져도 마무리할 수 있게 주기적으로 저장하는 용도. 주행 중이 아니면 null
+     */
+    fun snapshot(): TripRecord? = trip?.snapshot()
+
     /** null인 값은 이전 값으로 채운다 (신호마다 갱신 주기가 다르다) */
     private fun merge(prev: VehicleSample?, s: VehicleSample): VehicleSample {
         if (prev == null) return s
@@ -123,6 +129,8 @@ class TripRecorder(
             accelRefTime = t; accelRefSpeed = v
         }
 
+        fun snapshot(): TripRecord = finish(prev?.timeMs?.coerceAtLeast(startMs) ?: startMs)
+
         fun finish(endMs: Long): TripRecord {
             val so = startOdo
             val eo = endOdo
@@ -142,6 +150,10 @@ class TripRecorder(
     }
 
     companion object {
+        /** 앱이 다시 켜졌을 때 남아 있던 스냅샷을 주행 1회로 마무리. 너무 짧으면 버린다 */
+        fun finalizeRecovered(snapshot: TripRecord, minDistanceKm: Double = MIN_DISTANCE_KM): TripRecord? =
+            snapshot.takeIf { it.distanceKm >= minDistanceKm }
+
         const val MIN_DISTANCE_KM = 0.1
         private const val EPSILON_KMH = 1e-3
         private const val ACCEL_WINDOW_MS = 1_000L

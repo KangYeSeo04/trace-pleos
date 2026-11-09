@@ -2,6 +2,7 @@ package com.tracers.trace.data.record
 
 import androidx.room.Dao
 import androidx.room.Insert
+import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import kotlinx.coroutines.flow.Flow
 
@@ -29,4 +30,16 @@ interface ChargeSessionDao {
 
     @Query("DELETE FROM charge_session WHERE startedAtMs < :beforeMs")
     suspend fun deleteBefore(beforeMs: Long): Int
+}
+
+@Dao
+interface TripInProgressDao {
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    suspend fun upsert(row: TripInProgressEntity)
+
+    @Query("SELECT * FROM trip_in_progress WHERE id = 0")
+    suspend fun get(): TripInProgressEntity?
+
+    @Query("DELETE FROM trip_in_progress")
+    suspend fun clear()
 }
