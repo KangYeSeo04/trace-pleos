@@ -673,7 +673,9 @@ def main():
     display = {
         "meta": meta | {"projection": "Mercator, 본토와 섬 박스는 각각 다른 배율",
                         "fillRule": "evenOdd", "scale": {k: rnd(v[0] / T["main"][0], 2) for k, v in T.items()},
-                        "uiRects": UI_RECTS},
+                        "uiRects": UI_RECTS,
+                        # 위경도 → 화면 좌표: x = rad(lon)·s + ox, y = −ln(tan(π/4 + rad(lat)/2))·s + oy (섬 박스별)
+                        "transforms": {k: [rnd(v[0], 4), rnd(v[1], 3), rnd(v[2], 3)] for k, v in T.items()}},
         "viewBox": [VIEW_W, VIEW_H], "groups": group_out, "insets": insets, "regions": regions,
         "borders": borders_d,
     }

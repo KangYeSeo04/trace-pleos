@@ -28,6 +28,14 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.geometry.Offset
+import com.tracers.trace.ui.screens.region.RegionMapStore
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.produceState
+import androidx.compose.runtime.getValue
+import androidx.compose.ui.platform.LocalInspectionMode
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.graphics.drawscope.withTransform
+import androidx.compose.ui.geometry.Rect
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Path
 import androidx.compose.ui.graphics.StrokeCap
@@ -158,11 +166,13 @@ fun Tile(
                     }
                 }
                 Spacer(modifier = Modifier.weight(1f))
-                // 서울 지도 (정차 모드, 서울에 있을 때만)
-                if (!isDriving && state.showMap) {
-                    SeoulMap(
-                        locationX = state.locationX,
-                        locationY = state.locationY,
+                // 지금 지역 작은 지도 (정차 모드)
+                val mapCode = state.mapCode
+                if (!isDriving && mapCode != null) {
+                    RegionMiniMap(
+                        code = mapCode,
+                        latitude = state.mapLatitude,
+                        longitude = state.mapLongitude,
                         modifier = Modifier.size(width = 78.dp, height = 62.dp)
                     )
                 }
@@ -327,114 +337,55 @@ private fun TileProgressBar(
 }
 
 /**
- * 서울 지도 (간략화).
+ * 지금 지역의 모양(regions_display.json)과 지금 위치 점. 칸에 맞춰 가운데 놓고, 선 굵기·점 크기는 칸 기준으로 고정.
+ * 지도 데이터는 지역 화면과 같은 것을 한 번만 읽어 같이 쓴다.
  */
 @Composable
-private fun SeoulMap(
-    locationX: Float,
-    locationY: Float,
+private fun RegionMiniMap(
+    code: String,
+    latitude: Double?,
+    longitude: Double?,
     modifier: Modifier = Modifier
 ) {
     val colors = TraceTheme.colors
+    val context = LocalContext.current
+    val inspection = LocalInspectionMode.current
+    val map by produceState(
+        initialValue = if (inspection) RegionMapStore.loadBlockingForPreview(context) else null
+    ) {
+        if (value == null) value = RegionMapStore.load(context)
+    }
+    val mini = remember(map, code, latitude, longitude) { map?.miniMap(code, latitude, longitude) } ?: return
 
     Canvas(modifier = modifier) {
-        val scaleX = size.width / 100f
-        val scaleY = size.height / 80f
+        val stroke = 2.dp.toPx()
+        val dotR = 9f * size.width / 100f
+        // 점이 모양 밖(해안 근처)이어도 보이게 범위에 넣고, 선·점이 잘리지 않게 여백
+        val b = mini.dot?.let { d ->
+            Rect(minOf(mini.bounds.left, d.x), minOf(mini.bounds.top, d.y), maxOf(mini.bounds.right, d.x), maxOf(mini.bounds.bottom, d.y))
+        } ?: mini.bounds
+        val pad = maxOf(stroke, dotR)
+        val w = (b.width).coerceAtLeast(1e-3f)
+        val h = (b.height).coerceAtLeast(1e-3f)
+        val k = minOf((size.width - 2 * pad) / w, (size.height - 2 * pad) / h)
+        val ox = (size.width - w * k) / 2 - b.left * k
+        val oy = (size.height - h * k) / 2 - b.top * k
 
-        // 서울 외곽선
-        val path = Path().apply {
-            moveTo(4f * scaleX, 38f * scaleY)
-            lineTo(8f * scaleX, 34f * scaleY)
-            lineTo(12f * scaleX, 33f * scaleY)
-            lineTo(15f * scaleX, 30f * scaleY)
-            lineTo(19f * scaleX, 31f * scaleY)
-            lineTo(22f * scaleX, 29f * scaleY)
-            lineTo(24f * scaleX, 25f * scaleY)
-            lineTo(26f * scaleX, 21f * scaleY)
-            lineTo(29f * scaleX, 17f * scaleY)
-            lineTo(32f * scaleX, 14f * scaleY)
-            lineTo(35f * scaleX, 12f * scaleY)
-            lineTo(38f * scaleX, 13f * scaleY)
-            lineTo(41f * scaleX, 10f * scaleY)
-            lineTo(44f * scaleX, 9f * scaleY)
-            lineTo(47f * scaleX, 6f * scaleY)
-            lineTo(50f * scaleX, 4f * scaleY)
-            lineTo(53f * scaleX, 5f * scaleY)
-            lineTo(55f * scaleX, 3f * scaleY)
-            lineTo(58f * scaleX, 4f * scaleY)
-            lineTo(60f * scaleX, 7f * scaleY)
-            lineTo(61f * scaleX, 11f * scaleY)
-            lineTo(63f * scaleX, 14f * scaleY)
-            lineTo(62f * scaleX, 18f * scaleY)
-            lineTo(65f * scaleX, 21f * scaleY)
-            lineTo(66f * scaleX, 25f * scaleY)
-            lineTo(68f * scaleX, 28f * scaleY)
-            lineTo(71f * scaleX, 30f * scaleY)
-            lineTo(74f * scaleX, 31f * scaleY)
-            lineTo(77f * scaleX, 33f * scaleY)
-            lineTo(80f * scaleX, 32f * scaleY)
-            lineTo(83f * scaleX, 33f * scaleY)
-            lineTo(86f * scaleX, 35f * scaleY)
-            lineTo(89f * scaleX, 37f * scaleY)
-            lineTo(92f * scaleX, 39f * scaleY)
-            lineTo(90f * scaleX, 43f * scaleY)
-            lineTo(87f * scaleX, 45f * scaleY)
-            lineTo(84f * scaleX, 47f * scaleY)
-            lineTo(83f * scaleX, 51f * scaleY)
-            lineTo(80f * scaleX, 54f * scaleY)
-            lineTo(78f * scaleX, 58f * scaleY)
-            lineTo(75f * scaleX, 60f * scaleY)
-            lineTo(72f * scaleX, 59f * scaleY)
-            lineTo(69f * scaleX, 62f * scaleY)
-            lineTo(66f * scaleX, 65f * scaleY)
-            lineTo(63f * scaleX, 66f * scaleY)
-            lineTo(60f * scaleX, 64f * scaleY)
-            lineTo(57f * scaleX, 68f * scaleY)
-            lineTo(54f * scaleX, 71f * scaleY)
-            lineTo(51f * scaleX, 70f * scaleY)
-            lineTo(48f * scaleX, 67f * scaleY)
-            lineTo(46f * scaleX, 69f * scaleY)
-            lineTo(43f * scaleX, 71f * scaleY)
-            lineTo(40f * scaleX, 69f * scaleY)
-            lineTo(38f * scaleX, 66f * scaleY)
-            lineTo(35f * scaleX, 67f * scaleY)
-            lineTo(32f * scaleX, 69f * scaleY)
-            lineTo(29f * scaleX, 67f * scaleY)
-            lineTo(27f * scaleX, 63f * scaleY)
-            lineTo(25f * scaleX, 60f * scaleY)
-            lineTo(22f * scaleX, 58f * scaleY)
-            lineTo(19f * scaleX, 57f * scaleY)
-            lineTo(16f * scaleX, 55f * scaleY)
-            lineTo(14f * scaleX, 52f * scaleY)
-            lineTo(12f * scaleX, 49f * scaleY)
-            lineTo(10f * scaleX, 46f * scaleY)
-            lineTo(8f * scaleX, 43f * scaleY)
-            lineTo(5f * scaleX, 41f * scaleY)
-            close()
+        withTransform({
+            translate(ox, oy)
+            scale(k, k, pivot = Offset.Zero)
+        }) {
+            drawPath(
+                path = mini.path,
+                color = colors.t2,
+                style = Stroke(width = stroke / k, join = StrokeJoin.Round)
+            )
         }
 
-        drawPath(
-            path = path,
-            color = colors.t2,
-            style = Stroke(width = 2.dp.toPx(), join = StrokeJoin.Round)
-        )
-
-        // 현재 위치 (큰 원 + 작은 원)
-        val cx = locationX * scaleX
-        val cy = locationY * scaleY
-
-        // 큰 원 (반투명)
-        drawCircle(
-            color = colors.accent.copy(alpha = 0.22f),
-            radius = 9f * scaleX,
-            center = Offset(cx, cy)
-        )
-
-        // 작은 원 (채움)
-        drawCircle(
-            color = colors.accent,
-            radius = 4.6f * scaleX,
-            center = Offset(cx, cy)
-        )
+        val d = mini.dot ?: return@Canvas
+        val center = Offset(d.x * k + ox, d.y * k + oy)
+        // 지금 위치 (큰 원 반투명 + 작은 원)
+        drawCircle(color = colors.accent.copy(alpha = 0.22f), radius = dotR, center = center)
+        drawCircle(color = colors.accent, radius = 4.6f * size.width / 100f, center = center)
     }
 }

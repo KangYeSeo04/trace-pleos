@@ -11,6 +11,7 @@ import com.tracers.trace.domain.EfficiencySummary
 import com.tracers.trace.domain.FlightStatus
 import com.tracers.trace.domain.FlightStatusResolver
 import com.tracers.trace.domain.KmRecord
+import com.tracers.trace.domain.region.GeoFix
 import com.tracers.trace.domain.region.RegionLookupData
 import com.tracers.trace.domain.region.RegionStatus
 import com.tracers.trace.domain.region.RegionVisit
@@ -57,6 +58,8 @@ class HomeViewModel(
     regionVisits: Flow<List<RegionVisit>>,
     /** 161 지역 경계 데이터 (읽기 전 null) */
     regionData: StateFlow<RegionLookupData?>,
+    /** 지금 위치 (작은 지도 점에만 쓴다) */
+    location: StateFlow<GeoFix?> = MutableStateFlow(null),
 ) : ViewModel() {
 
     private val flightResolver = FlightStatusResolver()
@@ -78,8 +81,8 @@ class HomeViewModel(
             charging,
             maintenance.onStart<MaintenanceSnapshot?> { emit(null) },
         ) { e, c, m -> Triple(e, c, m) }
-        val region = combine(regionStatus, regionVisits.onStart { emit(emptyList()) }, regionData) { st, v, d ->
-            RegionInputs(st, v, d)
+        val region = combine(regionStatus, regionVisits.onStart { emit(emptyList()) }, regionData, location) { st, v, d, loc ->
+            RegionInputs(st, v, d, loc)
         }
         val flightRegion = combine(flight, region) { fl, r -> fl to r }
 
@@ -111,6 +114,7 @@ class HomeViewModel(
         val status: RegionStatus,
         val visits: List<RegionVisit>,
         val data: RegionLookupData?,
+        val location: GeoFix?,
     )
 
     private fun updateDriveMode(input: Inputs) {
@@ -157,7 +161,7 @@ class HomeViewModel(
             efficiency = EfficiencyTileMapper.map(efficiency, isDriving),
             maintenance = MaintenanceTileMapper.map(statuses.firstOrNull()),
             coin = CoinTileMapper.map(input.wallet, input.latestTripKms, driveState),
-            region = RegionTileMapper.map(input.region.status, input.region.visits, input.region.data, isDriving),
+            region = RegionTileMapper.map(input.region.status, input.region.visits, input.region.data, isDriving, input.region.location),
         )
     }
 

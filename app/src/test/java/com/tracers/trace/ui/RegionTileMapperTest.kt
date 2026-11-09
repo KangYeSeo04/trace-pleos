@@ -1,5 +1,6 @@
 package com.tracers.trace.ui
 
+import com.tracers.trace.domain.region.GeoFix
 import com.tracers.trace.domain.region.RegionLookupData
 import com.tracers.trace.domain.region.RegionLookupParser
 import com.tracers.trace.domain.region.RegionLocator
@@ -9,6 +10,7 @@ import com.tracers.trace.ui.screens.home.RegionTileMapper
 import com.tracers.trace.ui.screens.home.StatusLevel
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertFalse
+import org.junit.Assert.assertNull
 import org.junit.Assert.assertTrue
 import org.junit.BeforeClass
 import org.junit.Test
@@ -32,26 +34,34 @@ class RegionTileMapperTest {
     private fun at(lat: Double, lon: Double) = RegionStatus.Located(RegionLocator(data).locate(lat, lon)!!)
 
     @Test fun parkedInSeoulShowsDistrictCountBarDistanceAndMap() {
-        val t = RegionTileMapper.map(at(37.6063, 127.0928), visits, data, isDriving = false)
+        val t = RegionTileMapper.map(at(37.6063, 127.0928), visits, data, isDriving = false, location = GeoFix(37.6063, 127.0928, 0))
         assertEquals("서울", t.city)
         assertEquals("중랑구", t.district)
         assertEquals("161곳 중 2곳 방문", t.status)
         assertEquals(200f / 161, t.barPercent, 1e-4f)
         assertEquals("달린 거리 9,840 km", t.subText)
-        assertTrue(t.showMap)
-        // 중랑구는 서울 동북쪽
-        assertTrue(t.locationX > 60f && t.locationY < 40f)
+        assertEquals("11000", t.mapCode)
+        assertEquals(37.6063, t.mapLatitude!!, 0.0)
+        assertEquals(127.0928, t.mapLongitude!!, 0.0)
     }
 
     @Test fun drivingShowsDistrictAsStatus() {
         assertEquals("중랑구", RegionTileMapper.map(at(37.6063, 127.0928), visits, data, isDriving = true).status)
     }
 
-    @Test fun outsideSeoulHasNoSeoulMap() {
-        val t = RegionTileMapper.map(at(37.3948, 127.1110), visits, data, isDriving = false)
+    @Test fun mapShowsCurrentRegionAnywhere() {
+        val t = RegionTileMapper.map(at(37.3948, 127.1110), visits, data, isDriving = false, location = GeoFix(37.3948, 127.1110, 0))
         assertEquals("성남시", t.city)
         assertEquals("분당구", t.district)
-        assertFalse(t.showMap)
+        assertEquals("41130", t.mapCode)
+        assertEquals(37.3948, t.mapLatitude!!, 0.0)
+    }
+
+    @Test fun noDotWithoutValidLocation() {
+        val t = RegionTileMapper.map(at(37.3948, 127.1110), visits, data, isDriving = false, location = GeoFix(0.0, 0.0, 0))
+        assertEquals("41130", t.mapCode)
+        assertNull(t.mapLatitude)
+        assertNull(t.mapLongitude)
     }
 
     @Test fun singleUnitRegionHasNoDistrict() {
@@ -62,10 +72,12 @@ class RegionTileMapperTest {
     }
 
     @Test fun offAndUnavailableSayWhy() {
-        val off = RegionTileMapper.map(RegionStatus.Off, visits, data, isDriving = false)
+        val off = RegionTileMapper.map(RegionStatus.Off, visits, data, isDriving = false, location = GeoFix(37.6, 127.0, 0))
         assertEquals("위치 기록이 꺼져 있어요", off.status)
         assertEquals("161곳 중 2곳 방문 · 9,840 km", off.subText)
         assertEquals("–", off.city)
+        assertNull("기록이 꺼지면 지도·점 없음", off.mapCode)
+        assertNull(off.mapLatitude)
         val na = RegionTileMapper.map(RegionStatus.Unavailable, visits, data, isDriving = false)
         assertEquals("위치를 받지 못하고 있어요", na.status)
         assertEquals(StatusLevel.Caution, na.statusLevel)

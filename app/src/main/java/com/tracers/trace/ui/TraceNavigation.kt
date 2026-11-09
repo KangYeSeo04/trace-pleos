@@ -97,6 +97,7 @@ fun TraceNavHost(
             regionStatus = app.regionRecorder.status,
             regionVisits = app.regionRepository.observe(),
             regionData = app.regionRecorder.data,
+            location = app.vehicleSignals.location,
         )
     }
 

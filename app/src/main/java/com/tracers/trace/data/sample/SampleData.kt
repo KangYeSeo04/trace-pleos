@@ -50,8 +50,9 @@ object SampleData {
         region = TileState.Region(
             city = "서울",
             district = "강남구",
-            locationX = 72f,
-            locationY = 52f,
+            mapCode = "11000",
+            mapLatitude = 37.5172,
+            mapLongitude = 127.0473,
             value = "서울",
             unit = "",
             status = "25개 구 중 18번째",
