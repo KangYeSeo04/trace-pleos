@@ -113,8 +113,8 @@ data class TraceColors(
 val DarkTraceColors = TraceColors()
 
 /**
- * 라이트 묶음. 홈(HomeLight TOK)에 쓰이는 값은 홈 HTML 기준.
- * 상세 화면 HTML은 몇 값이 조금 다르다(caution #D9820B, goodSoft #E3F3EB, gold #D19A1E 등) → 상세 라이트 회차에서 다시 맞춘다.
+ * 라이트 묶음. 화면마다 조금씩 다른 HTML 값은 상세 화면(Eff·Coin Light T) 기준으로 통일했다.
+ * 홈 HTML과 다른 값: caution #C97A08→#D9820B, goodSoft #E5F4EC→#E3F3EB, gold #C08414→#D19A1E.
  */
 val LightTraceColors = TraceColors(
     panel = Color(0xFFFFFFFF),
@@ -130,11 +130,11 @@ val LightTraceColors = TraceColors(
     accentSoft = Color(0xFFE7F0FC),      // HomeLight 칩
     accentCard = Color(0xFFEBF3FE),      // MaintLight accentSoft
     good = Color(0xFF12935F),
-    goodSoft = Color(0xFFE5F4EC),        // HomeLight 칩
-    caution = Color(0xFFC97A08),         // HomeLight·MaintLight
-    cautionSoft = Color(0x24C97A08),     // HTML에 없음. 다크와 같은 0.14 비율
+    goodSoft = Color(0xFFE3F3EB),        // Eff·CoinLight
+    caution = Color(0xFFD9820B),         // Eff·CoinLight
+    cautionSoft = Color(0x24D9820B),     // HTML에 없음. 다크와 같은 0.14 비율
     warn = Color(0xFFD9474A),
-    gold = Color(0xFFC08414),            // HomeLight TOK.gold
+    gold = Color(0xFFD19A1E),            // CoinLight
     goldSoft = Color(0xFFFFF4DC),        // CoinLight cellOn
     cellOff = Color(0xFFE9EBEE),         // CoinLight
     dim = Color(0xFFB7BCC3),             // CoinLight
