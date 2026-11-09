@@ -77,6 +77,7 @@ fun TraceNavHost(
         HomeViewModel(
             driveState = app.recordCollector.driveState,
             efficiency = app.efficiencySource.observe().map { it.summary },
+            permissionsGranted = app.permissionsGranted,
         )
     }
 

@@ -23,6 +23,8 @@ class HomeViewModel(
     val driveState: StateFlow<DriveState>,
     /** C-01 전비 계산 결과 (Room 기록 기반). 기록이 없으면 summary.averageKmPerKwh == null */
     efficiency: Flow<EfficiencySummary>,
+    /** 런타임 권한이 모두 허용됐는지. false면 무대에 "차량 정보 권한이 필요해요" */
+    permissionsGranted: StateFlow<Boolean>,
 ) : ViewModel() {
 
     private val _uiState = MutableStateFlow(HomeUiState())
@@ -31,18 +33,25 @@ class HomeViewModel(
     init {
         // DriveState → HomeUiState.isDriving
         viewModelScope.launch {
-            combine(driveState, efficiency.onStart<EfficiencySummary?> { emit(null) }) { st, eff -> st to eff }
-                .collect { (st, eff) -> updateDriveMode(st, eff) }
+            combine(
+                driveState,
+                efficiency.onStart<EfficiencySummary?> { emit(null) },
+                permissionsGranted,
+            ) { st, eff, granted -> Triple(st, eff, granted) }
+                .collect { (st, eff, granted) -> updateDriveMode(st, eff, granted) }
         }
     }
 
-    private fun updateDriveMode(driveState: DriveState, efficiency: EfficiencySummary?) {
+    private fun updateDriveMode(driveState: DriveState, efficiency: EfficiencySummary?, permissionsGranted: Boolean) {
         val isDriving = driveState == DriveState.DRIVING
         val caption: String
         val captionSub: String
 
         // TODO(B-03): 기체 상태 6종에 따라 캡션 변경
-        if (isDriving) {
+        if (!permissionsGranted) {
+            caption = "차량 정보 권한이 필요해요"
+            captionSub = ""
+        } else if (isDriving) {
             caption = "비행 중"
             captionSub = "데이터를 모으는 중이에요"
         } else {
