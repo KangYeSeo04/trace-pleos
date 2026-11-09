@@ -1,6 +1,7 @@
 package com.tracers.trace.data.record
 
 import android.util.Log
+import com.tracers.trace.data.vehicle.Gear
 import com.tracers.trace.data.vehicle.VehicleSignals
 import com.tracers.trace.domain.BatteryEnergy
 import com.tracers.trace.domain.ChargeDetector
@@ -182,6 +183,11 @@ class DriveRecordCollector(
     }
 
     private fun onEvent(e: DrivingEvent) {
+        // P단에서 튀는 차속(콘솔 실측: 주차 직후 0→48→0)은 운전이 아니다. 다음 주행 첫 1km에 섞이지 않게 버린다
+        if (signals.gear.value == Gear.PARK) {
+            Log.i(TAG, "이벤트 ${e.type} 무시 (P단)")
+            return
+        }
         Log.i(TAG, "이벤트 ${e.type}")
         tripRecorder.onDrivingEvent(e)
         kmSegmenter.onEvent(e)
