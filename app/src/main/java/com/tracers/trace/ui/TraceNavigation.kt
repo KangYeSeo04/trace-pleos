@@ -2,6 +2,7 @@ package com.tracers.trace.ui
 
 import com.tracers.trace.TraceApplication
 import androidx.compose.foundation.background
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
@@ -136,6 +137,7 @@ fun TraceNavHost(
     ) {
         composable(TraceDestinations.HOME) {
             val isDarkTheme = TraceTheme.isDark
+            val systemDark = isSystemInDarkTheme()
             val homeUiState = homeViewModel.uiState.collectAsState()
 
             HomeScreen(
@@ -145,7 +147,7 @@ fun TraceNavHost(
                 onNavigateToCoin = { navController.navigate(TraceDestinations.COIN) },
                 onNavigateToRegion = { navController.navigate(TraceDestinations.REGION) },
                 onNavigateToSpace = { navController.navigate(TraceDestinations.SPACE) },
-                onToggleTheme = { app.themeSetting.set(!isDarkTheme) },
+                onToggleTheme = { app.themeSetting.set(dark = !isDarkTheme, systemDark = systemDark) },
             )
         }
         composable(TraceDestinations.EFFICIENCY) {

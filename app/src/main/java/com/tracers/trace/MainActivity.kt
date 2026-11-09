@@ -8,10 +8,12 @@ import androidx.activity.result.contract.ActivityResultContracts
 import com.tracers.trace.data.permission.RuntimePermissions
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.material3.Surface
 import androidx.compose.ui.Modifier
+import com.tracers.trace.domain.resolveDarkTheme
 import com.tracers.trace.ui.TraceNavHost
 import com.tracers.trace.ui.theme.TraceTheme
 
@@ -39,9 +41,11 @@ class MainActivity : ComponentActivity() {
         }
 
         setContent {
-            // A-03: 해·달 스위치로 고른 적 있으면 그 선택, 없으면 시스템 설정
-            val chosenDark by app.themeSetting.dark.collectAsState()
-            TraceTheme(darkTheme = chosenDark ?: isSystemInDarkTheme()) {
+            // A-03: 해·달 스위치 선택은 시스템 테마가 바뀌기 전까지만, 바뀌면 지우고 시스템을 따른다
+            val systemDark = isSystemInDarkTheme()
+            val choice by app.themeSetting.choice.collectAsState()
+            LaunchedEffect(systemDark) { app.themeSetting.onSystemTheme(systemDark) }
+            TraceTheme(darkTheme = resolveDarkTheme(choice, systemDark)) {
                 Surface(modifier = Modifier.fillMaxSize()) {
                     TraceNavHost()
                 }
