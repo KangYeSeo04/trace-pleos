@@ -33,7 +33,8 @@ a{color:#1677E6}a:hover{color:#0F5FC0}
   </div>
 
   <div style="position: relative; margin-top: 12px; height: 240px; border-radius: 20px; overflow: hidden; background: {{__c0_1.heroBg}}">
-    <div style="position: relative; width: {{__c0_1.__c1_1.w}}px; height: {{__c0_1.__c1_1.h}}px; overflow: hidden; background: {{__c0_1.__c1_1.fallback}}">
+    <sc-if value="{{__c0_1.isDark}}" hint-placeholder-val="{{ false }}">
+      <div style="position: relative; width: {{__c0_1.__c1_1.w}}px; height: {{__c0_1.__c1_1.h}}px; overflow: hidden; background: {{__c0_1.__c1_1.fallback}}">
   <sc-if value="{{__c0_1.__c1_1.isDark}}" hint-placeholder-val="{{ true }}">
     <img src="/_blob/98a0cbf990c7c7eb4e46483f72ffe6d6" alt="" style="position: absolute; left: 0; top: 0; width: 100%; height: 100%; object-fit: cover; object-position: 50% 40%; display: block">
   </sc-if>
@@ -42,6 +43,10 @@ a{color:#1677E6}a:hover{color:#0F5FC0}
   </sc-if>
   <canvas ref="{{__c0_1.__c1_1.setCanvas}}" style="position: absolute; left: 0; top: 0; width: {{__c0_1.__c1_1.w}}px; height: {{__c0_1.__c1_1.h}}px; display: block" aria-hidden="true"></canvas>
 </div>
+    </sc-if>
+    <sc-if value="{{__c0_1.isLight}}" hint-placeholder-val="{{ true }}">
+      <img src="/_blob/221145b4cfc19063eb91149f8c021461" alt="" aria-hidden="true" style="position: absolute; left: 0; top: 0; width: 100%; height: 100%; object-fit: cover; display: block">
+    </sc-if>
     <div style="position: absolute; left: 0; right: 0; bottom: 0; height: 150px; background: linear-gradient(180deg, rgba(0,0,0,0) 0%, rgba(0,0,0,0.6) 100%)"></div>
     <div style="position: absolute; left: 22px; right: 22px; bottom: 20px; display: flex; align-items: flex-end; justify-content: space-between; color: #FFFFFF">
       <span style="display: flex; flex-direction: column; gap: 4px">
@@ -74,11 +79,18 @@ a{color:#1677E6}a:hover{color:#0F5FC0}
 
   <h2 style="margin: 26px 4px 10px; font-size: 15px; font-weight: 600; color: {{__c0_1.T.t2}}">이번 주행 1km 기록</h2>
   <div style="background: {{__c0_1.T.tile}}; border-radius: 20px; padding: 20px 22px">
-    <div style="display: flex; justify-content: space-between; align-items: baseline"><span style="font-size: 17px; font-weight: 700">37 km 중 32 km 깨끗하게</span><span style="font-size: 13px; color: {{__c0_1.T.t2}}">1칸 = 1 km</span></div>
-    <div style="display: grid; grid-template-columns: repeat(10, minmax(0, 1fr)); gap: 6px; margin-top: 16px">
-      <sc-for list="{{__c0_1.cells}}" as="c" hint-placeholder-count="37">
-        <div style="height: 34px; border-radius: 8px; background: {{c.bg}}; display: flex; align-items: center; justify-content: center"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3l2.4 6.6L21 12l-6.6 2.4L12 21l-2.4-6.6L3 12l6.6-2.4z" style="fill: {{c.fill}}"></path></svg></div>
+    <div style="display: flex; justify-content: space-between; align-items: baseline"><span style="font-size: 17px; font-weight: 700">37 km 중 32 km 깨끗하게</span><span style="display: flex; gap: 12px; font-size: 13px; color: {{__c0_1.T.t2}}"><span style="display: flex; align-items: center; gap: 5px"><span style="width: 8px; height: 8px; border-radius: 4px; background: {{__c0_1.T.gold}}"></span>적립</span><span style="display: flex; align-items: center; gap: 5px"><span style="width: 8px; height: 8px; border-radius: 4px; background: {{__c0_1.T.dim}}"></span>멈춤</span></span></div>
+    <div role="img" aria-label="{{__c0_1.stripAria}}" style="position: relative; height: 12px; margin-top: 18px; border-radius: 6px; background: {{__c0_1.T.gold}}; overflow: hidden">
+      <sc-for list="{{__c0_1.gaps}}" as="g" hint-placeholder-count="5">
+        <span style="position: absolute; top: 0; bottom: 0; left: {{g.left}}%; width: {{g.width}}%; min-width: 4px; background: {{__c0_1.T.dim}}"></span>
       </sc-for>
+    </div>
+    <div style="position: relative; height: 20px; margin-top: 6px; font-family: 'Inter',sans-serif; font-size: 12px; color: {{__c0_1.T.t3}}">
+      <span style="position: absolute; left: 0; top: 0">0</span>
+      <sc-for list="{{__c0_1.gaps}}" as="g" hint-placeholder-count="5">
+        <span style="position: absolute; top: 0; left: {{g.mid}}%; transform: translateX(-50%); color: {{__c0_1.T.t2}}; white-space: nowrap">{{g.label}}</span>
+      </sc-for>
+      <span style="position: absolute; right: 0; top: 0">{{__c0_1.totalKm}} km</span>
     </div>
     <div style="display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); margin-top: 18px; padding-top: 14px; border-top: 1px solid {{__c0_1.T.line}}">
       <div style="display: flex; flex-direction: column; gap: 3px"><span style="font-size: 13px; color: {{__c0_1.T.t2}}">급가속</span><span style="font-family: 'Inter',sans-serif; font-size: 18px; font-weight: 600">2</span></div>
@@ -490,7 +502,7 @@ class Component extends DCLogic {
   __rv0() {
     const theme = this.props.theme === 'dark' ? 'dark' : 'light';
     const T = TOK[theme];
-    const heroBg = theme === 'dark' ? '#050608' : '#4A7FBF';
+    const heroBg = theme === 'dark' ? '#050608' : '#1F3B6A';
     const riskKm = [4, 9, 14, 20, 30];
     const xOf = k => Math.round(2 + k / 37 * 512);
     const yOf = s => Math.round(140 - (s - 78) / 14 * 130);
@@ -505,8 +517,12 @@ class Component extends DCLogic {
     }
     const line = pts.map(q => q[0] + ',' + q[1]).join(' ');
     const area = line + ' ' + xOf(37) + ',150 ' + xOf(0) + ',150';
-    const cells = [];
-    for (let k = 1; k <= 37; k++) { const isR = riskKm.indexOf(k) >= 0; cells.push({ bg: isR ? T.cellOff : T.cellOn, fill: isR ? T.dim : T.gold }); }
+    // 회색 구간: 연속된 km는 하나로 묶어 한 줄 위에 표시 (100 km가 넘어도 칸이 늘지 않아요)
+    const TOTAL = 37;
+    const runs = [];
+    riskKm.slice().sort((a, b) => a - b).forEach(k => { const r = runs[runs.length - 1]; if (r && k === r[1] + 1) r[1] = k; else runs.push([k, k]); });
+    const gaps = runs.map(([a, b]) => ({ left: ((a - 1) / TOTAL * 100).toFixed(2), width: ((b - a + 1) / TOTAL * 100).toFixed(2), mid: (((a - 1) + (b - a + 1) / 2) / TOTAL * 100).toFixed(2), label: a === b ? a + '' : a + '–' + b }));
+    const stripAria = TOTAL + ' km 중 ' + runs.map(([a, b]) => a === b ? a + ' km' : a + '–' + b + ' km').join(', ') + '에서 적립이 멈췄어요';
     const sep = i => i === 0 ? '0' : '1px solid ' + T.line;
     const history = [
       ['11월 5일 퇴근', '31 km · 안전점수 85점대', '+31', T.t1], ['11월 5일 출근', '29 km · 안전점수 84점대', '+29', T.t1],
@@ -516,7 +532,7 @@ class Component extends DCLogic {
       ['시작 점수', '85점'], ['80점 이상', '깨끗한 1 km마다 1코인'], ['80점 미만', '다시 오를 때까지 멈춤'],
       ['점수 갱신', '기존 × 0.98 + 이번 1 km × 0.02'], ['급가속', '초당 11 km/h 이상'], ['급감속', '초당 7.5 km/h 이상'], ['과속', '제한속도 + 20 km/h 초과']
     ].map(([k, v], i) => ({ k, v, sep: sep(i) }));
-    return { T, theme, heroBg, cells, history, rules, risk, line, area, y80: yOf(80) };
+    return { isDark: theme === 'dark', isLight: theme !== 'dark', T, theme, heroBg, gaps, totalKm: TOTAL, stripAria, history, rules, risk, line, area, y80: yOf(80) };
   }
 }
 
