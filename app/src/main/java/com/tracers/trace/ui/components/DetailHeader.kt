@@ -40,9 +40,11 @@ fun DetailHeader(
     Box(
         modifier = modifier
             .fillMaxWidth()
-            .height(52.dp)
             .background(colors.panel)
-            .padding(horizontal = 20.dp, vertical = 0.dp),
+            // 디자인: height 52 + padding 16 위 / 10 아래 (content-box) = 78
+            .padding(top = 16.dp, bottom = 10.dp)
+            .height(52.dp)
+            .padding(horizontal = 20.dp),
         contentAlignment = Alignment.CenterStart
     ) {
         // 뒤로 버튼
