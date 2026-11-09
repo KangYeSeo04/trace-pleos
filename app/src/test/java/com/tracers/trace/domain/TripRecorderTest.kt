@@ -1,0 +1,149 @@
+package com.tracers.trace.domain
+
+import org.junit.Assert.assertEquals
+import org.junit.Assert.assertNotNull
+import org.junit.Assert.assertNull
+import org.junit.Test
+
+class TripRecorderTest {
+
+    private fun kmh(v: Double) = (v / 3.6).toFloat()
+
+    private fun sample(
+        t: Long, speedKmh: Double = 0.0, kwh: Double? = 60.0, odo: Double? = 1000.0,
+        ac: Boolean? = false, pct: Int? = 80,
+    ) = VehicleSample(
+        timeMs = t, speedMps = kmh(speedKmh), batteryKwh = kwh,
+        batteryPercent = pct, odometerKm = odo, hvacAcOn = ac,
+    )
+
+    @Test
+    fun `PARKED에서 DRIVING이 되면 시작, 다시 PARKED가 되면 요약 하나를 낸다`() {
+        val r = TripRecorder()
+        r.onSample(sample(0))
+        assertNull(r.onDriveState(DriveState.DRIVING, 0))
+        r.onSample(sample(1_000, speedKmh = 30.0, kwh = 60.0, odo = 1000.0, pct = 80))
+        r.onSample(sample(600_000, speedKmh = 30.0, kwh = 58.0, odo = 1012.0, pct = 77))
+        val trip = r.onDriveState(DriveState.PARKED, 600_000)
+
+        assertNotNull(trip)
+        trip!!
+        assertEquals(0L, trip.startedAtMs)
+        assertEquals(600_000L, trip.endedAtMs)
+        assertEquals(12.0, trip.distanceKm, 1e-6)
+        assertEquals(2.0, trip.energyUsedKwh, 1e-6)
+        assertEquals(80, trip.startBatteryPercent)
+        assertEquals(77, trip.endBatteryPercent)
+    }
+
+    @Test
+    fun `신호등 정차(STOPPED)는 주행을 끝내지 않는다`() {
+        val r = TripRecorder()
+        r.onSample(sample(0))
+        r.onDriveState(DriveState.DRIVING, 0)
+        r.onSample(sample(60_000, odo = 1002.0))
+        assertNull(r.onDriveState(DriveState.STOPPED, 60_000))
+        r.onDriveState(DriveState.DRIVING, 90_000)
+        r.onSample(sample(120_000, odo = 1004.0))
+        val trip = r.onDriveState(DriveState.PARKED, 120_000)!!
+        assertEquals(4.0, trip.distanceKm, 1e-6)
+        assertEquals(0L, trip.startedAtMs)
+    }
+
+    @Test
+    fun `주행 중 배터리가 오르면 회생으로 따로 쌓는다`() {
+        val r = TripRecorder()
+        r.onSample(sample(0, kwh = 60.0))
+        r.onDriveState(DriveState.DRIVING, 0)
+        r.onSample(sample(10_000, kwh = 59.0, odo = 1001.0))
+        r.onSample(sample(20_000, kwh = 59.3, odo = 1002.0)) // 회생 +0.3
+        r.onSample(sample(30_000, kwh = 58.5, odo = 1003.0))
+        val trip = r.onDriveState(DriveState.PARKED, 30_000)!!
+        assertEquals(1.0 + 0.8, trip.energyUsedKwh, 1e-6)
+        assertEquals(0.3, trip.regenKwh, 1e-6)
+        assertEquals(1.5, trip.netEnergyKwh, 1e-6)
+    }
+
+    @Test
+    fun `공조 켠 시간을 초 단위로 쌓는다`() {
+        val r = TripRecorder()
+        r.onSample(sample(0, ac = false))
+        r.onDriveState(DriveState.DRIVING, 0)
+        r.onSample(sample(10_000, ac = true, odo = 1001.0))
+        r.onSample(sample(40_000, ac = false, odo = 1002.0)) // 10s~40s 켜짐 = 30초
+        r.onSample(sample(50_000, ac = false, odo = 1003.0))
+        val trip = r.onDriveState(DriveState.PARKED, 50_000)!!
+        assertEquals(30L, trip.hvacOnSec)
+    }
+
+    @Test
+    fun `1초에 8kmh 이상 빨라지면 급가속 1회, 계속 가속해도 한 번만 센다`() {
+        val r = TripRecorder()
+        r.onSample(sample(0, speedKmh = 0.0))
+        r.onDriveState(DriveState.DRIVING, 0)
+        // 0 → 10 → 20 → 30 km/h, 1초 간격: 한 번의 급가속
+        r.onSample(sample(1_000, speedKmh = 10.0))
+        r.onSample(sample(2_000, speedKmh = 20.0))
+        r.onSample(sample(3_000, speedKmh = 30.0))
+        // 정속
+        r.onSample(sample(4_000, speedKmh = 30.0))
+        // 다시 급가속
+        r.onSample(sample(5_000, speedKmh = 40.0))
+        // 완만한 가속은 세지 않음
+        r.onSample(sample(6_000, speedKmh = 43.0))
+        r.onSample(sample(7_000, speedKmh = 46.0, odo = 1001.0))
+        val trip = r.onDriveState(DriveState.PARKED, 7_000)!!
+        assertEquals(2, trip.hardAccelCount)
+    }
+
+    @Test
+    fun `100ms 간격 샘플도 1초 창으로 판단한다`() {
+        val r = TripRecorder()
+        r.onSample(sample(0, speedKmh = 0.0))
+        r.onDriveState(DriveState.DRIVING, 0)
+        // 0.1초마다 0.5 km/h씩 → 1초에 5 km/h: 급가속 아님
+        for (i in 1..30) r.onSample(sample(i * 100L, speedKmh = i * 0.5))
+        r.onSample(sample(3_100, speedKmh = 15.0, odo = 1001.0))
+        val trip = r.onDriveState(DriveState.PARKED, 3_100)!!
+        assertEquals(0, trip.hardAccelCount)
+    }
+
+    @Test
+    fun `총 주행거리가 없으면 차속을 적분해 거리를 대체 계산한다`() {
+        val r = TripRecorder()
+        r.onSample(sample(0, speedKmh = 36.0, odo = null))
+        r.onDriveState(DriveState.DRIVING, 0)
+        // 36km/h = 10 m/s, 1초 간격 100번 = 1km. 간격이 5초를 넘는 구간은 버린다
+        for (i in 1..100) r.onSample(sample(i * 1_000L, speedKmh = 36.0, odo = null))
+        val trip = r.onDriveState(DriveState.PARKED, 100_000)!!
+        assertEquals(1.0, trip.distanceKm, 1e-3)
+    }
+
+    @Test
+    fun `100m 미만 주행(주차 이동 등)은 버린다`() {
+        val r = TripRecorder()
+        r.onSample(sample(0, odo = 1000.0))
+        r.onDriveState(DriveState.DRIVING, 0)
+        r.onSample(sample(30_000, odo = 1000.05))
+        assertNull(r.onDriveState(DriveState.PARKED, 30_000))
+    }
+
+    @Test
+    fun `주행이 아닐 때 들어온 샘플은 쌓지 않는다`() {
+        val r = TripRecorder()
+        r.onSample(sample(0, kwh = 60.0, odo = 1000.0))
+        r.onSample(sample(10_000, kwh = 50.0, odo = 1000.0))
+        r.onDriveState(DriveState.DRIVING, 10_000)
+        r.onSample(sample(20_000, kwh = 49.0, odo = 1001.0))
+        val trip = r.onDriveState(DriveState.PARKED, 20_000)!!
+        assertEquals(1.0, trip.energyUsedKwh, 1e-6)
+        assertEquals(1.0, trip.distanceKm, 1e-6)
+    }
+
+    @Test
+    fun `잔량 kWh는 Wh가 있으면 Wh, 없으면 용량 곱하기 %`() {
+        assertEquals(58.0, BatteryEnergy.kwh(58_000f, 80, 77_400f)!!, 1e-6)
+        assertEquals(61.92, BatteryEnergy.kwh(null, 80, 77_400f)!!, 1e-6)
+        assertNull(BatteryEnergy.kwh(null, 80, null))
+    }
+}
