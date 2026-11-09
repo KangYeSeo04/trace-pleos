@@ -26,12 +26,14 @@ import com.tracers.trace.ui.theme.TraceTheme
  *
  * @param title 화면 제목
  * @param onBack 뒤로 버튼 클릭 콜백
+ * @param actions 오른쪽 끝 버튼 자리 (코인의 "적립 기준 보기" 등). 없으면 비운다
  */
 @Composable
 fun DetailHeader(
     title: String,
     onBack: () -> Unit,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    actions: @Composable () -> Unit = {},
 ) {
     val colors = TraceTheme.colors
 
@@ -70,6 +72,34 @@ fun DetailHeader(
             modifier = Modifier
                 .align(Alignment.Center)
                 .padding(horizontal = 72.dp)
+        )
+
+        Box(modifier = Modifier.align(Alignment.CenterEnd)) { actions() }
+    }
+}
+
+/** 헤더 오른쪽 원형 아이콘 버튼 (44 × 44, 타일 바탕). */
+@Composable
+fun HeaderIconButton(
+    icon: androidx.compose.ui.graphics.vector.ImageVector,
+    contentDescription: String,
+    onClick: () -> Unit,
+    modifier: Modifier = Modifier,
+) {
+    val colors = TraceTheme.colors
+    Box(
+        modifier = modifier
+            .size(44.dp)
+            .clip(CircleShape)
+            .background(colors.tile)
+            .clickable(onClick = onClick),
+        contentAlignment = Alignment.Center
+    ) {
+        Icon(
+            imageVector = icon,
+            contentDescription = contentDescription,
+            tint = colors.t1,
+            modifier = Modifier.size(22.dp)
         )
     }
 }
