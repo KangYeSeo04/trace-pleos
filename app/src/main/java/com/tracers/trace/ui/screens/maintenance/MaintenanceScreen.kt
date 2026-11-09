@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
@@ -32,6 +33,7 @@ import java.time.YearMonth
  * @param onPrevMonth 달력 이전 달
  * @param onNextMonth 달력 다음 달
  * @param onSelectDate 달력 날짜 고르기
+ * @param formActions 기록 추가 양식 입력
  */
 @Composable
 fun MaintenanceScreen(
@@ -43,6 +45,7 @@ fun MaintenanceScreen(
     onPrevMonth: () -> Unit = {},
     onNextMonth: () -> Unit = {},
     onSelectDate: (LocalDate) -> Unit = {},
+    formActions: MaintenanceFormActions = MaintenanceFormActions(),
     scrollState: ScrollState = rememberScrollState(),
 ) {
     val colors = TraceTheme.colors
@@ -65,6 +68,7 @@ fun MaintenanceScreen(
         Column(
             modifier = Modifier
                 .fillMaxSize()
+                .imePadding()
                 .verticalScroll(scrollState)
                 .padding(start = 20.dp, end = 20.dp, top = 12.dp, bottom = 28.dp)
         ) {
@@ -90,7 +94,7 @@ fun MaintenanceScreen(
             MaintenanceRecordList(records = uiState.records)
 
             SectionTitle("기록 추가")
-            // TODO(2회차): 기록 추가 양식 S05 (uiState.form)
+            MaintenanceRecordFormCard(form = uiState.form, actions = formActions)
         }
     }
 }

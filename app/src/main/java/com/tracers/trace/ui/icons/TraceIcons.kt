@@ -545,4 +545,36 @@ object TraceIcons {
             }
         }.build()
     }
+
+    /** 마이크 (MaintDark 말로 입력, stroke 1.9) */
+    val Mic: ImageVector by lazy {
+        ImageVector.Builder(
+            name = "Mic",
+            defaultWidth = 24.dp,
+            defaultHeight = 24.dp,
+            viewportWidth = 24f,
+            viewportHeight = 24f
+        ).apply {
+            path(
+                fill = null,
+                stroke = SolidColor(Color.Black),
+                strokeLineWidth = 1.9f,
+                strokeLineCap = StrokeCap.Round,
+                strokeLineJoin = StrokeJoin.Round
+            ) {
+                // rect x=9 y=3 width=6 height=11 rx=3
+                moveTo(9f, 6f)
+                arcToRelative(3f, 3f, 0f, false, true, 6f, 0f)
+                verticalLineToRelative(5f)
+                arcToRelative(3f, 3f, 0f, false, true, -6f, 0f)
+                close()
+                // M5 11a7 7 0 0014 0
+                moveTo(5f, 11f)
+                arcToRelative(7f, 7f, 0f, false, false, 14f, 0f)
+                // M12 18v3
+                moveTo(12f, 18f)
+                verticalLineToRelative(3f)
+            }
+        }.build()
+    }
 }

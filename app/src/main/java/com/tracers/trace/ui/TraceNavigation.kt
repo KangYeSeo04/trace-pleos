@@ -40,6 +40,7 @@ import com.tracers.trace.ui.screens.efficiency.EfficiencyViewModel
 import com.tracers.trace.ui.screens.home.HomeScreen
 import com.tracers.trace.ui.screens.home.HomeViewModel
 import com.tracers.trace.ui.screens.maintenance.MaintenanceScreen
+import com.tracers.trace.ui.screens.maintenance.MaintenanceFormActions
 import com.tracers.trace.ui.screens.maintenance.MaintenanceViewModel
 import com.tracers.trace.ui.screens.spaceflight.SpaceFlightScreen
 import com.tracers.trace.ui.theme.TraceTheme
@@ -159,6 +160,18 @@ fun TraceNavHost(
                 onPrevMonth = maintenanceViewModel::onPrevMonth,
                 onNextMonth = maintenanceViewModel::onNextMonth,
                 onSelectDate = maintenanceViewModel::onSelectDate,
+                formActions = remember(maintenanceViewModel) {
+                    MaintenanceFormActions(
+                        onDateChange = maintenanceViewModel::onDateChange,
+                        onOdometerChange = maintenanceViewModel::onOdometerChange,
+                        onPlaceChange = maintenanceViewModel::onPlaceChange,
+                        onToggleItem = maintenanceViewModel::onToggleItem,
+                        onCostChange = maintenanceViewModel::onCostChange,
+                        onMemoChange = maintenanceViewModel::onMemoChange,
+                        onVoiceInput = maintenanceViewModel::onVoiceInput,
+                        onSave = maintenanceViewModel::onSave,
+                    )
+                },
             )
         }
         composable(TraceDestinations.COIN) {
