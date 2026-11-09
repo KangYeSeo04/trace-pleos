@@ -16,6 +16,10 @@ import ai.pleos.playground.vehicle.listener.TurnSignalStateListener
 import ai.pleos.playground.navi.helper.NaviHelper
 import ai.pleos.playground.navi.helper.listener.NaviHelperEventListener
 import ai.pleos.playground.navi.data.CurrentLocationInfo
+import ai.pleos.playground.location.fused.FusedLocation
+import ai.pleos.playground.location.fused.listener.FusedLocationListener
+import ai.pleos.playground.location.fused.model.LocationData
+import android.content.pm.PackageManager
 import android.car.Car
 import android.car.VehicleGear
 import android.car.VehiclePropertyIds
@@ -28,6 +32,7 @@ import android.util.Log
 import android.os.SystemClock
 import com.tracers.trace.domain.SpeedReading
 import com.tracers.trace.domain.region.GeoFix
+import com.tracers.trace.domain.region.LocationSourceSelector
 import kotlinx.coroutines.channels.BufferOverflow
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -48,6 +53,7 @@ class PleosVehicleSignals(context: Context) : VehicleSignals {
     private val appContext = context.applicationContext
     private val vehicle = Vehicle(appContext)
     private val navi = NaviHelper(appContext)
+    private val fused = FusedLocation(appContext)
     private var car: Car? = null
     private var carPropertyManager: CarPropertyManager? = null
     private val main = Handler(Looper.getMainLooper())
@@ -138,19 +144,74 @@ class PleosVehicleSignals(context: Context) : VehicleSignals {
         override fun onCurrentLocationInfo(currentLocationInfo: CurrentLocationInfo) {
             // 주소(address)는 쓰지 않는다. 좌표도 판정에만 쓰고 로그에 남기지 않는다
             val fix = GeoFix(currentLocationInfo.latitude, currentLocationInfo.longitude, System.currentTimeMillis())
-            if (_location.value == null) log("위치 첫 콜백", if (fix.isValid) "유효" else "무효")
-            _location.value = fix
+            main.post {
+                if (!naviFirstSeen) { naviFirstSeen = true; log("위치 첫 콜백(NaviHelper)", if (fix.isValid) "유효" else "무효") }
+                if (locationSource.onNavi(fix)) _location.value = fix
+            }
         }
     }
 
     /** NaviHelper 연결이 됐는지. 연결 전 요청은 버린다 */
     @Volatile private var naviReady = false
+    private var naviFirstSeen = false
+    private var fusedFirstSeen = false
+
+    /** NaviHelper 먼저, 움직이는데 1분 넘게 그대로면 FusedLocation (main 스레드에서만 쓴다) */
+    private val locationSource = LocationSourceSelector(fusedAvailable = false) { s ->
+        Log.i(TAG, "위치 출처 → ${if (s == LocationSourceSelector.Source.FUSED) "FusedLocation (NaviHelper 위치가 1분 넘게 그대로)" else "NaviHelper"}")
+    }
+
+    private val fusedListener = object : FusedLocationListener {
+        override fun onChanged(location: LocationData?) {
+            val data = location ?: return
+            val fix = GeoFix(data.latitude, data.longitude, System.currentTimeMillis())
+            main.post {
+                if (!fusedFirstSeen) { fusedFirstSeen = true; log("위치 첫 콜백(FusedLocation)", if (fix.isValid) "유효" else "무효") }
+                if (locationSource.onFused(fix)) _location.value = fix
+            }
+        }
+
+        override fun onError(exception: Exception) {
+            Log.w(TAG, "FusedLocation 오류: ${exception.message}")
+        }
+    }
 
     override fun requestLocation() {
-        if (!started || !naviReady) return
-        // NAVI_ROUTE(normal) 권한. 실패해도 지역 판정만 "위치를 못 받음"이 된다
-        runCatching { navi.getCurrentLocationInfo() }.onFailure { Log.w(TAG, "위치 요청 실패", it) }
+        main.post {
+            if (!started || !naviReady) return@post
+            connectFused() // 설정에서 권한을 나중에 허용했을 수 있다
+            locationSource.onTick(System.currentTimeMillis(), _speedMps.value)
+            // NAVI_ROUTE(normal) 권한. 실패해도 지역 판정만 "위치를 못 받음"이 된다.
+            // FusedLocation 중에도 계속 물어서 NaviHelper가 다시 움직이면 돌아간다
+            runCatching { navi.getCurrentLocationInfo() }.onFailure { Log.w(TAG, "위치 요청 실패", it) }
+            if (locationSource.source == LocationSourceSelector.Source.FUSED) {
+                runCatching { fused.getLastKnownLocation(fusedListener) }
+                    .onFailure { Log.w(TAG, "FusedLocation 요청 실패", it) }
+            }
+        }
     }
+
+    /** FusedLocation 연결. pleos.car.permission.FUSED_LOCATION(dangerous)이 없으면 NaviHelper만 쓴다 */
+    private fun connectFused() {
+        if (fusedConnected) return
+        if (appContext.checkSelfPermission(FUSED_PERMISSION) != PackageManager.PERMISSION_GRANTED) {
+            if (!fusedDeniedLogged) { fusedDeniedLogged = true; Log.i(TAG, "FusedLocation 권한 없음: NaviHelper만 사용") }
+            return
+        }
+        runCatching {
+            fused.initialize()
+            fusedConnected = true
+            // 서비스 연결에 시간이 걸려 잠시 뒤 지원 여부를 본다 (probe: 직후·1.5초 뒤 모두 true)
+            main.postDelayed({
+                val ok = runCatching { fused.isSupported() }.getOrDefault(false)
+                locationSource.fusedAvailable = ok
+                log("FusedLocation 지원", ok)
+            }, 1_500)
+        }.onFailure { Log.w(TAG, "FusedLocation 연결 실패", it) }
+    }
+
+    private var fusedConnected = false
+    private var fusedDeniedLogged = false
 
     // ---------- Vehicle SDK 리스너 ----------
 
@@ -277,6 +338,9 @@ class PleosVehicleSignals(context: Context) : VehicleSignals {
             navi.initialize()
             naviReady = true
         }.onFailure { Log.w(TAG, "NaviHelper 연결 실패", it) }
+
+        // FusedLocation (NaviHelper 위치가 멈춰 있을 때만 쓴다)
+        connectFused()
     }
 
     private fun subscribeVehicleSdk() {
@@ -433,6 +497,9 @@ class PleosVehicleSignals(context: Context) : VehicleSignals {
         runCatching { navi.removeListener(naviListener) }
         runCatching { navi.release() }
         naviReady = false
+        if (fusedConnected) runCatching { fused.release() }
+        fusedConnected = false
+        locationSource.fusedAvailable = false
         _speedLimitKmh.value = null
         _location.value = null
 
@@ -449,6 +516,7 @@ class PleosVehicleSignals(context: Context) : VehicleSignals {
         private const val TAG = "VehicleSignals"
         private const val HVAC_VALUE_TIMEOUT_MS = 5_000L
         private const val SPEED_BUFFER = 512
+        const val FUSED_PERMISSION = "pleos.car.permission.FUSED_LOCATION"
 
         /**
          * CarPropertyValue.timestamp(부팅 후 ns)를 epoch ms로. 콜백이 몰려 와도 측정 간격을 지키려고

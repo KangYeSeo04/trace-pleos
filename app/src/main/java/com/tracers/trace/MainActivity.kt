@@ -31,8 +31,8 @@ class MainActivity : ComponentActivity() {
 
         // 앱 시작 시 한 번 (화면 회전 등 재생성 때는 다시 묻지 않는다)
         if (savedInstanceState == null) {
-            val missing = RuntimePermissions.missing(this)
-            if (missing.isNotEmpty()) permissionLauncher.launch(missing.toTypedArray())
+            val ask = RuntimePermissions.toRequest(this)
+            if (ask.isNotEmpty()) permissionLauncher.launch(ask.toTypedArray())
         }
 
         setContent {

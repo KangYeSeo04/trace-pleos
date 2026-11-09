@@ -21,7 +21,8 @@ import kotlinx.coroutines.flow.StateFlow
  * - 충전구 열림: Vehicle SDK EvBattery.isEvChargePortOpen
  * - 총 주행거리(km): Vehicle SDK Odometer.getCurrentDistanceDriven
  * - EV 배터리 용량(Wh): Vehicle SDK EvBattery.getEvBatteryCapacity (시작 시 1회)
- * - 위치: NaviHelper getCurrentLocationInfo → onCurrentLocationInfo (위도·경도. 요청할 때만 온다)
+ * - 위치: NaviHelper getCurrentLocationInfo → onCurrentLocationInfo (위도·경도. 요청할 때만 온다).
+ *   주행 중 NaviHelper 위치가 1분 넘게 그대로면 FusedLocation getLastKnownLocation (권한 FUSED_LOCATION)
  * - 공조 전원: Vehicle SDK HVAC.getHvacPowerState (지원 영역 중 하나라도 켜지면 true).
  *   AC 상태(getHvacAcState)는 전원이 꺼져도 true로 와서 쓰지 않는다 (2026.11.09 실측)
  */
