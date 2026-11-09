@@ -237,7 +237,9 @@ internal fun RowDivider() {
 
 /** "장소 · 30,900 km · 자동 감지" (입력 방식만 색: 자동 감지 파랑, 직접 입력 t2) */
 internal fun recordSubline(rec: MaintenanceRecord, colors: TraceColors): AnnotatedString = buildAnnotatedString {
-    append("${rec.place} · ${formatKm(rec.odometerKm)} · ")
+    // 장소를 비워 두면 주행거리부터
+    if (rec.place.isNotBlank()) append("${rec.place} · ")
+    append("${formatKm(rec.odometerKm)} · ")
     withStyle(SpanStyle(color = if (rec.method == RecordInputMethod.AutoDetected) colors.accent else colors.t2)) {
         append(rec.method.label)
     }

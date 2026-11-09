@@ -2,6 +2,7 @@ package com.tracers.trace.ui.screens.maintenance
 
 import com.tracers.trace.domain.MaintenanceThresholds
 import java.time.LocalDate
+import java.time.format.DateTimeFormatter
 import java.time.YearMonth
 
 /**
@@ -15,8 +16,10 @@ data class MaintenanceUiState(
     val visit: VisitDetection? = null,
     /** 점검 항목. 급한 순으로 정렬된 상태로 받는다 (D-01) */
     val items: List<MaintenanceItem> = emptyList(),
-    /** 정비 기록. 최근 순 (D-04, 2회차) */
+    /** 정비 기록. 최근 순 (D-04) */
     val records: List<MaintenanceRecord> = emptyList(),
+    /** 기록 필터 (S04-5). null = 전체, 아니면 점검 항목 이름 */
+    val recordFilter: String? = null,
     /** 정비 달력 (2회차). null이면 기록이 없어 이번 달을 빈 달력으로 */
     val calendar: MaintenanceCalendar? = null,
     /** 기록 추가 양식 (S05, 2회차) */
@@ -44,11 +47,13 @@ data class VisitDetection(
  * @param name 항목 이름 ("와이퍼 블레이드")
  * @param remaining 남은 값 ("12일 남음", "1,200 km 남음")
  * @param gauges 사용률 막대. 기준이 하나면 1개, 거리·기간 두 기준이면 2개
+ * @param basisNote 기록이 없어 앱이 처음 본 값부터 셌으면 "기준: 처음 기록일", 아니면 null
  */
 data class MaintenanceItem(
     val name: String,
     val remaining: String,
     val gauges: List<UsageGauge>,
+    val basisNote: String? = null,
 ) {
     /** 남은 값 글자색은 가장 많이 쓴 막대 기준 */
     val level: UsageLevel get() = UsageLevel.of(gauges.maxOfOrNull { it.percent } ?: 0f)
@@ -139,11 +144,19 @@ data class MaintenanceRecordForm(
     val memo: String = "",
     val isEditing: Boolean = false,
 ) {
-    val canSave: Boolean get() = selectedItems.isNotEmpty()
+    /** 날짜 칸을 읽은 값. 형식이 틀리면 null */
+    val date: LocalDate? get() = runCatching { LocalDate.parse(dateText.trim(), DATE_FORMAT) }.getOrNull()
+
+    /** 항목 1개 이상 + 날짜·주행거리를 읽을 수 있어야 저장 (주기 재계산에 둘 다 필요) */
+    val canSave: Boolean get() = selectedItems.isNotEmpty() && date != null && odometerDigits.isNotEmpty()
 
     companion object {
-        /** 디자인의 항목 칩 6개 */
-        val ITEM_OPTIONS = listOf("타이어 위치 교환", "에어컨 필터", "와이퍼", "브레이크", "12V 배터리", "기타")
+        /**
+         * 점검 항목 8개 + 기타. 디자인 칩은 6개("브레이크" 하나, 감속기 오일·냉각수 없음)라
+         * 8개 항목을 모두 기록할 수 없어 항목 이름으로 나눴다
+         */
+        val ITEM_OPTIONS = MaintenanceUiMapper.CHIP_OPTIONS
         const val MEMO_MAX = 200
+        val DATE_FORMAT: DateTimeFormatter = DateTimeFormatter.ofPattern("yyyy. M. d")
     }
 }

@@ -24,8 +24,11 @@ class UsageLevelTest {
     }
 
     @Test
-    fun `양식은 항목을 하나 이상 골라야 저장 가능`() {
-        assertEquals(false, MaintenanceRecordForm().canSave)
-        assertEquals(true, MaintenanceRecordForm(selectedItems = setOf("와이퍼")).canSave)
+    fun `양식은 항목을 하나 이상 고르고 날짜·주행거리를 읽을 수 있어야 저장 가능`() {
+        val filled = MaintenanceRecordForm(dateText = "2026. 11. 9", odometerDigits = "38800")
+        assertEquals(false, filled.canSave)
+        assertEquals(true, filled.copy(selectedItems = setOf("와이퍼")).canSave)
+        assertEquals(false, filled.copy(selectedItems = setOf("와이퍼"), odometerDigits = "").canSave)
+        assertEquals(false, filled.copy(selectedItems = setOf("와이퍼"), dateText = "11월 9일").canSave)
     }
 }

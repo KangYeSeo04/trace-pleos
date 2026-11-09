@@ -124,7 +124,7 @@ private fun MaintenanceItemRow(item: MaintenanceItem, onClick: () -> Unit) {
             .heightIn(min = 76.dp)
             .clickable(role = Role.Button, onClick = onClick)
             .semantics(mergeDescendants = true) {
-                contentDescription = "${item.name}, ${item.remaining}, 눌러서 정비 기록 보기"
+                contentDescription = listOfNotNull(item.name, item.remaining, item.basisNote, "눌러서 정비 기록 보기").joinToString(", ")
             }
             .padding(horizontal = 20.dp, vertical = 16.dp),
         verticalArrangement = Arrangement.spacedBy(10.dp)
@@ -161,6 +161,10 @@ private fun MaintenanceItemRow(item: MaintenanceItem, onClick: () -> Unit) {
         // 두 기준(거리·기간)이면 막대 2줄
         Column(verticalArrangement = Arrangement.spacedBy(6.dp)) {
             item.gauges.forEach { gauge -> GaugeRow(gauge) }
+            // 기록이 없어 처음 본 값부터 센 항목. 디자인에 없는 줄이라 기준 값과 같은 12sp, 흐린 글자
+            item.basisNote?.let {
+                Text(text = it, style = TraceTheme.type.body(12f), color = colors.t3)
+            }
         }
     }
 }
