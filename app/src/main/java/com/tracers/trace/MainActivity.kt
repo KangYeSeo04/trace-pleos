@@ -6,7 +6,10 @@ import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.result.contract.ActivityResultContracts
 import com.tracers.trace.data.permission.RuntimePermissions
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.material3.Surface
 import androidx.compose.ui.Modifier
 import com.tracers.trace.ui.TraceNavHost
@@ -36,7 +39,9 @@ class MainActivity : ComponentActivity() {
         }
 
         setContent {
-            TraceTheme {
+            // A-03: 해·달 스위치로 고른 적 있으면 그 선택, 없으면 시스템 설정
+            val chosenDark by app.themeSetting.dark.collectAsState()
+            TraceTheme(darkTheme = chosenDark ?: isSystemInDarkTheme()) {
                 Surface(modifier = Modifier.fillMaxSize()) {
                     TraceNavHost()
                 }

@@ -3,6 +3,7 @@ package com.tracers.trace.ui.theme
 import androidx.compose.runtime.Immutable
 import androidx.compose.runtime.staticCompositionLocalOf
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.lerp
 
 /**
  * TRACE 색상 토큰. 기본값은 다크 묶음(CLAUDE.md "다크 테마 토큰" 표).
@@ -152,5 +153,57 @@ val LightTraceColors = TraceColors(
     mapSelected = Color(0xFF111418),
     mapBorder = Color(0x59A3ACB8),
 )
+
+/** 테마 전환 크로스페이드용. t=0이면 a, t=1이면 b */
+fun lerpTraceColors(a: TraceColors, b: TraceColors, t: Float): TraceColors = when (t) {
+    0f -> a
+    1f -> b
+    else -> TraceColors(
+        panel = lerp(a.panel, b.panel, t),
+        tile = lerp(a.tile, b.tile, t),
+        t1 = lerp(a.t1, b.t1, t),
+        t2 = lerp(a.t2, b.t2, t),
+        t3 = lerp(a.t3, b.t3, t),
+        line = lerp(a.line, b.line, t),
+        track = lerp(a.track, b.track, t),
+        itemTrack = lerp(a.itemTrack, b.itemTrack, t),
+        barNeutral = lerp(a.barNeutral, b.barNeutral, t),
+        accent = lerp(a.accent, b.accent, t),
+        accentSoft = lerp(a.accentSoft, b.accentSoft, t),
+        accentCard = lerp(a.accentCard, b.accentCard, t),
+        good = lerp(a.good, b.good, t),
+        goodSoft = lerp(a.goodSoft, b.goodSoft, t),
+        caution = lerp(a.caution, b.caution, t),
+        cautionSoft = lerp(a.cautionSoft, b.cautionSoft, t),
+        warn = lerp(a.warn, b.warn, t),
+        gold = lerp(a.gold, b.gold, t),
+        goldSoft = lerp(a.goldSoft, b.goldSoft, t),
+        cellOff = lerp(a.cellOff, b.cellOff, t),
+        dim = lerp(a.dim, b.dim, t),
+        heroBg = lerp(a.heroBg, b.heroBg, t),
+        heroTrail = lerp(a.heroTrail, b.heroTrail, t),
+        logoBgTop = lerp(a.logoBgTop, b.logoBgTop, t),
+        logoBgBottom = lerp(a.logoBgBottom, b.logoBgBottom, t),
+        heroText = lerp(a.heroText, b.heroText, t),
+        heroScrim = lerp(a.heroScrim, b.heroScrim, t),
+        heroButton = lerp(a.heroButton, b.heroButton, t),
+        heroButtonText = lerp(a.heroButtonText, b.heroButtonText, t),
+        dialogScrim = lerp(a.dialogScrim, b.dialogScrim, t),
+        onAccent = lerp(a.onAccent, b.onAccent, t),
+        switchKnob = lerp(a.switchKnob, b.switchKnob, t),
+        themeKnob = lerp(a.themeKnob, b.themeKnob, t),
+        themeKnobIcon = lerp(a.themeKnobIcon, b.themeKnobIcon, t),
+        spaceBg = lerp(a.spaceBg, b.spaceBg, t),
+        mapSea = lerp(a.mapSea, b.mapSea, t),
+        mapLand = lerp(a.mapLand, b.mapLand, t),
+        mapLine = lerp(a.mapLine, b.mapLine, t),
+        mapLabel = lerp(a.mapLabel, b.mapLabel, t),
+        mapText = lerp(a.mapText, b.mapText, t),
+        mapSub = lerp(a.mapSub, b.mapSub, t),
+        mapSelected = lerp(a.mapSelected, b.mapSelected, t),
+        mapBorder = lerp(a.mapBorder, b.mapBorder, t),
+        regionGroup = a.regionGroup.mapValues { (k, c) -> lerp(c, b.regionGroup[k] ?: c, t) },
+    )
+}
 
 val LocalTraceColors = staticCompositionLocalOf { DarkTraceColors }

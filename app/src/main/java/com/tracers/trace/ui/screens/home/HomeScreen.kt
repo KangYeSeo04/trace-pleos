@@ -56,6 +56,7 @@ fun HomeScreen(
     onNavigateToCoin: () -> Unit = {},
     onNavigateToRegion: () -> Unit = {},
     onNavigateToSpace: () -> Unit = {},
+    onToggleTheme: () -> Unit = {},
     modifier: Modifier = Modifier
 ) {
     val colors = TraceTheme.colors
@@ -68,7 +69,7 @@ fun HomeScreen(
         verticalArrangement = Arrangement.spacedBy(12.dp)
     ) {
         // 앱 바
-        HomeAppBar(isDriving = uiState.isDriving)
+        HomeAppBar(isDriving = uiState.isDriving, onToggleTheme = onToggleTheme)
 
         // 비행 무대 (디자인 정차 비율: 250 / 390 = 25 / 39)
         HeroStage(
@@ -107,6 +108,7 @@ fun HomeScreen(
 @Composable
 private fun HomeAppBar(
     isDriving: Boolean,
+    onToggleTheme: () -> Unit,
     modifier: Modifier = Modifier
 ) {
     val colors = TraceTheme.colors
@@ -141,10 +143,10 @@ private fun HomeAppBar(
 
             Spacer(modifier = Modifier.width(6.dp))
 
-            // 해/달 스위치 (다크 모드만 지원, 누르면 아무 일도 안 함)
+            // 해/달 스위치 (A-03): 누르면 선택을 저장하고 그 테마를 따른다
             ThemeSwitch(
-                isDark = true,
-                onToggle = { /* 다크 모드만 지원 */ }
+                isDark = TraceTheme.isDark,
+                onToggle = onToggleTheme
             )
         }
 

@@ -1,5 +1,7 @@
 package com.tracers.trace.ui.components
 
+import androidx.compose.animation.core.animateDpAsState
+import androidx.compose.animation.core.tween
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
@@ -9,6 +11,7 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Icon
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -16,10 +19,11 @@ import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.unit.dp
 import com.tracers.trace.ui.icons.TraceIcons
+import com.tracers.trace.ui.theme.THEME_CROSSFADE_MS
 import com.tracers.trace.ui.theme.TraceTheme
 
 /**
- * 해/달 스위치 (다크 모드 토글).
+ * 해/달 스위치 (A-03 테마 선택).
  *
  * @param isDark 다크 모드 여부
  * @param onToggle 토글 콜백
@@ -36,7 +40,12 @@ fun ThemeSwitch(
     // 손잡이 색상 (Home knobBg / knobFg)
     val knobBg = TraceTheme.colors.themeKnob
     val knobFg = TraceTheme.colors.themeKnobIcon
-    val knobX = if (isDark) 36.dp else 4.dp
+    // 색 크로스페이드와 같은 1초 동안 손잡이를 옮긴다
+    val knobX by animateDpAsState(
+        targetValue = if (isDark) 36.dp else 4.dp,
+        animationSpec = tween(durationMillis = THEME_CROSSFADE_MS),
+        label = "themeKnob",
+    )
 
     Box(
         modifier = modifier

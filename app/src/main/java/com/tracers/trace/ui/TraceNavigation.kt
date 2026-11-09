@@ -135,6 +135,7 @@ fun TraceNavHost(
         startDestination = startDestination
     ) {
         composable(TraceDestinations.HOME) {
+            val isDarkTheme = TraceTheme.isDark
             val homeUiState = homeViewModel.uiState.collectAsState()
 
             HomeScreen(
@@ -143,7 +144,8 @@ fun TraceNavHost(
                 onNavigateToMaintenance = { navController.navigate(TraceDestinations.MAINTENANCE) },
                 onNavigateToCoin = { navController.navigate(TraceDestinations.COIN) },
                 onNavigateToRegion = { navController.navigate(TraceDestinations.REGION) },
-                onNavigateToSpace = { navController.navigate(TraceDestinations.SPACE) }
+                onNavigateToSpace = { navController.navigate(TraceDestinations.SPACE) },
+                onToggleTheme = { app.themeSetting.set(!isDarkTheme) },
             )
         }
         composable(TraceDestinations.EFFICIENCY) {
