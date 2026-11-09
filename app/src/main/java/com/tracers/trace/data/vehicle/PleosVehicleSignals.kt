@@ -13,6 +13,8 @@ import ai.pleos.playground.vehicle.listener.HvacPowerStateListener
 import ai.pleos.playground.vehicle.listener.RangeRemainingListener
 import ai.pleos.playground.vehicle.listener.SteeringWheelAngleListener
 import ai.pleos.playground.vehicle.listener.TurnSignalStateListener
+import ai.pleos.playground.navi.helper.NaviHelper
+import ai.pleos.playground.navi.helper.listener.NaviHelperEventListener
 import android.car.Car
 import android.car.VehicleGear
 import android.car.VehiclePropertyIds
@@ -43,6 +45,7 @@ class PleosVehicleSignals(context: Context) : VehicleSignals {
 
     private val appContext = context.applicationContext
     private val vehicle = Vehicle(appContext)
+    private val navi = NaviHelper(appContext)
     private var car: Car? = null
     private var carPropertyManager: CarPropertyManager? = null
     private val main = Handler(Looper.getMainLooper())
@@ -54,6 +57,7 @@ class PleosVehicleSignals(context: Context) : VehicleSignals {
     private val _speedReadings = MutableSharedFlow<SpeedReading>(
         extraBufferCapacity = SPEED_BUFFER, onBufferOverflow = BufferOverflow.DROP_OLDEST,
     )
+    private val _speedLimitKmh = MutableStateFlow<Int?>(null)
     private val _gear = MutableStateFlow<Gear?>(null)
     private val _brakePedal = MutableStateFlow<Boolean?>(null)
     private val _steeringAngle = MutableStateFlow<Float?>(null)
@@ -72,6 +76,7 @@ class PleosVehicleSignals(context: Context) : VehicleSignals {
 
     override val speedMps: StateFlow<Float?> = _speedMps.asStateFlow()
     override val speedReadings: SharedFlow<SpeedReading> = _speedReadings.asSharedFlow()
+    override val speedLimitKmh: StateFlow<Int?> = _speedLimitKmh.asStateFlow()
     override val gear: StateFlow<Gear?> = _gear.asStateFlow()
     override val brakePedal: StateFlow<Boolean?> = _brakePedal.asStateFlow()
     override val steeringAngle: StateFlow<Float?> = _steeringAngle.asStateFlow()
@@ -107,6 +112,16 @@ class PleosVehicleSignals(context: Context) : VehicleSignals {
 
         override fun onErrorEvent(propId: Int, zone: Int) {
             Log.w(TAG, "AAOS onErrorEvent propId=$propId zone=$zone")
+        }
+    }
+
+    // ---------- NaviHelper 제한속도 ----------
+
+    private val naviListener = object : NaviHelperEventListener {
+        override fun onCurrentRoadSpeedLimit(speedLimit: Int) {
+            val v = speedLimit.takeIf { it > 0 }
+            if (v != _speedLimitKmh.value) log("제한속도", v)
+            _speedLimitKmh.value = v
         }
     }
 
@@ -228,6 +243,12 @@ class PleosVehicleSignals(context: Context) : VehicleSignals {
 
         // AAOS 속도·기어 구독
         subscribeAaos()
+
+        // NaviHelper 제한속도 (실패해도 과속만 안 셀 뿐 나머지는 그대로)
+        runCatching {
+            navi.addListener(naviListener)
+            navi.initialize()
+        }.onFailure { Log.w(TAG, "NaviHelper 연결 실패", it) }
     }
 
     private fun subscribeVehicleSdk() {
@@ -379,6 +400,11 @@ class PleosVehicleSignals(context: Context) : VehicleSignals {
         powerListeners.clear()
         powerByArea.clear()
         runCatching { vehicle.release() }
+
+        // NaviHelper 해제
+        runCatching { navi.removeListener(naviListener) }
+        runCatching { navi.release() }
+        _speedLimitKmh.value = null
 
         // AAOS 해제
         runCatching { carPropertyManager?.unregisterCallback(aaosCallback) }
