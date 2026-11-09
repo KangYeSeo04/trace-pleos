@@ -28,6 +28,7 @@ object RegionLookupParser {
                 sidoShort = u["sidoShort"] as String,
                 regionCode = u["region"] as String,
                 bbox = u["bbox"] as DoubleArray,
+                center = u["center"] as DoubleArray,
                 rings = (u["rings"] as List<*>).map { it as DoubleArray },
             )
         }

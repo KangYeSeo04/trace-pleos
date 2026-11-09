@@ -158,8 +158,8 @@ fun Tile(
                     }
                 }
                 Spacer(modifier = Modifier.weight(1f))
-                // 서울 지도 (정차 모드만)
-                if (!isDriving) {
+                // 서울 지도 (정차 모드, 서울에 있을 때만)
+                if (!isDriving && state.showMap) {
                     SeoulMap(
                         locationX = state.locationX,
                         locationY = state.locationY,

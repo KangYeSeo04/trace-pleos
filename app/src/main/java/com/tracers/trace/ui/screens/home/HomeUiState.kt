@@ -83,6 +83,8 @@ sealed class TileState {
     data class Region(
         val city: String = "",
         val district: String = "",
+        /** 서울 미니 지도를 보일지 (서울에 있을 때만) */
+        val showMap: Boolean = true,
         /** 현재 위치 좌표 (서울 지도 viewBox 100x80 기준) */
         val locationX: Float = 50f,
         val locationY: Float = 40f,

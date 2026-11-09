@@ -437,7 +437,7 @@ private fun ClearAllDialog(onCancel: () -> Unit, onConfirm: () -> Unit) {
         ) {
             Text(text = "위치 기록을 모두 지울까요?", style = type.body(19f, FontWeight.Bold), color = colors.t1)
             Text(
-                text = "되돌릴 수 없어요. 다녀온 지역, 달린 거리, 머문 시간이 모두 지워져요.",
+                text = "되돌릴 수 없어요. 다녀온 지역, 달린 거리, 머문 시간, 충전 장소가 모두 지워져요.",
                 style = type.body(15f).copy(lineHeight = 1.5.em),
                 color = colors.t2,
                 modifier = Modifier.padding(top = 10.dp)

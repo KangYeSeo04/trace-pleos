@@ -94,6 +94,9 @@ fun TraceNavHost(
             roughDriving = app.recordCollector.roughDriving,
             speedMps = app.vehicleSignals.speedMps,
             maintenance = app.maintenanceSource.observe(),
+            regionStatus = app.regionRecorder.status,
+            regionVisits = app.regionRepository.observe(),
+            regionData = app.regionRecorder.data,
         )
     }
 

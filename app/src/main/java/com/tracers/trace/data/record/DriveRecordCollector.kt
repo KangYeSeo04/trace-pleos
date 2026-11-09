@@ -48,6 +48,8 @@ class DriveRecordCollector(
     private val repository: RecordRepository,
     private val coinRepository: CoinRepository,
     private val scope: CoroutineScope,
+    /** 충전 장소로 남길 지금 지역 이름 (G-01). 모르거나 위치 기록이 꺼져 있으면 null */
+    private val placeLabel: () -> String? = { null },
     private val clock: () -> Long = System::currentTimeMillis,
 ) {
     private val driveStateDetector = DriveStateDetector(scope)
@@ -206,7 +208,7 @@ class DriveRecordCollector(
     }
 
     private fun saveCharge(c: ChargeRecord) = write {
-        repository.saveCharge(c)
+        repository.saveCharge(c, placeLabel())
         Log.i(TAG, "충전 저장: ${c.startPercent}→${c.endPercent}% ${"%.1f".format(c.addedKwh)}kWh")
     }
 

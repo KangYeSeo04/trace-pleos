@@ -13,6 +13,8 @@ class RegionLookupData(
 ) {
     val regionByCode: Map<String, RegionInfo> = regions.associateBy { it.code }
 
+    val unitByCode: Map<String, UnitShape> = units.associateBy { it.code }
+
     /** 지역 하나에 속한 시·군·구 수. 1곳뿐이면 표시 이름에 구 이름을 붙이지 않는다 */
     internal val unitCountByRegion: Map<String, Int> = units.groupingBy { it.regionCode }.eachCount()
 }
@@ -39,5 +41,7 @@ class UnitShape(
     val regionCode: String,
     /** [minLon, minLat, maxLon, maxLat] */
     val bbox: DoubleArray,
+    /** [lon, lat] 대표점 (홈 타일 미니 지도 점) */
+    val center: DoubleArray,
     val rings: List<DoubleArray>,
 )

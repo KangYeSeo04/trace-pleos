@@ -28,5 +28,9 @@ class RegionRepository(private val db: TraceDatabase) {
 
     suspend fun delete(regionCode: String) = dao.delete(regionCode)
 
-    suspend fun clear() = dao.deleteAll()
+    /** 전체 지우기: 방문 기록과 충전 기록의 장소 이름까지 */
+    suspend fun clear() = db.withTransaction {
+        dao.deleteAll()
+        db.chargeSessionDao().clearPlaceLabels()
+    }
 }

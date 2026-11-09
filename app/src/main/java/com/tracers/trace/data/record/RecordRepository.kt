@@ -46,13 +46,13 @@ class RecordRepository(private val db: TraceDatabase) {
         startBatteryPercent = startBatteryPercent, endBatteryPercent = endBatteryPercent,
     )
 
-    suspend fun saveCharge(c: ChargeRecord) {
+    /** @param placeLabel 충전 장소 = 충전이 끝난 때의 지역 이름 ("서울 중랑구"). 모르면 null */
+    suspend fun saveCharge(c: ChargeRecord, placeLabel: String? = null) {
         db.chargeSessionDao().insert(
             ChargeSessionEntity(
                 startedAtMs = c.startedAtMs, endedAtMs = c.endedAtMs,
                 startPercent = c.startPercent, endPercent = c.endPercent, addedKwh = c.addedKwh,
-                // TODO(G-01): 충전 장소
-                placeLabel = null,
+                placeLabel = placeLabel,
             )
         )
     }

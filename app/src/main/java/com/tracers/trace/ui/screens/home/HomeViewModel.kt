@@ -11,6 +11,9 @@ import com.tracers.trace.domain.EfficiencySummary
 import com.tracers.trace.domain.FlightStatus
 import com.tracers.trace.domain.FlightStatusResolver
 import com.tracers.trace.domain.KmRecord
+import com.tracers.trace.domain.region.RegionLookupData
+import com.tracers.trace.domain.region.RegionStatus
+import com.tracers.trace.domain.region.RegionVisit
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.combine
@@ -27,6 +30,7 @@ import kotlinx.coroutines.launch
  * B-03: 주행 중 무대 문구 (거칠었음 > 매끄럽게·천천히), 정차 문구 (충전 중 > 점검 임박 > 충전 타이밍 > 쉬는 중)
  * D-01: 정비 타일 = 가장 급한 점검 항목
  * B-05: 주행 모드에서는 큰 숫자 + 상태 1줄만 표시
+ * G-01: 지역 타일 = 지금 지역 + 방문 수·비율·누적 거리 (위치 못 받음·기록 꺼짐도 표시)
  */
 class HomeViewModel(
     /** A-01 주행 상태. 앱 전체에서 DriveRecordCollector 하나가 판정한 값을 받는다 */
@@ -47,6 +51,12 @@ class HomeViewModel(
     speedMps: StateFlow<Float?>,
     /** D-01 점검 주기 계산 결과 (급한 순) */
     maintenance: Flow<MaintenanceSnapshot>,
+    /** G-01 지금 지역 판정 상태 */
+    regionStatus: StateFlow<RegionStatus>,
+    /** G-03 지역 방문 기록 */
+    regionVisits: Flow<List<RegionVisit>>,
+    /** 161 지역 경계 데이터 (읽기 전 null) */
+    regionData: StateFlow<RegionLookupData?>,
 ) : ViewModel() {
 
     private val flightResolver = FlightStatusResolver()
@@ -68,15 +78,19 @@ class HomeViewModel(
             charging,
             maintenance.onStart<MaintenanceSnapshot?> { emit(null) },
         ) { e, c, m -> Triple(e, c, m) }
+        val region = combine(regionStatus, regionVisits.onStart { emit(emptyList()) }, regionData) { st, v, d ->
+            RegionInputs(st, v, d)
+        }
+        val flightRegion = combine(flight, region) { fl, r -> fl to r }
 
         viewModelScope.launch {
             combine(
                 driveState,
                 eff,
                 permissionsGranted,
-                flight,
+                flightRegion,
                 coin,
-            ) { st, (e, chg, m), granted, fl, (w, kms) -> Inputs(st, e, chg, granted, fl, w, kms, m) }
+            ) { st, (e, chg, m), granted, (fl, r), (w, kms) -> Inputs(st, e, chg, granted, fl, w, kms, m, r) }
                 .collect(::updateDriveMode)
         }
     }
@@ -90,6 +104,13 @@ class HomeViewModel(
         val wallet: CoinWallet,
         val latestTripKms: List<KmRecord>,
         val maintenance: MaintenanceSnapshot?,
+        val region: RegionInputs,
+    )
+
+    private data class RegionInputs(
+        val status: RegionStatus,
+        val visits: List<RegionVisit>,
+        val data: RegionLookupData?,
     )
 
     private fun updateDriveMode(input: Inputs) {
@@ -136,15 +157,7 @@ class HomeViewModel(
             efficiency = EfficiencyTileMapper.map(efficiency, isDriving),
             maintenance = MaintenanceTileMapper.map(statuses.firstOrNull()),
             coin = CoinTileMapper.map(input.wallet, input.latestTripKms, driveState),
-            region = TileState.Region(
-                city = "–",
-                district = "–",
-                value = "–",
-                unit = "",
-                status = "데이터를 모으는 중이에요",
-                statusLevel = StatusLevel.Normal,
-                barPercent = 0f
-            )
+            region = RegionTileMapper.map(input.region.status, input.region.visits, input.region.data, isDriving),
         )
     }
 

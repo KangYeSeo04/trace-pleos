@@ -62,7 +62,10 @@ class TraceApplication : Application() {
         val db = TraceDatabase.create(this)
         recordRepository = RecordRepository(db)
         coinRepository = CoinRepository(db)
-        recordCollector = DriveRecordCollector(vehicleSignals, recordRepository, coinRepository, appScope)
+        recordCollector = DriveRecordCollector(
+            vehicleSignals, recordRepository, coinRepository, appScope,
+            placeLabel = { regionRecorder.currentLabel },
+        )
         efficiencySource = EfficiencySource(recordRepository, vehicleSignals)
         // 주행거리 첫 값을 기다렸다가 기준점을 남긴다 (차량 신호 구독은 권한 허용 뒤 recordCollector가 시작)
         maintenanceSource = MaintenanceSource(MaintenanceRepository(db), vehicleSignals, appScope).apply { start() }
