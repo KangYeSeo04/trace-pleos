@@ -67,6 +67,15 @@ fun MaintenanceScreen(
             // 방문 감지 카드가 없으면 첫 섹션 제목이 스크롤 영역 맨 위에 붙는다
             SectionTitle("점검 항목", top = if (uiState.visit == null) 0.dp else 26.dp)
             MaintenanceItemsCard(items = uiState.items)
+
+            // 정비 기록: 디자인엔 따로 된 목록이 없다. 항목 행을 펼치면 그 항목 기록이,
+            // 달력에서 날을 고르면 그날 기록이 보인다 (uiState.records)
+
+            SectionTitle("정비 달력")
+            // TODO(2회차): 정비 달력 카드 (uiState.calendar, uiState.records)
+
+            SectionTitle("기록 추가")
+            // TODO(2회차): 기록 추가 양식 S05 (uiState.form)
         }
     }
 }
