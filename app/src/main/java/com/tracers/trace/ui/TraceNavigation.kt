@@ -33,6 +33,8 @@ import androidx.navigation.compose.rememberNavController
 import com.tracers.trace.data.uxrestrictions.CarUxRestrictionsMonitor
 import com.tracers.trace.domain.DriveState
 import com.tracers.trace.ui.icons.TraceIcons
+import com.tracers.trace.ui.screens.coin.CoinScreen
+import com.tracers.trace.ui.screens.coin.CoinViewModel
 import com.tracers.trace.ui.screens.efficiency.EfficiencyScreen
 import com.tracers.trace.ui.screens.efficiency.EfficiencyViewModel
 import com.tracers.trace.ui.screens.home.HomeScreen
@@ -141,7 +143,13 @@ fun TraceNavHost(
             PlaceholderScreen(onBack = { navController.popBackStack() })
         }
         composable(TraceDestinations.COIN) {
-            PlaceholderScreen(onBack = { navController.popBackStack() })
+            val coinViewModel: CoinViewModel = viewModel()
+            val coinUiState by coinViewModel.uiState.collectAsState()
+            CoinScreen(
+                uiState = coinUiState,
+                onNavigateBack = { navController.popBackStack() },
+                onClaimCoins = coinViewModel::onClaimCoins
+            )
         }
         composable(TraceDestinations.REGION) {
             PlaceholderScreen(onBack = { navController.popBackStack() })
