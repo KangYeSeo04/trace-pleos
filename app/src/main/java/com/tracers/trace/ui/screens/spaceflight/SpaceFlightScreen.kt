@@ -4,6 +4,7 @@ import android.net.Uri
 import android.view.ViewGroup
 import android.widget.FrameLayout
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Box
@@ -20,7 +21,6 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -107,7 +107,8 @@ fun SpaceFlightScreen(
             modifier = Modifier.fillMaxSize()
         )
 
-        // 뒤로 버튼 (HTML: left: 20px, top: 20px, 48px 원형, 반투명 흰 배경, 흰 테두리, 흰 화살표)
+        // 뒤로 버튼 (Space Dark·Light: left 20, top 20, 48 원형, 바탕 흰 12%, 테두리 1px 흰 28%, 흰 화살표)
+        val colors = TraceTheme.colors
         IconButton(
             onClick = onNavigateBack,
             modifier = Modifier
@@ -115,13 +116,14 @@ fun SpaceFlightScreen(
                 .padding(start = 20.dp, top = 20.dp)
                 .size(48.dp)
                 .clip(CircleShape)
-                .background(Color.White.copy(alpha = 0.12f))
+                .background(colors.videoButton)
+                .border(1.dp, colors.videoButtonBorder, CircleShape)
         ) {
             Icon(
                 imageVector = TraceIcons.ChevronLeft,
                 contentDescription = "뒤로",
                 modifier = Modifier.size(22.dp),
-                tint = Color.White
+                tint = colors.videoButtonIcon
             )
         }
     }

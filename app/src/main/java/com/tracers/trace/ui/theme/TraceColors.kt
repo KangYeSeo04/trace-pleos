@@ -84,6 +84,12 @@ data class TraceColors(
     val themeKnobIcon: Color = Color(0xFFE8ECF2),
     /** 하늘 탭 비행 영상 뒤 바탕 (SpaceDark #0A0B0D / SpaceLight #1B3566) */
     val spaceBg: Color = Color(0xFF0A0B0D),
+    /** 영상 위 뒤로 버튼 바탕 rgba(255,255,255,0.12) (영상 위라 두 테마 같음) */
+    val videoButton: Color = Color(0x1FFFFFFF),
+    /** 영상 위 뒤로 버튼 테두리 1px rgba(255,255,255,0.28) */
+    val videoButtonBorder: Color = Color(0x47FFFFFF),
+    /** 영상 위 뒤로 버튼 화살표 */
+    val videoButtonIcon: Color = Color(0xFFFFFFFF),
 
     // ===== 지역 지도 (RegionDark mapC, dark) =====
     /** 지도 바다 */
@@ -198,6 +204,9 @@ fun lerpTraceColors(a: TraceColors, b: TraceColors, t: Float): TraceColors = whe
         themeKnob = lerp(a.themeKnob, b.themeKnob, t),
         themeKnobIcon = lerp(a.themeKnobIcon, b.themeKnobIcon, t),
         spaceBg = lerp(a.spaceBg, b.spaceBg, t),
+        videoButton = lerp(a.videoButton, b.videoButton, t),
+        videoButtonBorder = lerp(a.videoButtonBorder, b.videoButtonBorder, t),
+        videoButtonIcon = lerp(a.videoButtonIcon, b.videoButtonIcon, t),
         mapSea = lerp(a.mapSea, b.mapSea, t),
         mapLand = lerp(a.mapLand, b.mapLand, t),
         mapLine = lerp(a.mapLine, b.mapLine, t),
