@@ -10,10 +10,12 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.distinctUntilChanged
+import kotlinx.coroutines.flow.filterNotNull
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withTimeoutOrNull
 import java.time.LocalDate
 import kotlin.math.floor
 
@@ -48,8 +50,9 @@ class MaintenanceSource(
         if (started) return
         started = true
         scope.launch {
-            // 연결 직후 0이 먼저 올 수 있어 0보다 큰 첫 값을 쓴다
-            val odo = signals.odometerKm.first { it != null && it > 0f }!!.toDouble()
+            // 연결 직후 0이 먼저 올 수 있어 0보다 큰 값을 잠깐 기다린다. 끝내 0이면(새 차·에뮬레이터) 0을 쓴다
+            val odo = (withTimeoutOrNull(NONZERO_WAIT_MS) { signals.odometerKm.first { it != null && it > 0f } }
+                ?: signals.odometerKm.filterNotNull().first()).toDouble()
             runCatching { repository.ensureBaseline(today(), odo) }
                 .onFailure { Log.w(TAG, "정비 기준점 저장 실패", it) }
         }
@@ -58,7 +61,7 @@ class MaintenanceSource(
     fun observe(): Flow<MaintenanceSnapshot> {
         // 주행 중 주행거리가 자주 바뀌므로 0.1 km 단위로 줄여 바뀔 때만 다시 계산
         val odometer = signals.odometerKm
-            .map { v -> v?.takeIf { it > 0f }?.let { floor(it * 10.0) / 10.0 } }
+            .map { v -> v?.takeIf { it >= 0f }?.let { floor(it * 10.0) / 10.0 } }
             .distinctUntilChanged()
         return combine(repository.observeRecords(), repository.observeBaseline(), odometer) { records, base, odo ->
             val d = today()
@@ -70,5 +73,6 @@ class MaintenanceSource(
 
     private companion object {
         const val TAG = "MaintenanceSource"
+        const val NONZERO_WAIT_MS = 10_000L
     }
 }
