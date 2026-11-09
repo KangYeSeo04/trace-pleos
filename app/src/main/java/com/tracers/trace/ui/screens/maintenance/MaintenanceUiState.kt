@@ -1,5 +1,6 @@
 package com.tracers.trace.ui.screens.maintenance
 
+import com.tracers.trace.domain.MaintenanceThresholds
 import java.time.LocalDate
 import java.time.YearMonth
 
@@ -71,8 +72,8 @@ enum class UsageLevel {
     Normal, Caution, Warn;
 
     companion object {
-        const val WARN_PERCENT = 90f
-        const val CAUTION_PERCENT = 75f
+        const val WARN_PERCENT = (MaintenanceThresholds.WARN_RATIO * 100).toFloat()
+        const val CAUTION_PERCENT = (MaintenanceThresholds.CAUTION_RATIO * 100).toFloat()
 
         fun of(percent: Float): UsageLevel = when {
             percent >= WARN_PERCENT -> Warn
