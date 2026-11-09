@@ -103,6 +103,14 @@ fun CoinScreen(
 
             SectionTitle("안전점수")
             SafetyScoreCard(chart = uiState.safetyScore)
+
+            // 아래 카드는 2회차. 디자인 순서와 간격만 자리 잡아 둔다.
+            // 이번 주행 1km 기록: SectionTitle("이번 주행 1km 기록") + 카드 (위 26)
+            TripKmRecordSection(record = uiState.tripRecord)
+            // 상점 바로가기: 72 높이 줄 (위 10)
+            ShopLinkSection(shop = uiState.shop)
+            // 받은 기록: SectionTitle("받은 기록") + 목록 (위 26)
+            CoinHistorySection(history = uiState.history)
         }
     }
 }
@@ -199,6 +207,24 @@ private fun CoinHero(
             }
         }
     }
+}
+
+/** 이번 주행 1km 기록 (E-03). */
+@Composable
+private fun TripKmRecordSection(record: TripKmRecord?) {
+    // TODO(2회차): 37칸 격자(10열, 칸 34, 간격 6), 급가속·급감속·과속·차량 경고 4칸, 제외 안내 문구
+}
+
+/** 상점 바로가기 줄 → S07. */
+@Composable
+private fun ShopLinkSection(shop: ShopTeaser?) {
+    // TODO(2회차): 40×40 아이콘 + "상점" + 보관함·목표 문구 + 화살표, 탭 → 상점
+}
+
+/** 받은 기록 (E-04). */
+@Composable
+private fun CoinHistorySection(history: List<CoinHistoryEntry>) {
+    // TODO(2회차): 받은 +N(t1)·쓴 −N(t2) 목록, 줄 사이 1px line. 헤더 "적립 기준" 안내 창도 2회차
 }
 
 /** 섹션 제목: 위 26, 좌우 4, 아래 10, 15sp 600 t2 */
