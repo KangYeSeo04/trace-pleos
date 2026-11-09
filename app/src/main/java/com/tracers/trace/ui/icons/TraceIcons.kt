@@ -507,4 +507,74 @@ object TraceIcons {
             }
         }.build()
     }
+
+    /** 위치 핀 (MaintDark 방문 감지 카드) */
+    val MapPin: ImageVector by lazy {
+        ImageVector.Builder(
+            name = "MapPin",
+            defaultWidth = 24.dp,
+            defaultHeight = 24.dp,
+            viewportWidth = 24f,
+            viewportHeight = 24f
+        ).apply {
+            path(
+                fill = null,
+                stroke = SolidColor(Color.Black),
+                strokeLineWidth = 2f,
+                strokeLineCap = StrokeCap.Round,
+                strokeLineJoin = StrokeJoin.Round
+            ) {
+                // M12 21s-6-5.5-6-11a6 6 0 0112 0c0 5.5-6 11-6 11z
+                moveTo(12f, 21f)
+                reflectiveCurveToRelative(-6f, -5.5f, -6f, -11f)
+                arcToRelative(6f, 6f, 0f, false, true, 12f, 0f)
+                curveToRelative(0f, 5.5f, -6f, 11f, -6f, 11f)
+                close()
+            }
+            path(
+                fill = null,
+                stroke = SolidColor(Color.Black),
+                strokeLineWidth = 2f,
+                strokeLineCap = StrokeCap.Round,
+                strokeLineJoin = StrokeJoin.Round
+            ) {
+                // circle cx=12 cy=10 r=2
+                moveTo(14f, 10f)
+                arcTo(2f, 2f, 0f, true, true, 10f, 10f)
+                arcTo(2f, 2f, 0f, true, true, 14f, 10f)
+            }
+        }.build()
+    }
+
+    /** 마이크 (MaintDark 말로 입력, stroke 1.9) */
+    val Mic: ImageVector by lazy {
+        ImageVector.Builder(
+            name = "Mic",
+            defaultWidth = 24.dp,
+            defaultHeight = 24.dp,
+            viewportWidth = 24f,
+            viewportHeight = 24f
+        ).apply {
+            path(
+                fill = null,
+                stroke = SolidColor(Color.Black),
+                strokeLineWidth = 1.9f,
+                strokeLineCap = StrokeCap.Round,
+                strokeLineJoin = StrokeJoin.Round
+            ) {
+                // rect x=9 y=3 width=6 height=11 rx=3
+                moveTo(9f, 6f)
+                arcToRelative(3f, 3f, 0f, false, true, 6f, 0f)
+                verticalLineToRelative(5f)
+                arcToRelative(3f, 3f, 0f, false, true, -6f, 0f)
+                close()
+                // M5 11a7 7 0 0014 0
+                moveTo(5f, 11f)
+                arcToRelative(7f, 7f, 0f, false, false, 14f, 0f)
+                // M12 18v3
+                moveTo(12f, 18f)
+                verticalLineToRelative(3f)
+            }
+        }.build()
+    }
 }

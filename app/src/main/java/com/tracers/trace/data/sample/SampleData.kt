@@ -3,6 +3,9 @@ package com.tracers.trace.data.sample
 import com.tracers.trace.ui.screens.coin.*
 import com.tracers.trace.ui.screens.efficiency.*
 import com.tracers.trace.ui.screens.home.*
+import com.tracers.trace.ui.screens.maintenance.*
+import java.time.LocalDate
+import java.time.YearMonth
 
 /**
  * 앱 전체에서 사용하는 샘플 데이터.
@@ -191,4 +194,71 @@ object SampleData {
 
     /** 빈 상태: 주행 기록 없음, 받을 코인 없음 */
     val coinUiStateEmpty = CoinUiState()
+
+    // ===== 정비 상세 화면 (MaintDark.dc.html) =====
+
+    private val maintenanceItems = listOf(
+        MaintenanceItem("와이퍼 블레이드", "12일 남음", listOf(UsageGauge(97f, "11.6 / 12개월"))),
+        MaintenanceItem("에어컨 필터", "1,200 km 남음", listOf(UsageGauge(88f, "8,800 / 10,000 km"))),
+        MaintenanceItem("타이어 위치 교환", "2,100 km 남음", listOf(UsageGauge(79f, "7,900 / 10,000 km"))),
+        MaintenanceItem("브레이크액", "7개월 남음", listOf(UsageGauge(71f, "17 / 24개월"))),
+        MaintenanceItem("12V 배터리", "약 2년 남음", listOf(UsageGauge(50f, "24 / 48개월"))),
+        MaintenanceItem("브레이크 패드 (앞)", "26,200 km 남음", listOf(UsageGauge(60f, "38,800 / 65,000 km"))),
+        MaintenanceItem("감속기 오일 점검", "21,200 km 남음", listOf(UsageGauge(65f, "38,800 / 60,000 km"))),
+        MaintenanceItem("냉각수 (첫 교체)", "161,200 km 남음", listOf(UsageGauge(19f, "38,800 / 200,000 km"))),
+    )
+
+    private fun maintRecord(
+        id: Long, date: String, km: Int, title: String, place: String, auto: Boolean, items: List<String>,
+        cost: Int? = null,
+    ) = MaintenanceRecord(
+        id = id,
+        date = LocalDate.parse(date),
+        odometerKm = km,
+        title = title,
+        place = place,
+        method = if (auto) RecordInputMethod.AutoDetected else RecordInputMethod.Manual,
+        itemNames = items,
+        costWon = cost,
+    )
+
+    /** 금액은 디자인이 [금액] 자리표시라 임의 값 */
+    private val maintenanceRecords = listOf(
+        maintRecord(1, "2026-05-14", 30_900, "타이어 위치 교환 · 브레이크액 점검", "[정비소 이름]", true, listOf("타이어 위치 교환", "브레이크액"), 45_000),
+        maintRecord(2, "2026-01-08", 30_000, "에어컨 필터 교체", "[정비소 이름]", true, listOf("에어컨 필터"), 25_000),
+        maintRecord(3, "2025-11-20", 24_600, "와이퍼 블레이드 교체", "셀프 교체", false, listOf("와이퍼 블레이드")),
+        maintRecord(4, "2025-08-02", 20_900, "타이어 위치 교환", "[정비소 이름]", true, listOf("타이어 위치 교환")),
+        maintRecord(5, "2025-06-11", 19_800, "브레이크액 교체", "[정비소 이름]", true, listOf("브레이크액")),
+        maintRecord(6, "2025-03-17", 17_200, "12V 배터리 점검 · 브레이크 패드 점검", "[정비소 이름]", true, listOf("12V 배터리", "브레이크 패드 (앞)")),
+        maintRecord(7, "2024-12-09", 14_800, "와이퍼 블레이드 교체", "셀프 교체", false, listOf("와이퍼 블레이드")),
+        maintRecord(8, "2024-09-23", 12_100, "에어컨 필터 교체 · 감속기 오일 점검", "[정비소 이름]", true, listOf("에어컨 필터", "감속기 오일 점검")),
+        maintRecord(9, "2024-06-05", 10_000, "타이어 위치 교환 · 냉각수 점검", "[정비소 이름]", true, listOf("타이어 위치 교환", "냉각수 (첫 교체)")),
+        maintRecord(10, "2023-11-28", 4_300, "와이퍼 블레이드 교체", "[정비소 이름]", true, listOf("와이퍼 블레이드")),
+    )
+
+    val maintenanceUiState = MaintenanceUiState(
+        visit = VisitDetection(whenLabel = "어제", placeName = "[정비소 이름]", stayLabel = "1시간 12분"),
+        items = maintenanceItems,
+        records = maintenanceRecords,
+        calendar = MaintenanceCalendar(month = YearMonth.of(2026, 5), selectedDate = LocalDate.of(2026, 5, 14)),
+        form = MaintenanceRecordForm(
+            dateText = "2026. 11. 5",
+            odometerDigits = "38800",
+            place = "[정비소 이름]",
+            selectedItems = setOf("타이어 위치 교환"),
+        ),
+    )
+
+    /** 두 기준(거리·기간) 막대 2줄 확인용. 디자인엔 이 경우가 없어 값은 임의 */
+    val maintenanceUiStateTwoGauges = MaintenanceUiState(
+        items = listOf(
+            MaintenanceItem(
+                "에어컨 필터", "1,200 km 남음",
+                listOf(UsageGauge(88f, "8,800 / 10,000 km"), UsageGauge(76f, "9.1 / 12개월")),
+            ),
+        ) + maintenanceItems.drop(2),
+    )
+
+    /** 빈 상태: 방문 감지 없음, 점검 항목·기록 없음 */
+    val maintenanceUiStateEmpty = MaintenanceUiState()
 }

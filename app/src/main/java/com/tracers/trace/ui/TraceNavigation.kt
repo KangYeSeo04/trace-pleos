@@ -39,6 +39,9 @@ import com.tracers.trace.ui.screens.efficiency.EfficiencyScreen
 import com.tracers.trace.ui.screens.efficiency.EfficiencyViewModel
 import com.tracers.trace.ui.screens.home.HomeScreen
 import com.tracers.trace.ui.screens.home.HomeViewModel
+import com.tracers.trace.ui.screens.maintenance.MaintenanceScreen
+import com.tracers.trace.ui.screens.maintenance.MaintenanceFormActions
+import com.tracers.trace.ui.screens.maintenance.MaintenanceViewModel
 import com.tracers.trace.ui.screens.spaceflight.SpaceFlightScreen
 import com.tracers.trace.ui.theme.TraceTheme
 
@@ -145,7 +148,31 @@ fun TraceNavHost(
             )
         }
         composable(TraceDestinations.MAINTENANCE) {
-            PlaceholderScreen(onBack = { navController.popBackStack() })
+            // SDK 연결 전이라 빈 상태로 뜬다. 주기 계산·방문 감지는 2단계(D-01·D-03)
+            // back stack entry에 묶여 A-02 복귀로 나가면 양식 내용도 정리된다 (임시 저장은 TODO(D-05))
+            val maintenanceViewModel: MaintenanceViewModel = viewModel()
+            val maintenanceUiState by maintenanceViewModel.uiState.collectAsState()
+            MaintenanceScreen(
+                uiState = maintenanceUiState,
+                onNavigateBack = { navController.popBackStack() },
+                onRecordVisit = maintenanceViewModel::onRecordVisit,
+                onDismissVisit = maintenanceViewModel::onDismissVisit,
+                onPrevMonth = maintenanceViewModel::onPrevMonth,
+                onNextMonth = maintenanceViewModel::onNextMonth,
+                onSelectDate = maintenanceViewModel::onSelectDate,
+                formActions = remember(maintenanceViewModel) {
+                    MaintenanceFormActions(
+                        onDateChange = maintenanceViewModel::onDateChange,
+                        onOdometerChange = maintenanceViewModel::onOdometerChange,
+                        onPlaceChange = maintenanceViewModel::onPlaceChange,
+                        onToggleItem = maintenanceViewModel::onToggleItem,
+                        onCostChange = maintenanceViewModel::onCostChange,
+                        onMemoChange = maintenanceViewModel::onMemoChange,
+                        onVoiceInput = maintenanceViewModel::onVoiceInput,
+                        onSave = maintenanceViewModel::onSave,
+                    )
+                },
+            )
         }
         composable(TraceDestinations.COIN) {
             val coinViewModel: CoinViewModel = viewModel(
