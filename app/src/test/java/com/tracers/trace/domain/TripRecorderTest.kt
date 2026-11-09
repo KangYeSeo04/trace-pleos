@@ -172,4 +172,35 @@ class TripRecorderTest {
         assertEquals(snap, TripRecorder.finalizeRecovered(snap))
         assertNull(TripRecorder.finalizeRecovered(snap.copy(distanceKm = 0.05)))
     }
+
+    @Test
+    fun `주행 판정 2초 지연 동안의 출발 가속과 거리도 주행에 넣는다`() {
+        val r = TripRecorder()
+        r.onSample(sample(0, speedKmh = 0.0, kwh = 60.0, odo = 1000.0))
+        // 차가 움직이기 시작 (아직 DRIVING 판정 전)
+        r.onSample(sample(1_000, speedKmh = 35.0, kwh = 59.9, odo = 1000.01))
+        r.onSample(sample(2_000, speedKmh = 40.0, kwh = 59.8, odo = 1000.02))
+        r.onSample(sample(3_000, speedKmh = 40.0, kwh = 59.7, odo = 1000.03))
+        r.onDriveState(DriveState.DRIVING, 3_000) // 2초 유지 뒤 판정
+        r.onSample(sample(60_000, speedKmh = 40.0, kwh = 59.0, odo = 1001.0))
+        val trip = r.onDriveState(DriveState.PARKED, 60_000)!!
+
+        assertEquals(1_000L, trip.startedAtMs)
+        assertEquals(1.0, trip.distanceKm, 1e-6)
+        assertEquals(1.0, trip.energyUsedKwh, 1e-6)
+        assertEquals(1, trip.hardAccelCount)
+    }
+
+    @Test
+    fun `움직이다 판정 전에 다시 멈추면 후보를 버린다`() {
+        val r = TripRecorder()
+        r.onSample(sample(0, speedKmh = 0.0, kwh = 60.0, odo = 1000.0))
+        r.onSample(sample(500, speedKmh = 3.0, kwh = 59.0, odo = 1000.0))
+        r.onSample(sample(1_000, speedKmh = 0.0, kwh = 59.0, odo = 1000.0))
+        r.onDriveState(DriveState.DRIVING, 5_000)
+        r.onSample(sample(6_000, speedKmh = 20.0, kwh = 58.5, odo = 1000.5))
+        val trip = r.onDriveState(DriveState.PARKED, 6_000)!!
+        assertEquals(5_000L, trip.startedAtMs)
+        assertEquals(0.5, trip.energyUsedKwh, 1e-6)
+    }
 }

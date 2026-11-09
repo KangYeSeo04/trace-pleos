@@ -3,7 +3,9 @@ package com.tracers.trace.domain
 /**
  * 주행 1회를 묶어 요약을 만든다 (C-01).
  *
- * - 시작: [DriveState.DRIVING]이 되었고 진행 중인 주행이 없을 때
+ * - 시작: [DriveState.DRIVING]이 되었고 진행 중인 주행이 없을 때. 판정은 2초 유지 뒤라서,
+ *   차가 움직이기 시작한 순간부터 후보로 쌓아 두었다가 DRIVING이 되면 그 후보를 주행으로 쓴다
+ *   (출발 가속·거리·에너지가 빠지지 않게). 판정 전에 다시 멈추면 후보는 버린다
  * - 종료: [DriveState.PARKED]. 신호등 정차([DriveState.STOPPED])는 주행을 끝내지 않는다
  * - 원시 샘플은 누적값만 갱신하고 버린다. 저장되는 건 [TripRecord] 하나
  *
@@ -17,12 +19,24 @@ class TripRecorder(
 ) {
     private var last: VehicleSample? = null
     private var trip: Accumulator? = null
+    /** 움직이기 시작했지만 아직 DRIVING 판정 전인 후보 */
+    private var candidate: Accumulator? = null
 
     val isRecording: Boolean get() = trip != null
 
     /** 차량 값이 바뀔 때마다 부른다. 주행 중이 아니면 마지막 값만 기억한다 */
     fun onSample(s: VehicleSample) {
-        trip?.add(s)
+        val t = trip
+        if (t != null) {
+            t.add(s)
+        } else {
+            val speed = s.speedMps ?: last?.speedMps
+            when {
+                speed == null -> Unit
+                speed > 0f -> (candidate ?: Accumulator(s.timeMs, last).also { candidate = it }).add(s)
+                else -> candidate = null
+            }
+        }
         last = merge(last, s)
     }
 
@@ -30,11 +44,13 @@ class TripRecorder(
     fun onDriveState(state: DriveState, nowMs: Long): TripRecord? {
         return when (state) {
             DriveState.DRIVING -> {
-                if (trip == null) trip = Accumulator(nowMs, last)
+                if (trip == null) trip = candidate ?: Accumulator(nowMs, last)
+                candidate = null
                 null
             }
             DriveState.STOPPED -> null
             DriveState.PARKED -> {
+                candidate = null
                 val t = trip ?: return null
                 trip = null
                 t.finish(nowMs).takeIf { it.distanceKm >= minDistanceKm }
