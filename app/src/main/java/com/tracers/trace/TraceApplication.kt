@@ -4,6 +4,9 @@ import android.app.Application
 import com.tracers.trace.data.permission.RuntimePermissions
 import com.tracers.trace.data.record.CoinRepository
 import com.tracers.trace.data.region.LocationPoller
+import com.tracers.trace.data.region.RegionRecorder
+import com.tracers.trace.data.region.RegionRepository
+import com.tracers.trace.domain.region.RegionLookupParser
 import com.tracers.trace.data.record.DriveRecordCollector
 import com.tracers.trace.data.record.EfficiencySource
 import com.tracers.trace.data.record.MaintenanceRepository
@@ -39,6 +42,8 @@ class TraceApplication : Application() {
         private set
     lateinit var maintenanceSource: MaintenanceSource
         private set
+    lateinit var regionRecorder: RegionRecorder
+        private set
     private lateinit var locationPoller: LocationPoller
 
     private val _permissionsGranted = MutableStateFlow(false)
@@ -56,7 +61,17 @@ class TraceApplication : Application() {
         efficiencySource = EfficiencySource(recordRepository, vehicleSignals)
         // 주행거리 첫 값을 기다렸다가 기준점을 남긴다 (차량 신호 구독은 권한 허용 뒤 recordCollector가 시작)
         maintenanceSource = MaintenanceSource(MaintenanceRepository(db), vehicleSignals, appScope).apply { start() }
-        locationPoller = LocationPoller(vehicleSignals, recordCollector.driveState, MutableStateFlow(true), appScope)
+        val recordingOn = MutableStateFlow(true)
+        locationPoller = LocationPoller(vehicleSignals, recordCollector.driveState, recordingOn, appScope)
+        regionRecorder = RegionRecorder(
+            signals = vehicleSignals,
+            driveState = recordCollector.driveState,
+            recordingOn = recordingOn,
+            repository = RegionRepository(db),
+            // 경계 데이터(2.2 MB)는 한 번만 읽는다
+            loadData = { assets.open(REGION_LOOKUP_ASSET).bufferedReader().use { RegionLookupParser.parse(it.readText()) } },
+            scope = appScope,
+        )
         refreshPermissions()
     }
 
@@ -69,7 +84,12 @@ class TraceApplication : Application() {
         _permissionsGranted.value = granted
         if (granted) {
             recordCollector.start()
+            regionRecorder.start()
             locationPoller.start()
         }
+    }
+
+    private companion object {
+        const val REGION_LOOKUP_ASSET = "regions_lookup.json"
     }
 }

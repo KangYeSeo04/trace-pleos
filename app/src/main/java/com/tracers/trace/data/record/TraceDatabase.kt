@@ -13,8 +13,9 @@ import androidx.sqlite.db.SupportSQLiteDatabase
         TripSummaryEntity::class, ChargeSessionEntity::class, TripInProgressEntity::class,
         KmRecordEntity::class, CoinWalletEntity::class, CoinHistoryEntity::class,
         MaintenanceRecordEntity::class, MaintenanceBaselineEntity::class,
+        RegionVisitEntity::class,
     ],
-    version = 4,
+    version = 5,
     exportSchema = false,
 )
 abstract class TraceDatabase : RoomDatabase() {
@@ -25,11 +26,12 @@ abstract class TraceDatabase : RoomDatabase() {
     abstract fun coinWalletDao(): CoinWalletDao
     abstract fun coinHistoryDao(): CoinHistoryDao
     abstract fun maintenanceDao(): MaintenanceDao
+    abstract fun regionVisitDao(): RegionVisitDao
 
     companion object {
         fun create(context: Context): TraceDatabase =
             Room.databaseBuilder(context.applicationContext, TraceDatabase::class.java, "trace.db")
-                .addMigrations(MIGRATION_1_2, MIGRATION_2_3, MIGRATION_3_4)
+                .addMigrations(MIGRATION_1_2, MIGRATION_2_3, MIGRATION_3_4, MIGRATION_4_5)
                 .build()
 
         /** 1 → 2: 진행 중 주행 요약 한 줄 테이블 추가 */
@@ -85,6 +87,18 @@ abstract class TraceDatabase : RoomDatabase() {
                 db.execSQL(
                     "CREATE TABLE IF NOT EXISTS `maintenance_baseline` (" +
                         "`id` INTEGER NOT NULL, `epochDay` INTEGER NOT NULL, `odometerKm` REAL NOT NULL, PRIMARY KEY(`id`))"
+                )
+            }
+        }
+
+        /** 4 → 5: 지역 방문 기록 (G-01·G-03). 위경도는 저장하지 않는다 */
+        val MIGRATION_4_5 = object : Migration(4, 5) {
+            override fun migrate(db: SupportSQLiteDatabase) {
+                db.execSQL(
+                    "CREATE TABLE IF NOT EXISTS `region_visit` (" +
+                        "`regionCode` TEXT NOT NULL, `firstVisitedAtMs` INTEGER NOT NULL, " +
+                        "`lastVisitedAtMs` INTEGER NOT NULL, `distanceKm` REAL NOT NULL, " +
+                        "`stayMs` INTEGER NOT NULL, PRIMARY KEY(`regionCode`))"
                 )
             }
         }
