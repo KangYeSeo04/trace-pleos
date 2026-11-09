@@ -35,9 +35,9 @@ import com.tracers.trace.ui.icons.TraceIcons
 import com.tracers.trace.ui.theme.TraceTheme
 
 /**
- * 우주 비행 화면 (SpaceDark.dc.html)
+ * 하늘 탭 비행 화면 (다크 SpaceDark.dc.html 우주 / 라이트 SpaceLight.dc.html 구름)
  *
- * - res/raw/space_flight.mp4를 화면 전체에 반복·음소거 재생
+ * - 다크 res/raw/space_flight.mp4, 라이트 res/raw/cloud_flight.mp4를 화면 전체에 반복·음소거 재생
  * - 왼쪽 위 뒤로 버튼 + 화면 탭으로 홈 복귀
  * - 모션 줄이기 설정 시 첫 프레임 정지 화면
  * - 주행 제한 중에는 영상 재생 안 됨 (즉시 정지)
@@ -49,14 +49,15 @@ fun SpaceFlightScreen(
     modifier: Modifier = Modifier
 ) {
     val context = LocalContext.current
+    val videoRes = if (TraceTheme.isDark) R.raw.space_flight else R.raw.cloud_flight
 
     // TODO: 모션 줄이기 설정 확인 (AccessibilityManager.isEnabled + Settings.Global.TRANSITION_ANIMATION_SCALE)
     val isReduceMotion = false
 
     // ExoPlayer 생성 및 해제
-    val exoPlayer = remember {
+    val exoPlayer = remember(videoRes) {
         ExoPlayer.Builder(context).build().apply {
-            val videoUri = Uri.parse("android.resource://${context.packageName}/${R.raw.space_flight}")
+            val videoUri = Uri.parse("android.resource://${context.packageName}/$videoRes")
             setMediaItem(MediaItem.fromUri(videoUri))
             prepare()
             playWhenReady = !isReduceMotion
@@ -72,7 +73,7 @@ fun SpaceFlightScreen(
         }
     }
 
-    DisposableEffect(Unit) {
+    DisposableEffect(exoPlayer) {
         onDispose {
             exoPlayer.release()
         }
@@ -102,6 +103,7 @@ fun SpaceFlightScreen(
                     )
                 }
             },
+            update = { it.player = exoPlayer },
             modifier = Modifier.fillMaxSize()
         )
 

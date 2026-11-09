@@ -43,6 +43,7 @@ import com.tracers.trace.ui.components.StatusChip
 import com.tracers.trace.ui.components.ThemeSwitch
 import com.tracers.trace.ui.components.Tile
 import com.tracers.trace.ui.icons.TraceIcons
+import com.tracers.trace.ui.theme.THEME_CROSSFADE_MS
 import com.tracers.trace.ui.theme.TraceTheme
 
 /**
@@ -204,19 +205,26 @@ private fun HeroStage(
         modifier = modifier
             .fillMaxWidth()
             .clip(RoundedCornerShape(20.dp))
+            .background(TraceTheme.colors.heroBg)
             .clickable(enabled = !isDriving, role = Role.Button, onClick = onClick)
             .onGloballyPositioned { coords ->
                 val heightDp = with(density) { coords.size.height.toDp() }
                 Log.d("HomeLayout", "HeroStage height: $heightDp")
             }
     ) {
-        // 밤하늘 이미지
-        Image(
-            painter = painterResource(id = R.drawable.sky_night_hero),
-            contentDescription = "밤하늘",
-            contentScale = ContentScale.Crop,
-            modifier = Modifier.fillMaxSize()
-        )
+        // 하늘 사진 (다크 밤하늘 / 라이트 낮 하늘). 테마가 바뀌면 1초 크로스페이드
+        Crossfade(
+            targetState = TraceTheme.isDark,
+            animationSpec = tween(durationMillis = THEME_CROSSFADE_MS),
+            label = "heroSky",
+        ) { dark ->
+            Image(
+                painter = painterResource(id = if (dark) R.drawable.sky_night_hero else R.drawable.sky_day_hero),
+                contentDescription = if (dark) "밤하늘" else "낮 하늘",
+                contentScale = ContentScale.Crop,
+                modifier = Modifier.fillMaxSize()
+            )
+        }
 
         // 하단 그라데이션
         Box(
