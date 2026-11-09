@@ -26,6 +26,8 @@ data class TraceColors(
     val line: Color = Color(0xFF2C3036),
     /** 막대 바탕 */
     val track: Color = Color(0xFF33373E),
+    /** 충전 예측 막대 (EffDark/Light T.bar) */
+    val bar: Color = Color(0xFF363A41),
     /** 점검 항목 막대 바탕 (MaintDark track) */
     val itemTrack: Color = Color(0xFF363A41),
     /** 점검 항목 여유 막대 (MaintDark ok, 75% 미만 회색) */
@@ -124,6 +126,7 @@ val LightTraceColors = TraceColors(
     t3 = Color(0xFF8A9099),
     line = Color(0xFFE5E7EB),
     track = Color(0xFFE1E4E8),           // HomeLight TOK.track
+    bar = Color(0xFFDADDE2),             // EffLight bar
     itemTrack = Color(0xFFDFE2E6),       // MaintLight track
     barNeutral = Color(0xFF9AA1AA),      // MaintLight ok
     accent = Color(0xFF1677E6),
@@ -149,7 +152,7 @@ val LightTraceColors = TraceColors(
     mapLabel = Color(0xFF7C838D),
     mapText = Color(0xFF111418),
     mapSub = Color(0xFF5C636D),
-    // TODO(A-03 상세 회차): RegionLight 선택 테두리 확인. 흰 땅 위라 임시로 t1
+    // RegionLight 선택 지역 stroke (theme === 'dark' ? '#FFFFFF' : '#111418')
     mapSelected = Color(0xFF111418),
     mapBorder = Color(0x59A3ACB8),
 )
@@ -166,6 +169,7 @@ fun lerpTraceColors(a: TraceColors, b: TraceColors, t: Float): TraceColors = whe
         t3 = lerp(a.t3, b.t3, t),
         line = lerp(a.line, b.line, t),
         track = lerp(a.track, b.track, t),
+        bar = lerp(a.bar, b.bar, t),
         itemTrack = lerp(a.itemTrack, b.itemTrack, t),
         barNeutral = lerp(a.barNeutral, b.barNeutral, t),
         accent = lerp(a.accent, b.accent, t),
