@@ -45,6 +45,8 @@ import androidx.compose.ui.unit.sp
 import com.tracers.trace.ui.components.DetailHeader
 import com.tracers.trace.ui.icons.TraceIcons
 import com.tracers.trace.ui.theme.InterFontFamily
+import com.tracers.trace.ui.components.TwoColumns
+import com.tracers.trace.ui.theme.TraceLayout
 import com.tracers.trace.ui.theme.TraceTheme
 import kotlin.math.cos
 import kotlin.math.sin
@@ -91,66 +93,79 @@ fun EfficiencyScreen(
                 .padding(horizontal = 20.dp, vertical = 12.dp),
             verticalArrangement = Arrangement.spacedBy(0.dp)
         ) {
-            // 90일 평균 섹션
+            // 90일 평균 섹션 (전체 화면에서도 위에 전체 폭)
             if (uiState.average90Days != null) {
                 Average90DaysSection(uiState.average90Days)
             } else if (!uiState.isLoading) {
                 EmptyDataMessage()
             }
 
-            Spacer(modifier = Modifier.height(26.dp))
-
-            // 충전 타이밍 섹션
-            SectionTitle("충전 타이밍")
-            Spacer(modifier = Modifier.height(10.dp))
-
-            if (uiState.chargeTiming != null) {
-                ChargeTimingSection(uiState.chargeTiming)
-            } else if (!uiState.isLoading) {
-                EmptyDataMessage()
+            val charge: @Composable () -> Unit = {
+                Section("충전 타이밍") {
+                    if (uiState.chargeTiming != null) {
+                        ChargeTimingSection(uiState.chargeTiming)
+                    } else if (!uiState.isLoading) {
+                        EmptyDataMessage()
+                    }
+                }
+            }
+            val calendar: @Composable () -> Unit = {
+                Section("주행 기록") {
+                    if (uiState.calendar != null) {
+                        DrivingCalendarSection(uiState.calendar)
+                    } else if (!uiState.isLoading) {
+                        EmptyDataMessage()
+                    }
+                }
+            }
+            val monthly: @Composable () -> Unit = {
+                Section("월별 전비") {
+                    if (uiState.monthlyEfficiency != null) {
+                        MonthlyEfficiencySection(
+                            data = uiState.monthlyEfficiency,
+                            selectedMonth = selectedMonth,
+                            onMonthSelected = { month ->
+                                selectedMonth = if (selectedMonth == month) null else month
+                            },
+                            onCloseDaily = { selectedMonth = null }
+                        )
+                    } else if (!uiState.isLoading) {
+                        EmptyDataMessage()
+                    }
+                }
+            }
+            val prediction: @Composable () -> Unit = {
+                Section("이번 달 예측") {
+                    if (uiState.prediction != null) {
+                        PredictionSection(uiState.prediction)
+                    } else if (!uiState.isLoading) {
+                        EmptyDataMessage()
+                    }
+                }
             }
 
-            Spacer(modifier = Modifier.height(26.dp))
-
-            // 주행 기록 (달력)
-            SectionTitle("주행 기록")
-            Spacer(modifier = Modifier.height(10.dp))
-
-            if (uiState.calendar != null) {
-                DrivingCalendarSection(uiState.calendar)
-            } else if (!uiState.isLoading) {
-                EmptyDataMessage()
-            }
-
-            Spacer(modifier = Modifier.height(26.dp))
-
-            // 월별 전비
-            SectionTitle("월별 전비")
-            Spacer(modifier = Modifier.height(10.dp))
-
-            if (uiState.monthlyEfficiency != null) {
-                MonthlyEfficiencySection(
-                    data = uiState.monthlyEfficiency,
-                    selectedMonth = selectedMonth,
-                    onMonthSelected = { month ->
-                        selectedMonth = if (selectedMonth == month) null else month
+            if (TraceTheme.layout == TraceLayout.Wide) {
+                // FullEff: 위 카드 아래 4, 왼쪽 열 충전 타이밍·주행 기록, 오른쪽 열 월별 전비·이번 달 예측.
+                // 오른쪽 열 첫 제목은 열 나눔에서 위 여백(26)이 잘린다
+                Spacer(modifier = Modifier.height(4.dp))
+                TwoColumns(
+                    left = {
+                        Spacer(modifier = Modifier.height(26.dp))
+                        charge()
+                        Spacer(modifier = Modifier.height(26.dp))
+                        calendar()
                     },
-                    onCloseDaily = { selectedMonth = null }
+                    right = {
+                        monthly()
+                        Spacer(modifier = Modifier.height(26.dp))
+                        prediction()
+                    },
                 )
-            } else if (!uiState.isLoading) {
-                EmptyDataMessage()
-            }
-
-            Spacer(modifier = Modifier.height(26.dp))
-
-            // 이번 달 예측
-            SectionTitle("이번 달 예측")
-            Spacer(modifier = Modifier.height(10.dp))
-
-            if (uiState.prediction != null) {
-                PredictionSection(uiState.prediction)
-            } else if (!uiState.isLoading) {
-                EmptyDataMessage()
+            } else {
+                listOf(charge, calendar, monthly, prediction).forEach { section ->
+                    Spacer(modifier = Modifier.height(26.dp))
+                    section()
+                }
             }
 
             Spacer(modifier = Modifier.height(28.dp))
@@ -900,6 +915,16 @@ private fun PredictionSection(prediction: MonthPrediction) {
 
 // ===== 공통 =====
 
+/** 제목 + 10 + 내용 */
+@Composable
+private fun Section(title: String, content: @Composable () -> Unit) {
+    Column {
+        SectionTitle(title)
+        Spacer(modifier = Modifier.height(10.dp))
+        content()
+    }
+}
+
 @Composable
 private fun SectionTitle(text: String) {
     val colors = TraceTheme.colors
@@ -992,40 +1017,55 @@ private fun createSampleMonthlyEfficiency(): MonthlyEfficiency {
     )
 }
 
+private fun sampleEfficiencyUiState() = EfficiencyUiState(
+    average90Days = EfficiencyAverage(
+        avgEfficiency = 5.8f,
+        todayComparison = TodayComparison(6.4f, 1.1f, true),
+        summary = EfficiencySummary(38f, 17, 4, 11)
+    ),
+    chargeTiming = ChargeTiming(
+        title = "목요일까지 충분해요",
+        description = "배터리 64% · 하루 평균 34 km 기준",
+        forecast = listOf(
+            ChargeForecastDay("지금", 64, true),
+            ChargeForecastDay("내일", 53, false),
+            ChargeForecastDay("수", 42, false),
+            ChargeForecastDay("목", 31, false),
+            ChargeForecastDay("금", 19, false)
+        )
+    ),
+    calendar = createSampleCalendar(),
+    monthlyEfficiency = createSampleMonthlyEfficiency(),
+    prediction = MonthPrediction(
+        monthLabel = "11월",
+        normalRangeKm = 380,
+        predictedRangeKm = 323,
+        changePercent = -15,
+        tip = "히터 사용이 늘어 주행거리가 줄어요. 출발 10분 전 예약 공조를 켜 두면 덜 줄어들어요."
+    )
+)
+
 @Preview(widthDp = 600, heightDp = 2000, showBackground = true)
 @Composable
 private fun EfficiencyScreenPreview() {
     TraceTheme {
-        EfficiencyScreen(
-            uiState = EfficiencyUiState(
-                average90Days = EfficiencyAverage(
-                    avgEfficiency = 5.8f,
-                    todayComparison = TodayComparison(6.4f, 1.1f, true),
-                    summary = EfficiencySummary(38f, 17, 4, 11)
-                ),
-                chargeTiming = ChargeTiming(
-                    title = "목요일까지 충분해요",
-                    description = "배터리 64% · 하루 평균 34 km 기준",
-                    forecast = listOf(
-                        ChargeForecastDay("지금", 64, true),
-                        ChargeForecastDay("내일", 53, false),
-                        ChargeForecastDay("수", 42, false),
-                        ChargeForecastDay("목", 31, false),
-                        ChargeForecastDay("금", 19, false)
-                    )
-                ),
-                calendar = createSampleCalendar(),
-                monthlyEfficiency = createSampleMonthlyEfficiency(),
-                prediction = MonthPrediction(
-                    monthLabel = "11월",
-                    normalRangeKm = 380,
-                    predictedRangeKm = 323,
-                    changePercent = -15,
-                    tip = "히터 사용이 늘어 주행거리가 줄어요. 출발 10분 전 예약 공조를 켜 두면 덜 줄어들어요."
-                )
-            ),
-            onNavigateBack = {}
-        )
+        EfficiencyScreen(uiState = sampleEfficiencyUiState(), onNavigateBack = {})
+    }
+}
+
+@Preview(name = "전체 화면 · 다크", widthDp = 1200, heightDp = 800)
+@Composable
+private fun EfficiencyScreenWideDarkPreview() {
+    TraceTheme(darkTheme = true) {
+        EfficiencyScreen(uiState = sampleEfficiencyUiState(), onNavigateBack = {})
+    }
+}
+
+@Preview(name = "전체 화면 · 라이트", widthDp = 1200, heightDp = 800)
+@Composable
+private fun EfficiencyScreenWideLightPreview() {
+    TraceTheme(darkTheme = false) {
+        EfficiencyScreen(uiState = sampleEfficiencyUiState(), onNavigateBack = {})
     }
 }
 

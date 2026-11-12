@@ -38,6 +38,10 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.compose.ui.unit.Dp
+import androidx.compose.ui.unit.TextUnit
+import androidx.annotation.DrawableRes
+import com.tracers.trace.ui.theme.TraceLayout
 import com.tracers.trace.R
 import com.tracers.trace.ui.components.StatusChip
 import com.tracers.trace.ui.components.ThemeSwitch
@@ -61,6 +65,7 @@ fun HomeScreen(
     modifier: Modifier = Modifier
 ) {
     val colors = TraceTheme.colors
+    val spec = HomeLayoutSpec.of(TraceTheme.layout)
 
     Column(
         modifier = modifier
@@ -72,23 +77,27 @@ fun HomeScreen(
         // 앱 바
         HomeAppBar(isDriving = uiState.isDriving, onToggleTheme = onToggleTheme)
 
-        // 비행 무대 (디자인 정차 비율: 250 / 390 = 25 / 39)
+        // 비행 무대. 무대:타일 비율은 정차·주행 모두 같다(높이가 바뀌지 않는다)
+        // 3분할 250 : 390, 전체 화면 440 : 252. 남는 세로 공간은 비율대로 나눠 가진다
         HeroStage(
+            spec = spec,
             caption = uiState.caption,
             captionSub = uiState.captionSub,
             captionIconPath = uiState.captionIconPath,
             isDriving = uiState.isDriving,
             onClick = onNavigateToSpace,
-            modifier = Modifier.weight(25f)
+            modifier = Modifier.weight(spec.heroWeight)
         )
 
-        // 타일 그리드 2×2 (디자인 정차 비율: 390 / 250 = 39 / 25)
+        // 타일: 3분할 2×2 (간격 10), 전체 화면 4개 한 줄 (간격 12)
         Box(
             modifier = Modifier
                 .fillMaxWidth()
-                .weight(39f)
+                .weight(spec.tilesWeight)
         ) {
             TileGrid(
+                columns = spec.tileColumns,
+                gap = spec.tileGap,
                 efficiency = uiState.efficiency,
                 maintenance = uiState.maintenance,
                 coin = uiState.coin,
@@ -151,7 +160,7 @@ private fun HomeAppBar(
             )
         }
 
-        // 상태 칩
+        // 상태 칩. 전체 화면 디자인에는 없지만 기획안 S01·S02 필수 요소라 두 배치 모두 둔다
         StatusChip(
             text = chipText,
             backgroundColor = chipBg,
@@ -192,6 +201,7 @@ private fun TraceLogo(modifier: Modifier = Modifier) {
  */
 @Composable
 private fun HeroStage(
+    spec: HomeLayoutSpec,
     caption: String,
     captionSub: String,
     captionIconPath: String?,
@@ -219,7 +229,7 @@ private fun HeroStage(
             label = "heroSky",
         ) { dark ->
             Image(
-                painter = painterResource(id = if (dark) R.drawable.sky_night_hero else R.drawable.sky_day_hero),
+                painter = painterResource(id = if (dark) spec.skyNight else spec.skyDay),
                 contentDescription = if (dark) "밤하늘" else "낮 하늘",
                 contentScale = ContentScale.Crop,
                 modifier = Modifier.fillMaxSize()
@@ -230,7 +240,7 @@ private fun HeroStage(
         Box(
             modifier = Modifier
                 .fillMaxWidth()
-                .height(120.dp)
+                .height(spec.shadeHeight)
                 .align(Alignment.BottomCenter)
                 .background(
                     Brush.verticalGradient(
@@ -246,12 +256,12 @@ private fun HeroStage(
         Column(
             modifier = Modifier
                 .align(Alignment.BottomStart)
-                .padding(start = 20.dp, end = 20.dp, bottom = 18.dp),
-            verticalArrangement = Arrangement.spacedBy(4.dp)
+                .padding(start = spec.captionInset, end = spec.captionInset, bottom = spec.captionBottom),
+            verticalArrangement = Arrangement.spacedBy(spec.captionGap)
         ) {
             Row(
                 verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.spacedBy(7.dp)
+                horizontalArrangement = Arrangement.spacedBy(spec.captionIconGap)
             ) {
                 // 아이콘 (있을 때만)
                 if (captionIconPath != null) {
@@ -259,30 +269,32 @@ private fun HeroStage(
                         imageVector = TraceIcons.Bolt, // captionIconPath에 따라 달라야 하지만, 일단 Bolt 사용
                         contentDescription = null,
                         tint = Color.White,
-                        modifier = Modifier.size(17.dp)
+                        modifier = Modifier.size(spec.captionIconSize)
                     )
                 }
                 Text(
                     text = caption,
-                    fontSize = 18.sp,
+                    fontSize = spec.captionSize,
                     fontWeight = FontWeight.Bold,
                     color = Color.White
                 )
             }
             Text(
                 text = captionSub,
-                fontSize = 14.sp,
-                color = Color.White.copy(alpha = 0.72f)
+                fontSize = spec.captionSubSize,
+                color = Color.White.copy(alpha = spec.captionSubAlpha)
             )
         }
     }
 }
 
 /**
- * 타일 그리드 2×2 (고정 높이 390dp)
+ * 타일 그리드. columns = 2면 2×2, 4면 한 줄
  */
 @Composable
 private fun TileGrid(
+    columns: Int,
+    gap: Dp,
     efficiency: TileState,
     maintenance: TileState,
     coin: TileState,
@@ -310,45 +322,75 @@ private fun TileGrid(
                 val heightDp = with(density) { coords.size.height.toDp() }
                 Log.d("HomeLayout", "TileGrid height: $heightDp (mode: ${if (isDriving) "driving" else "parked"})")
             },
-        verticalArrangement = Arrangement.spacedBy(10.dp)
+        verticalArrangement = Arrangement.spacedBy(gap)
     ) {
-        Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .weight(1f),
-            horizontalArrangement = Arrangement.spacedBy(10.dp)
-        ) {
-            Tile(
-                state = efficiency,
-                isDriving = isDriving,
-                onClick = effClick,
-                modifier = Modifier.weight(1f)
-            )
-            Tile(
-                state = maintenance,
-                isDriving = isDriving,
-                onClick = maintClick,
-                modifier = Modifier.weight(1f)
-            )
+        val tiles: List<Pair<TileState, () -> Unit>> = listOf(
+            efficiency to effClick,
+            maintenance to maintClick,
+            coin to coinClick,
+            region to regionClick,
+        )
+        tiles.chunked(columns).forEach { row ->
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .weight(1f),
+                horizontalArrangement = Arrangement.spacedBy(gap)
+            ) {
+                row.forEach { (state, onClick) ->
+                    Tile(
+                        state = state,
+                        isDriving = isDriving,
+                        onClick = onClick,
+                        modifier = Modifier.weight(1f)
+                    )
+                }
+            }
         }
-        Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .weight(1f),
-            horizontalArrangement = Arrangement.spacedBy(10.dp)
-        ) {
-            Tile(
-                state = coin,
-                isDriving = isDriving,
-                onClick = coinClick,
-                modifier = Modifier.weight(1f)
-            )
-            Tile(
-                state = region,
-                isDriving = isDriving,
-                onClick = regionClick,
-                modifier = Modifier.weight(1f)
-            )
+    }
+}
+
+/**
+ * 배치별 홈 치수. 3분할 HomeDark.dc.html(600×800), 전체 화면 FullDark.dc.html(1200×800)
+ */
+private data class HomeLayoutSpec(
+    val heroWeight: Float,
+    val tilesWeight: Float,
+    val tileColumns: Int,
+    val tileGap: Dp,
+    @DrawableRes val skyNight: Int,
+    @DrawableRes val skyDay: Int,
+    val shadeHeight: Dp,
+    val captionInset: Dp,
+    val captionBottom: Dp,
+    val captionGap: Dp,
+    val captionIconGap: Dp,
+    val captionIconSize: Dp,
+    val captionSize: TextUnit,
+    val captionSubSize: TextUnit,
+    val captionSubAlpha: Float,
+) {
+    companion object {
+        private val Compact = HomeLayoutSpec(
+            heroWeight = 250f, tilesWeight = 390f, tileColumns = 2, tileGap = 10.dp,
+            skyNight = R.drawable.sky_night_hero, skyDay = R.drawable.sky_day_hero,
+            shadeHeight = 120.dp, captionInset = 20.dp, captionBottom = 18.dp, captionGap = 4.dp,
+            captionIconGap = 7.dp, captionIconSize = 17.dp,
+            captionSize = 18.sp, captionSubSize = 14.sp, captionSubAlpha = 0.72f,
+        )
+
+        // 전체 화면: 800 − 위 16 − 아래 20 − 앱 바 48 − 간격 12×2 = 무대 440 + 타일 252
+        private val Wide = HomeLayoutSpec(
+            heroWeight = 440f, tilesWeight = 252f, tileColumns = 4, tileGap = 12.dp,
+            skyNight = R.drawable.sky_night_hero_wide, skyDay = R.drawable.sky_day_hero_wide,
+            shadeHeight = 170.dp, captionInset = 28.dp, captionBottom = 24.dp, captionGap = 6.dp,
+            captionIconGap = 8.dp, captionIconSize = 20.dp,
+            captionSize = 22.sp, captionSubSize = 15.sp, captionSubAlpha = 0.75f,
+        )
+
+        fun of(layout: TraceLayout): HomeLayoutSpec = when (layout) {
+            TraceLayout.Compact -> Compact
+            TraceLayout.Wide -> Wide
         }
     }
 }
@@ -384,6 +426,38 @@ private fun HomeScreenDrivingDarkPreview() {
 @Preview(name = "주행 · 라이트", widthDp = 600, heightDp = 800)
 @Composable
 private fun HomeScreenDrivingLightPreview() {
+    TraceTheme(darkTheme = false) {
+        HomeScreen(uiState = SampleHomeUiState.driving)
+    }
+}
+
+@Preview(name = "전체 화면 · 정차 · 다크", widthDp = 1200, heightDp = 800)
+@Composable
+private fun HomeScreenWideParkedDarkPreview() {
+    TraceTheme(darkTheme = true) {
+        HomeScreen(uiState = SampleHomeUiState.parked)
+    }
+}
+
+@Preview(name = "전체 화면 · 정차 · 라이트", widthDp = 1200, heightDp = 800)
+@Composable
+private fun HomeScreenWideParkedLightPreview() {
+    TraceTheme(darkTheme = false) {
+        HomeScreen(uiState = SampleHomeUiState.parked)
+    }
+}
+
+@Preview(name = "전체 화면 · 주행 · 다크", widthDp = 1200, heightDp = 800)
+@Composable
+private fun HomeScreenWideDrivingDarkPreview() {
+    TraceTheme(darkTheme = true) {
+        HomeScreen(uiState = SampleHomeUiState.driving)
+    }
+}
+
+@Preview(name = "전체 화면 · 주행 · 라이트", widthDp = 1200, heightDp = 800)
+@Composable
+private fun HomeScreenWideDrivingLightPreview() {
     TraceTheme(darkTheme = false) {
         HomeScreen(uiState = SampleHomeUiState.driving)
     }

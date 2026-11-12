@@ -2,6 +2,7 @@ package com.tracers.trace.ui.theme
 
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.tween
+import android.util.Log
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.fillMaxSize
@@ -10,6 +11,7 @@ import androidx.compose.material3.darkColorScheme
 import androidx.compose.material3.lightColorScheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.ReadOnlyComposable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.staticCompositionLocalOf
@@ -17,10 +19,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.unit.Density
 import kotlin.math.min
-
-/** 디자인 기준 프레임 크기 (CSS px = dp) */
-private const val DESIGN_WIDTH_DP = 600f
-private const val DESIGN_HEIGHT_DP = 800f
 
 /** 테마 전환 크로스페이드 길이 */
 const val THEME_CROSSFADE_MS = 1000
@@ -32,7 +30,8 @@ const val THEME_CROSSFADE_MS = 1000
  * 바뀔 때는 두 묶음을 1초 동안 섞어 크로스페이드한다(공통 규칙: 상태 전환 1초).
  * Material3는 쓰되 기본 테마 색은 쓰지 않는다 (TraceColors 사용).
  *
- * scale = min(칸가로/600, 칸세로/800)로 동적 계산.
+ * 배치(TraceLayout)는 칸 가로/세로 비율로 고르고(3분할 600×800 / 전체 화면 1200×800),
+ * scale = min(칸가로/기준가로, 칸세로/기준세로)로 동적 계산.
  * LocalDensity를 density × scale로 덮어써서,
  * 화면 코드는 디자인 px 숫자를 dp·sp로 그대로 쓴다.
  */
@@ -75,11 +74,20 @@ fun TraceTheme(
         val containerWidthDp = maxWidth.value
         val containerHeightDp = maxHeight.value
 
-        // scale = min(가로비율, 세로비율)
+        // 칸 비율로 3분할(600×800) / 전체 화면(1200×800) 기준을 고른다
+        val layout = TraceLayout.select(containerWidthDp, containerHeightDp)
+
+        // scale = min(칸 가로 / 기준 가로, 칸 세로 / 기준 세로)
         val scale = min(
-            containerWidthDp / DESIGN_WIDTH_DP,
-            containerHeightDp / DESIGN_HEIGHT_DP
+            containerWidthDp / layout.designWidth,
+            containerHeightDp / layout.designHeight
         )
+        LaunchedEffect(containerWidthDp, containerHeightDp) {
+            Log.d(
+                "TraceLayout",
+                "칸 ${containerWidthDp} × ${containerHeightDp} dp → $layout, scale ${"%.3f".format(scale)}"
+            )
+        }
 
         val originalDensity = LocalDensity.current
         // density × scale, fontScale은 시스템 설정 유지
@@ -96,6 +104,7 @@ fun TraceTheme(
             LocalTraceIsDark provides darkTheme,
             LocalTraceType provides type,
             LocalTraceDimens provides dimens,
+            LocalTraceLayout provides layout,
         ) {
             MaterialTheme(
                 colorScheme = materialColors,
@@ -132,4 +141,9 @@ object TraceTheme {
         @Composable
         @ReadOnlyComposable
         get() = LocalTraceDimens.current
+
+    val layout: TraceLayout
+        @Composable
+        @ReadOnlyComposable
+        get() = LocalTraceLayout.current
 }
