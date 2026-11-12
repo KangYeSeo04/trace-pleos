@@ -75,11 +75,7 @@ fun HomeScreen(
         verticalArrangement = Arrangement.spacedBy(12.dp)
     ) {
         // 앱 바
-        HomeAppBar(
-            isDriving = uiState.isDriving,
-            showStatusChip = spec.showStatusChip,
-            onToggleTheme = onToggleTheme,
-        )
+        HomeAppBar(isDriving = uiState.isDriving, onToggleTheme = onToggleTheme)
 
         // 비행 무대. 무대:타일 비율은 정차·주행 모두 같다(높이가 바뀌지 않는다)
         // 3분할 250 : 390, 전체 화면 440 : 252. 남는 세로 공간은 비율대로 나눠 가진다
@@ -122,7 +118,6 @@ fun HomeScreen(
 @Composable
 private fun HomeAppBar(
     isDriving: Boolean,
-    showStatusChip: Boolean,
     onToggleTheme: () -> Unit,
     modifier: Modifier = Modifier
 ) {
@@ -165,14 +160,12 @@ private fun HomeAppBar(
             )
         }
 
-        // 상태 칩 (전체 화면 디자인에는 없다)
-        if (showStatusChip) {
-            StatusChip(
-                text = chipText,
-                backgroundColor = chipBg,
-                contentColor = chipColor
-            )
-        }
+        // 상태 칩. 전체 화면 디자인에는 없지만 기획안 S01·S02 필수 요소라 두 배치 모두 둔다
+        StatusChip(
+            text = chipText,
+            backgroundColor = chipBg,
+            contentColor = chipColor
+        )
     }
 }
 
@@ -365,7 +358,6 @@ private data class HomeLayoutSpec(
     val tilesWeight: Float,
     val tileColumns: Int,
     val tileGap: Dp,
-    val showStatusChip: Boolean,
     @DrawableRes val skyNight: Int,
     @DrawableRes val skyDay: Int,
     val shadeHeight: Dp,
@@ -381,7 +373,6 @@ private data class HomeLayoutSpec(
     companion object {
         private val Compact = HomeLayoutSpec(
             heroWeight = 250f, tilesWeight = 390f, tileColumns = 2, tileGap = 10.dp,
-            showStatusChip = true,
             skyNight = R.drawable.sky_night_hero, skyDay = R.drawable.sky_day_hero,
             shadeHeight = 120.dp, captionInset = 20.dp, captionBottom = 18.dp, captionGap = 4.dp,
             captionIconGap = 7.dp, captionIconSize = 17.dp,
@@ -391,7 +382,6 @@ private data class HomeLayoutSpec(
         // 전체 화면: 800 − 위 16 − 아래 20 − 앱 바 48 − 간격 12×2 = 무대 440 + 타일 252
         private val Wide = HomeLayoutSpec(
             heroWeight = 440f, tilesWeight = 252f, tileColumns = 4, tileGap = 12.dp,
-            showStatusChip = false,
             skyNight = R.drawable.sky_night_hero_wide, skyDay = R.drawable.sky_day_hero_wide,
             shadeHeight = 170.dp, captionInset = 28.dp, captionBottom = 24.dp, captionGap = 6.dp,
             captionIconGap = 8.dp, captionIconSize = 20.dp,
