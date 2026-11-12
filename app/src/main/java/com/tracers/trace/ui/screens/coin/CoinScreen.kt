@@ -50,6 +50,8 @@ import com.tracers.trace.data.sample.SampleData
 import com.tracers.trace.ui.components.DetailHeader
 import com.tracers.trace.ui.components.HeaderIconButton
 import com.tracers.trace.ui.icons.TraceIcons
+import com.tracers.trace.ui.components.TwoColumns
+import com.tracers.trace.ui.theme.TraceLayout
 import com.tracers.trace.ui.theme.TraceTheme
 
 /**
@@ -70,9 +72,11 @@ fun CoinScreen(
 ) {
     val colors = TraceTheme.colors
     val density = LocalDensity.current
+    val wide = TraceTheme.layout == TraceLayout.Wide
+    val heroHeight = if (wide) HeroHeightWide else HeroHeight
     // 히어로가 스크롤로 화면 밖에 나가면 애니메이션을 멈춘다
-    val heroVisible by remember(density) {
-        derivedStateOf { scrollState.value < with(density) { (HeroTop + HeroHeight).toPx() } }
+    val heroVisible by remember(density, heroHeight) {
+        derivedStateOf { scrollState.value < with(density) { (HeroTop + heroHeight).toPx() } }
     }
     // 헤더 "적립 기준 보기" 안내 창
     var helpOpen by rememberSaveable { mutableStateOf(false) }
@@ -112,15 +116,32 @@ fun CoinScreen(
             CoinHero(
                 uiState = uiState,
                 animate = heroVisible,
+                wide = wide,
                 onClaimCoins = onClaimCoins
             )
 
-            SectionTitle("안전점수")
-            SafetyScoreCard(chart = uiState.safetyScore)
+            if (wide) {
+                // FullCoin: 히어로 아래 4, 2열 grid(간격 24) — 왼쪽 안전점수·1km 기록, 오른쪽 상점·받은 기록
+                Spacer(modifier = Modifier.height(4.dp))
+                TwoColumns(
+                    left = {
+                        SectionTitle("안전점수")
+                        SafetyScoreCard(chart = uiState.safetyScore)
+                        TripKmRecordSection(record = uiState.tripRecord)
+                    },
+                    right = {
+                        ShopLinkSection(shop = uiState.shop, onOpenShop = onOpenShop)
+                        CoinHistorySection(history = uiState.history)
+                    },
+                )
+            } else {
+                SectionTitle("안전점수")
+                SafetyScoreCard(chart = uiState.safetyScore)
 
-            TripKmRecordSection(record = uiState.tripRecord)
-            ShopLinkSection(shop = uiState.shop, onOpenShop = onOpenShop)
-            CoinHistorySection(history = uiState.history)
+                TripKmRecordSection(record = uiState.tripRecord)
+                ShopLinkSection(shop = uiState.shop, onOpenShop = onOpenShop)
+                CoinHistorySection(history = uiState.history)
+            }
         }
     }
 
@@ -132,6 +153,8 @@ fun CoinScreen(
 
 /** 히어로 높이 (디자인 240) */
 private val HeroHeight = 240.dp
+/** 전체 화면 히어로 높이 (FullCoin 340) */
+private val HeroHeightWide = 340.dp
 /** 스크롤 영역 위 여백 (디자인 margin-top 12) */
 private val HeroTop = 12.dp
 
@@ -143,6 +166,7 @@ private val HeroTop = 12.dp
 private fun CoinHero(
     uiState: CoinUiState,
     animate: Boolean,
+    wide: Boolean,
     onClaimCoins: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
@@ -151,7 +175,7 @@ private fun CoinHero(
     Box(
         modifier = modifier
             .fillMaxWidth()
-            .height(HeroHeight)
+            .height(if (wide) HeroHeightWide else HeroHeight)
             .clip(RoundedCornerShape(20.dp))
             .background(colors.heroBg)
     ) {
@@ -162,7 +186,15 @@ private fun CoinHero(
             label = "coinHero",
         ) { dark ->
             Box(Modifier.fillMaxSize()) {
-                if (dark) {
+                if (wide) {
+                    // 전체 화면은 라이트·다크 모두 넓은 정지 사진 (FULL.md: 다크도 canvas 없음)
+                    Image(
+                        painter = painterResource(if (dark) R.drawable.sky_night_hero_wide else R.drawable.sky_day_hero_wide),
+                        contentDescription = null,
+                        contentScale = ContentScale.Crop,
+                        modifier = Modifier.fillMaxSize()
+                    )
+                } else if (dark) {
                     Image(
                         painter = painterResource(R.drawable.coin_bg_night),
                         contentDescription = null,
@@ -374,6 +406,18 @@ private fun CoinScreenDarkPreview() {
 @Preview(name = "라이트", widthDp = 600, heightDp = 1900, showBackground = true)
 @Composable
 private fun CoinScreenLightPreview() {
+    TraceTheme(darkTheme = false) { CoinScreen(uiState = SampleData.coinUiState, onNavigateBack = {}) }
+}
+
+@Preview(name = "전체 화면 · 다크", widthDp = 1200, heightDp = 800)
+@Composable
+private fun CoinScreenWideDarkPreview() {
+    TraceTheme(darkTheme = true) { CoinScreen(uiState = SampleData.coinUiState, onNavigateBack = {}) }
+}
+
+@Preview(name = "전체 화면 · 라이트", widthDp = 1200, heightDp = 800)
+@Composable
+private fun CoinScreenWideLightPreview() {
     TraceTheme(darkTheme = false) { CoinScreen(uiState = SampleData.coinUiState, onNavigateBack = {}) }
 }
 
