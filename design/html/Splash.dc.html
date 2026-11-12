@@ -1,0 +1,45 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<title>TRACE 스플래시</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<style>
+body{margin:0}
+@font-face{font-family:'Pretendard';font-weight:400;font-style:normal;font-display:swap;src:url(/_blob/eb1cd6dd53e7859115d181846ef0a6f0) format('woff')}
+@font-face{font-family:'Pretendard';font-weight:500;font-style:normal;font-display:swap;src:url(/_blob/81a962f3f305f7b47cbc3be414dd4995) format('woff')}
+@font-face{font-family:'Pretendard';font-weight:700;font-style:normal;font-display:swap;src:url(/_blob/93ddc586600bb8dd02b33e3e09b5984f) format('woff')}
+@keyframes spFly{0%{offset-distance:0%;opacity:0}6%{opacity:1}100%{offset-distance:100%;opacity:1}}
+@keyframes spDraw{from{stroke-dashoffset:1}to{stroke-dashoffset:0}}
+@keyframes spIn{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+.sp-plane{offset-path:path('M 380 900 C 600 790, 760 470, 884 330');offset-rotate:auto;offset-anchor:50% 50%;animation:spFly 2.4s cubic-bezier(.22,.7,.2,1) .6s both}
+.sp-mask{stroke-dasharray:1;stroke-dashoffset:1;animation:spDraw 2.4s cubic-bezier(.22,.7,.2,1) .6s both}
+.sp-title{animation:spIn .8s ease .1s both}
+@media (prefers-reduced-motion: reduce){.sp-plane{animation:none;offset-distance:100%}.sp-mask{animation:none;stroke-dashoffset:0}.sp-title{animation:none}}
+</style>
+</helmet>
+<div style="position: relative; width: 1200px; height: 800px; overflow: hidden; border-radius: 24px; background: linear-gradient(180deg, {{skyTop}} 0%, {{skyBottom}} 100%); font-family: 'Pretendard','Inter','Noto Sans KR',sans-serif; color: #FFFFFF; -webkit-font-smoothing: antialiased">
+  <svg class="sp-trail" width="1200" height="800" viewBox="0 0 1200 800" aria-hidden="true" style="position: absolute; left: 0; top: 0; display: block">
+    <defs><mask id="spTrailMask" maskUnits="userSpaceOnUse" x="0" y="0" width="1200" height="800"><path class="sp-mask" pathLength="1" d="M 380 900 C 600 790, 760 470, 884 330" fill="none" style="stroke: #FFFFFF; stroke-width: 90; stroke-linecap: butt"></path></mask></defs>
+    <image href="/_blob/5c189b3eae28d3ce405790216a74a2db" x="0" y="0" width="1200" height="800" mask="url(#spTrailMask)"></image>
+  </svg>
+  <div class="sp-title" style="position: absolute; left: 0; right: 0; top: 330px; display: flex; flex-direction: column; align-items: center; gap: 14px"><span style="font-size: 104px; font-weight: 700; line-height: 1; letter-spacing: 0.03em; text-shadow: rgba(10, 30, 70, 0.18) 0px 4px 24px">TRACE</span>
+    <span style="font-size: 20px; font-weight: 500; color: rgba(255, 255, 255, 0.88)">차가 남긴 흔적을 하늘에 그리다.</span>
+  </div>
+  <img class="sp-plane" src="/_blob/d4aef1a423f7edd290e8f436b6b22efe" alt="" aria-hidden="true" style="position: absolute; left: 0; top: 0; width: {{planeW}}px; height: auto; display: block; filter: drop-shadow(0 3px 6px rgba(10,30,70,0.25))">
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"skyTop":{"editor":"color","default":"#162E5C"},"skyBottom":{"editor":"color","default":"#345280"},"planeW":{"editor":"number","default":72},"$preview":{"width":1200,"height":800}}'>
+class Component extends DCLogic {
+  renderVals() {
+    const p = this.props;
+    return { skyTop: p.skyTop ?? '#162E5C', skyBottom: p.skyBottom ?? '#345280', planeW: Number(p.planeW) || 72 };
+  }
+}
+</script>
+</body>
+</html>

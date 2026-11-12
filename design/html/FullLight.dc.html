@@ -1,0 +1,743 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<title>TRACE 전체 화면 · 라이트</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;family=Noto+Sans+KR:wght@400;500;700&amp;display=swap" rel="stylesheet">
+<style>
+body{margin:0}
+@font-face{font-family:'Pretendard';font-weight:400;font-style:normal;font-display:swap;src:url(/_blob/eb1cd6dd53e7859115d181846ef0a6f0) format('woff')}
+@font-face{font-family:'Pretendard';font-weight:500;font-style:normal;font-display:swap;src:url(/_blob/81a962f3f305f7b47cbc3be414dd4995) format('woff')}
+@font-face{font-family:'Pretendard';font-weight:600;font-style:normal;font-display:swap;src:url(/_blob/d5a8c2c2f7f65bb530b02ff07170cebb) format('woff')}
+@font-face{font-family:'Pretendard';font-weight:700;font-style:normal;font-display:swap;src:url(/_blob/93ddc586600bb8dd02b33e3e09b5984f) format('woff')}
+</style>
+</helmet>
+<div style="width: 1200px; height: 800px">
+  <div style="width: 1200px; height: 800px; box-sizing: border-box; border-radius: 24px; overflow: hidden; background: {{__c0_1.T.panel}}; color: {{__c0_1.T.t1}}; font-family: 'Pretendard','Inter','Noto Sans KR',sans-serif; letter-spacing: -0.01em; -webkit-font-smoothing: antialiased; padding: 16px 20px 20px; display: flex; flex-direction: column; gap: 12px">
+  <div style="height: 48px; flex: none; display: flex; align-items: center; justify-content: space-between">
+    <div style="display: flex; align-items: center; gap: 10px">
+      <span style="width: 30px; height: 30px; border-radius: 9px; background: linear-gradient(160deg, #1B2533 0%, #070A0F 100%); display: flex; align-items: center; justify-content: center"><svg width="20" height="20" viewBox="0 0 20 20" aria-hidden="true"><path d="M3 16 C 8 15, 11 10, 15.5 5" fill="none" style="stroke: #FFFFFF; stroke-width: 1.6; stroke-linecap: round; opacity: 0.9"></path><circle cx="15.8" cy="4.7" r="1.7" style="fill: #FFFFFF"></circle></svg></span>
+      <span style="font-size: 17px; font-weight: 700; letter-spacing: 0.02em; margin-right: 6px">TRACE</span>
+      <a href="{{__c0_1.themeHref}}" role="switch" aria-checked="{{__c0_1.isDark}}" aria-label="다크 모드" style="position: relative; flex: none; width: 72px; height: 40px; border-radius: 20px; background: {{__c0_1.T.tile}}; color: {{__c0_1.T.t2}}; display: block">
+        <span style="position: absolute; left: 12px; top: 12px; display: flex"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" style="stroke-width: 2; stroke-linecap: round" aria-hidden="true"><circle cx="12" cy="12" r="4"></circle><path d="M12 2.5v2M12 19.5v2M2.5 12h2M19.5 12h2M5.3 5.3l1.4 1.4M17.3 17.3l1.4 1.4M5.3 18.7l1.4-1.4M17.3 6.7l1.4-1.4"></path></svg></span>
+        <span style="position: absolute; right: 12px; top: 12px; display: flex"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" style="stroke-width: 2; stroke-linecap: round; stroke-linejoin: round" aria-hidden="true"><path d="M20 14.5A8 8 0 0 1 9.5 4a8 8 0 1 0 10.5 10.5z"></path></svg></span>
+        <span style="position: absolute; top: 4px; left: {{__c0_1.knobX}}px; width: 32px; height: 32px; border-radius: 16px; background: {{__c0_1.knobBg}}; color: {{__c0_1.knobFg}}; box-shadow: 0 2px 6px rgba(0,0,0,0.25); display: flex; align-items: center; justify-content: center">
+          <sc-if value="{{__c0_1.isDark}}" hint-placeholder-val="{{ false }}"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" style="stroke-width: 2; stroke-linecap: round; stroke-linejoin: round" aria-hidden="true"><path d="M20 14.5A8 8 0 0 1 9.5 4a8 8 0 1 0 10.5 10.5z"></path></svg></sc-if>
+          <sc-if value="{{__c0_1.isLight}}" hint-placeholder-val="{{ true }}"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" style="stroke-width: 2; stroke-linecap: round" aria-hidden="true"><circle cx="12" cy="12" r="4"></circle><path d="M12 2.5v2M12 19.5v2M2.5 12h2M19.5 12h2M5.3 5.3l1.4 1.4M17.3 17.3l1.4 1.4M5.3 18.7l1.4-1.4M17.3 6.7l1.4-1.4"></path></svg></sc-if>
+        </span>
+      </a>
+    </div>
+  </div>
+
+  <div style="position: relative; height: 440px; flex: none; border-radius: 20px; overflow: hidden; background: {{__c0_1.heroBg}}; display: {{__c0_1.skyDisp}}">
+    <img src="{{__c0_1.heroImg}}" alt="" style="position: absolute; left: 0; top: 0; width: 100%; height: 100%; object-fit: cover; display: block">
+    <div style="position: absolute; left: 0; right: 0; bottom: 0; height: 170px; background: linear-gradient(180deg, rgba(0,0,0,0) 0%, rgba(0,0,0,0.55) 100%)"></div>
+    <div style="position: absolute; left: 28px; right: 28px; bottom: 24px; display: flex; flex-direction: column; gap: 6px; color: #FFFFFF">
+      <span style="display: flex; align-items: center; gap: 8px; font-size: 22px; font-weight: 700">
+        <sc-if value="{{__c0_1.hasIcon}}" hint-placeholder-val="{{ false }}"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#FFFFFF" style="stroke-width: 2; stroke-linecap: round; stroke-linejoin: round" aria-hidden="true"><path d="{{__c0_1.capIcon}}"></path></svg></sc-if>{{__c0_1.caption}}
+      </span>
+      <span style="font-size: 15px; color: rgba(255,255,255,0.75)">{{__c0_1.capSub}}</span>
+    </div>
+    <sc-if value="{{__c0_1.hasSpace}}" hint-placeholder-val="{{ false }}"><a href="{{__c0_1.spaceHref}}" aria-label="우주 비행 화면 열기" style="position: absolute; left: 0; top: 0; right: 0; bottom: 0; z-index: 2; display: block"></a></sc-if>
+  </div>
+  <div style="height: 440px; flex: none; display: {{__c0_1.charDisp}}; flex-direction: column; align-items: center; justify-content: center; gap: 14px">
+    <sc-if value="{{__c0_1.charLight}}" hint-placeholder-val="{{ false }}"><img src="/_blob/d30d11dd01f6b72e74c76842619ef49b" alt="곰이 운전하는 자동차" style="width: 300px; height: auto; display: block"></sc-if>
+    <sc-if value="{{__c0_1.charDark}}" hint-placeholder-val="{{ false }}"><img src="/_blob/40dc138230dd682172ca7808ed1a1ab2" alt="곰이 운전하는 자동차" style="width: 300px; height: auto; display: block"></sc-if>
+    <sc-if value="{{__c0_1.traceMode}}" hint-placeholder-val="{{ false }}"><div style="position: relative; width: {{__c0_1.__c1_1.w}}px; height: {{__c0_1.__c1_1.h}}px; overflow: hidden; background: {{__c0_1.__c1_1.bg}}">
+  <canvas ref="{{__c0_1.__c1_1.setCanvas}}" style="position: absolute; left: 0; top: 0; width: {{__c0_1.__c1_1.w}}px; height: {{__c0_1.__c1_1.h}}px; display: block" aria-label="{{__c0_1.__c1_1.aria}}" role="img"></canvas>
+</div></sc-if>
+    <div style="display: flex; flex-direction: column; align-items: center; gap: 3px">
+      <span style="display: flex; align-items: center; gap: 6px; font-size: 17px; font-weight: 700; color: {{__c0_1.T.t1}}"><sc-if value="{{__c0_1.hasIcon}}" hint-placeholder-val="{{ false }}"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="{{__c0_1.T.t1}}" style="stroke-width: 2; stroke-linecap: round; stroke-linejoin: round" aria-hidden="true"><path d="{{__c0_1.capIcon}}"></path></svg></sc-if>{{__c0_1.caption}}</span>
+      <span style="font-size: 14px; color: {{__c0_1.T.t2}}">{{__c0_1.capSub}}</span>
+    </div>
+  </div>
+
+  <div style="flex: 1; min-height: 0; display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 12px">
+    <div style="width: 100%; height: 100%; font-family: 'Pretendard','Inter','Noto Sans KR',sans-serif; color: {{__c0_1.__c1_2.T.t1}}; -webkit-font-smoothing: antialiased; letter-spacing: -0.01em">
+<sc-if value="{{__c0_1.__c1_2.hasHref}}" hint-placeholder-val="{{ false }}"><a href="{{__c0_1.__c1_2.href}}" aria-label="{{__c0_1.__c1_2.aria}}" style="width: 100%; height: 100%; min-height: {{__c0_1.__c1_2.minH}}px; box-sizing: border-box; display: flex; flex-direction: column; align-items: stretch; padding: 18px 18px 18px; margin: 0; background: {{__c0_1.__c1_2.T.tile}}; border: 0; border-radius: 20px; box-shadow: {{__c0_1.__c1_2.ring}}; color: {{__c0_1.__c1_2.T.t1}}; font-family: inherit; text-align: left; cursor: pointer; text-decoration: none">
+  <span style="display: flex; align-items: center; justify-content: space-between; height: 24px">
+    <span style="display: flex; align-items: center; gap: 8px; color: {{__c0_1.__c1_2.T.t2}}">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" style="stroke-width: 1.9; stroke-linecap: round; stroke-linejoin: round" aria-hidden="true"><path d="{{__c0_1.__c1_2.icon}}"></path></svg>
+      <span style="font-size: 15px; font-weight: 500">{{__c0_1.__c1_2.ko}}</span>
+    </span>
+    <sc-if value="{{__c0_1.__c1_2.drive}}" hint-placeholder-val="{{ false }}">
+      <span style="display: flex; align-items: center; gap: 4px; color: {{__c0_1.__c1_2.iconCol}}; font-size: 13px; font-weight: 500">
+        <sc-if value="{{__c0_1.__c1_2.tapped}}" hint-placeholder-val="{{ false }}"><span>안내 중</span></sc-if>
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" style="stroke-width: 1.9; stroke-linecap: round; stroke-linejoin: round" aria-hidden="true"><path d="M4 10v4h3.5l4.5 4V6L7.5 10z"></path><path d="M16 9.5a3.5 3.5 0 010 5"></path></svg>
+      </span>
+    </sc-if>
+    <sc-if value="{{__c0_1.__c1_2.parked}}" hint-placeholder-val="{{ true }}">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="{{__c0_1.__c1_2.T.t3}}" style="stroke-width: 2; stroke-linecap: round; stroke-linejoin: round" aria-hidden="true"><path d="M9 6l6 6-6 6"></path></svg>
+    </sc-if>
+  </span>
+
+  <span style="display: flex; align-items: baseline; gap: 5px; margin-top: auto; padding-top: 12px">
+    <span style="font-family: 'Inter','Pretendard',sans-serif; font-weight: 600; font-size: {{__c0_1.__c1_2.bigSize}}px; line-height: 1; letter-spacing: -0.035em; font-variant-numeric: tabular-nums">{{__c0_1.__c1_2.value}}</span>
+    <span style="font-size: 15px; font-weight: 500; color: {{__c0_1.__c1_2.T.t2}}">{{__c0_1.__c1_2.unit}}</span>
+    <sc-if value="{{__c0_1.__c1_2.isRegion}}" hint-placeholder-val="{{ false }}"><svg width="78" height="62" viewBox="0 0 100 80" role="img" aria-label="서울 지도, 지금 위치 중랑구" style="margin-left: auto; align-self: center; flex: none; overflow: visible"><path d="M4 38 L8 34 L12 33 L15 30 L19 31 L22 29 L24 25 L26 21 L29 17 L32 14 L35 12 L38 13 L41 10 L44 9 L47 6 L50 4 L53 5 L55 3 L58 4 L60 7 L61 11 L63 14 L62 18 L65 21 L66 25 L68 28 L71 30 L74 31 L77 33 L80 32 L83 33 L86 35 L89 37 L92 39 L90 43 L87 45 L84 47 L83 51 L80 54 L78 58 L75 60 L72 59 L69 62 L66 65 L63 66 L60 64 L57 68 L54 71 L51 70 L48 67 L46 69 L43 71 L40 69 L38 66 L35 67 L32 69 L29 67 L27 63 L25 60 L22 58 L19 57 L16 55 L14 52 L12 49 L10 46 L8 43 L5 41 Z" fill="none" stroke="{{__c0_1.__c1_2.T.t2}}" stroke-width="2" stroke-linejoin="round"></path><circle cx="72.9" cy="28.6" r="9" fill="{{__c0_1.__c1_2.T.accent}}" fill-opacity="0.22"></circle><circle cx="72.9" cy="28.6" r="4.6" fill="{{__c0_1.__c1_2.T.accent}}"></circle></svg></sc-if>
+  </span>
+  <span style="margin-top: 8px; font-size: 15px; font-weight: 500; color: {{__c0_1.__c1_2.statusCol}}">{{__c0_1.__c1_2.status}}</span>
+
+  <sc-if value="{{__c0_1.__c1_2.showBar}}" hint-placeholder-val="{{ true }}">
+    <span style="position: relative; display: flex; height: 4px; margin-top: 14px; border-radius: 2px; background: {{__c0_1.__c1_2.T.track}}">
+      <span style="width: {{__c0_1.__c1_2.barPct}}%; border-radius: 2px; background: {{__c0_1.__c1_2.barCol}}"></span>
+      <sc-if value="{{__c0_1.__c1_2.hasMark}}" hint-placeholder-val="{{ false }}"><span style="position: absolute; left: {{__c0_1.__c1_2.markPct}}%; top: -3px; width: 2px; height: 10px; border-radius: 1px; background: {{__c0_1.__c1_2.T.t2}}"></span></sc-if>
+    </span>
+  </sc-if>
+  <sc-if value="{{__c0_1.__c1_2.showSub}}" hint-placeholder-val="{{ true }}">
+    <span style="margin-top: 10px; font-size: 13px; color: {{__c0_1.__c1_2.T.t2}}; font-variant-numeric: tabular-nums">{{__c0_1.__c1_2.sub}}</span>
+  </sc-if>
+</a></sc-if>
+<sc-if value="{{__c0_1.__c1_2.noHref}}" hint-placeholder-val="{{ true }}"><button type="button" aria-label="{{__c0_1.__c1_2.aria}}" style="width: 100%; height: 100%; min-height: {{__c0_1.__c1_2.minH}}px; box-sizing: border-box; display: flex; flex-direction: column; align-items: stretch; padding: 18px 18px 18px; margin: 0; background: {{__c0_1.__c1_2.T.tile}}; border: 0; border-radius: 20px; box-shadow: {{__c0_1.__c1_2.ring}}; color: {{__c0_1.__c1_2.T.t1}}; font-family: inherit; text-align: left; cursor: pointer">
+  <span style="display: flex; align-items: center; justify-content: space-between; height: 24px">
+    <span style="display: flex; align-items: center; gap: 8px; color: {{__c0_1.__c1_2.T.t2}}">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" style="stroke-width: 1.9; stroke-linecap: round; stroke-linejoin: round" aria-hidden="true"><path d="{{__c0_1.__c1_2.icon}}"></path></svg>
+      <span style="font-size: 15px; font-weight: 500">{{__c0_1.__c1_2.ko}}</span>
+    </span>
+    <sc-if value="{{__c0_1.__c1_2.drive}}" hint-placeholder-val="{{ false }}">
+      <span style="display: flex; align-items: center; gap: 4px; color: {{__c0_1.__c1_2.iconCol}}; font-size: 13px; font-weight: 500">
+        <sc-if value="{{__c0_1.__c1_2.tapped}}" hint-placeholder-val="{{ false }}"><span>안내 중</span></sc-if>
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" style="stroke-width: 1.9; stroke-linecap: round; stroke-linejoin: round" aria-hidden="true"><path d="M4 10v4h3.5l4.5 4V6L7.5 10z"></path><path d="M16 9.5a3.5 3.5 0 010 5"></path></svg>
+      </span>
+    </sc-if>
+    <sc-if value="{{__c0_1.__c1_2.parked}}" hint-placeholder-val="{{ true }}">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="{{__c0_1.__c1_2.T.t3}}" style="stroke-width: 2; stroke-linecap: round; stroke-linejoin: round" aria-hidden="true"><path d="M9 6l6 6-6 6"></path></svg>
+    </sc-if>
+  </span>
+
+  <span style="display: flex; align-items: baseline; gap: 5px; margin-top: auto; padding-top: 12px">
+    <span style="font-family: 'Inter','Pretendard',sans-serif; font-weight: 600; font-size: {{__c0_1.__c1_2.bigSize}}px; line-height: 1; letter-spacing: -0.035em; font-variant-numeric: tabular-nums">{{__c0_1.__c1_2.value}}</span>
+    <span style="font-size: 15px; font-weight: 500; color: {{__c0_1.__c1_2.T.t2}}">{{__c0_1.__c1_2.unit}}</span>
+    <sc-if value="{{__c0_1.__c1_2.isRegion}}" hint-placeholder-val="{{ false }}"><svg width="78" height="62" viewBox="0 0 100 80" role="img" aria-label="서울 지도, 지금 위치 중랑구" style="margin-left: auto; align-self: center; flex: none; overflow: visible"><path d="M4 38 L8 34 L12 33 L15 30 L19 31 L22 29 L24 25 L26 21 L29 17 L32 14 L35 12 L38 13 L41 10 L44 9 L47 6 L50 4 L53 5 L55 3 L58 4 L60 7 L61 11 L63 14 L62 18 L65 21 L66 25 L68 28 L71 30 L74 31 L77 33 L80 32 L83 33 L86 35 L89 37 L92 39 L90 43 L87 45 L84 47 L83 51 L80 54 L78 58 L75 60 L72 59 L69 62 L66 65 L63 66 L60 64 L57 68 L54 71 L51 70 L48 67 L46 69 L43 71 L40 69 L38 66 L35 67 L32 69 L29 67 L27 63 L25 60 L22 58 L19 57 L16 55 L14 52 L12 49 L10 46 L8 43 L5 41 Z" fill="none" stroke="{{__c0_1.__c1_2.T.t2}}" stroke-width="2" stroke-linejoin="round"></path><circle cx="72.9" cy="28.6" r="9" fill="{{__c0_1.__c1_2.T.accent}}" fill-opacity="0.22"></circle><circle cx="72.9" cy="28.6" r="4.6" fill="{{__c0_1.__c1_2.T.accent}}"></circle></svg></sc-if>
+  </span>
+  <span style="margin-top: 8px; font-size: 15px; font-weight: 500; color: {{__c0_1.__c1_2.statusCol}}">{{__c0_1.__c1_2.status}}</span>
+
+  <sc-if value="{{__c0_1.__c1_2.showBar}}" hint-placeholder-val="{{ true }}">
+    <span style="position: relative; display: flex; height: 4px; margin-top: 14px; border-radius: 2px; background: {{__c0_1.__c1_2.T.track}}">
+      <span style="width: {{__c0_1.__c1_2.barPct}}%; border-radius: 2px; background: {{__c0_1.__c1_2.barCol}}"></span>
+      <sc-if value="{{__c0_1.__c1_2.hasMark}}" hint-placeholder-val="{{ false }}"><span style="position: absolute; left: {{__c0_1.__c1_2.markPct}}%; top: -3px; width: 2px; height: 10px; border-radius: 1px; background: {{__c0_1.__c1_2.T.t2}}"></span></sc-if>
+    </span>
+  </sc-if>
+  <sc-if value="{{__c0_1.__c1_2.showSub}}" hint-placeholder-val="{{ true }}">
+    <span style="margin-top: 10px; font-size: 13px; color: {{__c0_1.__c1_2.T.t2}}; font-variant-numeric: tabular-nums">{{__c0_1.__c1_2.sub}}</span>
+  </sc-if>
+</button></sc-if>
+</div>
+    <div style="width: 100%; height: 100%; font-family: 'Pretendard','Inter','Noto Sans KR',sans-serif; color: {{__c0_1.__c1_3.T.t1}}; -webkit-font-smoothing: antialiased; letter-spacing: -0.01em">
+<sc-if value="{{__c0_1.__c1_3.hasHref}}" hint-placeholder-val="{{ false }}"><a href="{{__c0_1.__c1_3.href}}" aria-label="{{__c0_1.__c1_3.aria}}" style="width: 100%; height: 100%; min-height: {{__c0_1.__c1_3.minH}}px; box-sizing: border-box; display: flex; flex-direction: column; align-items: stretch; padding: 18px 18px 18px; margin: 0; background: {{__c0_1.__c1_3.T.tile}}; border: 0; border-radius: 20px; box-shadow: {{__c0_1.__c1_3.ring}}; color: {{__c0_1.__c1_3.T.t1}}; font-family: inherit; text-align: left; cursor: pointer; text-decoration: none">
+  <span style="display: flex; align-items: center; justify-content: space-between; height: 24px">
+    <span style="display: flex; align-items: center; gap: 8px; color: {{__c0_1.__c1_3.T.t2}}">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" style="stroke-width: 1.9; stroke-linecap: round; stroke-linejoin: round" aria-hidden="true"><path d="{{__c0_1.__c1_3.icon}}"></path></svg>
+      <span style="font-size: 15px; font-weight: 500">{{__c0_1.__c1_3.ko}}</span>
+    </span>
+    <sc-if value="{{__c0_1.__c1_3.drive}}" hint-placeholder-val="{{ false }}">
+      <span style="display: flex; align-items: center; gap: 4px; color: {{__c0_1.__c1_3.iconCol}}; font-size: 13px; font-weight: 500">
+        <sc-if value="{{__c0_1.__c1_3.tapped}}" hint-placeholder-val="{{ false }}"><span>안내 중</span></sc-if>
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" style="stroke-width: 1.9; stroke-linecap: round; stroke-linejoin: round" aria-hidden="true"><path d="M4 10v4h3.5l4.5 4V6L7.5 10z"></path><path d="M16 9.5a3.5 3.5 0 010 5"></path></svg>
+      </span>
+    </sc-if>
+    <sc-if value="{{__c0_1.__c1_3.parked}}" hint-placeholder-val="{{ true }}">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="{{__c0_1.__c1_3.T.t3}}" style="stroke-width: 2; stroke-linecap: round; stroke-linejoin: round" aria-hidden="true"><path d="M9 6l6 6-6 6"></path></svg>
+    </sc-if>
+  </span>
+
+  <span style="display: flex; align-items: baseline; gap: 5px; margin-top: auto; padding-top: 12px">
+    <span style="font-family: 'Inter','Pretendard',sans-serif; font-weight: 600; font-size: {{__c0_1.__c1_3.bigSize}}px; line-height: 1; letter-spacing: -0.035em; font-variant-numeric: tabular-nums">{{__c0_1.__c1_3.value}}</span>
+    <span style="font-size: 15px; font-weight: 500; color: {{__c0_1.__c1_3.T.t2}}">{{__c0_1.__c1_3.unit}}</span>
+    <sc-if value="{{__c0_1.__c1_3.isRegion}}" hint-placeholder-val="{{ false }}"><svg width="78" height="62" viewBox="0 0 100 80" role="img" aria-label="서울 지도, 지금 위치 중랑구" style="margin-left: auto; align-self: center; flex: none; overflow: visible"><path d="M4 38 L8 34 L12 33 L15 30 L19 31 L22 29 L24 25 L26 21 L29 17 L32 14 L35 12 L38 13 L41 10 L44 9 L47 6 L50 4 L53 5 L55 3 L58 4 L60 7 L61 11 L63 14 L62 18 L65 21 L66 25 L68 28 L71 30 L74 31 L77 33 L80 32 L83 33 L86 35 L89 37 L92 39 L90 43 L87 45 L84 47 L83 51 L80 54 L78 58 L75 60 L72 59 L69 62 L66 65 L63 66 L60 64 L57 68 L54 71 L51 70 L48 67 L46 69 L43 71 L40 69 L38 66 L35 67 L32 69 L29 67 L27 63 L25 60 L22 58 L19 57 L16 55 L14 52 L12 49 L10 46 L8 43 L5 41 Z" fill="none" stroke="{{__c0_1.__c1_3.T.t2}}" stroke-width="2" stroke-linejoin="round"></path><circle cx="72.9" cy="28.6" r="9" fill="{{__c0_1.__c1_3.T.accent}}" fill-opacity="0.22"></circle><circle cx="72.9" cy="28.6" r="4.6" fill="{{__c0_1.__c1_3.T.accent}}"></circle></svg></sc-if>
+  </span>
+  <span style="margin-top: 8px; font-size: 15px; font-weight: 500; color: {{__c0_1.__c1_3.statusCol}}">{{__c0_1.__c1_3.status}}</span>
+
+  <sc-if value="{{__c0_1.__c1_3.showBar}}" hint-placeholder-val="{{ true }}">
+    <span style="position: relative; display: flex; height: 4px; margin-top: 14px; border-radius: 2px; background: {{__c0_1.__c1_3.T.track}}">
+      <span style="width: {{__c0_1.__c1_3.barPct}}%; border-radius: 2px; background: {{__c0_1.__c1_3.barCol}}"></span>
+      <sc-if value="{{__c0_1.__c1_3.hasMark}}" hint-placeholder-val="{{ false }}"><span style="position: absolute; left: {{__c0_1.__c1_3.markPct}}%; top: -3px; width: 2px; height: 10px; border-radius: 1px; background: {{__c0_1.__c1_3.T.t2}}"></span></sc-if>
+    </span>
+  </sc-if>
+  <sc-if value="{{__c0_1.__c1_3.showSub}}" hint-placeholder-val="{{ true }}">
+    <span style="margin-top: 10px; font-size: 13px; color: {{__c0_1.__c1_3.T.t2}}; font-variant-numeric: tabular-nums">{{__c0_1.__c1_3.sub}}</span>
+  </sc-if>
+</a></sc-if>
+<sc-if value="{{__c0_1.__c1_3.noHref}}" hint-placeholder-val="{{ true }}"><button type="button" aria-label="{{__c0_1.__c1_3.aria}}" style="width: 100%; height: 100%; min-height: {{__c0_1.__c1_3.minH}}px; box-sizing: border-box; display: flex; flex-direction: column; align-items: stretch; padding: 18px 18px 18px; margin: 0; background: {{__c0_1.__c1_3.T.tile}}; border: 0; border-radius: 20px; box-shadow: {{__c0_1.__c1_3.ring}}; color: {{__c0_1.__c1_3.T.t1}}; font-family: inherit; text-align: left; cursor: pointer">
+  <span style="display: flex; align-items: center; justify-content: space-between; height: 24px">
+    <span style="display: flex; align-items: center; gap: 8px; color: {{__c0_1.__c1_3.T.t2}}">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" style="stroke-width: 1.9; stroke-linecap: round; stroke-linejoin: round" aria-hidden="true"><path d="{{__c0_1.__c1_3.icon}}"></path></svg>
+      <span style="font-size: 15px; font-weight: 500">{{__c0_1.__c1_3.ko}}</span>
+    </span>
+    <sc-if value="{{__c0_1.__c1_3.drive}}" hint-placeholder-val="{{ false }}">
+      <span style="display: flex; align-items: center; gap: 4px; color: {{__c0_1.__c1_3.iconCol}}; font-size: 13px; font-weight: 500">
+        <sc-if value="{{__c0_1.__c1_3.tapped}}" hint-placeholder-val="{{ false }}"><span>안내 중</span></sc-if>
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" style="stroke-width: 1.9; stroke-linecap: round; stroke-linejoin: round" aria-hidden="true"><path d="M4 10v4h3.5l4.5 4V6L7.5 10z"></path><path d="M16 9.5a3.5 3.5 0 010 5"></path></svg>
+      </span>
+    </sc-if>
+    <sc-if value="{{__c0_1.__c1_3.parked}}" hint-placeholder-val="{{ true }}">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="{{__c0_1.__c1_3.T.t3}}" style="stroke-width: 2; stroke-linecap: round; stroke-linejoin: round" aria-hidden="true"><path d="M9 6l6 6-6 6"></path></svg>
+    </sc-if>
+  </span>
+
+  <span style="display: flex; align-items: baseline; gap: 5px; margin-top: auto; padding-top: 12px">
+    <span style="font-family: 'Inter','Pretendard',sans-serif; font-weight: 600; font-size: {{__c0_1.__c1_3.bigSize}}px; line-height: 1; letter-spacing: -0.035em; font-variant-numeric: tabular-nums">{{__c0_1.__c1_3.value}}</span>
+    <span style="font-size: 15px; font-weight: 500; color: {{__c0_1.__c1_3.T.t2}}">{{__c0_1.__c1_3.unit}}</span>
+    <sc-if value="{{__c0_1.__c1_3.isRegion}}" hint-placeholder-val="{{ false }}"><svg width="78" height="62" viewBox="0 0 100 80" role="img" aria-label="서울 지도, 지금 위치 중랑구" style="margin-left: auto; align-self: center; flex: none; overflow: visible"><path d="M4 38 L8 34 L12 33 L15 30 L19 31 L22 29 L24 25 L26 21 L29 17 L32 14 L35 12 L38 13 L41 10 L44 9 L47 6 L50 4 L53 5 L55 3 L58 4 L60 7 L61 11 L63 14 L62 18 L65 21 L66 25 L68 28 L71 30 L74 31 L77 33 L80 32 L83 33 L86 35 L89 37 L92 39 L90 43 L87 45 L84 47 L83 51 L80 54 L78 58 L75 60 L72 59 L69 62 L66 65 L63 66 L60 64 L57 68 L54 71 L51 70 L48 67 L46 69 L43 71 L40 69 L38 66 L35 67 L32 69 L29 67 L27 63 L25 60 L22 58 L19 57 L16 55 L14 52 L12 49 L10 46 L8 43 L5 41 Z" fill="none" stroke="{{__c0_1.__c1_3.T.t2}}" stroke-width="2" stroke-linejoin="round"></path><circle cx="72.9" cy="28.6" r="9" fill="{{__c0_1.__c1_3.T.accent}}" fill-opacity="0.22"></circle><circle cx="72.9" cy="28.6" r="4.6" fill="{{__c0_1.__c1_3.T.accent}}"></circle></svg></sc-if>
+  </span>
+  <span style="margin-top: 8px; font-size: 15px; font-weight: 500; color: {{__c0_1.__c1_3.statusCol}}">{{__c0_1.__c1_3.status}}</span>
+
+  <sc-if value="{{__c0_1.__c1_3.showBar}}" hint-placeholder-val="{{ true }}">
+    <span style="position: relative; display: flex; height: 4px; margin-top: 14px; border-radius: 2px; background: {{__c0_1.__c1_3.T.track}}">
+      <span style="width: {{__c0_1.__c1_3.barPct}}%; border-radius: 2px; background: {{__c0_1.__c1_3.barCol}}"></span>
+      <sc-if value="{{__c0_1.__c1_3.hasMark}}" hint-placeholder-val="{{ false }}"><span style="position: absolute; left: {{__c0_1.__c1_3.markPct}}%; top: -3px; width: 2px; height: 10px; border-radius: 1px; background: {{__c0_1.__c1_3.T.t2}}"></span></sc-if>
+    </span>
+  </sc-if>
+  <sc-if value="{{__c0_1.__c1_3.showSub}}" hint-placeholder-val="{{ true }}">
+    <span style="margin-top: 10px; font-size: 13px; color: {{__c0_1.__c1_3.T.t2}}; font-variant-numeric: tabular-nums">{{__c0_1.__c1_3.sub}}</span>
+  </sc-if>
+</button></sc-if>
+</div>
+    <div style="width: 100%; height: 100%; font-family: 'Pretendard','Inter','Noto Sans KR',sans-serif; color: {{__c0_1.__c1_4.T.t1}}; -webkit-font-smoothing: antialiased; letter-spacing: -0.01em">
+<sc-if value="{{__c0_1.__c1_4.hasHref}}" hint-placeholder-val="{{ false }}"><a href="{{__c0_1.__c1_4.href}}" aria-label="{{__c0_1.__c1_4.aria}}" style="width: 100%; height: 100%; min-height: {{__c0_1.__c1_4.minH}}px; box-sizing: border-box; display: flex; flex-direction: column; align-items: stretch; padding: 18px 18px 18px; margin: 0; background: {{__c0_1.__c1_4.T.tile}}; border: 0; border-radius: 20px; box-shadow: {{__c0_1.__c1_4.ring}}; color: {{__c0_1.__c1_4.T.t1}}; font-family: inherit; text-align: left; cursor: pointer; text-decoration: none">
+  <span style="display: flex; align-items: center; justify-content: space-between; height: 24px">
+    <span style="display: flex; align-items: center; gap: 8px; color: {{__c0_1.__c1_4.T.t2}}">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" style="stroke-width: 1.9; stroke-linecap: round; stroke-linejoin: round" aria-hidden="true"><path d="{{__c0_1.__c1_4.icon}}"></path></svg>
+      <span style="font-size: 15px; font-weight: 500">{{__c0_1.__c1_4.ko}}</span>
+    </span>
+    <sc-if value="{{__c0_1.__c1_4.drive}}" hint-placeholder-val="{{ false }}">
+      <span style="display: flex; align-items: center; gap: 4px; color: {{__c0_1.__c1_4.iconCol}}; font-size: 13px; font-weight: 500">
+        <sc-if value="{{__c0_1.__c1_4.tapped}}" hint-placeholder-val="{{ false }}"><span>안내 중</span></sc-if>
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" style="stroke-width: 1.9; stroke-linecap: round; stroke-linejoin: round" aria-hidden="true"><path d="M4 10v4h3.5l4.5 4V6L7.5 10z"></path><path d="M16 9.5a3.5 3.5 0 010 5"></path></svg>
+      </span>
+    </sc-if>
+    <sc-if value="{{__c0_1.__c1_4.parked}}" hint-placeholder-val="{{ true }}">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="{{__c0_1.__c1_4.T.t3}}" style="stroke-width: 2; stroke-linecap: round; stroke-linejoin: round" aria-hidden="true"><path d="M9 6l6 6-6 6"></path></svg>
+    </sc-if>
+  </span>
+
+  <span style="display: flex; align-items: baseline; gap: 5px; margin-top: auto; padding-top: 12px">
+    <span style="font-family: 'Inter','Pretendard',sans-serif; font-weight: 600; font-size: {{__c0_1.__c1_4.bigSize}}px; line-height: 1; letter-spacing: -0.035em; font-variant-numeric: tabular-nums">{{__c0_1.__c1_4.value}}</span>
+    <span style="font-size: 15px; font-weight: 500; color: {{__c0_1.__c1_4.T.t2}}">{{__c0_1.__c1_4.unit}}</span>
+    <sc-if value="{{__c0_1.__c1_4.isRegion}}" hint-placeholder-val="{{ false }}"><svg width="78" height="62" viewBox="0 0 100 80" role="img" aria-label="서울 지도, 지금 위치 중랑구" style="margin-left: auto; align-self: center; flex: none; overflow: visible"><path d="M4 38 L8 34 L12 33 L15 30 L19 31 L22 29 L24 25 L26 21 L29 17 L32 14 L35 12 L38 13 L41 10 L44 9 L47 6 L50 4 L53 5 L55 3 L58 4 L60 7 L61 11 L63 14 L62 18 L65 21 L66 25 L68 28 L71 30 L74 31 L77 33 L80 32 L83 33 L86 35 L89 37 L92 39 L90 43 L87 45 L84 47 L83 51 L80 54 L78 58 L75 60 L72 59 L69 62 L66 65 L63 66 L60 64 L57 68 L54 71 L51 70 L48 67 L46 69 L43 71 L40 69 L38 66 L35 67 L32 69 L29 67 L27 63 L25 60 L22 58 L19 57 L16 55 L14 52 L12 49 L10 46 L8 43 L5 41 Z" fill="none" stroke="{{__c0_1.__c1_4.T.t2}}" stroke-width="2" stroke-linejoin="round"></path><circle cx="72.9" cy="28.6" r="9" fill="{{__c0_1.__c1_4.T.accent}}" fill-opacity="0.22"></circle><circle cx="72.9" cy="28.6" r="4.6" fill="{{__c0_1.__c1_4.T.accent}}"></circle></svg></sc-if>
+  </span>
+  <span style="margin-top: 8px; font-size: 15px; font-weight: 500; color: {{__c0_1.__c1_4.statusCol}}">{{__c0_1.__c1_4.status}}</span>
+
+  <sc-if value="{{__c0_1.__c1_4.showBar}}" hint-placeholder-val="{{ true }}">
+    <span style="position: relative; display: flex; height: 4px; margin-top: 14px; border-radius: 2px; background: {{__c0_1.__c1_4.T.track}}">
+      <span style="width: {{__c0_1.__c1_4.barPct}}%; border-radius: 2px; background: {{__c0_1.__c1_4.barCol}}"></span>
+      <sc-if value="{{__c0_1.__c1_4.hasMark}}" hint-placeholder-val="{{ false }}"><span style="position: absolute; left: {{__c0_1.__c1_4.markPct}}%; top: -3px; width: 2px; height: 10px; border-radius: 1px; background: {{__c0_1.__c1_4.T.t2}}"></span></sc-if>
+    </span>
+  </sc-if>
+  <sc-if value="{{__c0_1.__c1_4.showSub}}" hint-placeholder-val="{{ true }}">
+    <span style="margin-top: 10px; font-size: 13px; color: {{__c0_1.__c1_4.T.t2}}; font-variant-numeric: tabular-nums">{{__c0_1.__c1_4.sub}}</span>
+  </sc-if>
+</a></sc-if>
+<sc-if value="{{__c0_1.__c1_4.noHref}}" hint-placeholder-val="{{ true }}"><button type="button" aria-label="{{__c0_1.__c1_4.aria}}" style="width: 100%; height: 100%; min-height: {{__c0_1.__c1_4.minH}}px; box-sizing: border-box; display: flex; flex-direction: column; align-items: stretch; padding: 18px 18px 18px; margin: 0; background: {{__c0_1.__c1_4.T.tile}}; border: 0; border-radius: 20px; box-shadow: {{__c0_1.__c1_4.ring}}; color: {{__c0_1.__c1_4.T.t1}}; font-family: inherit; text-align: left; cursor: pointer">
+  <span style="display: flex; align-items: center; justify-content: space-between; height: 24px">
+    <span style="display: flex; align-items: center; gap: 8px; color: {{__c0_1.__c1_4.T.t2}}">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" style="stroke-width: 1.9; stroke-linecap: round; stroke-linejoin: round" aria-hidden="true"><path d="{{__c0_1.__c1_4.icon}}"></path></svg>
+      <span style="font-size: 15px; font-weight: 500">{{__c0_1.__c1_4.ko}}</span>
+    </span>
+    <sc-if value="{{__c0_1.__c1_4.drive}}" hint-placeholder-val="{{ false }}">
+      <span style="display: flex; align-items: center; gap: 4px; color: {{__c0_1.__c1_4.iconCol}}; font-size: 13px; font-weight: 500">
+        <sc-if value="{{__c0_1.__c1_4.tapped}}" hint-placeholder-val="{{ false }}"><span>안내 중</span></sc-if>
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" style="stroke-width: 1.9; stroke-linecap: round; stroke-linejoin: round" aria-hidden="true"><path d="M4 10v4h3.5l4.5 4V6L7.5 10z"></path><path d="M16 9.5a3.5 3.5 0 010 5"></path></svg>
+      </span>
+    </sc-if>
+    <sc-if value="{{__c0_1.__c1_4.parked}}" hint-placeholder-val="{{ true }}">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="{{__c0_1.__c1_4.T.t3}}" style="stroke-width: 2; stroke-linecap: round; stroke-linejoin: round" aria-hidden="true"><path d="M9 6l6 6-6 6"></path></svg>
+    </sc-if>
+  </span>
+
+  <span style="display: flex; align-items: baseline; gap: 5px; margin-top: auto; padding-top: 12px">
+    <span style="font-family: 'Inter','Pretendard',sans-serif; font-weight: 600; font-size: {{__c0_1.__c1_4.bigSize}}px; line-height: 1; letter-spacing: -0.035em; font-variant-numeric: tabular-nums">{{__c0_1.__c1_4.value}}</span>
+    <span style="font-size: 15px; font-weight: 500; color: {{__c0_1.__c1_4.T.t2}}">{{__c0_1.__c1_4.unit}}</span>
+    <sc-if value="{{__c0_1.__c1_4.isRegion}}" hint-placeholder-val="{{ false }}"><svg width="78" height="62" viewBox="0 0 100 80" role="img" aria-label="서울 지도, 지금 위치 중랑구" style="margin-left: auto; align-self: center; flex: none; overflow: visible"><path d="M4 38 L8 34 L12 33 L15 30 L19 31 L22 29 L24 25 L26 21 L29 17 L32 14 L35 12 L38 13 L41 10 L44 9 L47 6 L50 4 L53 5 L55 3 L58 4 L60 7 L61 11 L63 14 L62 18 L65 21 L66 25 L68 28 L71 30 L74 31 L77 33 L80 32 L83 33 L86 35 L89 37 L92 39 L90 43 L87 45 L84 47 L83 51 L80 54 L78 58 L75 60 L72 59 L69 62 L66 65 L63 66 L60 64 L57 68 L54 71 L51 70 L48 67 L46 69 L43 71 L40 69 L38 66 L35 67 L32 69 L29 67 L27 63 L25 60 L22 58 L19 57 L16 55 L14 52 L12 49 L10 46 L8 43 L5 41 Z" fill="none" stroke="{{__c0_1.__c1_4.T.t2}}" stroke-width="2" stroke-linejoin="round"></path><circle cx="72.9" cy="28.6" r="9" fill="{{__c0_1.__c1_4.T.accent}}" fill-opacity="0.22"></circle><circle cx="72.9" cy="28.6" r="4.6" fill="{{__c0_1.__c1_4.T.accent}}"></circle></svg></sc-if>
+  </span>
+  <span style="margin-top: 8px; font-size: 15px; font-weight: 500; color: {{__c0_1.__c1_4.statusCol}}">{{__c0_1.__c1_4.status}}</span>
+
+  <sc-if value="{{__c0_1.__c1_4.showBar}}" hint-placeholder-val="{{ true }}">
+    <span style="position: relative; display: flex; height: 4px; margin-top: 14px; border-radius: 2px; background: {{__c0_1.__c1_4.T.track}}">
+      <span style="width: {{__c0_1.__c1_4.barPct}}%; border-radius: 2px; background: {{__c0_1.__c1_4.barCol}}"></span>
+      <sc-if value="{{__c0_1.__c1_4.hasMark}}" hint-placeholder-val="{{ false }}"><span style="position: absolute; left: {{__c0_1.__c1_4.markPct}}%; top: -3px; width: 2px; height: 10px; border-radius: 1px; background: {{__c0_1.__c1_4.T.t2}}"></span></sc-if>
+    </span>
+  </sc-if>
+  <sc-if value="{{__c0_1.__c1_4.showSub}}" hint-placeholder-val="{{ true }}">
+    <span style="margin-top: 10px; font-size: 13px; color: {{__c0_1.__c1_4.T.t2}}; font-variant-numeric: tabular-nums">{{__c0_1.__c1_4.sub}}</span>
+  </sc-if>
+</button></sc-if>
+</div>
+    <div style="width: 100%; height: 100%; font-family: 'Pretendard','Inter','Noto Sans KR',sans-serif; color: {{__c0_1.__c1_5.T.t1}}; -webkit-font-smoothing: antialiased; letter-spacing: -0.01em">
+<sc-if value="{{__c0_1.__c1_5.hasHref}}" hint-placeholder-val="{{ false }}"><a href="{{__c0_1.__c1_5.href}}" aria-label="{{__c0_1.__c1_5.aria}}" style="width: 100%; height: 100%; min-height: {{__c0_1.__c1_5.minH}}px; box-sizing: border-box; display: flex; flex-direction: column; align-items: stretch; padding: 18px 18px 18px; margin: 0; background: {{__c0_1.__c1_5.T.tile}}; border: 0; border-radius: 20px; box-shadow: {{__c0_1.__c1_5.ring}}; color: {{__c0_1.__c1_5.T.t1}}; font-family: inherit; text-align: left; cursor: pointer; text-decoration: none">
+  <span style="display: flex; align-items: center; justify-content: space-between; height: 24px">
+    <span style="display: flex; align-items: center; gap: 8px; color: {{__c0_1.__c1_5.T.t2}}">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" style="stroke-width: 1.9; stroke-linecap: round; stroke-linejoin: round" aria-hidden="true"><path d="{{__c0_1.__c1_5.icon}}"></path></svg>
+      <span style="font-size: 15px; font-weight: 500">{{__c0_1.__c1_5.ko}}</span>
+    </span>
+    <sc-if value="{{__c0_1.__c1_5.drive}}" hint-placeholder-val="{{ false }}">
+      <span style="display: flex; align-items: center; gap: 4px; color: {{__c0_1.__c1_5.iconCol}}; font-size: 13px; font-weight: 500">
+        <sc-if value="{{__c0_1.__c1_5.tapped}}" hint-placeholder-val="{{ false }}"><span>안내 중</span></sc-if>
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" style="stroke-width: 1.9; stroke-linecap: round; stroke-linejoin: round" aria-hidden="true"><path d="M4 10v4h3.5l4.5 4V6L7.5 10z"></path><path d="M16 9.5a3.5 3.5 0 010 5"></path></svg>
+      </span>
+    </sc-if>
+    <sc-if value="{{__c0_1.__c1_5.parked}}" hint-placeholder-val="{{ true }}">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="{{__c0_1.__c1_5.T.t3}}" style="stroke-width: 2; stroke-linecap: round; stroke-linejoin: round" aria-hidden="true"><path d="M9 6l6 6-6 6"></path></svg>
+    </sc-if>
+  </span>
+
+  <span style="display: flex; align-items: baseline; gap: 5px; margin-top: auto; padding-top: 12px">
+    <span style="font-family: 'Inter','Pretendard',sans-serif; font-weight: 600; font-size: {{__c0_1.__c1_5.bigSize}}px; line-height: 1; letter-spacing: -0.035em; font-variant-numeric: tabular-nums">{{__c0_1.__c1_5.value}}</span>
+    <span style="font-size: 15px; font-weight: 500; color: {{__c0_1.__c1_5.T.t2}}">{{__c0_1.__c1_5.unit}}</span>
+    <sc-if value="{{__c0_1.__c1_5.isRegion}}" hint-placeholder-val="{{ false }}"><svg width="78" height="62" viewBox="0 0 100 80" role="img" aria-label="서울 지도, 지금 위치 중랑구" style="margin-left: auto; align-self: center; flex: none; overflow: visible"><path d="M4 38 L8 34 L12 33 L15 30 L19 31 L22 29 L24 25 L26 21 L29 17 L32 14 L35 12 L38 13 L41 10 L44 9 L47 6 L50 4 L53 5 L55 3 L58 4 L60 7 L61 11 L63 14 L62 18 L65 21 L66 25 L68 28 L71 30 L74 31 L77 33 L80 32 L83 33 L86 35 L89 37 L92 39 L90 43 L87 45 L84 47 L83 51 L80 54 L78 58 L75 60 L72 59 L69 62 L66 65 L63 66 L60 64 L57 68 L54 71 L51 70 L48 67 L46 69 L43 71 L40 69 L38 66 L35 67 L32 69 L29 67 L27 63 L25 60 L22 58 L19 57 L16 55 L14 52 L12 49 L10 46 L8 43 L5 41 Z" fill="none" stroke="{{__c0_1.__c1_5.T.t2}}" stroke-width="2" stroke-linejoin="round"></path><circle cx="72.9" cy="28.6" r="9" fill="{{__c0_1.__c1_5.T.accent}}" fill-opacity="0.22"></circle><circle cx="72.9" cy="28.6" r="4.6" fill="{{__c0_1.__c1_5.T.accent}}"></circle></svg></sc-if>
+  </span>
+  <span style="margin-top: 8px; font-size: 15px; font-weight: 500; color: {{__c0_1.__c1_5.statusCol}}">{{__c0_1.__c1_5.status}}</span>
+
+  <sc-if value="{{__c0_1.__c1_5.showBar}}" hint-placeholder-val="{{ true }}">
+    <span style="position: relative; display: flex; height: 4px; margin-top: 14px; border-radius: 2px; background: {{__c0_1.__c1_5.T.track}}">
+      <span style="width: {{__c0_1.__c1_5.barPct}}%; border-radius: 2px; background: {{__c0_1.__c1_5.barCol}}"></span>
+      <sc-if value="{{__c0_1.__c1_5.hasMark}}" hint-placeholder-val="{{ false }}"><span style="position: absolute; left: {{__c0_1.__c1_5.markPct}}%; top: -3px; width: 2px; height: 10px; border-radius: 1px; background: {{__c0_1.__c1_5.T.t2}}"></span></sc-if>
+    </span>
+  </sc-if>
+  <sc-if value="{{__c0_1.__c1_5.showSub}}" hint-placeholder-val="{{ true }}">
+    <span style="margin-top: 10px; font-size: 13px; color: {{__c0_1.__c1_5.T.t2}}; font-variant-numeric: tabular-nums">{{__c0_1.__c1_5.sub}}</span>
+  </sc-if>
+</a></sc-if>
+<sc-if value="{{__c0_1.__c1_5.noHref}}" hint-placeholder-val="{{ true }}"><button type="button" aria-label="{{__c0_1.__c1_5.aria}}" style="width: 100%; height: 100%; min-height: {{__c0_1.__c1_5.minH}}px; box-sizing: border-box; display: flex; flex-direction: column; align-items: stretch; padding: 18px 18px 18px; margin: 0; background: {{__c0_1.__c1_5.T.tile}}; border: 0; border-radius: 20px; box-shadow: {{__c0_1.__c1_5.ring}}; color: {{__c0_1.__c1_5.T.t1}}; font-family: inherit; text-align: left; cursor: pointer">
+  <span style="display: flex; align-items: center; justify-content: space-between; height: 24px">
+    <span style="display: flex; align-items: center; gap: 8px; color: {{__c0_1.__c1_5.T.t2}}">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" style="stroke-width: 1.9; stroke-linecap: round; stroke-linejoin: round" aria-hidden="true"><path d="{{__c0_1.__c1_5.icon}}"></path></svg>
+      <span style="font-size: 15px; font-weight: 500">{{__c0_1.__c1_5.ko}}</span>
+    </span>
+    <sc-if value="{{__c0_1.__c1_5.drive}}" hint-placeholder-val="{{ false }}">
+      <span style="display: flex; align-items: center; gap: 4px; color: {{__c0_1.__c1_5.iconCol}}; font-size: 13px; font-weight: 500">
+        <sc-if value="{{__c0_1.__c1_5.tapped}}" hint-placeholder-val="{{ false }}"><span>안내 중</span></sc-if>
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" style="stroke-width: 1.9; stroke-linecap: round; stroke-linejoin: round" aria-hidden="true"><path d="M4 10v4h3.5l4.5 4V6L7.5 10z"></path><path d="M16 9.5a3.5 3.5 0 010 5"></path></svg>
+      </span>
+    </sc-if>
+    <sc-if value="{{__c0_1.__c1_5.parked}}" hint-placeholder-val="{{ true }}">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="{{__c0_1.__c1_5.T.t3}}" style="stroke-width: 2; stroke-linecap: round; stroke-linejoin: round" aria-hidden="true"><path d="M9 6l6 6-6 6"></path></svg>
+    </sc-if>
+  </span>
+
+  <span style="display: flex; align-items: baseline; gap: 5px; margin-top: auto; padding-top: 12px">
+    <span style="font-family: 'Inter','Pretendard',sans-serif; font-weight: 600; font-size: {{__c0_1.__c1_5.bigSize}}px; line-height: 1; letter-spacing: -0.035em; font-variant-numeric: tabular-nums">{{__c0_1.__c1_5.value}}</span>
+    <span style="font-size: 15px; font-weight: 500; color: {{__c0_1.__c1_5.T.t2}}">{{__c0_1.__c1_5.unit}}</span>
+    <sc-if value="{{__c0_1.__c1_5.isRegion}}" hint-placeholder-val="{{ false }}"><svg width="78" height="62" viewBox="0 0 100 80" role="img" aria-label="서울 지도, 지금 위치 중랑구" style="margin-left: auto; align-self: center; flex: none; overflow: visible"><path d="M4 38 L8 34 L12 33 L15 30 L19 31 L22 29 L24 25 L26 21 L29 17 L32 14 L35 12 L38 13 L41 10 L44 9 L47 6 L50 4 L53 5 L55 3 L58 4 L60 7 L61 11 L63 14 L62 18 L65 21 L66 25 L68 28 L71 30 L74 31 L77 33 L80 32 L83 33 L86 35 L89 37 L92 39 L90 43 L87 45 L84 47 L83 51 L80 54 L78 58 L75 60 L72 59 L69 62 L66 65 L63 66 L60 64 L57 68 L54 71 L51 70 L48 67 L46 69 L43 71 L40 69 L38 66 L35 67 L32 69 L29 67 L27 63 L25 60 L22 58 L19 57 L16 55 L14 52 L12 49 L10 46 L8 43 L5 41 Z" fill="none" stroke="{{__c0_1.__c1_5.T.t2}}" stroke-width="2" stroke-linejoin="round"></path><circle cx="72.9" cy="28.6" r="9" fill="{{__c0_1.__c1_5.T.accent}}" fill-opacity="0.22"></circle><circle cx="72.9" cy="28.6" r="4.6" fill="{{__c0_1.__c1_5.T.accent}}"></circle></svg></sc-if>
+  </span>
+  <span style="margin-top: 8px; font-size: 15px; font-weight: 500; color: {{__c0_1.__c1_5.statusCol}}">{{__c0_1.__c1_5.status}}</span>
+
+  <sc-if value="{{__c0_1.__c1_5.showBar}}" hint-placeholder-val="{{ true }}">
+    <span style="position: relative; display: flex; height: 4px; margin-top: 14px; border-radius: 2px; background: {{__c0_1.__c1_5.T.track}}">
+      <span style="width: {{__c0_1.__c1_5.barPct}}%; border-radius: 2px; background: {{__c0_1.__c1_5.barCol}}"></span>
+      <sc-if value="{{__c0_1.__c1_5.hasMark}}" hint-placeholder-val="{{ false }}"><span style="position: absolute; left: {{__c0_1.__c1_5.markPct}}%; top: -3px; width: 2px; height: 10px; border-radius: 1px; background: {{__c0_1.__c1_5.T.t2}}"></span></sc-if>
+    </span>
+  </sc-if>
+  <sc-if value="{{__c0_1.__c1_5.showSub}}" hint-placeholder-val="{{ true }}">
+    <span style="margin-top: 10px; font-size: 13px; color: {{__c0_1.__c1_5.T.t2}}; font-variant-numeric: tabular-nums">{{__c0_1.__c1_5.sub}}</span>
+  </sc-if>
+</button></sc-if>
+</div>
+  </div>
+</div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1200,"height":800}}'>
+const Core__c0_1 = (function () {
+class DCLogic { constructor(p) { this.props = p || {}; this.state = {}; } setState(o) { Object.assign(this.state, typeof o === 'function' ? o(this.state, this.props) : o); if (this.__host) this.__host.forceUpdate(); } forceUpdate() { if (this.__host) this.__host.forceUpdate(); } }
+
+const Core__c1_1 = (function () {
+class DCLogic { constructor(p) { this.props = p || {}; this.state = {}; } setState(o) { Object.assign(this.state, typeof o === 'function' ? o(this.state, this.props) : o); if (this.__host) this.__host.forceUpdate(); } forceUpdate() { if (this.__host) this.__host.forceUpdate(); } }
+
+const ST = {
+  cruise: { v: 46, life: 14, stop: false, rough: false, dash: false, a: 0.9 },
+  slow:   { v: 26, life: 16, stop: false, rough: false, dash: true,  a: 0.55 },
+  rough:  { v: 44, life: 14, stop: false, rough: true,  dash: false, a: 0.9 },
+  hover:  { v: 40, life: 14, stop: true,  rough: false, dash: false, a: 0.5 },
+  maint:  { v: 40, life: 12, stop: true,  rough: false, dash: false, a: 0.38 },
+  dock:   { v: 40, life: 10, stop: true,  rough: false, dash: false, a: 0.28 }
+};
+const TH = {
+  light: { ink: '17,20,24', star: '209,154,30', dust: '120,128,138', base: '17,20,24', img: '/_blob/d30d11dd01f6b72e74c76842619ef49b' },
+  dark:  { ink: '242,243,245', star: '233,185,73', dust: '150,158,168', base: '242,243,245', img: '/_blob/40dc138230dd682172ca7808ed1a1ab2' }
+};
+const ARIA = { cruise: '곰 자동차가 매끄러운 흔적을 남기며 달리는 중', slow: '곰 자동차가 천천히 달리는 중', rough: '곰 자동차의 흔적이 꺾였어요', hover: '곰 자동차가 잠깐 쉬는 중', maint: '곰 자동차가 정비를 기다리는 중', dock: '곰 자동차가 충전하며 쉬는 중' };
+function sm(a, b, x) { const t = Math.max(0, Math.min(1, (x - a) / (b - a))); return t * t * (3 - 2 * t); }
+function tri(x) { return 1 - 4 * Math.abs((x % 1 + 1) % 1 - 0.5); }
+class Component extends DCLogic {
+  componentWillUnmount() { if (this._raf) cancelAnimationFrame(this._raf); this._raf = null; }
+  start() {
+    if (this._raf) return;
+    const loop = (ts) => { this.frame(ts); this._raf = requestAnimationFrame(loop); };
+    this.frame(performance.now(), true);
+    this._raf = requestAnimationFrame(loop);
+  }
+  frame(ts, force) {
+    const cv = this.cv; if (!cv) return;
+    if (!force && this._last && ts - this._last < 32) return;
+    this._last = ts;
+    const p = this.props;
+    const w = Number(p.w) || 560, h = Number(p.h) || 180;
+    const theme = p.theme === 'dark' ? 'dark' : 'light', T = TH[theme];
+    const dpr = Math.min(2, window.devicePixelRatio || 1);
+    if (cv.width !== Math.round(w * dpr)) { cv.width = Math.round(w * dpr); cv.height = Math.round(h * dpr); }
+    const ctx = cv.getContext('2d'); ctx.setTransform(dpr, 0, 0, dpr, 0, 0); ctx.clearRect(0, 0, w, h);
+    this._imgs = this._imgs || {};
+    if (!this._imgs[theme]) { const im = new Image(); im.onload = () => { im._ok = true; this.frame(performance.now(), true); }; im.src = T.img; this._imgs[theme] = im; }
+    const img = this._imgs[theme];
+    const reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if (this._t0 === undefined) this._t0 = 200 + (String(p.state).length * 37) % 90;
+    const now = (ts / 1000) * (reduce ? 0.2 : 1) + this._t0;
+    const S = ST[p.state] || ST.cruise;
+    const bw = Number(p.bw) || 220, bh = bw * 418 / 816;
+    const gy = h * (Number(p.gyr) || 0.86);
+    const bx = w * (Number(p.bxr) || 0.62) - bw / 2;
+    const k = bw / 220;
+
+    // faint ground
+    ctx.strokeStyle = 'rgba(' + T.base + ',0.07)'; ctx.lineWidth = 1; ctx.setLineDash([2, 6]);
+    ctx.beginPath(); ctx.moveTo(0, gy + 0.5); ctx.lineTo(w, gy + 0.5); ctx.stroke(); ctx.setLineDash([]);
+
+    // trail behind the rear wheel
+    const rx = bx + bw * 0.19, dt = 0.05, N = Math.round(S.life / dt);
+    const pts = [];
+    let x = rx;
+    for (let i = 0; i <= N; i++) {
+      const a = i * dt, s = now - a;
+      const v = S.stop ? S.v * sm(3, 9, a) : S.v;
+      if (i > 0) x -= v * dt * k;
+      let y = gy - 1.5 * k + (2.2 * Math.sin(0.33 * s) + 1.1 * Math.sin(0.9 * s + 1)) * k;
+      if (S.rough && a > 1.6 && a < 7) y += 9 * k * tri(a * 1.5) * Math.sin(Math.PI * (a - 1.6) / 5.4);
+      pts.push([x, y, a, s]);
+      if (x < -20) break;
+    }
+    ctx.lineCap = 'round'; ctx.lineJoin = 'round';
+    for (let i = 1; i < pts.length; i++) {
+      const [x0, y0] = pts[i - 1], [x1, y1, a, s] = pts[i];
+      if (S.dash && Math.floor(s * 3) % 2 === 0) continue;
+      const al = S.a * Math.pow(1 - a / S.life, 1.2) * sm(0, 0.25, a);
+      if (al < 0.01) continue;
+      ctx.strokeStyle = 'rgba(' + T.ink + ',' + al.toFixed(3) + ')';
+      ctx.lineWidth = 2.6 * k;
+      ctx.beginPath(); ctx.moveTo(x0, y0); ctx.lineTo(x1, y1); ctx.stroke();
+    }
+    // stars on clean stretches, anchored to time so they travel with the trail
+    for (let i = 1; i < pts.length; i++) {
+      const [x1, y1, a, s] = pts[i];
+      if (Math.floor(s / 1.7) === Math.floor((s + dt) / 1.7)) continue;
+      if (a < 0.6) continue;
+      const al = Math.pow(1 - a / S.life, 1.1);
+      if (al < 0.05) continue;
+      const bad = S.rough && a > 1.3 && a < 7.3;
+      const r = (bad ? 4 : 5.5) * k, cx0 = x1, cy0 = y1 - 13 * k;
+      ctx.beginPath();
+      for (let j = 0; j < 8; j++) { const ang = j * Math.PI / 4 - Math.PI / 2, rr = j % 2 ? r * 0.36 : r; ctx.lineTo(cx0 + Math.cos(ang) * rr, cy0 + Math.sin(ang) * rr); }
+      ctx.closePath();
+      if (bad) { ctx.strokeStyle = 'rgba(' + T.dust + ',' + (al * 0.7).toFixed(3) + ')'; ctx.lineWidth = 1.1; ctx.stroke(); }
+      else { ctx.fillStyle = 'rgba(' + T.star + ',' + (al * (S.dash ? 0.5 : 0.95)).toFixed(3) + ')'; ctx.fill(); }
+    }
+    // dust where it got rough
+    if (S.rough) {
+      [2.4, 3.8, 5.2].forEach((ag, j) => {
+        const q = pts[Math.round(ag / dt)]; if (!q) return;
+        for (let n = 0; n < 3; n++) {
+          const rr = (5 + n * 3 + ag) * k, al = 0.13 * (1 - ag / S.life);
+          ctx.fillStyle = 'rgba(' + T.dust + ',' + al.toFixed(3) + ')';
+          ctx.beginPath(); ctx.arc(q[0] - n * 5 * k, q[1] - (4 + n * 4) * k, rr, 0, Math.PI * 2); ctx.fill();
+        }
+      });
+    }
+
+    // the bear car
+    if (img._ok) {
+      const moving = !S.stop;
+      const bob = moving ? 0.6 * Math.sin(now * 1.6) : 0;
+      ctx.save();
+      const rot = S.rough ? -0.045 : 0;
+      ctx.translate(bx + bw * 0.86, gy);
+      ctx.rotate(rot);
+      ctx.drawImage(img, -bw * 0.86, -bh + bob, bw, bh);
+      ctx.restore();
+    }
+  }
+  renderVals() {
+    const p = this.props;
+    if (!this._set) this._set = (el) => { this.cv = el; if (el) this.start(); };
+    return { w: Number(p.w) || 560, h: Number(p.h) || 180, bg: p.bg || 'transparent', setCanvas: this._set, aria: ARIA[p.state] || ARIA.cruise };
+  }
+}
+
+return Component;
+})();
+const Core__c1_2 = (function () {
+class DCLogic { constructor(p) { this.props = p || {}; this.state = {}; } setState(o) { Object.assign(this.state, typeof o === 'function' ? o(this.state, this.props) : o); if (this.__host) this.__host.forceUpdate(); } forceUpdate() { if (this.__host) this.__host.forceUpdate(); } }
+
+const TOK = {
+  light: { tile: '#F3F4F6', t1: '#111418', t2: '#5C636D', t3: '#8A9099', track: '#E1E4E8', accent: '#1677E6', good: '#12935F', caution: '#C97A08', warn: '#D9474A', gold: '#C08414' },
+  dark: { tile: '#202328', t1: '#F2F3F5', t2: '#A3A9B2', t3: '#7C828B', track: '#33373E', accent: '#4C9AFF', good: '#38C08A', caution: '#F0A33C', warn: '#EF7A70', gold: '#E9B949' }
+};
+const ICON = {
+  eff: 'M12 3a9 9 0 00-9 9h3M21 12a9 9 0 00-9-9M12 12l4-4M18 12h3',
+  maint: 'M14.5 6.5a4 4 0 00-5 5L4 17l3 3 5.5-5.5a4 4 0 005-5l-2.5 2.5-2.5-.5-.5-2.5z',
+  coin: 'M12 3l2.4 6.6L21 12l-6.6 2.4L12 21l-2.4-6.6L3 12l6.6-2.4z',
+  region: 'M12 21s-6-5.5-6-11a6 6 0 0112 0c0 5.5-6 11-6 11zM12 12a2 2 0 100-4 2 2 0 000 4z'
+};
+class Component extends DCLogic {
+  renderVals() {
+    const p = this.props;
+    const T = TOK[p.theme === 'dark' ? 'dark' : 'light'];
+    const kind = ICON[p.kind] ? p.kind : 'eff';
+    const drive = p.drive === 'on' || p.drive === true;
+    const tapped = drive && (p.tapped === 'on' || p.tapped === true);
+    const D = {
+      eff: { ko: '전비', value: '6.4', unit: 'km/kWh', status: drive ? '평소보다 좋아요' : '평균보다 0.6 좋아요', statusCol: T.good, bar: 78, barCol: T.t1, sub: '주행 78% · 공조 17% · 회생 0.9 kWh', mark: null },
+      maint: { ko: '정비', value: '12', unit: '일', status: '와이퍼 블레이드 교체', statusCol: T.warn, bar: 97, barCol: T.warn, sub: '다음 · 에어컨 필터 1,200 km', mark: null },
+      coin: { ko: '코인', value: '1,284', unit: '', status: drive ? '별 모으는 중' : '이번 주행 +32', statusCol: T.gold, bar: 63, barCol: T.gold, sub: '안전점수 85.3 · 적립 기준 80', mark: 50 },
+      region: { ko: '지역', value: '서울', unit: '중랑구', status: drive ? '성동구' : '161곳 중 11곳 방문', statusCol: T.t2, bar: 7, barCol: T.accent, sub: '달린 거리 9,840 km', mark: null }
+    }[kind];
+    return { href: this.props.href || '', hasHref: !!this.props.href, noHref: !this.props.href, 
+      T, drive, parked: !drive, tapped, isRegion: kind === 'region',
+      icon: ICON[kind], ko: D.ko, value: D.value, unit: D.unit, status: D.status, statusCol: D.statusCol,
+      showBar: !drive, barPct: D.bar, barCol: D.barCol, hasMark: D.mark !== null, markPct: D.mark || 0,
+      showSub: !drive, sub: D.sub,
+      aria: D.ko + ' ' + D.value + D.unit + ', ' + D.status + (drive ? ', 누르면 음성 안내' : ', 자세히 보기'),
+      bigSize: kind === 'region' ? (drive ? 40 : 34) : (drive ? 52 : 44),
+      minH: 0,
+      ring: tapped ? '0 0 0 2px ' + T.accent : 'none',
+      iconCol: tapped ? T.accent : T.t3
+    };
+  }
+}
+
+return Component;
+})();
+const Core__c1_3 = (function () {
+class DCLogic { constructor(p) { this.props = p || {}; this.state = {}; } setState(o) { Object.assign(this.state, typeof o === 'function' ? o(this.state, this.props) : o); if (this.__host) this.__host.forceUpdate(); } forceUpdate() { if (this.__host) this.__host.forceUpdate(); } }
+
+const TOK = {
+  light: { tile: '#F3F4F6', t1: '#111418', t2: '#5C636D', t3: '#8A9099', track: '#E1E4E8', accent: '#1677E6', good: '#12935F', caution: '#C97A08', warn: '#D9474A', gold: '#C08414' },
+  dark: { tile: '#202328', t1: '#F2F3F5', t2: '#A3A9B2', t3: '#7C828B', track: '#33373E', accent: '#4C9AFF', good: '#38C08A', caution: '#F0A33C', warn: '#EF7A70', gold: '#E9B949' }
+};
+const ICON = {
+  eff: 'M12 3a9 9 0 00-9 9h3M21 12a9 9 0 00-9-9M12 12l4-4M18 12h3',
+  maint: 'M14.5 6.5a4 4 0 00-5 5L4 17l3 3 5.5-5.5a4 4 0 005-5l-2.5 2.5-2.5-.5-.5-2.5z',
+  coin: 'M12 3l2.4 6.6L21 12l-6.6 2.4L12 21l-2.4-6.6L3 12l6.6-2.4z',
+  region: 'M12 21s-6-5.5-6-11a6 6 0 0112 0c0 5.5-6 11-6 11zM12 12a2 2 0 100-4 2 2 0 000 4z'
+};
+class Component extends DCLogic {
+  renderVals() {
+    const p = this.props;
+    const T = TOK[p.theme === 'dark' ? 'dark' : 'light'];
+    const kind = ICON[p.kind] ? p.kind : 'eff';
+    const drive = p.drive === 'on' || p.drive === true;
+    const tapped = drive && (p.tapped === 'on' || p.tapped === true);
+    const D = {
+      eff: { ko: '전비', value: '6.4', unit: 'km/kWh', status: drive ? '평소보다 좋아요' : '평균보다 0.6 좋아요', statusCol: T.good, bar: 78, barCol: T.t1, sub: '주행 78% · 공조 17% · 회생 0.9 kWh', mark: null },
+      maint: { ko: '정비', value: '12', unit: '일', status: '와이퍼 블레이드 교체', statusCol: T.warn, bar: 97, barCol: T.warn, sub: '다음 · 에어컨 필터 1,200 km', mark: null },
+      coin: { ko: '코인', value: '1,284', unit: '', status: drive ? '별 모으는 중' : '이번 주행 +32', statusCol: T.gold, bar: 63, barCol: T.gold, sub: '안전점수 85.3 · 적립 기준 80', mark: 50 },
+      region: { ko: '지역', value: '서울', unit: '중랑구', status: drive ? '성동구' : '161곳 중 11곳 방문', statusCol: T.t2, bar: 7, barCol: T.accent, sub: '달린 거리 9,840 km', mark: null }
+    }[kind];
+    return { href: this.props.href || '', hasHref: !!this.props.href, noHref: !this.props.href, 
+      T, drive, parked: !drive, tapped, isRegion: kind === 'region',
+      icon: ICON[kind], ko: D.ko, value: D.value, unit: D.unit, status: D.status, statusCol: D.statusCol,
+      showBar: !drive, barPct: D.bar, barCol: D.barCol, hasMark: D.mark !== null, markPct: D.mark || 0,
+      showSub: !drive, sub: D.sub,
+      aria: D.ko + ' ' + D.value + D.unit + ', ' + D.status + (drive ? ', 누르면 음성 안내' : ', 자세히 보기'),
+      bigSize: kind === 'region' ? (drive ? 40 : 34) : (drive ? 52 : 44),
+      minH: 0,
+      ring: tapped ? '0 0 0 2px ' + T.accent : 'none',
+      iconCol: tapped ? T.accent : T.t3
+    };
+  }
+}
+
+return Component;
+})();
+const Core__c1_4 = (function () {
+class DCLogic { constructor(p) { this.props = p || {}; this.state = {}; } setState(o) { Object.assign(this.state, typeof o === 'function' ? o(this.state, this.props) : o); if (this.__host) this.__host.forceUpdate(); } forceUpdate() { if (this.__host) this.__host.forceUpdate(); } }
+
+const TOK = {
+  light: { tile: '#F3F4F6', t1: '#111418', t2: '#5C636D', t3: '#8A9099', track: '#E1E4E8', accent: '#1677E6', good: '#12935F', caution: '#C97A08', warn: '#D9474A', gold: '#C08414' },
+  dark: { tile: '#202328', t1: '#F2F3F5', t2: '#A3A9B2', t3: '#7C828B', track: '#33373E', accent: '#4C9AFF', good: '#38C08A', caution: '#F0A33C', warn: '#EF7A70', gold: '#E9B949' }
+};
+const ICON = {
+  eff: 'M12 3a9 9 0 00-9 9h3M21 12a9 9 0 00-9-9M12 12l4-4M18 12h3',
+  maint: 'M14.5 6.5a4 4 0 00-5 5L4 17l3 3 5.5-5.5a4 4 0 005-5l-2.5 2.5-2.5-.5-.5-2.5z',
+  coin: 'M12 3l2.4 6.6L21 12l-6.6 2.4L12 21l-2.4-6.6L3 12l6.6-2.4z',
+  region: 'M12 21s-6-5.5-6-11a6 6 0 0112 0c0 5.5-6 11-6 11zM12 12a2 2 0 100-4 2 2 0 000 4z'
+};
+class Component extends DCLogic {
+  renderVals() {
+    const p = this.props;
+    const T = TOK[p.theme === 'dark' ? 'dark' : 'light'];
+    const kind = ICON[p.kind] ? p.kind : 'eff';
+    const drive = p.drive === 'on' || p.drive === true;
+    const tapped = drive && (p.tapped === 'on' || p.tapped === true);
+    const D = {
+      eff: { ko: '전비', value: '6.4', unit: 'km/kWh', status: drive ? '평소보다 좋아요' : '평균보다 0.6 좋아요', statusCol: T.good, bar: 78, barCol: T.t1, sub: '주행 78% · 공조 17% · 회생 0.9 kWh', mark: null },
+      maint: { ko: '정비', value: '12', unit: '일', status: '와이퍼 블레이드 교체', statusCol: T.warn, bar: 97, barCol: T.warn, sub: '다음 · 에어컨 필터 1,200 km', mark: null },
+      coin: { ko: '코인', value: '1,284', unit: '', status: drive ? '별 모으는 중' : '이번 주행 +32', statusCol: T.gold, bar: 63, barCol: T.gold, sub: '안전점수 85.3 · 적립 기준 80', mark: 50 },
+      region: { ko: '지역', value: '서울', unit: '중랑구', status: drive ? '성동구' : '161곳 중 11곳 방문', statusCol: T.t2, bar: 7, barCol: T.accent, sub: '달린 거리 9,840 km', mark: null }
+    }[kind];
+    return { href: this.props.href || '', hasHref: !!this.props.href, noHref: !this.props.href, 
+      T, drive, parked: !drive, tapped, isRegion: kind === 'region',
+      icon: ICON[kind], ko: D.ko, value: D.value, unit: D.unit, status: D.status, statusCol: D.statusCol,
+      showBar: !drive, barPct: D.bar, barCol: D.barCol, hasMark: D.mark !== null, markPct: D.mark || 0,
+      showSub: !drive, sub: D.sub,
+      aria: D.ko + ' ' + D.value + D.unit + ', ' + D.status + (drive ? ', 누르면 음성 안내' : ', 자세히 보기'),
+      bigSize: kind === 'region' ? (drive ? 40 : 34) : (drive ? 52 : 44),
+      minH: 0,
+      ring: tapped ? '0 0 0 2px ' + T.accent : 'none',
+      iconCol: tapped ? T.accent : T.t3
+    };
+  }
+}
+
+return Component;
+})();
+const Core__c1_5 = (function () {
+class DCLogic { constructor(p) { this.props = p || {}; this.state = {}; } setState(o) { Object.assign(this.state, typeof o === 'function' ? o(this.state, this.props) : o); if (this.__host) this.__host.forceUpdate(); } forceUpdate() { if (this.__host) this.__host.forceUpdate(); } }
+
+const TOK = {
+  light: { tile: '#F3F4F6', t1: '#111418', t2: '#5C636D', t3: '#8A9099', track: '#E1E4E8', accent: '#1677E6', good: '#12935F', caution: '#C97A08', warn: '#D9474A', gold: '#C08414' },
+  dark: { tile: '#202328', t1: '#F2F3F5', t2: '#A3A9B2', t3: '#7C828B', track: '#33373E', accent: '#4C9AFF', good: '#38C08A', caution: '#F0A33C', warn: '#EF7A70', gold: '#E9B949' }
+};
+const ICON = {
+  eff: 'M12 3a9 9 0 00-9 9h3M21 12a9 9 0 00-9-9M12 12l4-4M18 12h3',
+  maint: 'M14.5 6.5a4 4 0 00-5 5L4 17l3 3 5.5-5.5a4 4 0 005-5l-2.5 2.5-2.5-.5-.5-2.5z',
+  coin: 'M12 3l2.4 6.6L21 12l-6.6 2.4L12 21l-2.4-6.6L3 12l6.6-2.4z',
+  region: 'M12 21s-6-5.5-6-11a6 6 0 0112 0c0 5.5-6 11-6 11zM12 12a2 2 0 100-4 2 2 0 000 4z'
+};
+class Component extends DCLogic {
+  renderVals() {
+    const p = this.props;
+    const T = TOK[p.theme === 'dark' ? 'dark' : 'light'];
+    const kind = ICON[p.kind] ? p.kind : 'eff';
+    const drive = p.drive === 'on' || p.drive === true;
+    const tapped = drive && (p.tapped === 'on' || p.tapped === true);
+    const D = {
+      eff: { ko: '전비', value: '6.4', unit: 'km/kWh', status: drive ? '평소보다 좋아요' : '평균보다 0.6 좋아요', statusCol: T.good, bar: 78, barCol: T.t1, sub: '주행 78% · 공조 17% · 회생 0.9 kWh', mark: null },
+      maint: { ko: '정비', value: '12', unit: '일', status: '와이퍼 블레이드 교체', statusCol: T.warn, bar: 97, barCol: T.warn, sub: '다음 · 에어컨 필터 1,200 km', mark: null },
+      coin: { ko: '코인', value: '1,284', unit: '', status: drive ? '별 모으는 중' : '이번 주행 +32', statusCol: T.gold, bar: 63, barCol: T.gold, sub: '안전점수 85.3 · 적립 기준 80', mark: 50 },
+      region: { ko: '지역', value: '서울', unit: '중랑구', status: drive ? '성동구' : '161곳 중 11곳 방문', statusCol: T.t2, bar: 7, barCol: T.accent, sub: '달린 거리 9,840 km', mark: null }
+    }[kind];
+    return { href: this.props.href || '', hasHref: !!this.props.href, noHref: !this.props.href, 
+      T, drive, parked: !drive, tapped, isRegion: kind === 'region',
+      icon: ICON[kind], ko: D.ko, value: D.value, unit: D.unit, status: D.status, statusCol: D.statusCol,
+      showBar: !drive, barPct: D.bar, barCol: D.barCol, hasMark: D.mark !== null, markPct: D.mark || 0,
+      showSub: !drive, sub: D.sub,
+      aria: D.ko + ' ' + D.value + D.unit + ', ' + D.status + (drive ? ', 누르면 음성 안내' : ', 자세히 보기'),
+      bigSize: kind === 'region' ? (drive ? 40 : 34) : (drive ? 52 : 44),
+      minH: 0,
+      ring: tapped ? '0 0 0 2px ' + T.accent : 'none',
+      iconCol: tapped ? T.accent : T.t3
+    };
+  }
+}
+
+return Component;
+})();
+
+const TOK = {
+  light: { panel: '#FFFFFF', t1: '#111418', tile: '#F3F4F6', t2: '#5C636D', accent: '#1677E6', accentSoft: '#E7F0FC', good: '#12935F', goodSoft: '#E5F4EC' },
+  dark: { panel: '#17191D', t1: '#F2F3F5', tile: '#202328', t2: '#A3A9B2', accent: '#4C9AFF', accentSoft: 'rgba(76,154,255,0.16)', good: '#38C08A', goodSoft: 'rgba(56,192,138,0.14)' }
+};
+const CAP = {
+  cruise: ['매끄럽게 비행 중', '오늘 42.6 km · 37 km 깨끗하게', ''],
+  slow: ['천천히 비행 중', '전비가 평소보다 낮아요', ''],
+  rough: ['조금 거칠었어요', '최근 2분 · 급감속 2회', 'M3 12c2-4 4-4 6 0s4 4 6 0 4-4 6 0'],
+  hover: ['잠깐 쉬는 중', '신호 대기', ''],
+  maint: ['점검이 다가와요', '와이퍼 블레이드 교체까지 12일', 'M14.5 6.5a4 4 0 00-5 5L4 17l3 3 5.5-5.5a4 4 0 005-5l-2.5 2.5-2.5-.5-.5-2.5z'],
+  dock: ['도킹해서 충전 중', '배터리 64% · 완속', 'M13 3L5 14h6l-1 7 8-11h-6z'],
+  charge: ['충전은 일요일까지 여유 있어요', '배터리 64% · 하루 평균 34 km 기준', 'M13 3L5 14h6l-1 7 8-11h-6z']
+};
+const CAPC = { cruise: '신나게 달리는 중', slow: '느긋하게 달리는 중', rough: '깜짝 놀랐어요', hover: '잠깐 쉬는 중', maint: '정비 챙기는 중', dock: '충전하며 쉬는 중', charge: '충전 타이밍 챙기는 중' };
+class Component extends DCLogic {
+  __res(v, s) {
+    const m = /^\{\{\s*([A-Za-z_$][\w$.]*)\s*\}\}$/.exec(s);
+    const look = (p) => p.split('.').reduce((o, k) => (o == null ? o : o[k]), v);
+    if (m) return look(m[1]);
+    return s.replace(/\{\{\s*([A-Za-z_$][\w$.]*)\s*\}\}/g, (_, p) => { const x = look(p); return x == null ? '' : String(x); });
+  }
+  __kid(key, Core, raw, v) {
+    this.__kids = this.__kids || {};
+    let k = this.__kids[key];
+    if (!k) { k = this.__kids[key] = new Core({}); k.__host = this; }
+    const p = {}; for (const a in raw) p[a] = this.__res(v, raw[a]);
+    k.props = p;
+    return k.renderVals();
+  }
+  componentWillUnmount() {
+    
+    const ks = this.__kids || {}; for (const a in ks) { if (ks[a].componentWillUnmount) ks[a].componentWillUnmount(); }
+  }
+  renderVals() {
+    const v = this.__rv0();
+    v.__c1_1 = this.__kid('__c1_1', Core__c1_1, {"theme": "{{theme}}", "state": "{{state}}", "drive": "{{driveStr}}", "w": "560", "h": "190", "bw": "232", "bxr": "0.6", "gyr": "0.88"}, v);
+    v.__c1_2 = this.__kid('__c1_2', Core__c1_2, {"kind": "eff", "href": "{{effHref}}", "theme": "{{theme}}", "drive": "{{driveStr}}", "tapped": "{{tapped}}", "h": "216"}, v);
+    v.__c1_3 = this.__kid('__c1_3', Core__c1_3, {"kind": "maint", "href": "{{maintHref}}", "theme": "{{theme}}", "drive": "{{driveStr}}", "tapped": "off", "h": "216"}, v);
+    v.__c1_4 = this.__kid('__c1_4', Core__c1_4, {"kind": "coin", "href": "{{coinHref}}", "theme": "{{theme}}", "drive": "{{driveStr}}", "tapped": "off", "h": "216"}, v);
+    v.__c1_5 = this.__kid('__c1_5', Core__c1_5, {"kind": "region", "href": "{{regionHref}}", "theme": "{{theme}}", "drive": "{{driveStr}}", "tapped": "off", "h": "216"}, v);
+    return v;
+  }
+
+  __rv0() {
+    const p = this.props;
+    const theme = p.theme === 'light' ? 'light' : 'dark';
+    const T = TOK[theme];
+    const drive = p.drive === 'on' || p.drive === true;
+    let state = p.state && p.state !== 'auto' ? p.state : (drive ? 'cruise' : 'maint');
+    if (drive && (state === 'maint' || state === 'dock')) state = 'cruise';
+    // 가장 가까운 점검: 와이퍼 블레이드 12일 / 에어컨 필터 1,200 km. 10일 또는 1,000 km 이내일 때만 점검을 띄우고, 그 전에는 충전 타이밍을 보여줘요.
+    const NEXT = { days: Number(p.maintDays ?? 12), km: Number(p.maintKm ?? 1200) };
+    if (state === 'maint' && !(NEXT.days <= 10 || NEXT.km <= 1000)) state = 'charge';
+    const c = CAP[state];
+    const isTrace = p.hero === 'trace';
+    const isChar = p.hero === 'character' || isTrace;
+    const dk = theme === 'dark';
+    return {
+      isDark: dk, isLight: !dk, themeHref: p.themeHref || (dk ? 'FullLight.dc.html' : 'FullDark.dc.html'), knobX: dk ? 36 : 4, knobBg: dk ? '#3A3F48' : '#FFFFFF', knobFg: dk ? '#E8ECF2' : '#F2A93B',
+      T, theme, state, heroImg: theme === 'dark' ? '/_blob/f62cbac6682d14a592172f44ac2c7130' : '/_blob/8177ffa4334c1d9c75e69f52b195257f', stageState: state === 'charge' ? 'maint' : state, heroBg: theme === 'dark' ? '#050608' : '#1F3B6A',
+      driveStr: drive ? 'on' : 'off',
+      tapped: drive && p.tapped === 'on' ? 'on' : 'off',
+      chipText: drive ? '주행 중 · 탭하면 음성' : '정차 중',
+      chipBg: drive ? T.accentSoft : T.goodSoft,
+      chipCol: drive ? T.accent : T.good,
+      caption: isChar ? CAPC[state] : c[0], craftStr: isChar ? 'off' : 'on', skyDisp: isChar ? 'none' : 'block', charDisp: isChar ? 'flex' : 'none', charLight: isChar && !isTrace && theme === 'light', charDark: isChar && !isTrace && theme === 'dark', traceMode: isTrace, capSub: c[1], capIcon: c[2], hasIcon: !!c[2], stillStr: p.still === 'on' ? 'on' : 'off', spaceHref: p.space || '', hasSpace: !!p.space, effHref: p.effHref || '', maintHref: p.maintHref || '', coinHref: p.coinHref || '', regionHref: p.regionHref || ''
+    };
+  }
+}
+
+return Component;
+})();
+
+class Component extends DCLogic {
+  __res(v, s) {
+    const m = /^\{\{\s*([A-Za-z_$][\w$.]*)\s*\}\}$/.exec(s);
+    const look = (p) => p.split('.').reduce((o, k) => (o == null ? o : o[k]), v);
+    if (m) return look(m[1]);
+    return s.replace(/\{\{\s*([A-Za-z_$][\w$.]*)\s*\}\}/g, (_, p) => { const x = look(p); return x == null ? '' : String(x); });
+  }
+  __kid(key, Core, raw, v) {
+    this.__kids = this.__kids || {};
+    let k = this.__kids[key];
+    if (!k) { k = this.__kids[key] = new Core({}); k.__host = this; }
+    const p = {}; for (const a in raw) p[a] = this.__res(v, raw[a]);
+    k.props = p;
+    return k.renderVals();
+  }
+  componentWillUnmount() {
+    
+    const ks = this.__kids || {}; for (const a in ks) { if (ks[a].componentWillUnmount) ks[a].componentWillUnmount(); }
+  }
+  renderVals() {
+    const v = this.__rv0();
+    v.__c0_1 = this.__kid('__c0_1', Core__c0_1, {"theme": "light", "drive": "off", "state": "maint", "tapped": "off", "still": "on", "space": "FullSpaceLightCloud.dc.html", "effHref": "FullEffLight.dc.html", "maintHref": "FullMaintLight.dc.html", "coinHref": "FullCoinLight.dc.html", "themeHref": "FullDark.dc.html", "regionHref": "FullRegionLight.dc.html"}, v);
+    return v;
+  }
+
+  __rv0() { return {}; }
+}
+</script>
+</body>
+</html>
