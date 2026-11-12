@@ -54,16 +54,20 @@ fun SpaceFlightScreen(
     // TODO: 모션 줄이기 설정 확인 (AccessibilityManager.isEnabled + Settings.Global.TRANSITION_ANIMATION_SCALE)
     val isReduceMotion = false
 
-    // ExoPlayer 생성 및 해제
-    val exoPlayer = remember(videoRes) {
+    // ExoPlayer는 화면에 머무는 동안 하나만 만든다.
+    // 테마나 칸 배치가 바뀌어 영상 파일이 달라지면 같은 플레이어에서 파일만 바꾸고 재생 위치를 이어 간다
+    val exoPlayer = remember {
         ExoPlayer.Builder(context).build().apply {
-            val videoUri = Uri.parse("android.resource://${context.packageName}/$videoRes")
-            setMediaItem(MediaItem.fromUri(videoUri))
-            prepare()
-            playWhenReady = !isReduceMotion
             repeatMode = Player.REPEAT_MODE_ONE
             volume = 0f
         }
+    }
+    LaunchedEffect(videoRes) {
+        val position = exoPlayer.currentPosition
+        val videoUri = Uri.parse("android.resource://${context.packageName}/$videoRes")
+        exoPlayer.setMediaItem(MediaItem.fromUri(videoUri), position)
+        exoPlayer.prepare()
+        exoPlayer.playWhenReady = !isReduceMotion && !isDrivingRestricted
     }
 
     // 주행 제한 중에는 영상 즉시 정지
