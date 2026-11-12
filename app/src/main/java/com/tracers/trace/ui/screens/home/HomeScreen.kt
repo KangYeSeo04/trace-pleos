@@ -441,6 +441,38 @@ private fun HomeScreenDrivingLightPreview() {
     }
 }
 
+@Preview(name = "전체 화면 · 정차 · 다크", widthDp = 1200, heightDp = 800)
+@Composable
+private fun HomeScreenWideParkedDarkPreview() {
+    TraceTheme(darkTheme = true) {
+        HomeScreen(uiState = SampleHomeUiState.parked)
+    }
+}
+
+@Preview(name = "전체 화면 · 정차 · 라이트", widthDp = 1200, heightDp = 800)
+@Composable
+private fun HomeScreenWideParkedLightPreview() {
+    TraceTheme(darkTheme = false) {
+        HomeScreen(uiState = SampleHomeUiState.parked)
+    }
+}
+
+@Preview(name = "전체 화면 · 주행 · 다크", widthDp = 1200, heightDp = 800)
+@Composable
+private fun HomeScreenWideDrivingDarkPreview() {
+    TraceTheme(darkTheme = true) {
+        HomeScreen(uiState = SampleHomeUiState.driving)
+    }
+}
+
+@Preview(name = "전체 화면 · 주행 · 라이트", widthDp = 1200, heightDp = 800)
+@Composable
+private fun HomeScreenWideDrivingLightPreview() {
+    TraceTheme(darkTheme = false) {
+        HomeScreen(uiState = SampleHomeUiState.driving)
+    }
+}
+
 /**
  * Preview용 샘플 데이터.
  * 디자인의 예시 숫자를 그대로 사용.
