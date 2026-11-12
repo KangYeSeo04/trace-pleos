@@ -58,6 +58,8 @@ import androidx.compose.ui.unit.em
 import com.tracers.trace.data.sample.SampleData
 import com.tracers.trace.ui.components.DetailHeader
 import com.tracers.trace.ui.icons.TraceIcons
+import com.tracers.trace.ui.components.TwoColumns
+import com.tracers.trace.ui.theme.TraceLayout
 import com.tracers.trace.ui.theme.TraceTheme
 
 /**
@@ -108,12 +110,7 @@ fun RegionScreen(
             )
             Box(Modifier.fillMaxWidth().height(1.dp).background(colors.line))
 
-            Column(
-                modifier = Modifier
-                    .fillMaxSize()
-                    .verticalScroll(scrollState)
-                    .padding(start = 20.dp, end = 20.dp, top = 12.dp, bottom = 28.dp)
-            ) {
+            val mapCard: @Composable () -> Unit = {
                 RegionMapCard(
                     map = map,
                     regionColors = regionColors,
@@ -123,7 +120,9 @@ fun RegionScreen(
                     zoom = zoom,
                     onSelect = onSelectRegion,
                 )
-                Spacer(Modifier.height(10.dp))
+            }
+            val details: @Composable (Dp) -> Unit = { top ->
+                Spacer(Modifier.height(top))
                 SelectedRegionCard(
                     region = uiState.selected,
                     dotColor = uiState.selected?.let { regionColors[it.code] },
@@ -146,6 +145,35 @@ fun RegionScreen(
                     onOpenRegionClear = onOpenRegionClear,
                     onClearAll = { confirmClear = true },
                 )
+            }
+
+            if (TraceTheme.layout == TraceLayout.Wide) {
+                // FullRegion: 왼쪽 열 지도(위 12), 오른쪽 열 선택 지역·범례·곧 만나요·위치 기록.
+                // 오른쪽 열은 열 나눔에서 위 여백이 잘려 구분선 바로 아래서 시작한다
+                Column(
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .verticalScroll(scrollState)
+                        .padding(start = 20.dp, end = 20.dp, bottom = 28.dp)
+                ) {
+                    TwoColumns(
+                        left = {
+                            Spacer(Modifier.height(12.dp))
+                            mapCard()
+                        },
+                        right = { details(0.dp) },
+                    )
+                }
+            } else {
+                Column(
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .verticalScroll(scrollState)
+                        .padding(start = 20.dp, end = 20.dp, top = 12.dp, bottom = 28.dp)
+                ) {
+                    mapCard()
+                    details(10.dp)
+                }
             }
         }
 
@@ -491,4 +519,16 @@ private fun RegionScreenPreview() {
 @Composable
 private fun RegionScreenEmptyPreview() {
     TraceTheme { RegionScreen(uiState = SampleData.regionUiStateEmpty, onNavigateBack = {}) }
+}
+
+@Preview(name = "전체 화면 · 다크", widthDp = 1200, heightDp = 800)
+@Composable
+private fun RegionScreenWideDarkPreview() {
+    TraceTheme(darkTheme = true) { RegionScreen(uiState = SampleData.regionUiState, onNavigateBack = {}) }
+}
+
+@Preview(name = "전체 화면 · 라이트", widthDp = 1200, heightDp = 800)
+@Composable
+private fun RegionScreenWideLightPreview() {
+    TraceTheme(darkTheme = false) { RegionScreen(uiState = SampleData.regionUiState, onNavigateBack = {}) }
 }
