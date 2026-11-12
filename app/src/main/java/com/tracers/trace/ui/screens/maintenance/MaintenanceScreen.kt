@@ -6,6 +6,7 @@ import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -23,6 +24,8 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.tracers.trace.data.sample.SampleData
 import com.tracers.trace.ui.components.DetailHeader
+import com.tracers.trace.ui.components.TwoColumns
+import com.tracers.trace.ui.theme.TraceLayout
 import com.tracers.trace.ui.theme.TraceTheme
 import java.time.LocalDate
 import java.time.YearMonth
@@ -80,33 +83,61 @@ fun MaintenanceScreen(
             uiState.visit?.let { visit ->
                 VisitDetectionCard(visit = visit, onRecord = onRecordVisit, onDismiss = onDismissVisit)
             }
-
             // 방문 감지 카드가 없으면 첫 섹션 제목이 스크롤 영역 맨 위에 붙는다
-            SectionTitle("점검 항목", top = if (uiState.visit == null) 0.dp else 26.dp)
-            MaintenanceItemsCard(items = uiState.items, records = uiState.records)
+            val firstTop = if (uiState.visit == null) 0.dp else 26.dp
 
-            SectionTitle("정비 달력")
-            MaintenanceCalendarCard(
-                // 미리보기처럼 ViewModel 없이 그릴 때는 이번 달
-                calendar = uiState.calendar ?: MaintenanceCalendar(YearMonth.now()),
-                records = uiState.records,
-                onPrevMonth = onPrevMonth,
-                onNextMonth = onNextMonth,
-                onSelectDate = onSelectDate
-            )
-
-            SectionTitle("정비 기록")
-            if (uiState.records.isNotEmpty()) {
-                RecordFilterRow(
-                    options = uiState.filterOptions,
-                    selected = uiState.recordFilter,
-                    onSelect = onSelectFilter,
+            val items: @Composable (Dp) -> Unit = { top ->
+                SectionTitle("점검 항목", top = top)
+                MaintenanceItemsCard(items = uiState.items, records = uiState.records)
+            }
+            val calendar: @Composable (Dp) -> Unit = { top ->
+                SectionTitle("정비 달력", top = top)
+                MaintenanceCalendarCard(
+                    // 미리보기처럼 ViewModel 없이 그릴 때는 이번 달
+                    calendar = uiState.calendar ?: MaintenanceCalendar(YearMonth.now()),
+                    records = uiState.records,
+                    onPrevMonth = onPrevMonth,
+                    onNextMonth = onNextMonth,
+                    onSelectDate = onSelectDate
                 )
             }
-            MaintenanceRecordList(records = uiState.filteredRecords)
+            val history: @Composable () -> Unit = {
+                SectionTitle("정비 기록")
+                if (uiState.records.isNotEmpty()) {
+                    RecordFilterRow(
+                        options = uiState.filterOptions,
+                        selected = uiState.recordFilter,
+                        onSelect = onSelectFilter,
+                    )
+                }
+                MaintenanceRecordList(records = uiState.filteredRecords)
+            }
+            val form: @Composable () -> Unit = {
+                SectionTitle("기록 추가")
+                MaintenanceRecordFormCard(form = uiState.form, actions = formActions)
+            }
 
-            SectionTitle("기록 추가")
-            MaintenanceRecordFormCard(form = uiState.form, actions = formActions)
+            if (TraceTheme.layout == TraceLayout.Wide) {
+                // FullMaint: 방문 감지 카드 아래 4, 왼쪽 점검 항목, 오른쪽 정비 달력·기록 추가.
+                // 오른쪽 열 첫 제목은 열 나눔에서 위 여백이 잘린다.
+                // 정비 기록(필터·목록)은 디자인에 없어 짧은 왼쪽 열 아래에 둔다
+                if (uiState.visit != null) Spacer(modifier = Modifier.height(4.dp))
+                TwoColumns(
+                    left = {
+                        items(firstTop)
+                        history()
+                    },
+                    right = {
+                        calendar(0.dp)
+                        form()
+                    },
+                )
+            } else {
+                items(firstTop)
+                calendar(26.dp)
+                history()
+                form()
+            }
         }
     }
 }
@@ -146,6 +177,18 @@ private fun SectionTitle(text: String, top: Dp = 26.dp) {
 @Composable
 private fun MaintenanceScreenPreview() {
     TraceTheme { MaintenanceScreen(uiState = SampleData.maintenanceUiState, onNavigateBack = {}) }
+}
+
+@Preview(name = "전체 화면 · 다크", widthDp = 1200, heightDp = 800)
+@Composable
+private fun MaintenanceScreenWideDarkPreview() {
+    TraceTheme(darkTheme = true) { MaintenanceScreen(uiState = SampleData.maintenanceUiState, onNavigateBack = {}) }
+}
+
+@Preview(name = "전체 화면 · 라이트", widthDp = 1200, heightDp = 800)
+@Composable
+private fun MaintenanceScreenWideLightPreview() {
+    TraceTheme(darkTheme = false) { MaintenanceScreen(uiState = SampleData.maintenanceUiState, onNavigateBack = {}) }
 }
 
 @Preview(widthDp = 600, heightDp = 800, showBackground = true)
