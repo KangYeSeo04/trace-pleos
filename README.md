@@ -267,20 +267,22 @@ PLEOS_CLIENT_SECRET=<발급받은 값>
 
 ### APK로 바로 설치
 
-빌드 없이 설치할 수 있는 debug APK를 저장소에 포함했습니다.
+빌드 없이 설치할 수 있는 release APK를 저장소에 포함했습니다.
 
 | 항목 | 내용 |
 | --- | --- |
-| 파일 | [`release/TRACE-v0.1-debug.apk`](release/TRACE-v0.1-debug.apk) (약 75MB, Git LFS) |
-| 빌드 | `./gradlew assembleDebug` (debug 키 서명) |
-| SHA-256 | `8eea45093c7c6a77d9bfe9944baceac91cc14413f633a3c58542220991dce953` |
+| 파일 | [`apk/TRACERS_TRACE_release.apk`](apk/TRACERS_TRACE_release.apk) (약 64MB) |
+| 빌드 | `./gradlew assembleRelease` (release 키 서명, versionName 1.0) |
+| SHA-256 | `9be5f9a39a3981977b3b64d8f6a8bdb44cc81ab57802880a0ef0e5e5b4345c13` |
 
 ```bash
-adb install -r release/TRACE-v0.1-debug.apk
+adb install apk/TRACERS_TRACE_release.apk
 adb shell am start -n com.tracers.trace/.MainActivity
 ```
 
-> 저장소를 `git clone`할 때 APK가 LFS 포인터 파일로만 받아지면 `git lfs install && git lfs pull`을 실행하거나, GitHub 웹에서 파일을 열어 내려받으세요.
+> - 처음 실행하면 위치 관련 권한 2개를 묻습니다. 모두 허용해야 차량 신호 수집이 시작됩니다.
+> - 같은 패키지의 debug 빌드가 설치돼 있으면 서명이 달라 설치되지 않습니다. `adb uninstall com.tracers.trace` 후 설치하세요.
+> - release를 직접 빌드하려면 `local.properties`에 `TRACE_RELEASE_STORE_FILE`, `TRACE_RELEASE_STORE_PASSWORD`, `TRACE_RELEASE_KEY_ALIAS`, `TRACE_RELEASE_KEY_PASSWORD`를 넣습니다. 없으면 서명 없는 APK가 만들어집니다.
 
 ### 빌드 · 설치
 
