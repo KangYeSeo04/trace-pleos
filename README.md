@@ -94,7 +94,7 @@ TRACE는 여기서 시작했습니다.
 | Navigation | Navigation Compose 2.7.7, 단일 Activity |
 | Architecture | `ui` / `domain` / `data` 3계층, ViewModel + StateFlow(화면은 `UiState`만 받아 그림), 차량 신호는 `VehicleSignals` 인터페이스 하나로 받음 |
 | DI | 별도 DI 라이브러리 없음. `TraceApplication`에서 객체를 만들어 생성자로 주입(수동 DI) |
-| 비동기 | Kotlin Coroutines · Flow (`kotlinx-coroutines-test` 1.9.0, 앱 코드의 coroutines 버전은 의존성 전이로 결정 (확인 필요)) |
+| 비동기 | Kotlin Coroutines · Flow 1.9.0 (AndroidX 의존성을 통해 포함) |
 | 로컬 DB | Room 2.8.4 (DB 버전 5, 테이블 9개) + SharedPreferences(테마·위치 기록 설정) |
 | 영상 | Media3 ExoPlayer · UI 1.5.0 |
 | 이미지 | 별도 이미지 로딩 라이브러리 없음(`res/drawable-nodpi` 리소스) |
@@ -186,28 +186,7 @@ flowchart LR
 
 ---
 
-## 6. AI 오픈소스 및 외부 API
-
-현재 코드에는 **AI 모델·AI 오픈소스·AI API 호출이 없습니다.**
-
-| 이름 | 용도 | 사용 위치(파일/클래스) | 링크 | 라이선스 |
-| --- | --- | --- | --- | --- |
-| Pleos Vehicle SDK 2.3.2 | 배터리·주행거리·브레이크·조향·방향지시등·공조 읽기 | `data/vehicle/PleosVehicleSignals.kt` | (확인 필요) | (확인 필요) |
-| Pleos NaviHelper 3.0.5 | 현재 위치, 도로 제한속도 | `data/vehicle/PleosVehicleSignals.kt` | (확인 필요) | (확인 필요) |
-| Pleos FusedLocation 1.1.3 | 보조 위치 | `data/vehicle/PleosVehicleSignals.kt` | (확인 필요) | (확인 필요) |
-| Android Car API (`android.car`) | 차속·기어, UX 제한 | `PleosVehicleSignals.kt`, `CarUxRestrictionsMonitor.kt` | https://developer.android.com/reference/android/car/packages | Apache 2.0 |
-| AndroidX Media3 | 우주 비행 영상 재생 | `ui/screens/spaceflight/SpaceFlightScreen.kt` | https://github.com/androidx/media | Apache 2.0 |
-| AndroidX Room | 로컬 DB | `data/record/TraceDatabase.kt` | https://developer.android.com/jetpack/androidx/releases/room | Apache 2.0 |
-| vuski/admdongkor `ver20261001` | 행정동 경계(시·군·구로 합치고 단순화) | `assets/regions_*.json`, `tools/geo/build_regions.py` | https://github.com/vuski/admdongkor | CC BY 4.0 |
-| 통계지리정보서비스(SGIS) 행정동 경계 | admdongkor 원 자료 | 위와 같음 | https://sgis.kostat.go.kr | 공공누리 제1유형 |
-| Pretendard | 본문 글꼴 | `res/font/pretendard_*.otf` | https://github.com/orioncactus/pretendard | SIL OFL 1.1 |
-| Inter | 숫자 글꼴 | `res/font/inter_*.otf` | https://github.com/rsms/inter | SIL OFL 1.1 |
-
-> 지역 경계 출처 표시 문구는 `docs/지역경계_데이터.md`에 있습니다.
-
----
-
-## 7. 프로젝트 구조
+## 6. 프로젝트 구조
 
 ```
 app/src/main/java/com/tracers/trace/
@@ -246,13 +225,13 @@ tools/scenario/                # 버추얼 콘솔 시나리오 재생기 (PC에�
 
 ---
 
-## 8. 실행 방법
+## 7. 실행 방법
 
 ### 요구 환경
 
 - Android Studio (AGP 9.5.0을 지원하는 버전), Gradle Wrapper 9.6.0
-- JDK: (확인 필요) — 소스·타깃 호환성은 Java 11
-- 플레오스 커넥트 Automotive 에뮬레이터 (Android 14, `targetSdk 34`) — 설치 방법 (확인 필요)
+- JDK 25 (Gradle 데몬 요구 버전, `gradle/gradle-daemon-jvm.properties`. Android Studio 내장 JetBrains Runtime 25로 확인) — 소스·타깃 호환성은 Java 11
+- 플레오스 커넥트 Automotive 에뮬레이터 (Android 14, `targetSdk 34`)
 - Pleos SDK는 `settings.gradle.kts`에 등록된 Maven 저장소(`nexus-playground.pleos.ai`)에서 받습니다.
 
 ### 개발·테스트 에뮬레이터
@@ -286,6 +265,23 @@ PLEOS_CLIENT_SECRET=<발급받은 값>
 
 > 두 값은 `BuildConfig`로 들어가지만 현재 앱 코드에서 읽는 곳은 없습니다. 없으면 빈 문자열로 빌드됩니다.
 
+### APK로 바로 설치
+
+빌드 없이 설치할 수 있는 debug APK를 저장소에 포함했습니다.
+
+| 항목 | 내용 |
+| --- | --- |
+| 파일 | [`release/TRACE-v0.1-debug.apk`](release/TRACE-v0.1-debug.apk) (약 75MB, Git LFS) |
+| 빌드 | `./gradlew assembleDebug` (debug 키 서명) |
+| SHA-256 | `0969577b9a30373874a29b58a8b6bf483ad8a643573520ca293adb7904e3b2dd` |
+
+```bash
+adb install -r release/TRACE-v0.1-debug.apk
+adb shell am start -n com.tracers.trace/.MainActivity
+```
+
+> 저장소를 `git clone`할 때 APK가 LFS 포인터 파일로만 받아지면 `git lfs install && git lfs pull`을 실행하거나, GitHub 웹에서 파일을 열어 내려받으세요.
+
 ### 빌드 · 설치
 
 ```bash
@@ -309,9 +305,19 @@ python3 tools/scenario/replay.py tools/scenario/sample_30s.json
 
 ---
 
-## 9. 팀원 및 역할
+## 8. 팀원 및 역할
 
 | 이름 | 역할 | 담당 |
 | --- | --- | --- |
 | 강예서 | 팀장 | 서비스 기획 및 개발 총괄 |
 | 방승주 | 팀원 | 서비스 기획·앱 디자인·시연 콘텐츠 제작 |
+
+---
+
+## 데이터·글꼴 출처
+
+| 자료 | 출처 | 라이선스 |
+| --- | --- | --- |
+| 지역 경계 | 국가데이터처 통계지리정보서비스(SGIS) 행정동 경계, [vuski/admdongkor](https://github.com/vuski/admdongkor) ver20261001 가공본을 TRACE가 시·군·구 단위로 합치고 단순화함 | 공공누리 제1유형 · CC BY 4.0 |
+| Pretendard (본문 글꼴) | [orioncactus/pretendard](https://github.com/orioncactus/pretendard) | SIL OFL 1.1 |
+| Inter (숫자 글꼴) | [rsms/inter](https://github.com/rsms/inter) | SIL OFL 1.1 |
