@@ -33,10 +33,26 @@ android {
         buildConfigField("String", "PLEOS_CLIENT_SECRET", "\"${localProps.getProperty("PLEOS_CLIENT_SECRET", "")}\"")
     }
 
+    // release 서명: 키 파일·비밀번호는 local.properties(깃 제외)에서만 읽는다. 없으면 서명 없이 빌드된다
+    val releaseStoreFile = localProps.getProperty("TRACE_RELEASE_STORE_FILE")
+    signingConfigs {
+        if (releaseStoreFile != null) {
+            create("release") {
+                storeFile = file(releaseStoreFile)
+                storePassword = localProps.getProperty("TRACE_RELEASE_STORE_PASSWORD")
+                keyAlias = localProps.getProperty("TRACE_RELEASE_KEY_ALIAS")
+                keyPassword = localProps.getProperty("TRACE_RELEASE_KEY_PASSWORD")
+            }
+        }
+    }
+
     buildTypes {
         release {
+            if (releaseStoreFile != null) signingConfig = signingConfigs.getByName("release")
+            // R8 최적화를 켜면 시작 시 IllegalAccessError(kotlin.collections 클래스 접근)로 종료돼 끈다.
+            // 다시 켤 때는 release APK를 에뮬레이터에서 실행해 확인할 것
             optimization {
-                enable = true
+                enable = false
                 packageScope = setOf("androidx.**", "kotlin.**", "kotlinx.**")
             }
         }
