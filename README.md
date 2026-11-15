@@ -273,7 +273,7 @@ PLEOS_CLIENT_SECRET=<발급받은 값>
 | --- | --- |
 | 파일 | [`release/TRACE-v0.1-debug.apk`](release/TRACE-v0.1-debug.apk) (약 75MB, Git LFS) |
 | 빌드 | `./gradlew assembleDebug` (debug 키 서명) |
-| SHA-256 | `0969577b9a30373874a29b58a8b6bf483ad8a643573520ca293adb7904e3b2dd` |
+| SHA-256 | `8eea45093c7c6a77d9bfe9944baceac91cc14413f633a3c58542220991dce953` |
 
 ```bash
 adb install -r release/TRACE-v0.1-debug.apk
