@@ -286,6 +286,23 @@ PLEOS_CLIENT_SECRET=<발급받은 값>
 
 > 두 값은 `BuildConfig`로 들어가지만 현재 앱 코드에서 읽는 곳은 없습니다. 없으면 빈 문자열로 빌드됩니다.
 
+### APK로 바로 설치
+
+빌드 없이 설치할 수 있는 debug APK를 저장소에 포함했습니다.
+
+| 항목 | 내용 |
+| --- | --- |
+| 파일 | [`release/TRACE-v0.1-debug.apk`](release/TRACE-v0.1-debug.apk) (약 75MB, Git LFS) |
+| 빌드 | `./gradlew assembleDebug` (debug 키 서명) |
+| SHA-256 | `0969577b9a30373874a29b58a8b6bf483ad8a643573520ca293adb7904e3b2dd` |
+
+```bash
+adb install -r release/TRACE-v0.1-debug.apk
+adb shell am start -n com.tracers.trace/.MainActivity
+```
+
+> 저장소를 `git clone`할 때 APK가 LFS 포인터 파일로만 받아지면 `git lfs install && git lfs pull`을 실행하거나, GitHub 웹에서 파일을 열어 내려받으세요.
+
 ### 빌드 · 설치
 
 ```bash
