@@ -27,6 +27,7 @@ import android.car.hardware.CarPropertyValue
 import android.car.hardware.property.CarPropertyManager
 import android.content.Context
 import android.os.Handler
+import android.os.HandlerThread
 import android.os.Looper
 import android.util.Log
 import android.os.SystemClock
@@ -57,6 +58,17 @@ class PleosVehicleSignals(context: Context) : VehicleSignals {
     private var car: Car? = null
     private var carPropertyManager: CarPropertyManager? = null
     private val main = Handler(Looper.getMainLooper())
+
+    /**
+     * Vehicle SDK 구독 전용 스레드. 첫 호출(특히 공조 checkHvacPowerCapabilities)이 SDK 안에서
+     * kotlin-reflect로 수 초를 쓰므로 main에서 부르면 시작 직후 ANR이 난다.
+     * SDK가 호출 스레드의 Looper로 콜백할 수 있어 Executor 대신 HandlerThread를 쓴다.
+     */
+    private val sdk: Handler by lazy {
+        Handler(HandlerThread("PleosVehicleSdk").apply { start() }.looper)
+    }
+
+    @Volatile
     private var started = false
 
     // StateFlow 백업 필드
@@ -326,8 +338,8 @@ class PleosVehicleSignals(context: Context) : VehicleSignals {
             return
         }
 
-        // 차량 서비스에 연결될 시간을 준 뒤 구독 (probe 코드에서 검증된 방식)
-        main.postDelayed({ subscribeVehicleSdk() }, 1_000)
+        // 차량 서비스에 연결될 시간을 준 뒤 구독 (probe 코드에서 검증된 방식). main을 막지 않게 SDK 스레드에서
+        sdk.postDelayed({ subscribeVehicleSdk() }, 1_000)
 
         // AAOS 속도·기어 구독
         subscribeAaos()
@@ -418,19 +430,17 @@ class PleosVehicleSignals(context: Context) : VehicleSignals {
         // 공조 전원: 지원 여부·영역을 먼저 받고 영역마다 구독. 미지원이면 hvacSupported = false
         runCatching {
             vehicle.getHVAC().checkHvacPowerCapabilities({ config, areas ->
-                main.post {
-                    log("공조전원 지원", "${config.accessType} 영역=${areas.size}")
-                    val readable = config.accessType == AccessType.READ || config.accessType == AccessType.READ_WRITE
-                    if (!readable || areas.isEmpty()) _hvacSupported.value = false
-                    else subscribeHvacPower(areas)
-                }
+                log("공조전원 지원", "${config.accessType} 영역=${areas.size}")
+                val readable = config.accessType == AccessType.READ || config.accessType == AccessType.READ_WRITE
+                if (!readable || areas.isEmpty()) main.post { _hvacSupported.value = false }
+                else sdk.post { subscribeHvacPower(areas) }
             }, {
                 Log.w(TAG, "공조 전원 지원 확인 실패", it)
                 main.post { _hvacSupported.value = false }
             })
         }.onFailure {
             Log.w(TAG, "공조 전원 구독 실패", it)
-            _hvacSupported.value = false
+            main.post { _hvacSupported.value = false }
         }
     }
 
@@ -476,22 +486,11 @@ class PleosVehicleSignals(context: Context) : VehicleSignals {
         if (!started) return
         started = false
         main.removeCallbacksAndMessages(null)
-
-        // Vehicle SDK 해제
-        runCatching { vehicle.getBrake().unregisterBrakePedalStatus(brakeListener) }
-        runCatching { vehicle.getSteeringWheel().unregisterSteeringWheelAngle(steeringListener) }
-        runCatching { vehicle.getTurnSignal().unregisterTurnSignalState(turnListener) }
-        runCatching { vehicle.getEvBattery().unregisterEvBatteryStateOfCharge(batteryPercentListener) }
-        runCatching { vehicle.getEvBattery().unregisterEvBatteryLevel(batteryLevelListener) }
-        runCatching { vehicle.getOdometer().unregisterRangeRemainingListener(rangeListener) }
-        runCatching { vehicle.getEvBattery().unregisterEvChargePortOpen(chargePortListener) }
-        runCatching { vehicle.getOdometer().unregisterDistanceDriven(odometerListener) }
-        powerListeners.forEach { (area, l) ->
-            runCatching { vehicle.getHVAC().unregisterHvacPowerState(area, l) }
-        }
-        powerListeners.clear()
+        sdk.removeCallbacksAndMessages(null)
         powerByArea.clear()
-        runCatching { vehicle.release() }
+
+        // Vehicle SDK 해제: 구독과 같은 스레드에서 해서 진행 중인 구독이 끝난 뒤에 풀리게 한다
+        sdk.post { releaseVehicleSdk() }
 
         // NaviHelper 해제
         runCatching { navi.removeListener(naviListener) }
@@ -506,6 +505,22 @@ class PleosVehicleSignals(context: Context) : VehicleSignals {
         // AAOS 해제
         runCatching { carPropertyManager?.unregisterCallback(aaosCallback) }
         runCatching { car?.disconnect() }
+    }
+
+    private fun releaseVehicleSdk() {
+        runCatching { vehicle.getBrake().unregisterBrakePedalStatus(brakeListener) }
+        runCatching { vehicle.getSteeringWheel().unregisterSteeringWheelAngle(steeringListener) }
+        runCatching { vehicle.getTurnSignal().unregisterTurnSignalState(turnListener) }
+        runCatching { vehicle.getEvBattery().unregisterEvBatteryStateOfCharge(batteryPercentListener) }
+        runCatching { vehicle.getEvBattery().unregisterEvBatteryLevel(batteryLevelListener) }
+        runCatching { vehicle.getOdometer().unregisterRangeRemainingListener(rangeListener) }
+        runCatching { vehicle.getEvBattery().unregisterEvChargePortOpen(chargePortListener) }
+        runCatching { vehicle.getOdometer().unregisterDistanceDriven(odometerListener) }
+        powerListeners.forEach { (area, l) ->
+            runCatching { vehicle.getHVAC().unregisterHvacPowerState(area, l) }
+        }
+        powerListeners.clear()
+        runCatching { vehicle.release() }
     }
 
     private fun log(name: String, value: Any?) {
